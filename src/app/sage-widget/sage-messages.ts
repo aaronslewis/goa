@@ -37,7 +37,9 @@ export const INTRO_SCRIPT: IntroStep[] = [
 
   { type: 'wait', ms: 500 },
   { type: 'showTyping' },
-  { type: 'wait', ms: 1200 },
+  // Hold the typing indicator 3x as long before the suggestion list lands —
+  // gives the user a beat to read the prior message before bullets appear.
+  { type: 'wait', ms: 3600 },
   {
     type: 'replaceTypingWith',
     kind: 'list',
