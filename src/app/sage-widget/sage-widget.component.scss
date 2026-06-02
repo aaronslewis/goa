@@ -32,17 +32,18 @@
   --sage-font-size: 14px;
 }
 
-.panel.full {
+/* Wide mode: a full-height right-edge drawer at 492px. */
+.panel.wide {
   position: fixed;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
-  width: 100% !important;
-  height: 100% !important;
+  left: auto;
+  width: 492px !important;
+  height: 100vh !important;
   max-height: none;
   border-radius: 0;
-  transform-origin: center;
+  transform-origin: bottom right;
 }
 
 @keyframes sage-open {
@@ -152,6 +153,7 @@
   flex-shrink: 0;
 }
 
+.avatar-owl,
 .avatar svg {
   width: 100%;
   height: 100%;
@@ -165,7 +167,10 @@
   font-size: var(--sage-font-size, 14px);
   line-height: 1.45;
   color: #0b2a4a;
-  background: #eef3f9;
+  /* GoA DS 1.0 token: --goa-color-info-background (#eff8ff). Matches the
+     light-blue surface used by the Help Centre guide cards and the Figma
+     hero illustration. */
+  background: var(--goa-color-info-background, #eff8ff);
   animation: bubble-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 

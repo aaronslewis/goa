@@ -13,12 +13,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { OWL_SVG } from './owl.svg';
 import { INTRO_SCRIPT, SageMessage, MessageKind, TypingVariant } from './sage-messages';
 
-type ExpandState = 'compact' | 'wide' | 'full';
+type ExpandState = 'compact' | 'wide';
 
 const NEXT_EXPAND: Record<ExpandState, ExpandState> = {
   compact: 'wide',
-  wide: 'full',
-  full: 'compact',
+  wide: 'compact',
 };
 
 type TextSize = 'normal' | 'large' | 'xlarge';
@@ -74,14 +73,19 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   readonly hasPlayedIntro = signal(false);
   readonly draft = signal('');
 
-  readonly widthPx = computed(() => {
-    const s = this.expandState();
-    if (s === 'full') return '100%';
-    if (s === 'wide') return '492px';
-    return '360px';
-  });
+  readonly widthPx = computed(() => (this.expandState() === 'wide' ? '492px' : '360px'));
 
-  readonly isFullScreen = computed(() => this.expandState() === 'full');
+  readonly isWide = computed(() => this.expandState() === 'wide');
+
+  /** Id of the most recent bot message — the only row that shows the owl avatar.
+   *  As Sage adds messages the avatar "drops down" to the newest bot bubble. */
+  readonly lastBotId = computed(() => {
+    const list = this.messages();
+    for (let i = list.length - 1; i >= 0; i--) {
+      if (list[i].role === 'bot') return list[i].id;
+    }
+    return null;
+  });
 
   readonly fontSizePx = computed(() => {
     switch (this.textSize()) {
@@ -216,6 +220,19 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
 
   cycleExpand(): void {
     this.expandState.update(s => NEXT_EXPAND[s]);
+  }
+
+  /** Hovering the owl (or the peek beside it) surfaces the "Need help?" prompt. */
+  onTriggerEnter(): void {
+    if (this.isOpen()) return;
+    this.cancelPeekHideTimers();
+    this.peekState.set('visible');
+  }
+
+  /** Leaving the trigger area fades the peek back out (idle logic still applies). */
+  onTriggerLeave(): void {
+    if (this.isOpen()) return;
+    if (this.peekState() === 'visible') this.beginHidePeek();
   }
 
   cycleTextSize(): void {

@@ -1,7 +1,7 @@
 @if (isOpen()) {
   <div
     class="panel"
-    [class.full]="isFullScreen()"
+    [class.wide]="isWide()"
     role="dialog"
     aria-label="Sage AI help assistant"
     [style.--sage-width]="widthPx()"
@@ -18,7 +18,7 @@
           (click)="cycleTextSize()">
           <span class="tsz-small">A</span><span class="tsz-large">A</span>
         </button>
-        @if (isFullScreen()) {
+        @if (isWide()) {
           <goa-icon-button
             icon="contract"
             variant="dark"
@@ -49,7 +49,11 @@
       @for (m of messages(); track trackById($index, m)) {
         <div class="message-row" [class.bot]="m.role === 'bot'" [class.user]="m.role === 'user'">
           @if (m.role === 'bot') {
-            <div class="avatar" [innerHTML]="owlSvg"></div>
+            <div class="avatar">
+              @if (m.id === lastBotId()) {
+                <span class="avatar-owl" [innerHTML]="owlSvg"></span>
+              }
+            </div>
           }
 
           @switch (m.kind) {
@@ -116,7 +120,10 @@
   </div>
 }
 
-<div class="trigger-row">
+<div
+  class="trigger-row"
+  (mouseenter)="onTriggerEnter()"
+  (mouseleave)="onTriggerLeave()">
   @if (!isOpen() && isPeekRendered()) {
     <button
       type="button"
@@ -129,7 +136,7 @@
     </button>
   }
 
-  @if (!(isOpen() && isFullScreen())) {
+  @if (!(isOpen() && isWide())) {
     <button
       type="button"
       class="owl-trigger"
