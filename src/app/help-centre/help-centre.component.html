@@ -77,22 +77,35 @@
         </p>
       </div>
       <div class="hero-illustration" aria-hidden="true">
-        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="220" cy="100" r="92" fill="#cfe2f3" opacity="0.55"/>
-          <rect x="155" y="65" width="55" height="55" rx="3" fill="#cfe2f3"/>
-          <!-- person body -->
-          <ellipse cx="200" cy="180" rx="62" ry="14" fill="#0077cd" opacity="0.18"/>
-          <path d="M155 165 C 155 130, 175 110, 200 110 C 225 110, 245 130, 245 165 Z" fill="#0070c4"/>
-          <!-- head -->
-          <circle cx="200" cy="92" r="20" fill="#f3d3b6"/>
-          <path d="M180 90 C 180 75, 195 70, 200 70 C 215 70, 220 80, 220 92 L 220 84 C 215 80, 205 78, 200 80 C 195 82, 188 86, 184 90 Z" fill="#2b2b2b"/>
-          <!-- arms -->
-          <rect x="165" y="135" width="10" height="32" rx="4" fill="#f3d3b6"/>
-          <rect x="225" y="135" width="10" height="32" rx="4" fill="#f3d3b6"/>
-          <!-- laptop -->
-          <rect x="142" y="155" width="116" height="28" rx="2" fill="#222"/>
-          <ellipse cx="200" cy="169" rx="6" ry="3" fill="#f5f5f5"/>
-          <rect x="130" y="183" width="140" height="4" rx="2" fill="#cccccc"/>
+        <!-- Extracted from the Figma frame: viewBox crops to the kid-at-laptop
+             region (~1255,130 → 1765,510 in the original 2160-wide art). -->
+        <svg viewBox="1255 130 510 380" xmlns="http://www.w3.org/2000/svg">
+          <!-- Big background circle -->
+          <path d="M1733.15 362.447C1733.15 438.478 1672.1 500.113 1596.8 500.113C1521.49 500.113 1460.44 438.478 1460.44 362.447C1460.44 286.416 1521.49 224.781 1596.8 224.781C1672.1 224.781 1733.15 286.416 1733.15 362.447Z" fill="#AAC9E7"/>
+          <!-- Lower-left quarter -->
+          <path d="M1499.57 293.27L1499.57 452.746C1456.05 452.746 1414.31 435.29 1383.53 404.219C1354.21 374.613 1337.13 334.957 1335.58 293.27L1499.57 293.27Z" fill="#AAC9E7"/>
+          <!-- Upper-left quarter -->
+          <path d="M1499.58 135.002L1499.58 294.492C1456.06 294.492 1414.32 277.037 1383.54 245.965C1354.21 216.356 1337.13 176.694 1335.59 135.002L1499.58 135.002Z" fill="#AAC9E7"/>
+          <!-- Neck/collar -->
+          <path d="M1528.54 326.913H1494.22L1482.58 296.436L1494.22 294.454V257.176H1528.54V294.454L1536.86 296.436L1528.54 326.913Z" fill="#EFF8FF" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Head / face -->
+          <path d="M1470.97 238.523C1470.97 230.7 1477.61 228.877 1480.94 228.943L1497.54 210.781L1531.27 213.176L1542.28 230.141C1544.67 227.346 1549.87 224.552 1551.55 235.729C1553.22 246.906 1546.07 249.301 1542.28 249.101C1540.36 261.542 1530.78 286.064 1507.85 284.627C1484.92 283.19 1480.35 260.344 1480.94 249.101C1477.61 248.835 1470.97 246.347 1470.97 238.523Z" fill="#EFF8FF" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Body / shirt -->
+          <path d="M1375.65 483.825V409.729C1375.65 346.048 1427.27 294.425 1490.95 294.425L1490.87 299.42C1490.7 310.615 1499.73 319.784 1510.92 319.784C1522 319.784 1530.97 310.807 1530.97 299.734V294.425C1573.33 288.844 1613.32 315.365 1624.65 356.56L1636.77 400.616C1611.61 403.786 1590.41 405.965 1576.34 407.946L1603.09 483.825H1375.65Z" fill="#006DCC"/>
+          <!-- Right arm / sleeve -->
+          <path d="M1646.16 437.669L1636.77 400.609L1576.54 407.742L1581.5 426.278C1582.82 431.21 1579.24 436.09 1574.14 436.452C1549.52 438.207 1532.79 442.051 1505.22 450.535V485.008H1609.33C1634.1 485.008 1652.25 461.683 1646.16 437.669Z" fill="#EFF8FF" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Hair (back/right tuft) -->
+          <path d="M1538.79 185.614C1516.42 175.407 1501.5 186.721 1496.84 193.654L1494.22 214.103C1544.56 257.624 1581.45 205.077 1538.79 185.614Z" fill="#333333" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Hair (front tuft) -->
+          <path d="M1477.09 195.4C1482.82 188.269 1493.58 191.379 1498.24 194.001C1505.05 203.264 1495.44 219.169 1488.28 226.859C1476.7 239.287 1469.92 204.313 1477.09 195.4Z" fill="#333333" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Laptop body -->
+          <path d="M1346.51 471.02L1342.43 378.178C1341.95 367.368 1350.59 358.344 1361.41 358.344H1512.49C1523.47 358.344 1532.17 367.632 1531.45 378.594L1525.33 471.349C1524.81 479.233 1518.27 485.362 1510.36 485.362H1361.5C1353.47 485.362 1346.86 479.041 1346.51 471.02Z" fill="#333333" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Desktop platform / bar -->
+          <rect x="1255.72" y="484.664" width="509.467" height="18.1454" fill="#EBF8FF"/>
+          <!-- Trackpad highlight -->
+          <circle cx="1437.17" cy="421.185" r="17.0986" fill="#EBF8FF"/>
+          <!-- Gesture-arm curve toward laptop (stroke only) -->
+          <path d="M1510.97 319.75C1518.3 319.354 1532.52 313.806 1530.78 294.787C1548.08 291.551 1589.26 295.064 1615.57 335.005" fill="none" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
     </section>
