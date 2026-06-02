@@ -61,7 +61,9 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   readonly isOpen = signal(false);
   readonly expandState = signal<ExpandState>('compact');
   readonly textSize = signal<TextSize>('normal');
-  readonly peekState = signal<PeekState>('hidden');
+  // Surface the peek immediately on page load. From there the standard
+  // activity-driven hide / idle-driven re-show cycle takes over.
+  readonly peekState = signal<PeekState>('visible');
   readonly isPeekRendered = computed(() => this.peekState() !== 'hidden');
   readonly isPeekLeaving = computed(() => this.peekState() === 'leaving');
   readonly messages = signal<SageMessage[]>([]);
