@@ -1,0 +1,98 @@
+@if (isOpen()) {
+  <div
+    class="panel"
+    role="dialog"
+    aria-label="Sage AI help assistant"
+    [style.--sage-width]="widthPx()">
+    <header class="panel-header">
+      <div class="panel-title">Sage — Your AI help assistant</div>
+      <div class="panel-actions">
+        <goa-dropdown
+          name="sage-width"
+          [attr.value]="size()"
+          width="120px"
+          arialabel="Widget width"
+          (_change)="onSizeChange($event.detail)">
+          <goa-dropdown-item value="S" label="S · 360"></goa-dropdown-item>
+          <goa-dropdown-item value="M" label="M · 480"></goa-dropdown-item>
+          <goa-dropdown-item value="L" label="L · 640"></goa-dropdown-item>
+          <goa-dropdown-item value="XL" label="XL · 800"></goa-dropdown-item>
+        </goa-dropdown>
+        <goa-icon-button
+          icon="expand"
+          variant="dark"
+          title="Expand"
+          arialabel="Expand">
+        </goa-icon-button>
+        <goa-icon-button
+          icon="close"
+          variant="dark"
+          title="Close"
+          arialabel="Close"
+          (_click)="closePanel()">
+        </goa-icon-button>
+      </div>
+    </header>
+
+    <div class="messages" aria-live="polite">
+      @for (m of messages(); track trackById($index, m)) {
+        <div class="message-row" [class.bot]="m.role === 'bot'" [class.user]="m.role === 'user'">
+          @if (m.role === 'bot') {
+            <div class="avatar" [innerHTML]="owlSvg"></div>
+          }
+
+          @switch (m.kind) {
+            @case ('typing') {
+              <div class="bubble typing" aria-label="Sage is typing">
+                <span></span><span></span><span></span>
+              </div>
+            }
+            @case ('list') {
+              <div class="bubble list">
+                <p class="list-intro">{{ asList(m)[0] }}</p>
+                <ul>
+                  @for (item of asList(m).slice(1); track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              </div>
+            }
+            @default {
+              <div class="bubble">{{ asString(m) }}</div>
+            }
+          }
+        </div>
+      }
+    </div>
+
+    <footer class="panel-footer">
+      <goa-input
+        name="sage-input"
+        placeholder="Ask a question…"
+        arialabel="Ask a question"
+        [attr.value]="draft()"
+        (_change)="onDraftChange($event.detail)"
+        (_keypress)="onDraftKeyPress($event.detail)">
+      </goa-input>
+      <button
+        class="send-btn"
+        type="button"
+        aria-label="Send"
+        [disabled]="!draft().trim()"
+        (click)="submit()">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path d="M5 12l14-7-7 14-2-5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </footer>
+  </div>
+}
+
+<button
+  type="button"
+  class="owl-trigger"
+  [attr.aria-label]="isOpen() ? 'Close Sage assistant' : 'Open Sage assistant'"
+  (click)="isOpen() ? closePanel() : openPanel()"
+  (dblclick)="resetAndReplay()"
+  [innerHTML]="owlSvg">
+</button>
