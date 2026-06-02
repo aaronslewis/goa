@@ -1,0 +1,123 @@
+<goa-microsite-header type="live" version="">
+  <a href="#" slot="link">Alberta Government</a>
+</goa-microsite-header>
+
+<header class="app-header">
+  <div class="app-header-left">
+    <a href="#" class="app-header-logo">
+      <svg viewBox="0 0 120 28" aria-hidden="true" class="ab-logo">
+        <text x="0" y="22" font-family="Adventure, Georgia, serif" font-size="26" font-style="italic" font-weight="600" fill="#0070c4">Alberta</text>
+        <path d="M58 18 l4 -4 l4 4" stroke="#feba35" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <span class="app-header-title">Child Care Licensing Portal</span>
+  </div>
+
+  <div class="app-header-right">
+    <button
+      type="button"
+      class="user-menu-trigger"
+      [attr.aria-expanded]="userMenuOpen()"
+      (click)="toggleUserMenu()">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M4 21 c0 -5 4 -8 8 -8 s8 3 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span>User Name</span>
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" class="chevron">
+        <path d="M6 9 l6 6 l6 -6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="side-nav" aria-label="Portal sections">
+    <ul>
+      @for (section of navSections; track section.label) {
+        <li class="nav-item">
+          <a href="{{ section.href }}" class="nav-link">
+            <span>{{ section.label }}</span>
+            @if (section.kind === 'group') {
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" class="nav-chevron" [class.expanded]="section.expanded">
+                <path d="M9 6 l6 6 l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+          </a>
+          @if (section.expanded && section.children) {
+            <ul class="nav-children">
+              @for (child of section.children; track child.label) {
+                <li>
+                  <a href="{{ child.href }}" class="nav-link nav-child" [class.active]="child.active">
+                    {{ child.label }}
+                  </a>
+                </li>
+              }
+            </ul>
+          }
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-text">
+        <h1 class="page-title">Help Centre</h1>
+        <p class="page-lede">
+          The Help Centre contains user guides and videos to help you use the Child Care
+          Licensing Portal.
+        </p>
+      </div>
+      <div class="hero-illustration" aria-hidden="true">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="220" cy="100" r="92" fill="#cfe2f3" opacity="0.55"/>
+          <rect x="155" y="65" width="55" height="55" rx="3" fill="#cfe2f3"/>
+          <!-- person body -->
+          <ellipse cx="200" cy="180" rx="62" ry="14" fill="#0077cd" opacity="0.18"/>
+          <path d="M155 165 C 155 130, 175 110, 200 110 C 225 110, 245 130, 245 165 Z" fill="#0070c4"/>
+          <!-- head -->
+          <circle cx="200" cy="92" r="20" fill="#f3d3b6"/>
+          <path d="M180 90 C 180 75, 195 70, 200 70 C 215 70, 220 80, 220 92 L 220 84 C 215 80, 205 78, 200 80 C 195 82, 188 86, 184 90 Z" fill="#2b2b2b"/>
+          <!-- arms -->
+          <rect x="165" y="135" width="10" height="32" rx="4" fill="#f3d3b6"/>
+          <rect x="225" y="135" width="10" height="32" rx="4" fill="#f3d3b6"/>
+          <!-- laptop -->
+          <rect x="142" y="155" width="116" height="28" rx="2" fill="#222"/>
+          <ellipse cx="200" cy="169" rx="6" ry="3" fill="#f5f5f5"/>
+          <rect x="130" y="183" width="140" height="4" rx="2" fill="#cccccc"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="guides">
+      <h2 class="section-title">Portal user guides</h2>
+
+      <div class="guides-grid">
+        @for (g of guides; track g.title) {
+          <article class="guide-card">
+            <div class="guide-icon">
+              <goa-icon type="{{ g.icon }}" size="medium"></goa-icon>
+            </div>
+            <h3 class="guide-title">{{ g.title }}</h3>
+            <p class="guide-body">{{ g.body }}</p>
+            <div class="guide-links">
+              @for (link of g.links; track link.label) {
+                <a class="guide-link" href="{{ link.href }}">
+                  <span>{{ link.label }}</span>
+                  <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                    <path d="M14 5 L19 5 L19 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19 5 L11 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M19 13 L19 19 L5 19 L5 5 L11 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              }
+            </div>
+          </article>
+        }
+      </div>
+    </section>
+  </main>
+</div>
+
+<goa-app-footer></goa-app-footer>

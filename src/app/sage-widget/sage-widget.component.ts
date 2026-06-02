@@ -9,7 +9,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { OWL_SVG } from './owl.svg';
 import { INTRO_SCRIPT, SageMessage, MessageKind } from './sage-messages';
-import { WidgetSize, WIDTH_FOR_SIZE } from './sizes';
+import { WIDGET_SIZES, DEFAULT_SIZE_VALUE, pxFor, isKnownSize } from './sizes';
 
 @Component({
   selector: 'sage-widget',
@@ -21,13 +21,15 @@ import { WidgetSize, WIDTH_FOR_SIZE } from './sizes';
 export class SageWidgetComponent implements OnDestroy {
   readonly owlSvg: SafeHtml;
 
+  readonly sizes = WIDGET_SIZES;
+
   readonly isOpen = signal(false);
-  readonly size = signal<WidgetSize>('M');
+  readonly size = signal<string>(DEFAULT_SIZE_VALUE);
   readonly messages = signal<SageMessage[]>([]);
   readonly hasPlayedIntro = signal(false);
   readonly draft = signal('');
 
-  readonly widthPx = computed(() => `${WIDTH_FOR_SIZE[this.size()]}px`);
+  readonly widthPx = computed(() => `${pxFor(this.size())}px`);
 
   private pendingTimer: ReturnType<typeof setTimeout> | null = null;
   private nextId = 1;
@@ -71,8 +73,7 @@ export class SageWidgetComponent implements OnDestroy {
   }
 
   onSizeChange(detail: { value: string }): void {
-    const v = detail.value as WidgetSize;
-    if (v && WIDTH_FOR_SIZE[v]) this.size.set(v);
+    if (detail.value && isKnownSize(detail.value)) this.size.set(detail.value);
   }
 
   onDraftChange(detail: { value: string }): void {
@@ -81,6 +82,11 @@ export class SageWidgetComponent implements OnDestroy {
 
   onDraftKeyPress(detail: { key: string }): void {
     if (detail.key === 'Enter') this.submit();
+  }
+
+  askSuggestion(text: string): void {
+    this.draft.set(text);
+    this.submit();
   }
 
   async submit(): Promise<void> {

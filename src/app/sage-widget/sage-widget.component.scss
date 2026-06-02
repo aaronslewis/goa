@@ -142,6 +142,33 @@
   margin-top: 2px;
 }
 
+.bubble.list .suggestion {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: var(--goa-color-interactive-default, #0070c4);
+  cursor: pointer;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 112, 196, 0.4);
+  text-underline-offset: 2px;
+  transition: color 120ms ease-out, text-decoration-color 120ms ease-out;
+}
+
+.bubble.list .suggestion:hover {
+  color: var(--goa-color-interactive-hover, #004f8a);
+  text-decoration-color: currentColor;
+}
+
+.bubble.list .suggestion:focus-visible {
+  outline: 2px solid var(--goa-color-interactive-focus, #feba35);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 @keyframes bubble-in {
   from {
     opacity: 0;
@@ -228,6 +255,61 @@
   cursor: not-allowed;
 }
 
+.trigger-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.peek {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #e6ebf2;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(15, 38, 71, 0.12);
+  font-family: var(--goa-font-family-sans);
+  color: #1f2937;
+  cursor: pointer;
+  text-align: left;
+  max-width: 240px;
+  animation: peek-in 320ms cubic-bezier(0.22, 1, 0.36, 1) 400ms backwards;
+}
+
+.peek:hover {
+  border-color: var(--goa-color-interactive-default, #0070c4);
+}
+
+.peek:focus-visible {
+  outline: 3px solid var(--goa-color-interactive-focus, #feba35);
+  outline-offset: 2px;
+}
+
+.peek-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.peek-body {
+  font-size: 12px;
+  color: #495a6f;
+  line-height: 1.35;
+}
+
+@keyframes peek-in {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .owl-trigger {
   width: 64px;
   height: 64px;
@@ -238,6 +320,7 @@
   border-radius: 50%;
   filter: drop-shadow(0 6px 12px rgba(15, 38, 71, 0.22));
   transition: transform 180ms ease-out;
+  flex-shrink: 0;
 }
 
 .owl-trigger:hover {

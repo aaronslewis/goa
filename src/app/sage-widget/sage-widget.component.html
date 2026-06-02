@@ -13,10 +13,9 @@
           width="120px"
           arialabel="Widget width"
           (_change)="onSizeChange($event.detail)">
-          <goa-dropdown-item value="S" label="S · 360"></goa-dropdown-item>
-          <goa-dropdown-item value="M" label="M · 480"></goa-dropdown-item>
-          <goa-dropdown-item value="L" label="L · 640"></goa-dropdown-item>
-          <goa-dropdown-item value="XL" label="XL · 800"></goa-dropdown-item>
+          @for (s of sizes; track s.value) {
+            <goa-dropdown-item [attr.value]="s.value" [attr.label]="s.label"></goa-dropdown-item>
+          }
         </goa-dropdown>
         <goa-icon-button
           icon="expand"
@@ -52,7 +51,14 @@
                 <p class="list-intro">{{ asList(m)[0] }}</p>
                 <ul>
                   @for (item of asList(m).slice(1); track item) {
-                    <li>{{ item }}</li>
+                    <li>
+                      <button
+                        type="button"
+                        class="suggestion"
+                        (click)="askSuggestion(item)">
+                        {{ item }}
+                      </button>
+                    </li>
                   }
                 </ul>
               </div>
@@ -88,11 +94,24 @@
   </div>
 }
 
-<button
-  type="button"
-  class="owl-trigger"
-  [attr.aria-label]="isOpen() ? 'Close Sage assistant' : 'Open Sage assistant'"
-  (click)="isOpen() ? closePanel() : openPanel()"
-  (dblclick)="resetAndReplay()"
-  [innerHTML]="owlSvg">
-</button>
+<div class="trigger-row">
+  @if (!isOpen()) {
+    <button
+      type="button"
+      class="peek"
+      aria-label="Open Sage assistant"
+      (click)="openPanel()">
+      <span class="peek-title">Need help?</span>
+      <span class="peek-body">Ask Sage — Your AI help assistant</span>
+    </button>
+  }
+
+  <button
+    type="button"
+    class="owl-trigger"
+    [attr.aria-label]="isOpen() ? 'Close Sage assistant' : 'Open Sage assistant'"
+    (click)="isOpen() ? closePanel() : openPanel()"
+    (dblclick)="resetAndReplay()"
+    [innerHTML]="owlSvg">
+  </button>
+</div>

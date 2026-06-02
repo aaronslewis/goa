@@ -1,122 +1,127 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core';
+
+interface GuideLink {
+  label: string;
+  href: string;
+}
+
+interface Guide {
+  icon: string;
+  title: string;
+  body: string;
+  links: GuideLink[];
+}
 
 @Component({
   selector: 'help-centre',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  template: `
-    <goa-microsite-header type="alpha"></goa-microsite-header>
-    <goa-app-header url="/" heading="Child Care Platform">
-      <a href="#">Programs</a>
-      <a href="#">Educators</a>
-      <a href="#">Help Centre</a>
-    </goa-app-header>
-
-    <main class="page">
-      <goa-page-block width="704px">
-        <h1 class="page-title">Help Centre</h1>
-        <p class="page-lede">
-          Find answers, walk-throughs and contact info for everything in the Child Care
-          Platform. Try a search, or browse the popular topics below.
-        </p>
-
-        <div class="search-row">
-          <goa-input
-            name="help-search"
-            placeholder="Search for a topic, page or task…"
-            leadingicon="search"
-            width="100%"
-            arialabel="Search the help centre">
-          </goa-input>
-        </div>
-
-        <h2 class="section-title">Popular topics</h2>
-
-        <goa-block direction="column" gap="m">
-          <goa-container accent="thin" padding="relaxed">
-            <h3 class="card-title">Updating educator certifications</h3>
-            <p class="card-body">
-              Renew, replace or add an educator's certification record from the staff page.
-              Includes file size limits and accepted formats.
-            </p>
-          </goa-container>
-
-          <goa-container accent="thin" padding="relaxed">
-            <h3 class="card-title">Changing the Super Admin for your organization</h3>
-            <p class="card-body">
-              Transfer the Super Admin role, and what permissions move with it. Requires
-              confirmation from the outgoing Super Admin or a platform support agent.
-            </p>
-          </goa-container>
-
-          <goa-container accent="thin" padding="relaxed">
-            <h3 class="card-title">Registering children</h3>
-            <p class="card-body">
-              Add a child to your program, including consent forms, the wait-list flow,
-              and how subsidy eligibility is calculated.
-            </p>
-          </goa-container>
-
-          <goa-container accent="thin" padding="relaxed">
-            <h3 class="card-title">Submitting attendance</h3>
-            <p class="card-body">
-              Daily attendance, late submissions, and corrections after the period closes.
-              Tracks the audit log on each change.
-            </p>
-          </goa-container>
-        </goa-block>
-
-        <h2 class="section-title">Still need help?</h2>
-        <p class="page-body">
-          Reach out to Platform Support at
-          <a href="mailto:support@example.alberta.ca">support&#64;example.alberta.ca</a>
-          or call 1-855-555-1234, Mon–Fri 8 am – 5 pm.
-        </p>
-      </goa-page-block>
-    </main>
-
-    <goa-app-footer></goa-app-footer>
-  `,
-  styles: [
-    `
-      :host {
-        display: block;
-      }
-      .page {
-        padding: 32px 0 64px;
-        background: #f7f9fb;
-        min-height: calc(100vh - 220px);
-      }
-      .page-title {
-        margin: 0 0 8px;
-      }
-      .page-lede {
-        margin: 0 0 24px;
-        font-size: 18px;
-        line-height: 1.5;
-        color: #495a6f;
-        max-width: 56ch;
-      }
-      .search-row {
-        margin-bottom: 40px;
-      }
-      .section-title {
-        margin: 40px 0 16px;
-        font-size: 24px;
-      }
-      .card-title {
-        margin: 0 0 4px;
-        font-size: 18px;
-      }
-      .card-body {
-        margin: 0;
-        color: #495a6f;
-        line-height: 1.5;
-      }
-      .page-body {
-        line-height: 1.55;
-      }
-    `,
-  ],
+  templateUrl: './help-centre.component.html',
+  styleUrl: './help-centre.component.scss',
 })
-export class HelpCentreComponent {}
+export class HelpCentreComponent {
+  readonly userMenuOpen = signal(false);
+
+  readonly navSections = [
+    { label: 'My Programs', kind: 'item' as const, href: '#' },
+    { label: 'Licensing', kind: 'group' as const, href: '#' },
+    { label: 'Child Registration', kind: 'item' as const, href: '#' },
+    { label: 'Claims', kind: 'group' as const, href: '#' },
+    { label: 'Funding', kind: 'group' as const, href: '#' },
+    {
+      label: 'Access',
+      kind: 'group' as const,
+      href: '#',
+      expanded: true,
+      children: [
+        { label: 'User Access Management', href: '#', active: false },
+        { label: 'Help Centre - NEW', href: '/', active: true },
+      ],
+    },
+  ];
+
+  readonly guides: Guide[] = [
+    {
+      icon: 'person',
+      title: 'Account and Service Guide',
+      body: 'Learn how to create account and get access to services.',
+      links: [{ label: 'Open guide', href: '#' }],
+    },
+    {
+      icon: 'medical',
+      title: 'Affordability Grant Agreements',
+      body: 'Learn how to sign the Affordability Grant, which provides funding to licensed child care programs to reduce parent fees.',
+      links: [{ label: 'Open guide', href: '#' }],
+    },
+    {
+      icon: 'create',
+      title: 'Child Registration',
+      body: "Learn how to register new children and manage your program's registration list.",
+      links: [{ label: 'Open guide', href: '#' }],
+    },
+    {
+      icon: 'card',
+      title: 'Claim Adjustments',
+      body: 'Learn how to submit claims adjustments for Grant funding, Wage Top-up, Subsidy, and Inclusive Child Care payments.',
+      links: [
+        { label: 'Open guide', href: '#' },
+        { label: 'Additional guide for family day home agencies', href: '#' },
+      ],
+    },
+    {
+      icon: 'list',
+      title: 'Claims Submission',
+      body: 'Learn how to submit claims for Grant funding, Wage Top-ups, Subsidy and Inclusive Child Care payments.',
+      links: [{ label: 'Open guide', href: '#' }],
+    },
+    {
+      icon: 'document-text',
+      title: 'Family Day Home Agency Contracts',
+      body: 'Learn how to sign Family Day Home Agency contracts which provide funding to facilitate the operation and administration of Family Day Home programs.',
+      links: [{ label: 'Open guide', href: '#' }],
+    },
+    {
+      icon: 'ribbon',
+      title: 'Licensing',
+      body: 'Learn how to manage program licensing information, including contact information, staff profiles and document uploads.',
+      links: [
+        { label: 'Open guide - facility-based version', href: '#' },
+        { label: 'Open guide - family day home agency version', href: '#' },
+      ],
+    },
+    {
+      icon: 'settings',
+      title: 'New Super Admin Account Set up Guide',
+      body: 'Learn how new program license holder legal representatives are invited to create their Child Care Licensing Portal account to become a Super Admin.',
+      links: [{ label: 'Open guide', href: '#' }],
+    },
+    {
+      icon: 'receipt',
+      title: 'Payment Statements',
+      body: 'Learn how to download detailed statements of claim payments, adjustments, and recoveries for financial management.',
+      links: [{ label: 'Open guide', href: '#' }],
+    },
+    {
+      icon: 'clipboard',
+      title: 'Subsidized Children Report',
+      body: 'Learn how to view a real time report for all children with an approved subsidy agreement in the program.',
+      links: [{ label: 'Open guide', href: '#' }],
+    },
+    {
+      icon: 'people',
+      title: 'User Access Management',
+      body: "Learn how to manage access for your program's portal users by inviting users and giving or removing access to various services.",
+      links: [{ label: 'Open guide', href: '#' }],
+    },
+    {
+      icon: 'business',
+      title: 'Early Childhood Educator Workforce Supports Grant agreement',
+      body: 'Learn how to sign the grant agreement that provides licensed child care programs with wage top-up, mandatory employer contribution, professional development and release time grants for eligible certified early childhood educators.',
+      links: [{ label: 'Open guide', href: '#' }],
+    },
+  ];
+
+  toggleUserMenu(): void {
+    this.userMenuOpen.update(v => !v);
+  }
+}
