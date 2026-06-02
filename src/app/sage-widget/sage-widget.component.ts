@@ -1,9 +1,11 @@
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
+  ElementRef,
   OnDestroy,
   signal,
   computed,
+  viewChild,
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -22,6 +24,11 @@ export class SageWidgetComponent implements OnDestroy {
   readonly owlSvg: SafeHtml;
 
   readonly sizes = WIDGET_SIZES;
+
+  private readonly sageInput = viewChild<ElementRef<HTMLElement>>('sageInput');
+
+  /** Time Sage 'thinks' (typing dots) before replying, in ms. */
+  private readonly THINKING_MS = 5000;
 
   readonly isOpen = signal(false);
   readonly size = signal<string>(DEFAULT_SIZE_VALUE);
@@ -86,7 +93,22 @@ export class SageWidgetComponent implements OnDestroy {
 
   askSuggestion(text: string): void {
     this.draft.set(text);
-    this.submit();
+    // Defer focus so the new value has propagated to the underlying <input>.
+    setTimeout(() => this.focusInput(), 0);
+  }
+
+  private focusInput(): void {
+    const host = this.sageInput()?.nativeElement;
+    if (!host) return;
+    const inner = host.shadowRoot?.querySelector<HTMLInputElement>('input, textarea');
+    if (!inner) return;
+    inner.focus();
+    const end = inner.value?.length ?? 0;
+    try {
+      inner.setSelectionRange(end, end);
+    } catch {
+      // Some input types don't support selection range; safe to ignore.
+    }
   }
 
   async submit(): Promise<void> {
@@ -107,7 +129,7 @@ export class SageWidgetComponent implements OnDestroy {
     if (this.cancelled) return;
 
     this.pushTyping();
-    await this.sleep(1100 + Math.floor(Math.random() * 400));
+    await this.sleep(this.THINKING_MS);
     if (this.cancelled) return;
 
     const reply = this.cannedResponses[
