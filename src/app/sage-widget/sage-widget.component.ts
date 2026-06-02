@@ -55,8 +55,12 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   /** Duration of the peek's fade-out animation; must match the CSS keyframe. */
   private readonly PEEK_FADE_OUT_MS = 220;
 
-  /** Page-level interactions that count as "engaging with the page". */
-  private readonly ACTIVITY_EVENTS = ['click', 'keydown', 'scroll', 'touchstart'] as const;
+  /** Page-level interactions that count as "engaging with the page".
+   *  Intentionally excludes scroll — passively scanning the page by scrolling
+   *  shouldn't suppress the peek. Mouse clicks cover desktop + mobile taps
+   *  (browsers fire a synthetic click on tap), and keydown covers typing and
+   *  Tab-based keyboard navigation. */
+  private readonly ACTIVITY_EVENTS = ['click', 'keydown'] as const;
 
   readonly isOpen = signal(false);
   readonly expandState = signal<ExpandState>('compact');
