@@ -42,9 +42,16 @@
 
           @switch (m.kind) {
             @case ('typing') {
-              <div class="bubble typing" aria-label="Sage is typing">
-                <span></span><span></span><span></span>
-              </div>
+              @if (m.typingVariant === 'thinking') {
+                <div class="bubble typing thinking" aria-label="Sage is thinking">
+                  <span class="thinking-text">Thinking</span>
+                  <span class="dots"><span></span><span></span><span></span></span>
+                </div>
+              } @else {
+                <div class="bubble typing" aria-label="Sage is typing">
+                  <span></span><span></span><span></span>
+                </div>
+              }
             }
             @case ('list') {
               <div class="bubble list">
@@ -79,7 +86,8 @@
         arialabel="Ask a question"
         [attr.value]="draft()"
         (_change)="onDraftChange($event.detail)"
-        (_keypress)="onDraftKeyPress($event.detail)">
+        (_keypress)="onDraftKeyPress($event.detail)"
+        (keydown.enter)="submit()">
       </goa-input>
       <button
         class="send-btn"

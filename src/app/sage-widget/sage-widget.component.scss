@@ -187,7 +187,8 @@
   padding: 12px 14px;
 }
 
-.typing span {
+/* Plain three-dot variant used during the intro */
+.typing:not(.thinking) > span {
   width: 6px;
   height: 6px;
   background: #6e8aa9;
@@ -195,11 +196,44 @@
   animation: typing-pulse 1.1s infinite ease-in-out;
 }
 
-.typing span:nth-child(2) {
+.typing:not(.thinking) > span:nth-child(2) {
   animation-delay: 0.18s;
 }
 
-.typing span:nth-child(3) {
+.typing:not(.thinking) > span:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+/* 'Thinking' variant used while Sage processes a user question */
+.typing.thinking {
+  gap: 6px;
+}
+
+.typing.thinking .thinking-text {
+  font-size: 14px;
+  color: #495a6f;
+  font-style: italic;
+}
+
+.typing.thinking .dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.typing.thinking .dots > span {
+  width: 5px;
+  height: 5px;
+  background: #6e8aa9;
+  border-radius: 50%;
+  animation: typing-pulse 1.1s infinite ease-in-out;
+}
+
+.typing.thinking .dots > span:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.typing.thinking .dots > span:nth-child(3) {
   animation-delay: 0.36s;
 }
 

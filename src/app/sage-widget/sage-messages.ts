@@ -1,10 +1,18 @@
 export type MessageKind = 'text' | 'typing' | 'list';
 
+/**
+ * `dots`     — three pulsing dots only. Used during the intro sequence.
+ * `thinking` — the word "Thinking" beside the dots. Used while Sage is
+ *              processing a user-submitted question.
+ */
+export type TypingVariant = 'dots' | 'thinking';
+
 export interface SageMessage {
   id: number;
   role: 'bot' | 'user';
   kind: MessageKind;
   content: string | string[];
+  typingVariant?: TypingVariant;
 }
 
 export type IntroStep =

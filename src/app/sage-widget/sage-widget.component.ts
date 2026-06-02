@@ -10,7 +10,7 @@ import {
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { OWL_SVG } from './owl.svg';
-import { INTRO_SCRIPT, SageMessage, MessageKind } from './sage-messages';
+import { INTRO_SCRIPT, SageMessage, MessageKind, TypingVariant } from './sage-messages';
 import { WIDGET_SIZES, DEFAULT_SIZE_VALUE, pxFor, isKnownSize } from './sizes';
 
 @Component({
@@ -128,7 +128,7 @@ export class SageWidgetComponent implements OnDestroy {
     await this.sleep(450);
     if (this.cancelled) return;
 
-    this.pushTyping();
+    this.pushTyping('thinking');
     await this.sleep(this.THINKING_MS);
     if (this.cancelled) return;
 
@@ -157,10 +157,10 @@ export class SageWidgetComponent implements OnDestroy {
     this.hasPlayedIntro.set(true);
   }
 
-  private pushTyping(): void {
+  private pushTyping(variant: TypingVariant = 'dots'): void {
     this.messages.update(list => [
       ...list,
-      { id: this.nextId++, role: 'bot', kind: 'typing', content: '' },
+      { id: this.nextId++, role: 'bot', kind: 'typing', content: '', typingVariant: variant },
     ]);
   }
 
