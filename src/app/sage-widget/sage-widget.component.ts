@@ -29,6 +29,8 @@ const NEXT_TEXT_SIZE: Record<TextSize, TextSize> = {
   xlarge: 'normal',
 };
 
+type PeekState = 'hidden' | 'visible' | 'leaving';
+
 @Component({
   selector: 'sage-widget',
   standalone: true,
@@ -47,13 +49,21 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   /** How long the user must be inactive before the "Need help?" peek surfaces. */
   private readonly IDLE_MS = 8000;
 
+  /** Pause after activity before the peek begins fading out — gives the user a beat. */
+  private readonly PEEK_HIDE_DELAY_MS = 150;
+
+  /** Duration of the peek's fade-out animation; must match the CSS keyframe. */
+  private readonly PEEK_FADE_OUT_MS = 220;
+
   /** Page-level interactions that count as "engaging with the page". */
   private readonly ACTIVITY_EVENTS = ['click', 'keydown', 'scroll', 'touchstart'] as const;
 
   readonly isOpen = signal(false);
   readonly expandState = signal<ExpandState>('compact');
   readonly textSize = signal<TextSize>('normal');
-  readonly isPeekVisible = signal(false);
+  readonly peekState = signal<PeekState>('hidden');
+  readonly isPeekRendered = computed(() => this.peekState() !== 'hidden');
+  readonly isPeekLeaving = computed(() => this.peekState() === 'leaving');
   readonly messages = signal<SageMessage[]>([]);
   readonly hasPlayedIntro = signal(false);
   readonly draft = signal('');
@@ -85,14 +95,45 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
 
   private pendingTimer: ReturnType<typeof setTimeout> | null = null;
   private idleTimer: ReturnType<typeof setTimeout> | null = null;
+  private peekHideTimer: ReturnType<typeof setTimeout> | null = null;
+  private peekRemoveTimer: ReturnType<typeof setTimeout> | null = null;
   private nextId = 1;
   private cancelled = false;
 
   private readonly onActivity = (): void => {
-    // Any page interaction hides the peek and resets the idle countdown.
-    if (this.isPeekVisible()) this.isPeekVisible.set(false);
+    // Any page interaction queues the peek to fade out (with a brief delay
+    // so the dismissal feels intentional) and resets the idle countdown.
+    if (this.peekState() === 'visible') {
+      this.beginHidePeek();
+    }
     this.scheduleIdle();
   };
+
+  private beginHidePeek(): void {
+    // Don't restart the cycle if a fade is already in flight.
+    if (this.peekHideTimer !== null || this.peekRemoveTimer !== null) return;
+    this.peekHideTimer = setTimeout(() => {
+      this.peekHideTimer = null;
+      this.peekState.set('leaving');
+      this.peekRemoveTimer = setTimeout(() => {
+        this.peekRemoveTimer = null;
+        // Guard against a re-show that landed during the fade — only finalize
+        // to hidden if we're still in the leaving phase.
+        if (this.peekState() === 'leaving') this.peekState.set('hidden');
+      }, this.PEEK_FADE_OUT_MS);
+    }, this.PEEK_HIDE_DELAY_MS);
+  }
+
+  private cancelPeekHideTimers(): void {
+    if (this.peekHideTimer !== null) {
+      clearTimeout(this.peekHideTimer);
+      this.peekHideTimer = null;
+    }
+    if (this.peekRemoveTimer !== null) {
+      clearTimeout(this.peekRemoveTimer);
+      this.peekRemoveTimer = null;
+    }
+  }
 
   private readonly cannedResponses = [
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
@@ -115,6 +156,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cancelTimers();
+    this.cancelPeekHideTimers();
     if (this.idleTimer !== null) {
       clearTimeout(this.idleTimer);
       this.idleTimer = null;
@@ -131,14 +173,18 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     this.idleTimer = setTimeout(() => {
       this.idleTimer = null;
       // Only surface the peek when the panel is collapsed.
-      if (!this.isOpen()) this.isPeekVisible.set(true);
+      if (!this.isOpen()) {
+        this.cancelPeekHideTimers();
+        this.peekState.set('visible');
+      }
     }, this.IDLE_MS);
   }
 
   openPanel(): void {
     if (this.isOpen()) return;
     this.isOpen.set(true);
-    this.isPeekVisible.set(false);
+    this.cancelPeekHideTimers();
+    this.peekState.set('hidden');
     if (!this.hasPlayedIntro()) {
       this.runIntro();
     }
@@ -146,7 +192,8 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
 
   closePanel(): void {
     this.isOpen.set(false);
-    this.isPeekVisible.set(false);
+    this.cancelPeekHideTimers();
+    this.peekState.set('hidden');
     this.scheduleIdle();
   }
 

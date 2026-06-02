@@ -117,10 +117,11 @@
 }
 
 <div class="trigger-row">
-  @if (!isOpen() && isPeekVisible()) {
+  @if (!isOpen() && isPeekRendered()) {
     <button
       type="button"
       class="peek"
+      [class.leaving]="isPeekLeaving()"
       aria-label="Open Sage assistant"
       (click)="openPanel()">
       <span class="peek-title">Need help?</span>

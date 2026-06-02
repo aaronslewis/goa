@@ -403,6 +403,13 @@
   outline-offset: 2px;
 }
 
+.peek.leaving {
+  /* Override the entry animation with a mirrored fade-out.
+     Duration must match PEEK_FADE_OUT_MS in the component. */
+  animation: peek-out 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: none;
+}
+
 .peek-title {
   font-size: 14px;
   font-weight: 700;
@@ -422,6 +429,17 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes peek-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(8px);
   }
 }
 
