@@ -3,6 +3,7 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   OnDestroy,
+  OnInit,
   signal,
   computed,
   viewChild,
@@ -35,7 +36,7 @@ const NEXT_TEXT_SIZE: Record<TextSize, TextSize> = {
   templateUrl: './sage-widget.component.html',
   styleUrl: './sage-widget.component.scss',
 })
-export class SageWidgetComponent implements OnDestroy {
+export class SageWidgetComponent implements OnInit, OnDestroy {
   readonly owlSvg: SafeHtml;
 
   private readonly sageInput = viewChild<ElementRef<HTMLTextAreaElement>>('sageInput');
@@ -43,9 +44,16 @@ export class SageWidgetComponent implements OnDestroy {
   /** Time Sage 'thinks' (typing dots) before replying, in ms. */
   private readonly THINKING_MS = 5000;
 
+  /** How long the user must be inactive before the "Need help?" peek surfaces. */
+  private readonly IDLE_MS = 8000;
+
+  /** Page-level interactions that count as "engaging with the page". */
+  private readonly ACTIVITY_EVENTS = ['click', 'keydown', 'scroll', 'touchstart'] as const;
+
   readonly isOpen = signal(false);
   readonly expandState = signal<ExpandState>('compact');
   readonly textSize = signal<TextSize>('normal');
+  readonly isPeekVisible = signal(false);
   readonly messages = signal<SageMessage[]>([]);
   readonly hasPlayedIntro = signal(false);
   readonly draft = signal('');
@@ -76,8 +84,15 @@ export class SageWidgetComponent implements OnDestroy {
   });
 
   private pendingTimer: ReturnType<typeof setTimeout> | null = null;
+  private idleTimer: ReturnType<typeof setTimeout> | null = null;
   private nextId = 1;
   private cancelled = false;
+
+  private readonly onActivity = (): void => {
+    // Any page interaction hides the peek and resets the idle countdown.
+    if (this.isPeekVisible()) this.isPeekVisible.set(false);
+    this.scheduleIdle();
+  };
 
   private readonly cannedResponses = [
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
@@ -89,13 +104,41 @@ export class SageWidgetComponent implements OnDestroy {
     this.owlSvg = sanitizer.bypassSecurityTrustHtml(OWL_SVG);
   }
 
+  ngOnInit(): void {
+    if (typeof document === 'undefined') return;
+    for (const ev of this.ACTIVITY_EVENTS) {
+      // Capture phase so we hear interactions before they get handled / stopPropagation'd.
+      document.addEventListener(ev, this.onActivity, { passive: true, capture: true });
+    }
+    this.scheduleIdle();
+  }
+
   ngOnDestroy(): void {
     this.cancelTimers();
+    if (this.idleTimer !== null) {
+      clearTimeout(this.idleTimer);
+      this.idleTimer = null;
+    }
+    if (typeof document !== 'undefined') {
+      for (const ev of this.ACTIVITY_EVENTS) {
+        document.removeEventListener(ev, this.onActivity, { capture: true } as EventListenerOptions);
+      }
+    }
+  }
+
+  private scheduleIdle(): void {
+    if (this.idleTimer !== null) clearTimeout(this.idleTimer);
+    this.idleTimer = setTimeout(() => {
+      this.idleTimer = null;
+      // Only surface the peek when the panel is collapsed.
+      if (!this.isOpen()) this.isPeekVisible.set(true);
+    }, this.IDLE_MS);
   }
 
   openPanel(): void {
     if (this.isOpen()) return;
     this.isOpen.set(true);
+    this.isPeekVisible.set(false);
     if (!this.hasPlayedIntro()) {
       this.runIntro();
     }
@@ -103,6 +146,8 @@ export class SageWidgetComponent implements OnDestroy {
 
   closePanel(): void {
     this.isOpen.set(false);
+    this.isPeekVisible.set(false);
+    this.scheduleIdle();
   }
 
   resetAndReplay(): void {

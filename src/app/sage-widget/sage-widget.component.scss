@@ -391,7 +391,7 @@
   cursor: pointer;
   text-align: left;
   max-width: 240px;
-  animation: peek-in 320ms cubic-bezier(0.22, 1, 0.36, 1) 400ms backwards;
+  animation: peek-in 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .peek:hover {
