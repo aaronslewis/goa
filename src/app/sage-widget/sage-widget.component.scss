@@ -24,10 +24,25 @@
     0 12px 32px rgba(15, 38, 71, 0.18),
     0 4px 12px rgba(15, 38, 71, 0.08);
   overflow: hidden;
-  width: var(--sage-width, 480px);
+  width: var(--sage-width, 360px);
   height: min(640px, calc(100vh - 140px));
   transform-origin: bottom right;
   animation: sage-open 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  /* font-size CSS var drives bubble + input scaling for accessibility */
+  --sage-font-size: 14px;
+}
+
+.panel.full {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none;
+  border-radius: 0;
+  transform-origin: center;
 }
 
 @keyframes sage-open {
@@ -64,6 +79,47 @@
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.text-size-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 1px;
+  width: 32px;
+  height: 32px;
+  padding: 0 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #0b2a4a;
+  font-family: var(--goa-font-family-sans);
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.text-size-btn .tsz-small {
+  font-size: 11px;
+}
+
+.text-size-btn .tsz-large {
+  font-size: 16px;
+}
+
+.text-size-btn:hover {
+  background: #eef3f9;
+}
+
+.text-size-btn.active {
+  background: #e6f0fb;
+  color: var(--goa-color-interactive-default, #0070c4);
+}
+
+.text-size-btn:focus-visible {
+  outline: 3px solid var(--goa-color-interactive-focus, #feba35);
+  outline-offset: 2px;
 }
 
 .messages {
@@ -106,7 +162,7 @@
   max-width: 80%;
   padding: 10px 14px;
   border-radius: 14px;
-  font-size: 14px;
+  font-size: var(--sage-font-size, 14px);
   line-height: 1.45;
   color: #0b2a4a;
   background: #eef3f9;
@@ -210,7 +266,7 @@
 }
 
 .typing.thinking .thinking-text {
-  font-size: 14px;
+  font-size: var(--sage-font-size, 14px);
   color: #495a6f;
   font-style: italic;
 }
@@ -253,12 +309,37 @@
   border-top: 1px solid #e6ebf2;
   background: #ffffff;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 8px;
 }
 
-.panel-footer goa-input {
+.sage-textarea {
   flex: 1;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid #c7d3df;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #0b2a4a;
+  font-family: var(--goa-font-family-sans);
+  font-size: var(--sage-font-size, 14px);
+  line-height: 1.45;
+  resize: none;
+  overflow-y: hidden;
+}
+
+.sage-textarea::placeholder {
+  color: #6e8aa9;
+  opacity: 1;
+}
+
+.sage-textarea:focus {
+  outline: none;
+  border-color: var(--goa-color-interactive-default, #0070c4);
+  box-shadow: 0 0 0 2px rgba(0, 112, 196, 0.25);
 }
 
 .send-btn {

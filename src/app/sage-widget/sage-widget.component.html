@@ -1,28 +1,40 @@
 @if (isOpen()) {
   <div
     class="panel"
+    [class.full]="isFullScreen()"
     role="dialog"
     aria-label="Sage AI help assistant"
-    [style.--sage-width]="widthPx()">
+    [style.--sage-width]="widthPx()"
+    [style.--sage-font-size]="fontSizePx()">
     <header class="panel-header">
       <div class="panel-title">Sage — Your AI help assistant</div>
       <div class="panel-actions">
-        <goa-dropdown
-          name="sage-width"
-          [attr.value]="size()"
-          width="120px"
-          arialabel="Widget width"
-          (_change)="onSizeChange($event.detail)">
-          @for (s of sizes; track s.value) {
-            <goa-dropdown-item [attr.value]="s.value" [attr.label]="s.label"></goa-dropdown-item>
-          }
-        </goa-dropdown>
-        <goa-icon-button
-          icon="expand"
-          variant="dark"
-          title="Expand"
-          arialabel="Expand">
-        </goa-icon-button>
+        <button
+          type="button"
+          class="text-size-btn"
+          [class.active]="textSize() !== 'normal'"
+          [title]="textSizeTitle()"
+          [attr.aria-label]="textSizeTitle()"
+          (click)="cycleTextSize()">
+          <span class="tsz-small">A</span><span class="tsz-large">A</span>
+        </button>
+        @if (isFullScreen()) {
+          <goa-icon-button
+            icon="contract"
+            variant="dark"
+            title="Collapse"
+            arialabel="Collapse"
+            (_click)="cycleExpand()">
+          </goa-icon-button>
+        } @else {
+          <goa-icon-button
+            icon="expand"
+            variant="dark"
+            title="Expand"
+            arialabel="Expand"
+            (_click)="cycleExpand()">
+          </goa-icon-button>
+        }
         <goa-icon-button
           icon="close"
           variant="dark"
@@ -79,16 +91,17 @@
     </div>
 
     <footer class="panel-footer">
-      <goa-input
+      <textarea
         #sageInput
+        class="sage-textarea"
         name="sage-input"
         placeholder="Ask a question…"
-        arialabel="Ask a question"
-        [attr.value]="draft()"
-        (_change)="onDraftChange($event.detail)"
-        (_keypress)="onDraftKeyPress($event.detail)"
-        (keydown.enter)="submit()">
-      </goa-input>
+        aria-label="Ask a question"
+        rows="1"
+        [value]="draft()"
+        (input)="onTextareaInput($event)"
+        (keydown)="onTextareaKeyDown($event)">
+      </textarea>
       <button
         class="send-btn"
         type="button"
@@ -115,12 +128,14 @@
     </button>
   }
 
-  <button
-    type="button"
-    class="owl-trigger"
-    [attr.aria-label]="isOpen() ? 'Close Sage assistant' : 'Open Sage assistant'"
-    (click)="isOpen() ? closePanel() : openPanel()"
-    (dblclick)="resetAndReplay()"
-    [innerHTML]="owlSvg">
-  </button>
+  @if (!(isOpen() && isFullScreen())) {
+    <button
+      type="button"
+      class="owl-trigger"
+      [attr.aria-label]="isOpen() ? 'Close Sage assistant' : 'Open Sage assistant'"
+      (click)="isOpen() ? closePanel() : openPanel()"
+      (dblclick)="resetAndReplay()"
+      [innerHTML]="owlSvg">
+    </button>
+  }
 </div>

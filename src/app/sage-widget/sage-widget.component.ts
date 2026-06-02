@@ -11,7 +11,22 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { OWL_SVG } from './owl.svg';
 import { INTRO_SCRIPT, SageMessage, MessageKind, TypingVariant } from './sage-messages';
-import { WIDGET_SIZES, DEFAULT_SIZE_VALUE, pxFor, isKnownSize } from './sizes';
+
+type ExpandState = 'compact' | 'wide' | 'full';
+
+const NEXT_EXPAND: Record<ExpandState, ExpandState> = {
+  compact: 'wide',
+  wide: 'full',
+  full: 'compact',
+};
+
+type TextSize = 'normal' | 'large' | 'xlarge';
+
+const NEXT_TEXT_SIZE: Record<TextSize, TextSize> = {
+  normal: 'large',
+  large: 'xlarge',
+  xlarge: 'normal',
+};
 
 @Component({
   selector: 'sage-widget',
@@ -23,20 +38,42 @@ import { WIDGET_SIZES, DEFAULT_SIZE_VALUE, pxFor, isKnownSize } from './sizes';
 export class SageWidgetComponent implements OnDestroy {
   readonly owlSvg: SafeHtml;
 
-  readonly sizes = WIDGET_SIZES;
-
-  private readonly sageInput = viewChild<ElementRef<HTMLElement>>('sageInput');
+  private readonly sageInput = viewChild<ElementRef<HTMLTextAreaElement>>('sageInput');
 
   /** Time Sage 'thinks' (typing dots) before replying, in ms. */
   private readonly THINKING_MS = 5000;
 
   readonly isOpen = signal(false);
-  readonly size = signal<string>(DEFAULT_SIZE_VALUE);
+  readonly expandState = signal<ExpandState>('compact');
+  readonly textSize = signal<TextSize>('normal');
   readonly messages = signal<SageMessage[]>([]);
   readonly hasPlayedIntro = signal(false);
   readonly draft = signal('');
 
-  readonly widthPx = computed(() => `${pxFor(this.size())}px`);
+  readonly widthPx = computed(() => {
+    const s = this.expandState();
+    if (s === 'full') return '100%';
+    if (s === 'wide') return '492px';
+    return '360px';
+  });
+
+  readonly isFullScreen = computed(() => this.expandState() === 'full');
+
+  readonly fontSizePx = computed(() => {
+    switch (this.textSize()) {
+      case 'xlarge': return '20px';
+      case 'large': return '17px';
+      default: return '14px';
+    }
+  });
+
+  readonly textSizeTitle = computed(() => {
+    switch (this.textSize()) {
+      case 'normal': return 'Increase text size';
+      case 'large': return 'Increase text size';
+      case 'xlarge': return 'Reset text size';
+    }
+  });
 
   private pendingTimer: ReturnType<typeof setTimeout> | null = null;
   private nextId = 1;
@@ -79,36 +116,68 @@ export class SageWidgetComponent implements OnDestroy {
     }
   }
 
-  onSizeChange(detail: { value: string }): void {
-    if (detail.value && isKnownSize(detail.value)) this.size.set(detail.value);
+  cycleExpand(): void {
+    this.expandState.update(s => NEXT_EXPAND[s]);
   }
 
-  onDraftChange(detail: { value: string }): void {
-    this.draft.set(detail.value ?? '');
+  cycleTextSize(): void {
+    this.textSize.update(s => NEXT_TEXT_SIZE[s]);
+    // Recompute textarea height since font size changed.
+    setTimeout(() => {
+      const ta = this.sageInput()?.nativeElement;
+      if (ta) this.autoResize(ta);
+    }, 0);
   }
 
-  onDraftKeyPress(detail: { key: string }): void {
-    if (detail.key === 'Enter') this.submit();
+  onTextareaInput(event: Event): void {
+    const ta = event.target as HTMLTextAreaElement;
+    this.draft.set(ta.value);
+    this.autoResize(ta);
+  }
+
+  onTextareaKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.submit();
+    }
   }
 
   askSuggestion(text: string): void {
     this.draft.set(text);
-    // Defer focus so the new value has propagated to the underlying <input>.
-    setTimeout(() => this.focusInput(), 0);
+    // Defer focus + resize so the new value has propagated to the textarea.
+    setTimeout(() => {
+      const ta = this.sageInput()?.nativeElement;
+      if (!ta) return;
+      this.focusInput();
+      this.autoResize(ta);
+    }, 0);
   }
 
   private focusInput(): void {
-    const host = this.sageInput()?.nativeElement;
-    if (!host) return;
-    const inner = host.shadowRoot?.querySelector<HTMLInputElement>('input, textarea');
-    if (!inner) return;
-    inner.focus();
-    const end = inner.value?.length ?? 0;
+    const ta = this.sageInput()?.nativeElement;
+    if (!ta) return;
+    ta.focus();
+    const end = ta.value?.length ?? 0;
     try {
-      inner.setSelectionRange(end, end);
+      ta.setSelectionRange(end, end);
     } catch {
-      // Some input types don't support selection range; safe to ignore.
+      // ignore
     }
+  }
+
+  private autoResize(ta: HTMLTextAreaElement): void {
+    ta.style.height = 'auto';
+    const cs = window.getComputedStyle(ta);
+    const lineHeight = parseFloat(cs.lineHeight) || 20;
+    const padTop = parseFloat(cs.paddingTop) || 0;
+    const padBot = parseFloat(cs.paddingBottom) || 0;
+    const borderTop = parseFloat(cs.borderTopWidth) || 0;
+    const borderBot = parseFloat(cs.borderBottomWidth) || 0;
+    const maxHeight = lineHeight * 3 + padTop + padBot + borderTop + borderBot;
+    const desired = ta.scrollHeight + borderTop + borderBot;
+    const next = Math.min(desired, maxHeight);
+    ta.style.height = `${next}px`;
+    ta.style.overflowY = desired > maxHeight ? 'auto' : 'hidden';
   }
 
   async submit(): Promise<void> {
@@ -124,6 +193,11 @@ export class SageWidgetComponent implements OnDestroy {
       { id: this.nextId++, role: 'user', kind: 'text', content: text },
     ]);
     this.draft.set('');
+    // Reset textarea height after clearing.
+    setTimeout(() => {
+      const ta = this.sageInput()?.nativeElement;
+      if (ta) this.autoResize(ta);
+    }, 0);
 
     await this.sleep(450);
     if (this.cancelled) return;
