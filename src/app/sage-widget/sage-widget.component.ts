@@ -46,10 +46,10 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   private readonly THINKING_MS = 5000;
 
   /** How long the user must be inactive before the "Need help?" peek surfaces. */
-  private readonly IDLE_MS = 8000;
+  private readonly IDLE_MS = 7000;
 
   /** Delay after load before the owl plays its one-time attention pulse. */
-  private readonly OWL_PULSE_DELAY_MS = 3000;
+  private readonly OWL_PULSE_DELAY_MS = 2500;
 
   /** How long the pulse class stays applied (slightly longer than the CSS
    *  animation so it completes before the class is removed). */
