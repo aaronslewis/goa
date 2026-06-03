@@ -465,6 +465,30 @@
   transform: translateY(-2px) scale(1.04);
 }
 
+/* One-time attention pulse ~3s after page load (class toggled by the
+   component). Echoes the hover grow, repeated twice to read as a nudge. */
+.owl-trigger.pulse {
+  animation: owl-attention-pulse 1400ms ease-in-out;
+}
+
+@keyframes owl-attention-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  20%, 60% {
+    transform: translateY(-2px) scale(1.1);
+  }
+  40%, 80% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .owl-trigger.pulse {
+    animation: none;
+  }
+}
+
 .owl-trigger:focus-visible {
   outline: 3px solid var(--goa-color-interactive-focus, #feba35);
   outline-offset: 3px;

@@ -140,6 +140,7 @@
     <button
       type="button"
       class="owl-trigger"
+      [class.pulse]="owlPulse()"
       [attr.aria-label]="isOpen() ? 'Close Sage assistant' : 'Open Sage assistant'"
       (click)="isOpen() ? closePanel() : openPanel()"
       (dblclick)="resetAndReplay()"

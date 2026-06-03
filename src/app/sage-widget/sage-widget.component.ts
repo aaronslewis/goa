@@ -48,6 +48,13 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   /** How long the user must be inactive before the "Need help?" peek surfaces. */
   private readonly IDLE_MS = 8000;
 
+  /** Delay after load before the owl plays its one-time attention pulse. */
+  private readonly OWL_PULSE_DELAY_MS = 3000;
+
+  /** How long the pulse class stays applied (slightly longer than the CSS
+   *  animation so it completes before the class is removed). */
+  private readonly OWL_PULSE_DURATION_MS = 1500;
+
   /** Pause after activity before the peek begins fading out — gives the user a beat. */
   private readonly PEEK_HIDE_DELAY_MS = 150;
 
@@ -69,6 +76,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   readonly peekState = signal<PeekState>('visible');
   readonly isPeekRendered = computed(() => this.peekState() !== 'hidden');
   readonly isPeekLeaving = computed(() => this.peekState() === 'leaving');
+  readonly owlPulse = signal(false);
   readonly messages = signal<SageMessage[]>([]);
   readonly hasPlayedIntro = signal(false);
   readonly draft = signal('');
@@ -107,6 +115,8 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   private idleTimer: ReturnType<typeof setTimeout> | null = null;
   private peekHideTimer: ReturnType<typeof setTimeout> | null = null;
   private peekRemoveTimer: ReturnType<typeof setTimeout> | null = null;
+  private owlPulseStartTimer: ReturnType<typeof setTimeout> | null = null;
+  private owlPulseEndTimer: ReturnType<typeof setTimeout> | null = null;
   private nextId = 1;
   private cancelled = false;
 
@@ -162,6 +172,16 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
       document.addEventListener(ev, this.onActivity, { passive: true, capture: true });
     }
     this.scheduleIdle();
+
+    // One-time attention pulse on the owl ~3s after the page loads.
+    this.owlPulseStartTimer = setTimeout(() => {
+      this.owlPulseStartTimer = null;
+      this.owlPulse.set(true);
+      this.owlPulseEndTimer = setTimeout(() => {
+        this.owlPulseEndTimer = null;
+        this.owlPulse.set(false);
+      }, this.OWL_PULSE_DURATION_MS);
+    }, this.OWL_PULSE_DELAY_MS);
   }
 
   ngOnDestroy(): void {
@@ -170,6 +190,14 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     if (this.idleTimer !== null) {
       clearTimeout(this.idleTimer);
       this.idleTimer = null;
+    }
+    if (this.owlPulseStartTimer !== null) {
+      clearTimeout(this.owlPulseStartTimer);
+      this.owlPulseStartTimer = null;
+    }
+    if (this.owlPulseEndTimer !== null) {
+      clearTimeout(this.owlPulseEndTimer);
+      this.owlPulseEndTimer = null;
     }
     if (typeof document !== 'undefined') {
       for (const ev of this.ACTIVITY_EVENTS) {
