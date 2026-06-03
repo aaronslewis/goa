@@ -286,26 +286,11 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   }
 
   askSuggestion(text: string): void {
+    // Clicking a suggested prompt posts it straight away as a user message —
+    // submit() reads the draft synchronously, so setting it then submitting
+    // sends it without waiting for the textarea to re-render.
     this.draft.set(text);
-    // Defer focus + resize so the new value has propagated to the textarea.
-    setTimeout(() => {
-      const ta = this.sageInput()?.nativeElement;
-      if (!ta) return;
-      this.focusInput();
-      this.autoResize(ta);
-    }, 0);
-  }
-
-  private focusInput(): void {
-    const ta = this.sageInput()?.nativeElement;
-    if (!ta) return;
-    ta.focus();
-    const end = ta.value?.length ?? 0;
-    try {
-      ta.setSelectionRange(end, end);
-    } catch {
-      // ignore
-    }
+    this.submit();
   }
 
   private autoResize(ta: HTMLTextAreaElement): void {
