@@ -22,7 +22,9 @@
   },
   "private": true,
   "dependencies": {
+    "@abgov/angular-components": "^5.2.1",
     "@abgov/design-tokens": "^2.8.1",
+    "@abgov/react-components": "^7.2.1",
     "@abgov/web-components": "^1.41.0",
     "@angular/common": "^20.3.0",
     "@angular/compiler": "^20.3.0",

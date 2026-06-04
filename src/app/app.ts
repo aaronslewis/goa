@@ -1,15 +1,11 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HelpCentreComponent } from './help-centre/help-centre.component';
-import { SageWidgetComponent } from './sage-widget/sage-widget.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HelpCentreComponent, SageWidgetComponent],
+  imports: [RouterOutlet],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  template: `
-    <help-centre></help-centre>
-    <sage-widget></sage-widget>
-  `,
+  template: `<router-outlet></router-outlet>`,
 })
 export class App {}
