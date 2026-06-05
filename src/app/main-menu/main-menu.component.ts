@@ -31,6 +31,15 @@ export class MainMenuComponent {
 
   readonly helpItem: MenuItem = { label: 'Help Centre', icon: 'help-circle', url: '#' };
 
+  readonly accountMenuItems = [
+    { label: 'Settings', icon: 'settings', action: 'settings' as const },
+    { label: 'Log out', icon: 'log-out', action: 'logout' as const },
+  ];
+
+  onAccountAction(action: 'settings' | 'logout'): void {
+    // Hook into router/auth when those exist; no-op for now.
+  }
+
   readonly entries: MenuEntry[] = [
     {
       kind: 'group',

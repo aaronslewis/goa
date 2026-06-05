@@ -40,5 +40,16 @@
       [attr.url]="helpItem.url"></goa-work-side-menu-item>
   </div>
 
-  <a slot="account" href="#" aria-label="Account: {{ userName }}, {{ userSecondaryText }}"></a>
+  <div slot="account" class="account-menu" role="menu" aria-label="Account menu for {{ userName }}">
+    @for (item of accountMenuItems; track item.action) {
+      <button
+        type="button"
+        role="menuitem"
+        class="account-menu-item"
+        (click)="onAccountAction(item.action)">
+        <goa-icon [attr.type]="item.icon" size="small"></goa-icon>
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  </div>
 </goa-work-side-menu>
