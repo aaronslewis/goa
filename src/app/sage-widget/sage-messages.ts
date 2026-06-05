@@ -37,9 +37,9 @@ export const INTRO_SCRIPT: IntroStep[] = [
 
   { type: 'wait', ms: 500 },
   { type: 'showTyping' },
-  // Hold the typing indicator 3x as long before the suggestion list lands —
-  // gives the user a beat to read the prior message before bullets appear.
-  { type: 'wait', ms: 3600 },
+  // Hold the typing indicator noticeably longer before the suggestion list
+  // lands — gives the user a beat to read the prior message before bullets appear.
+  { type: 'wait', ms: 3100 },
   {
     type: 'replaceTypingWith',
     kind: 'list',
@@ -53,6 +53,6 @@ export const INTRO_SCRIPT: IntroStep[] = [
 
   { type: 'wait', ms: 600 },
   { type: 'showTyping' },
-  { type: 'wait', ms: 500 },
+  { type: 'wait', ms: 1000 },
   { type: 'replaceTypingWith', kind: 'text', content: 'What can I help you with?' },
 ];
