@@ -131,8 +131,10 @@
       [class.leaving]="isPeekLeaving()"
       aria-label="Open Sage assistant"
       (click)="openPanel()">
-      <span class="peek-title">Need help?</span>
-      <span class="peek-body">Ask Sage — Your AI help assistant</span>
+      <goa-container type="non-interactive" accent="filled" padding="compact" mb="none" width="content">
+        <p class="peek-heading">Need Help?</p>
+        <p class="peek-body">Ask Sage — Your AI help assistant</p>
+      </goa-container>
     </button>
   }
 

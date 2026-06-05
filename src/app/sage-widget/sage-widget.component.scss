@@ -376,36 +376,42 @@
 }
 
 .trigger-row {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
 .peek {
+  /* Absolutely positioned so the owl-trigger stays in normal flow and never
+     moves when the peek card appears or disappears. */
+  position: absolute;
+  right: calc(64px + 10px); /* owl width + gap */
+  bottom: 0;
+  appearance: none;
   display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--goa-space-3xs);
-  padding: 10px 14px;
-  background: var(--goa-color-greyscale-white);
-  border: 1px solid var(--goa-color-greyscale-150);
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(15, 38, 71, 0.12);
-  font-family: var(--goa-font-family-sans);
-  color: var(--goa-color-text-default);
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
   cursor: pointer;
   text-align: left;
-  max-width: 240px;
+  font-family: var(--goa-font-family-sans);
+  /* Shadow, hover-border, and background passed into goa-container via CSS
+     custom properties (they pierce shadow DOM boundaries). */
+  --goa-container-shadow: 0 3px 1.5px rgba(0, 0, 0, 0.15);
+  --goa-container-non-interactive-bg-color: var(--goa-color-greyscale-white);
   animation: peek-in 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .peek:hover {
-  border-color: var(--goa-color-interactive-default);
+  --goa-container-border: 1px solid var(--goa-color-interactive-default);
+  --goa-container-non-interactive-border: 1px solid var(--goa-color-interactive-default);
 }
 
 .peek:focus-visible {
   outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
-  outline-offset: 2px;
+  outline-offset: var(--goa-border-radius-m);
+  border-radius: var(--goa-border-radius-m);
 }
 
 .peek.leaving {
@@ -415,15 +421,21 @@
   pointer-events: none;
 }
 
-.peek-title {
-  font-size: var(--goa-font-size-2);
+/* Slotted content inside goa-container — light DOM so normal Angular scoping applies. */
+.peek-heading {
+  margin: 0 0 var(--goa-space-3xs);
+  font-size: var(--goa-font-size-7);
   font-weight: var(--goa-font-weight-bold);
+  line-height: var(--goa-line-height-4);
+  color: var(--goa-color-text-default);
+  white-space: nowrap;
 }
 
 .peek-body {
-  font-size: var(--goa-font-size-1);
-  color: var(--goa-color-text-secondary);
-  line-height: 1.35;
+  margin: 0;
+  font: var(--goa-typography-body-m);
+  color: var(--goa-color-text-default);
+  white-space: nowrap;
 }
 
 @keyframes peek-in {
