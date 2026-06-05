@@ -18,7 +18,7 @@
 .panel {
   display: flex;
   flex-direction: column;
-  background: #ffffff;
+  background: var(--goa-color-greyscale-white);
   border-radius: 12px;
   box-shadow:
     0 12px 32px rgba(15, 38, 71, 0.18),
@@ -60,17 +60,17 @@
 .panel-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--goa-space-xs);
   padding: 10px 12px 10px 16px;
-  border-bottom: 1px solid #e6ebf2;
-  background: #ffffff;
+  border-bottom: 1px solid var(--goa-color-greyscale-150);
+  background: var(--goa-color-greyscale-white);
 }
 
 .panel-title {
   flex: 1;
-  font-size: 14px;
-  font-weight: 600;
-  color: #0b2a4a;
+  font-size: var(--goa-font-size-2);
+  font-weight: var(--goa-font-weight-medium);
+  color: var(--goa-color-text-default);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -79,7 +79,7 @@
 .panel-actions {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--goa-space-2xs);
 }
 
 .text-size-btn {
@@ -90,13 +90,13 @@
   gap: 1px;
   width: 32px;
   height: 32px;
-  padding: 0 4px;
+  padding: 0 var(--goa-space-2xs);
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 6px;
-  color: #0b2a4a;
+  border-radius: var(--goa-border-radius-l);
+  color: var(--goa-color-text-default);
   font-family: var(--goa-font-family-sans);
-  font-weight: 600;
+  font-weight: var(--goa-font-weight-medium);
   cursor: pointer;
   line-height: 1;
 }
@@ -106,36 +106,36 @@
 }
 
 .text-size-btn .tsz-large {
-  font-size: 16px;
+  font-size: var(--goa-font-size-3);
 }
 
 .text-size-btn:hover {
-  background: #eef3f9;
+  background: var(--goa-color-greyscale-100);
 }
 
 .text-size-btn.active {
-  background: #e6f0fb;
-  color: var(--goa-color-interactive-default, #0070c4);
+  background: var(--goa-color-info-background);
+  color: var(--goa-color-interactive-default);
 }
 
 .text-size-btn:focus-visible {
-  outline: 3px solid var(--goa-color-interactive-focus, #feba35);
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
   outline-offset: 2px;
 }
 
 .messages {
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
+  padding: var(--goa-space-m);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: #fbfcfd;
+  background: var(--goa-color-greyscale-50);
 }
 
 .message-row {
   display: flex;
-  gap: 8px;
+  gap: var(--goa-space-xs);
   align-items: flex-end;
 }
 
@@ -166,17 +166,17 @@
   border-radius: 14px;
   font-size: var(--sage-font-size, 14px);
   line-height: 1.45;
-  color: #0b2a4a;
-  /* GoA DS 1.0 token: --goa-color-info-background (#eff8ff). Matches the
-     light-blue surface used by the Help Centre guide cards and the Figma
-     hero illustration. */
-  background: var(--goa-color-info-background, #eff8ff);
+  color: var(--goa-color-text-default);
+  /* GoA DS 1.0 token: --goa-color-info-background. Matches the light-blue
+     surface used by the Help Centre guide cards and the Figma hero
+     illustration. */
+  background: var(--goa-color-info-background);
   animation: bubble-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .message-row.user .bubble {
-  background: var(--goa-color-greyscale-150, #e9e9e9);
-  color: var(--goa-color-text-default, #000000);
+  background: var(--goa-color-greyscale-150);
+  color: var(--goa-color-text-default);
 }
 
 .bubble.list {
@@ -210,7 +210,7 @@
   padding: 0;
   margin: 0;
   font: inherit;
-  color: var(--goa-color-interactive-default, #0070c4);
+  color: var(--goa-color-interactive-default);
   cursor: pointer;
   text-align: left;
   text-decoration: underline;
@@ -220,14 +220,14 @@
 }
 
 .bubble.list .suggestion:hover {
-  color: var(--goa-color-interactive-hover, #004f8a);
+  color: var(--goa-color-interactive-hover);
   text-decoration-color: currentColor;
 }
 
 .bubble.list .suggestion:focus-visible {
-  outline: 2px solid var(--goa-color-interactive-focus, #feba35);
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: var(--goa-border-radius-s);
 }
 
 @keyframes bubble-in {
@@ -244,7 +244,7 @@
 .typing {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--goa-space-2xs);
   padding: 12px 14px;
 }
 
@@ -252,7 +252,7 @@
 .typing:not(.thinking) > span {
   width: 6px;
   height: 6px;
-  background: #6e8aa9;
+  background: var(--goa-color-greyscale-500);
   border-radius: 50%;
   animation: typing-pulse 1.1s infinite ease-in-out;
 }
@@ -272,7 +272,7 @@
 
 .typing.thinking .thinking-text {
   font-size: var(--sage-font-size, 14px);
-  color: #495a6f;
+  color: var(--goa-color-text-secondary);
   font-style: italic;
 }
 
@@ -285,7 +285,7 @@
 .typing.thinking .dots > span {
   width: 5px;
   height: 5px;
-  background: #6e8aa9;
+  background: var(--goa-color-greyscale-500);
   border-radius: 50%;
   animation: typing-pulse 1.1s infinite ease-in-out;
 }
@@ -311,11 +311,11 @@
 
 .panel-footer {
   padding: 10px 12px 12px;
-  border-top: 1px solid #e6ebf2;
-  background: #ffffff;
+  border-top: 1px solid var(--goa-color-greyscale-150);
+  background: var(--goa-color-greyscale-white);
   display: flex;
   align-items: flex-end;
-  gap: 8px;
+  gap: var(--goa-space-xs);
 }
 
 .sage-textarea {
@@ -324,11 +324,11 @@
   display: block;
   width: 100%;
   min-height: 36px;
-  padding: 8px 12px;
-  border: 1px solid #c7d3df;
-  border-radius: 4px;
-  background: #ffffff;
-  color: #0b2a4a;
+  padding: var(--goa-space-xs) var(--goa-space-s);
+  border: 1px solid var(--goa-color-greyscale-300);
+  border-radius: var(--goa-border-radius-m);
+  background: var(--goa-color-greyscale-white);
+  color: var(--goa-color-text-default);
   font-family: var(--goa-font-family-sans);
   font-size: var(--sage-font-size, 14px);
   line-height: 1.45;
@@ -337,13 +337,13 @@
 }
 
 .sage-textarea::placeholder {
-  color: #6e8aa9;
+  color: var(--goa-color-greyscale-500);
   opacity: 1;
 }
 
 .sage-textarea:focus {
   outline: none;
-  border-color: var(--goa-color-interactive-default, #0070c4);
+  border-color: var(--goa-color-interactive-default);
   box-shadow: 0 0 0 2px rgba(0, 112, 196, 0.25);
 }
 
@@ -352,8 +352,8 @@
   height: 36px;
   border-radius: 50%;
   border: none;
-  background: var(--goa-color-interactive-default, #0070c4);
-  color: #fff;
+  background: var(--goa-color-interactive-default);
+  color: var(--goa-color-text-light);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -362,16 +362,16 @@
 }
 
 .send-btn:hover {
-  background: var(--goa-color-interactive-hover, #004f8a);
+  background: var(--goa-color-interactive-hover);
 }
 
 .send-btn:focus-visible {
-  outline: 3px solid var(--goa-color-interactive-focus, #feba35);
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
   outline-offset: 2px;
 }
 
 .send-btn:disabled {
-  background: #c7d3df;
+  background: var(--goa-color-greyscale-300);
   cursor: not-allowed;
 }
 
@@ -385,14 +385,14 @@
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
+  gap: var(--goa-space-3xs);
   padding: 10px 14px;
-  background: #ffffff;
-  border: 1px solid #e6ebf2;
+  background: var(--goa-color-greyscale-white);
+  border: 1px solid var(--goa-color-greyscale-150);
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(15, 38, 71, 0.12);
   font-family: var(--goa-font-family-sans);
-  color: #1f2937;
+  color: var(--goa-color-text-default);
   cursor: pointer;
   text-align: left;
   max-width: 240px;
@@ -400,11 +400,11 @@
 }
 
 .peek:hover {
-  border-color: var(--goa-color-interactive-default, #0070c4);
+  border-color: var(--goa-color-interactive-default);
 }
 
 .peek:focus-visible {
-  outline: 3px solid var(--goa-color-interactive-focus, #feba35);
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
   outline-offset: 2px;
 }
 
@@ -416,13 +416,13 @@
 }
 
 .peek-title {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--goa-font-size-2);
+  font-weight: var(--goa-font-weight-bold);
 }
 
 .peek-body {
-  font-size: 12px;
-  color: #495a6f;
+  font-size: var(--goa-font-size-1);
+  color: var(--goa-color-text-secondary);
   line-height: 1.35;
 }
 
@@ -490,7 +490,7 @@
 }
 
 .owl-trigger:focus-visible {
-  outline: 3px solid var(--goa-color-interactive-focus, #feba35);
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
   outline-offset: 3px;
 }
 
