@@ -301,7 +301,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     const padBot = parseFloat(cs.paddingBottom) || 0;
     const borderTop = parseFloat(cs.borderTopWidth) || 0;
     const borderBot = parseFloat(cs.borderBottomWidth) || 0;
-    const maxHeight = lineHeight * 3 + padTop + padBot + borderTop + borderBot;
+    const maxHeight = lineHeight * 2 + padTop + padBot + borderTop + borderBot;
     const desired = ta.scrollHeight + borderTop + borderBot;
     const next = Math.min(desired, maxHeight);
     ta.style.height = `${next}px`;
