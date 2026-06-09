@@ -384,7 +384,9 @@
      moves when the peek card appears or disappears. */
   position: absolute;
   right: calc(64px + 10px); /* owl width + gap */
-  bottom: 0;
+  /* Raise the card so its bottom edge aligns with the owl's visual legs,
+     which sit ~5px above the SVG bounding box bottom due to internal whitespace. */
+  bottom: 5px;
   appearance: none;
   display: inline-flex;
   width: 289px;
