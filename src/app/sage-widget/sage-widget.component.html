@@ -108,7 +108,27 @@
             }
             @default {
               <div class="bubble-stack">
-                <div class="bubble">{{ asString(m) }}</div>
+                <div class="bubble">
+                  {{ asString(m) }}
+                  @if (m.image) {
+                    <button
+                      type="button"
+                      class="inline-image-btn"
+                      [attr.aria-label]="'View full size: ' + (m.image.alt || 'screenshot')"
+                      (click)="openLightbox(m.image.src, m.image.alt)">
+                      <img
+                        class="inline-image"
+                        [src]="m.image.src"
+                        [alt]="m.image.alt"
+                        loading="lazy" />
+                      <span class="image-expand-icon" aria-hidden="true">
+                        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M7 3H3v4M13 3h4v4M7 17H3v-4M13 17h4v-4"/>
+                        </svg>
+                      </span>
+                    </button>
+                  }
+                </div>
                 @if (m.sources?.length) {
                   <div class="sources-callout">
                     <goa-callout type="information" heading="Sources" size="small" mb="none">

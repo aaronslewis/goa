@@ -18,6 +18,9 @@ export interface SageMessage {
   kind: MessageKind;
   content: string | string[];
   typingVariant?: TypingVariant;
+  /** Inline image shown inside the text bubble, below the answer text. */
+  image?: { src: string; alt: string };
+  /** Kept for standalone image-only messages (kind: 'image'). */
   imageAlt?: string;
   sources?: SageSource[];
 }

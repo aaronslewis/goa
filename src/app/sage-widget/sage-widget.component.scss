@@ -574,6 +574,44 @@
   border-radius: 2px;
 }
 
+/* Inline image inside a text bubble */
+.inline-image-btn {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: var(--goa-space-s) 0 0;
+  cursor: pointer;
+  display: block;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  line-height: 0;
+  width: 100%;
+}
+
+.inline-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: filter 180ms ease-out;
+}
+
+.inline-image-btn:hover .inline-image {
+  filter: brightness(0.88);
+}
+
+.inline-image-btn:hover .image-expand-icon,
+.inline-image-btn:focus-visible .image-expand-icon {
+  opacity: 1;
+}
+
+.inline-image-btn:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+}
+
 /* Image thumbnail bubble */
 .bubble-image {
   padding: 6px;

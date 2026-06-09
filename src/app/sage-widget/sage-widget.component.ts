@@ -360,22 +360,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     const response = this.cannedResponses[
       Math.floor(Math.random() * this.cannedResponses.length)
     ];
-    this.replaceTyping('text', response.text, response.sources);
-
-    if (response.image) {
-      await this.sleep(300);
-      if (this.cancelled) return;
-      this.messages.update(list => [
-        ...list,
-        {
-          id: this.nextId++,
-          role: 'bot',
-          kind: 'image',
-          content: response.image!.src,
-          imageAlt: response.image!.alt,
-        },
-      ]);
-    }
+    this.replaceTyping('text', response.text, response.sources, response.image);
   }
 
   trackById(_: number, m: SageMessage) {
@@ -404,7 +389,12 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  private replaceTyping(kind: MessageKind, content: string | string[], sources?: SageSource[]): void {
+  private replaceTyping(
+    kind: MessageKind,
+    content: string | string[],
+    sources?: SageSource[],
+    image?: { src: string; alt: string },
+  ): void {
     this.messages.update(list => {
       const idx = list.findIndex(m => m.kind === 'typing');
       const replaced: SageMessage = {
@@ -413,6 +403,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
         kind,
         content,
         ...(sources?.length ? { sources } : {}),
+        ...(image ? { image } : {}),
       };
       if (idx < 0) return [...list, replaced];
       const out = list.slice();
