@@ -2,6 +2,7 @@ import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
+  HostListener,
   OnDestroy,
   OnInit,
   signal,
@@ -11,7 +12,7 @@ import {
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { OWL_SVG } from './owl.svg';
-import { INTRO_SCRIPT, SageMessage, MessageKind, TypingVariant } from './sage-messages';
+import { INTRO_SCRIPT, SageMessage, SageSource, MessageKind, TypingVariant } from './sage-messages';
 
 type ExpandState = 'compact' | 'wide';
 
@@ -80,6 +81,8 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   readonly messages = signal<SageMessage[]>([]);
   readonly hasPlayedIntro = signal(false);
   readonly draft = signal('');
+  readonly lightboxSrc = signal<string | null>(null);
+  readonly lightboxAlt = signal<string>('');
 
   readonly widthPx = computed(() => (this.expandState() === 'wide' ? '492px' : '360px'));
 
@@ -155,10 +158,30 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     }
   }
 
-  private readonly cannedResponses = [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
-    "Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada. Nullam ac erat ante. Nunc sed mauris erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue, sed non.",
-    "Curabitur blandit tempus porttitor. Donec id elit non mi porta gravida at eget metus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vestibulum id ligula porta felis euismod semper. Maecenas faucibus mollis interdum. Aenean lacinia bibendum nulla sed consectetur. Donec ullamcorper nulla non.",
+  private readonly cannedResponses: Array<{ text: string; image?: { src: string; alt: string }; sources?: SageSource[] }> = [
+    {
+      text: 'To enter a claim adjustment, log in to the Child Care Licensing Portal. Tiles for available services (such as the claim adjustment service) can be accessed below your program list. Click "Submit adjustments" to enter adjustments — a list of programs you have access to will appear. You can also select "Claims" and then "Submit Adjustment" from the left-hand navigation menu.',
+      sources: [
+        { label: 'Child Care Licensing Portal Claim Adjustments Operator User Guide.pdf', url: '#' },
+      ],
+    },
+    {
+      text: 'To register a child, navigate to the Children tab and click "Add Child". Fill in the required fields, then click Save. Here is a screenshot of the registration form:',
+      image: {
+        src: 'https://placehold.co/800x500/e8f4fd/0070C4?text=Child+Registration+Form',
+        alt: 'Screenshot of the child registration form showing required fields',
+      },
+      sources: [
+        { label: 'Child Registration User Guide.pdf', url: '#' },
+        { label: 'Help Centre – Child Registration', url: '#' },
+      ],
+    },
+    {
+      text: 'To change the Super Admin for your organization, navigate to Access > User Access Management. Select the current Super Admin and choose "Transfer Super Admin role". The new Super Admin will receive an email invitation to accept the role.',
+      sources: [
+        { label: 'User Access Management Guide.pdf', url: '#' },
+      ],
+    },
   ];
 
   constructor(sanitizer: DomSanitizer) {
@@ -334,10 +357,25 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     await this.sleep(this.THINKING_MS);
     if (this.cancelled) return;
 
-    const reply = this.cannedResponses[
+    const response = this.cannedResponses[
       Math.floor(Math.random() * this.cannedResponses.length)
     ];
-    this.replaceTyping('text', reply);
+    this.replaceTyping('text', response.text, response.sources);
+
+    if (response.image) {
+      await this.sleep(300);
+      if (this.cancelled) return;
+      this.messages.update(list => [
+        ...list,
+        {
+          id: this.nextId++,
+          role: 'bot',
+          kind: 'image',
+          content: response.image!.src,
+          imageAlt: response.image!.alt,
+        },
+      ]);
+    }
   }
 
   trackById(_: number, m: SageMessage) {
@@ -366,7 +404,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  private replaceTyping(kind: MessageKind, content: string | string[]): void {
+  private replaceTyping(kind: MessageKind, content: string | string[], sources?: SageSource[]): void {
     this.messages.update(list => {
       const idx = list.findIndex(m => m.kind === 'typing');
       const replaced: SageMessage = {
@@ -374,6 +412,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
         role: 'bot',
         kind,
         content,
+        ...(sources?.length ? { sources } : {}),
       };
       if (idx < 0) return [...list, replaced];
       const out = list.slice();
@@ -405,5 +444,19 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
 
   asList(m: SageMessage): string[] {
     return Array.isArray(m.content) ? m.content : [];
+  }
+
+  openLightbox(src: string, alt: string): void {
+    this.lightboxSrc.set(src);
+    this.lightboxAlt.set(alt);
+  }
+
+  closeLightbox(): void {
+    this.lightboxSrc.set(null);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEsc(): void {
+    if (this.lightboxSrc()) this.closeLightbox();
   }
 }

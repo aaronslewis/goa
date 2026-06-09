@@ -1,4 +1,4 @@
-export type MessageKind = 'text' | 'typing' | 'list';
+export type MessageKind = 'text' | 'typing' | 'list' | 'image';
 
 /**
  * `dots`     — three pulsing dots only. Used during the intro sequence.
@@ -7,12 +7,19 @@ export type MessageKind = 'text' | 'typing' | 'list';
  */
 export type TypingVariant = 'dots' | 'thinking';
 
+export interface SageSource {
+  label: string;
+  url?: string;
+}
+
 export interface SageMessage {
   id: number;
   role: 'bot' | 'user';
   kind: MessageKind;
   content: string | string[];
   typingVariant?: TypingVariant;
+  imageAlt?: string;
+  sources?: SageSource[];
 }
 
 export type IntroStep =

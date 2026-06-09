@@ -86,8 +86,47 @@
                 </ul>
               </div>
             }
+            @case ('image') {
+              <div class="bubble bubble-image">
+                <button
+                  type="button"
+                  class="image-thumb-btn"
+                  [attr.aria-label]="'View full size: ' + (m.imageAlt || 'image')"
+                  (click)="openLightbox(asString(m), m.imageAlt || '')">
+                  <img
+                    class="image-thumb"
+                    [src]="asString(m)"
+                    [alt]="m.imageAlt || ''"
+                    loading="lazy" />
+                  <span class="image-expand-icon" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 3H3v4M13 3h4v4M7 17H3v-4M13 17h4v-4"/>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            }
             @default {
-              <div class="bubble">{{ asString(m) }}</div>
+              <div class="bubble-stack">
+                <div class="bubble">{{ asString(m) }}</div>
+                @if (m.sources?.length) {
+                  <div class="sources-callout">
+                    <goa-callout type="information" heading="Sources" size="small" mb="none">
+                      <ul class="sources-list">
+                        @for (src of m.sources!; track src.label) {
+                          <li>
+                            @if (src.url) {
+                              <a [href]="src.url" class="source-link" target="_blank" rel="noopener noreferrer">{{ src.label }}</a>
+                            } @else {
+                              <span class="source-link">{{ src.label }}</span>
+                            }
+                          </li>
+                        }
+                      </ul>
+                    </goa-callout>
+                  </div>
+                }
+              </div>
             }
           }
         </div>
@@ -117,6 +156,30 @@
         </svg>
       </button>
     </footer>
+  </div>
+}
+
+@if (lightboxSrc()) {
+  <div
+    class="lightbox-backdrop"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="lightboxAlt() || 'Image viewer'"
+    (click)="closeLightbox()">
+    <button
+      type="button"
+      class="lightbox-close"
+      aria-label="Close image viewer"
+      (click)="closeLightbox()">
+      <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="4" y1="4" x2="16" y2="16"/><line x1="16" y1="4" x2="4" y2="16"/>
+      </svg>
+    </button>
+    <img
+      class="lightbox-img"
+      [src]="lightboxSrc()!"
+      [alt]="lightboxAlt()"
+      (click)="$event.stopPropagation()" />
   </div>
 }
 
