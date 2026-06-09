@@ -541,8 +541,6 @@
 .sources-callout {
   margin-top: 0;
   animation: bubble-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
-  /* Tighten up the callout's internal spacing for the compact chat context */
-  --goa-callout-padding: var(--goa-space-xs) var(--goa-space-s);
 }
 
 .sources-list {
