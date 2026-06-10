@@ -161,12 +161,6 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
 
   private readonly cannedResponses: Array<{ text: string; image?: { src: string; alt: string }; sources?: SageSource[] }> = [
     {
-      text: 'To enter a claim adjustment, log in to the Child Care Licensing Portal. Tiles for available services (such as the claim adjustment service) can be accessed below your program list. Click "Submit adjustments" to enter adjustments — a list of programs you have access to will appear. You can also select "Claims" and then "Submit Adjustment" from the left-hand navigation menu.',
-      sources: [
-        { label: 'Child Care Licensing Portal Claim Adjustments Operator User Guide.pdf', url: '#' },
-      ],
-    },
-    {
       text: 'To register a child, navigate to the Children tab and click "Add Child". Fill in the required fields, then click Save. Here is a screenshot of the registration form:',
       image: {
         src: 'https://placehold.co/800x500/e8f4fd/0070C4?text=Child+Registration+Form',
@@ -175,6 +169,12 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
       sources: [
         { label: 'Child Registration User Guide.pdf', url: '#' },
         { label: 'Help Centre – Child Registration', url: '#' },
+      ],
+    },
+    {
+      text: 'To enter a claim adjustment, log in to the Child Care Licensing Portal. Tiles for available services (such as the claim adjustment service) can be accessed below your program list. Click "Submit adjustments" to enter adjustments — a list of programs you have access to will appear. You can also select "Claims" and then "Submit Adjustment" from the left-hand navigation menu.',
+      sources: [
+        { label: 'Child Care Licensing Portal Claim Adjustments Operator User Guide.pdf', url: '#' },
       ],
     },
     {
