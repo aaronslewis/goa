@@ -121,6 +121,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   private owlPulseStartTimer: ReturnType<typeof setTimeout> | null = null;
   private owlPulseEndTimer: ReturnType<typeof setTimeout> | null = null;
   private nextId = 1;
+  private cannedIndex = 0;
   private cancelled = false;
 
   private readonly onActivity = (): void => {
@@ -357,9 +358,8 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     await this.sleep(this.THINKING_MS);
     if (this.cancelled) return;
 
-    const response = this.cannedResponses[
-      Math.floor(Math.random() * this.cannedResponses.length)
-    ];
+    const response = this.cannedResponses[this.cannedIndex % this.cannedResponses.length];
+    this.cannedIndex++;
     this.replaceTyping('text', response.text, response.sources, response.image);
   }
 
