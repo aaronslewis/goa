@@ -2,6 +2,8 @@
 
 A help-centre prototype for the Government of Alberta. **This branch will be frozen soon and handed to developers**; subsequent design explorations move to a separate branch.
 
+For new prototypes or screens **in this repo**, invoke the **`goa-angular-v1`** skill — it packages the brand voice, V1 component selectors, token reference, and the scaffold-draft-preview-verify workflow that enforces the rules below. (The skill family also includes `goa-react-v1`, `goa-angular-v2`, and `goa-react-v2` for other stacks — never use the v2 ones here.)
+
 ## Stack
 - Angular 20 (latest stable), npm, hosted on Netlify.
 - `@abgov/angular-components@^5.2.1` (wraps `@abgov/web-components@^1.41.0`)

@@ -1,0 +1,39 @@
+.eligibility-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--goa-space-2xl) var(--goa-space-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-xl);
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-s);
+}
+
+.page-header h1 {
+  font: var(--goa-typography-heading-xl);
+  letter-spacing: var(--goa-letter-spacing-xl);
+  color: var(--goa-color-text-default);
+  margin: 0;
+}
+
+.lede {
+  font: var(--goa-typography-body-l);
+  color: var(--goa-color-text-secondary);
+  margin: 0;
+}
+
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-l);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: var(--goa-space-xs);
+}

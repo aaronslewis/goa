@@ -1,0 +1,75 @@
+<goa-work-side-menu
+  [attr.heading]="heading"
+  [attr.user-name]="userName"
+  [attr.user-secondary-text]="userSecondaryText"
+  open
+  aria-label="Workspace navigation">
+
+  <div slot="primary">
+    @if (!isRoot) {
+      <goa-work-side-menu-item
+        icon="arrow-back"
+        label="Back to all"
+        role="button"
+        (click)="backToRoot()"
+        (keydown.enter)="backToRoot()"
+        (keydown.space)="$event.preventDefault(); backToRoot()"></goa-work-side-menu-item>
+      <p class="panel-title">{{ panelTitle }}</p>
+    }
+
+    @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
+      @if (entry.kind === 'item') {
+        <goa-work-side-menu-item
+          [attr.icon]="entry.icon"
+          [attr.label]="entry.label"
+          [attr.url]="entry.url"
+          [attr.current]="entry.current ? true : null"></goa-work-side-menu-item>
+      } @else if (entry.kind === 'drill') {
+        <goa-work-side-menu-item
+          [attr.icon]="entry.icon"
+          [attr.label]="entry.label"
+          role="button"
+          (click)="drillInto(entry.panel)"
+          (keydown.enter)="drillInto(entry.panel)"
+          (keydown.space)="$event.preventDefault(); drillInto(entry.panel)">
+          <goa-icon slot="trailingContent" type="chevron-forward" size="small"></goa-icon>
+        </goa-work-side-menu-item>
+      } @else {
+        <goa-work-side-menu-group
+          [attr.heading]="entry.heading"
+          [attr.icon]="entry.icon">
+          @for (child of entry.items; track child.label) {
+            <goa-work-side-menu-item
+              [attr.label]="child.label"
+              [attr.url]="child.url"
+              [attr.current]="child.current ? true : null"></goa-work-side-menu-item>
+          }
+        </goa-work-side-menu-group>
+      }
+    }
+  </div>
+
+  <div slot="secondary">
+    <goa-work-side-menu-item
+      [attr.icon]="searchItem.icon"
+      [attr.label]="searchItem.label"
+      [attr.url]="searchItem.url"></goa-work-side-menu-item>
+    <goa-work-side-menu-item
+      [attr.icon]="helpItem.icon"
+      [attr.label]="helpItem.label"
+      [attr.url]="helpItem.url"></goa-work-side-menu-item>
+  </div>
+
+  <div slot="account" class="account-menu" role="menu" aria-label="Account menu for {{ userName }}">
+    @for (item of accountMenuItems; track item.action) {
+      <button
+        type="button"
+        role="menuitem"
+        class="account-menu-item"
+        (click)="onAccountAction(item.action)">
+        <goa-icon [attr.type]="item.icon" size="small"></goa-icon>
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  </div>
+</goa-work-side-menu>
