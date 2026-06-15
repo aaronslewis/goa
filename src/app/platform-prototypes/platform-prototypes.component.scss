@@ -1,0 +1,73 @@
+.prototypes-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--goa-space-2xl) var(--goa-space-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-xl);
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-s);
+}
+
+.page-header h1 {
+  font: var(--goa-typography-heading-xl);
+  letter-spacing: var(--goa-letter-spacing-xl);
+  color: var(--goa-color-text-default);
+  margin: 0;
+}
+
+.lede {
+  font: var(--goa-typography-body-l);
+  color: var(--goa-color-text-secondary);
+  margin: 0;
+}
+
+.proto-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-m);
+}
+
+.proto-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-2xs);
+  padding: var(--goa-space-l);
+  border: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+  border-radius: var(--goa-border-radius-m);
+  background: var(--goa-color-greyscale-white);
+  text-decoration: none;
+}
+
+.proto-card:hover {
+  border-color: var(--goa-color-interactive-hover);
+  background: var(--goa-color-greyscale-100);
+}
+
+.proto-card:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: var(--goa-space-3xs);
+}
+
+.proto-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-s);
+}
+
+.proto-card__title {
+  font: var(--goa-typography-heading-s);
+  color: var(--goa-color-interactive-default);
+}
+
+.proto-card__desc {
+  font: var(--goa-typography-body-m);
+  color: var(--goa-color-text-secondary);
+}

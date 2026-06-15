@@ -5,6 +5,7 @@ import { SageWidgetComponent } from './sage-widget/sage-widget.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { MainMenu2Component } from './main-menu-2/main-menu-2.component';
 import { EligibilityCheckComponent } from './eligibility-check/eligibility-check.component';
+import { PlatformPrototypesComponent } from './platform-prototypes/platform-prototypes.component';
 
 @Component({
   standalone: true,
@@ -19,9 +20,12 @@ import { EligibilityCheckComponent } from './eligibility-check/eligibility-check
 class HelpCentrePage {}
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'help-centre', pathMatch: 'full' },
+  { path: '', component: PlatformPrototypesComponent, title: 'Platform prototypes', pathMatch: 'full' },
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },
   { path: 'menu', component: MainMenuComponent, title: 'Workspace menu' },
   { path: 'menu-2', component: MainMenu2Component, title: 'Workspace menu (variation)' },
   { path: 'eligibility-check', component: EligibilityCheckComponent, title: 'Check your eligibility' },
+  // Fallback for not-yet-added routes (e.g. user-access-management). A specific
+  // route, once added, takes precedence over this wildcard.
+  { path: '**', redirectTo: '' },
 ];
