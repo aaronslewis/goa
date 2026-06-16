@@ -13,8 +13,8 @@ import { PlatformPrototypesComponent } from './platform-prototypes/platform-prot
   imports: [HelpCentreComponent, SageWidgetComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   template: `
-    <help-centre></help-centre>
-    <sage-widget></sage-widget>
+    <help-centre (returningUserTrigger)="sage.startReturningUser()"></help-centre>
+    <sage-widget #sage></sage-widget>
   `,
 })
 class HelpCentrePage {}

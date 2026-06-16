@@ -55,7 +55,7 @@
             <ul class="nav-children">
               @for (child of section.children; track child.label) {
                 <li>
-                  <a href="{{ child.href }}" class="nav-link nav-child" [class.active]="child.active">
+                  <a href="{{ child.href }}" class="nav-link nav-child" [class.active]="child.active" (click)="onNavChildClick($event, child)">
                     {{ child.label }}
                   </a>
                 </li>
