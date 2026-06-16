@@ -1,0 +1,45 @@
+.program-banner {
+  border-bottom: 1px solid var(--goa-color-greyscale-200);
+  background: var(--goa-color-info-background);
+  padding: var(--goa-space-xs) var(--goa-space-xl);
+}
+
+.program-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--goa-space-m);
+}
+
+.program-banner-info {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-s);
+}
+
+.program-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.program-label {
+  font-size: var(--goa-font-size-1);
+  color: var(--goa-color-greyscale-600);
+  font-weight: var(--goa-font-weight-regular);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.program-name {
+  font-size: var(--goa-font-size-3);
+  color: var(--goa-color-text-default);
+  font-weight: var(--goa-font-weight-bold);
+}
+
+.modal-lead {
+  margin: 0 0 var(--goa-space-m);
+  color: var(--goa-color-text-secondary);
+  font-size: var(--goa-font-size-3);
+  line-height: var(--goa-line-height-2);
+}

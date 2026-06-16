@@ -1,0 +1,55 @@
+<!-- Program selection modal -->
+<goa-modal
+  [attr.open]="modalOpen() || null"
+  heading="Select a program"
+  [attr.closable]="programService.hasProgram() ? true : null"
+  width="640px"
+  (_close)="closeModal()">
+
+  <p class="modal-lead">
+    Choose the program you want to work with. All sections of the portal will be tailored to
+    the program you select.
+  </p>
+
+  <goa-form-item label="Program" helptext="Select one program to continue">
+    <goa-dropdown
+      name="program"
+      placeholder="Select a program…"
+      [attr.value]="pendingId()"
+      (_change)="onProgramChange($event)">
+      @for (p of programs; track p.id) {
+        <goa-dropdown-item
+          [attr.value]="p.id"
+          [attr.label]="p.name + ', ' + p.address">
+        </goa-dropdown-item>
+      }
+    </goa-dropdown>
+  </goa-form-item>
+
+  <div slot="actions">
+    <goa-button [attr.disabled]="!pendingId() ? true : null" (_click)="confirmSelection()">
+      Confirm selection
+    </goa-button>
+    @if (programService.hasProgram()) {
+      <goa-button type="secondary" (_click)="closeModal()">Cancel</goa-button>
+    }
+  </div>
+</goa-modal>
+
+<!-- Persistent program context banner (shown once a program is selected) -->
+@if (programService.hasProgram()) {
+  <div class="program-banner" role="region" aria-label="Current program context">
+    <div class="program-banner-inner">
+      <div class="program-banner-info">
+        <goa-icon type="business" size="small" aria-hidden="true"></goa-icon>
+        <div class="program-text">
+          <span class="program-label">Current program</span>
+          <span class="program-name">{{ programService.displayName() }}</span>
+        </div>
+      </div>
+      <goa-button type="tertiary" size="compact" (_click)="openSelector()">
+        Change program
+      </goa-button>
+    </div>
+  </div>
+}
