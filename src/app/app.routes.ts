@@ -4,7 +4,6 @@ import { HelpCentreComponent } from './help-centre/help-centre.component';
 import { SageWidgetComponent } from './sage-widget/sage-widget.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { MainMenu2Component } from './main-menu-2/main-menu-2.component';
-import { EligibilityCheckComponent } from './eligibility-check/eligibility-check.component';
 import { PlatformPrototypesComponent } from './platform-prototypes/platform-prototypes.component';
 import { UserAccessManagementComponent } from './user-access-management/user-access-management.component';
 import { MyProgramsComponent } from './my-programs/my-programs.component';
@@ -27,7 +26,6 @@ export const routes: Routes = [
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },
   { path: 'menu', component: MainMenuComponent, title: 'Workspace menu' },
   { path: 'menu-2', component: MainMenu2Component, title: 'Workspace menu (variation)' },
-  { path: 'eligibility-check', component: EligibilityCheckComponent, title: 'Check your eligibility' },
   {
     path: 'user-access-management',
     component: UserAccessManagementComponent,

@@ -41,11 +41,6 @@ export class PlatformPrototypesComponent {
       path: '/menu-2',
     },
     {
-      label: 'Check your eligibility',
-      description: 'Short form that estimates child care subsidy eligibility.',
-      path: '/eligibility-check',
-    },
-    {
       label: 'User Access Management',
       description: 'Manage who can access platform programs.',
       path: '/user-access-management',
