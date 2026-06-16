@@ -34,7 +34,6 @@ yarn-error.log
 # Netlify
 .netlify/
 # Claude / agent tooling (local only)
-.claude/
 .agents/
 skills-lock.json
 .sass-cache/

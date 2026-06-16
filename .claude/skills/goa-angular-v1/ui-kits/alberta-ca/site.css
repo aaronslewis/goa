@@ -1,0 +1,111 @@
+/* ============================================================
+   Alberta.ca — Child care subsidy (public info page)
+   Kit-specific layout chrome built on GoA tokens.
+   ============================================================ */
+
+.gov-page { background: var(--goa-color-greyscale-white); min-height: 100vh; }
+
+/* ---- Utility bar ---- */
+.gov-utility {
+  background: var(--goa-color-greyscale-100);
+  border-bottom: 1px solid var(--goa-color-greyscale-150);
+}
+.gov-utility-inner {
+  max-width: 1216px; margin: 0 auto; padding: 6px 32px;
+  display: flex; justify-content: flex-end; align-items: center; gap: 22px;
+}
+.gov-utility a {
+  font: var(--goa-typography-body-xs); color: var(--goa-color-interactive-default);
+  text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+}
+.gov-utility a:hover { text-decoration: underline; }
+
+/* ---- Main header ---- */
+.gov-header { background: var(--goa-color-greyscale-white); border-bottom: 1px solid var(--goa-color-greyscale-150); }
+.gov-header-inner {
+  max-width: 1216px; margin: 0 auto; padding: 14px 32px;
+  display: flex; align-items: center; gap: 20px;
+}
+.gov-wordmark { height: 30px; width: auto; display: block; }
+.gov-header-divider { width: 1px; height: 32px; background: var(--goa-color-greyscale-200); }
+.gov-service-name { font: var(--goa-app-header-typography-service-name); letter-spacing: var(--goa-letter-spacing-xs); color: var(--goa-color-text-default); }
+.gov-header-spacer { flex: 1; }
+.gov-search-btn {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  background: none; border: none; color: var(--goa-color-interactive-default);
+  font: var(--goa-typography-body-s); font-weight: 600;
+}
+.gov-search-btn ion-icon { font-size: 20px; }
+
+/* ---- Breadcrumb ---- */
+.gov-breadcrumb { max-width: 1216px; margin: 0 auto; padding: 14px 32px 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.gov-breadcrumb a { font: var(--goa-typography-body-s); color: var(--goa-color-interactive-default); text-decoration: none; }
+.gov-breadcrumb a:hover { text-decoration: underline; }
+.gov-breadcrumb span { font: var(--goa-typography-body-s); color: var(--goa-color-text-secondary); }
+.gov-breadcrumb ion-icon { font-size: 14px; color: var(--goa-color-greyscale-400); }
+
+/* ---- Title block ---- */
+.gov-titleblock { max-width: 1216px; margin: 0 auto; padding: 20px 32px 28px; }
+.gov-titleblock h1 { font: var(--goa-typography-heading-xl); letter-spacing: var(--goa-letter-spacing-xl); color: var(--goa-color-text-default); margin: 0; }
+.gov-titleblock .lede { font: var(--goa-typography-body-l); color: var(--goa-color-text-default); margin: 14px 0 0; max-width: 46ch; }
+
+/* ---- Body layout ---- */
+.gov-body { max-width: 1216px; margin: 0 auto; padding: 8px 32px 64px; display: grid; grid-template-columns: 248px 1fr; gap: 56px; }
+.gov-onthispage { position: sticky; top: 24px; align-self: start; }
+.gov-onthispage h2 { font: var(--goa-typography-heading-2xs); color: var(--goa-color-text-default); margin: 0 0 12px; }
+.gov-onthispage ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.gov-onthispage li a {
+  display: block; padding: 7px 0 7px 16px; border-left: 2px solid var(--goa-color-greyscale-200);
+  font: var(--goa-typography-body-s); color: var(--goa-color-interactive-default); text-decoration: none;
+}
+.gov-onthispage li a:hover { border-left-color: var(--goa-color-interactive-default); background: var(--goa-color-greyscale-50); }
+.gov-onthispage li a.active { border-left-color: var(--goa-color-interactive-default); color: var(--goa-color-text-default); font-weight: 700; }
+
+.gov-content { min-width: 0; }
+.gov-content section { padding-bottom: 40px; }
+.gov-content h2 { font: var(--goa-typography-heading-m); letter-spacing: var(--goa-letter-spacing-m); color: var(--goa-color-text-default); margin: 0 0 16px; }
+.gov-content h3 { font: var(--goa-typography-heading-xs); color: var(--goa-color-text-default); margin: 24px 0 8px; }
+.gov-content p { font: var(--goa-typography-body-m); color: var(--goa-color-text-default); margin: 0 0 14px; max-width: 64ch; }
+.gov-content ul.check { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-direction: column; gap: 10px; max-width: 64ch; }
+.gov-content ul.check li { display: flex; gap: 10px; font: var(--goa-typography-body-m); line-height: 1.45; align-items: flex-start; }
+.gov-content ul.check li ion-icon { color: var(--goa-color-success-default); font-size: 22px; flex: 0 0 auto; margin-top: 1px; }
+
+/* ---- Rates table ---- */
+.gov-table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--goa-color-greyscale-150); border-radius: var(--goa-border-radius-2xl); overflow: hidden; }
+.gov-table th { text-align: left; font: var(--goa-typography-body-xs); font-weight: 700; text-transform: none; color: var(--goa-color-greyscale-600); background: var(--goa-color-greyscale-50); padding: 14px 20px; border-bottom: 1.5px solid var(--goa-color-greyscale-200); }
+.gov-table td { font: var(--goa-typography-body-m); color: var(--goa-color-text-default); padding: 14px 20px; border-bottom: 1px solid var(--goa-color-greyscale-150); }
+.gov-table td.num { font-family: var(--goa-font-family-number); text-align: right; }
+.gov-table th.num { text-align: right; }
+.gov-table tr:last-child td { border-bottom: none; }
+
+/* ---- Estimator widget ---- */
+.gov-estimator { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; align-items: end; }
+.gov-estimator .full { grid-column: 1 / -1; }
+.gov-result { display: flex; align-items: baseline; gap: 12px; }
+.gov-result .amt { font: var(--goa-typography-heading-l); letter-spacing: var(--goa-letter-spacing-l); color: var(--goa-color-brand-dark); font-family: var(--goa-font-family-sans); }
+.gov-result .per { font: var(--goa-typography-body-m); color: var(--goa-color-text-secondary); }
+
+/* ---- Steps ---- */
+.gov-steps { counter-reset: step; display: flex; flex-direction: column; gap: 4px; max-width: 64ch; }
+.gov-step { display: grid; grid-template-columns: 40px 1fr; gap: 16px; padding: 4px 0; }
+.gov-step-num { counter-increment: step; width: 36px; height: 36px; border-radius: 50%; background: var(--goa-color-interactive-default); color: #fff; display: flex; align-items: center; justify-content: center; font: var(--goa-typography-heading-2xs); }
+.gov-step-num::before { content: counter(step); }
+.gov-step-body h3 { margin: 4px 0 4px; font: var(--goa-typography-heading-2xs); }
+.gov-step-body p { margin: 0; font: var(--goa-typography-body-s); color: var(--goa-color-text-secondary); }
+.gov-step-line { grid-column: 1; justify-self: center; width: 2px; background: var(--goa-color-greyscale-200); height: 100%; }
+
+/* ---- CTA banner ---- */
+.gov-cta { background: var(--goa-color-brand-dark); border-radius: var(--goa-border-radius-2xl); padding: 32px 36px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.gov-cta h2 { color: #fff; margin: 0 0 6px; font: var(--goa-typography-heading-s); }
+.gov-cta p { color: var(--goa-color-brand-light); margin: 0; font: var(--goa-typography-body-m); }
+
+/* ---- Footer ---- */
+.gov-footer { background: var(--goa-color-greyscale-100); border-top: 2px solid var(--goa-color-greyscale-150); }
+.gov-footer-inner { max-width: 1216px; margin: 0 auto; padding: 36px 32px; }
+.gov-footer-links { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 28px; }
+.gov-footer-col h3 { font: var(--goa-typography-heading-2xs); color: var(--goa-color-text-default); margin: 0 0 10px; }
+.gov-footer-col a { display: block; font: var(--goa-typography-body-s); line-height: 1.4; color: var(--goa-color-text-default); text-decoration: none; padding: 5px 0; }
+.gov-footer-col a:hover { text-decoration: underline; color: var(--goa-color-greyscale-700); }
+.gov-footer-base { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-top: 22px; border-top: 1px solid var(--goa-color-greyscale-200); flex-wrap: wrap; }
+.gov-footer-base img { height: 26px; }
+.gov-footer-base .copy { font: var(--goa-typography-body-xs); color: var(--goa-color-text-secondary); }

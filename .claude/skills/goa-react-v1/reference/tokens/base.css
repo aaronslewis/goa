@@ -1,0 +1,66 @@
+/* ============================================================
+   Base page defaults — built entirely from GoA tokens.
+   Gives specimen cards, components and UI kits the right
+   typographic + color baseline without per-file boilerplate.
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font: var(--goa-typography-body-m);
+  color: var(--goa-color-text-default);
+  background: var(--goa-color-surface-default);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings use the GoA heading scale; consumers can opt out by
+   setting their own font on the element. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  color: var(--goa-color-text-default);
+}
+
+a {
+  color: var(--goa-color-interactive-default);
+  text-underline-offset: 0.15em;
+}
+a:hover {
+  color: var(--goa-color-interactive-hover);
+}
+a:visited {
+  color: var(--goa-color-interactive-visited);
+}
+
+/* Shared focus ring matching GoA interactive focus token. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+}
+
+/* Utility type ramp — handy in cards & kits. */
+.goa-heading-2xl { font: var(--goa-typography-heading-2xl); letter-spacing: var(--goa-letter-spacing-2xl); }
+.goa-heading-xl  { font: var(--goa-typography-heading-xl);  letter-spacing: var(--goa-letter-spacing-xl); }
+.goa-heading-l   { font: var(--goa-typography-heading-l);   letter-spacing: var(--goa-letter-spacing-l); }
+.goa-heading-m   { font: var(--goa-typography-heading-m);   letter-spacing: var(--goa-letter-spacing-m); }
+.goa-heading-s   { font: var(--goa-typography-heading-s); }
+.goa-heading-xs  { font: var(--goa-typography-heading-xs); }
+.goa-body-l      { font: var(--goa-typography-body-l); }
+.goa-body-m      { font: var(--goa-typography-body-m); }
+.goa-body-s      { font: var(--goa-typography-body-s); }
+.goa-body-xs     { font: var(--goa-typography-body-xs); }

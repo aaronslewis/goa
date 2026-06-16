@@ -1,0 +1,67 @@
+/* ============================================================
+   Apply for child care subsidy — service form wizard
+   ============================================================ */
+
+.svc-app { background: var(--goa-color-greyscale-50); min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ---- Service header ---- */
+.svc-header { background: var(--goa-color-greyscale-white); border-bottom: 1px solid var(--goa-color-greyscale-150); }
+.svc-header-inner { max-width: 1100px; margin: 0 auto; padding: 12px 32px; display: flex; align-items: center; gap: 18px; }
+.svc-wordmark { height: 28px; }
+.svc-divider { width: 1px; height: 28px; background: var(--goa-color-greyscale-200); }
+.svc-name { font: var(--goa-app-header-typography-service-name); letter-spacing: var(--goa-letter-spacing-xs); }
+.svc-phase { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: var(--goa-border-radius-s); background: var(--goa-color-brand-default); color: #fff; font: var(--goa-typography-body-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.svc-header-spacer { flex: 1; }
+.svc-save { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; cursor: pointer; color: var(--goa-color-interactive-default); font: var(--goa-typography-body-s); font-weight: 600; }
+.svc-save ion-icon { font-size: 18px; }
+
+/* ---- Stepper ---- */
+.svc-stepper-wrap { background: var(--goa-color-greyscale-white); border-bottom: 1px solid var(--goa-color-greyscale-150); }
+.svc-stepper { max-width: 1100px; margin: 0 auto; padding: 18px 32px; display: flex; gap: 0; }
+.svc-stp { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; }
+.svc-stp::before, .svc-stp::after { content: ""; position: absolute; top: 18px; height: 4px; background: var(--goa-color-greyscale-200); width: 50%; }
+.svc-stp::before { left: 0; }
+.svc-stp::after { right: 0; }
+.svc-stp:first-child::before, .svc-stp:last-child::after { display: none; }
+.svc-stp.done::before, .svc-stp.done::after, .svc-stp.current::before { background: var(--goa-color-interactive-default); }
+.svc-stp-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--goa-color-greyscale-white); border: 3px solid var(--goa-color-greyscale-400); color: var(--goa-color-text-secondary); font: var(--goa-typography-heading-2xs); z-index: 1; box-sizing: border-box; }
+.svc-stp.current .svc-stp-dot { border-color: var(--goa-color-interactive-default); color: var(--goa-color-interactive-default); }
+.svc-stp.done .svc-stp-dot { background: var(--goa-color-interactive-default); border-color: var(--goa-color-interactive-default); color: #fff; }
+.svc-stp-label { font: var(--goa-typography-body-s); color: var(--goa-color-text-secondary); text-align: center; }
+.svc-stp.current .svc-stp-label { color: var(--goa-color-text-default); font-weight: 700; }
+
+/* ---- Form body ---- */
+.svc-main { flex: 1; }
+.svc-form { max-width: 680px; margin: 0 auto; padding: 40px 32px 56px; }
+.svc-eyebrow { font: var(--goa-typography-body-s); font-weight: 700; color: var(--goa-color-interactive-default); text-transform: none; margin: 0 0 6px; }
+.svc-form h1 { font: var(--goa-typography-heading-l); letter-spacing: var(--goa-letter-spacing-l); color: var(--goa-color-text-default); margin: 0 0 8px; }
+.svc-form > p.intro { font: var(--goa-typography-body-m); color: var(--goa-color-text-default); margin: 0 0 28px; }
+.svc-fieldset { margin: 0 0 8px; }
+.svc-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+
+/* child cards */
+.svc-child { border: 1px solid var(--goa-color-greyscale-200); border-radius: var(--goa-border-radius-xl); padding: 20px 22px; margin-bottom: 16px; background: var(--goa-color-greyscale-white); }
+.svc-child-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.svc-child-head h3 { font: var(--goa-typography-heading-2xs); margin: 0; white-space: nowrap; }
+
+/* review */
+.svc-review-group { border: 1px solid var(--goa-color-greyscale-200); border-radius: var(--goa-border-radius-xl); overflow: hidden; margin-bottom: 18px; }
+.svc-review-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: var(--goa-color-greyscale-50); border-bottom: 1px solid var(--goa-color-greyscale-150); }
+.svc-review-head h3 { font: var(--goa-typography-heading-2xs); margin: 0; white-space: nowrap; }
+.svc-review-edit { background: none; border: none; cursor: pointer; color: var(--goa-color-interactive-default); font: var(--goa-typography-body-s); font-weight: 600; text-decoration: underline; }
+.svc-review-row { display: grid; grid-template-columns: 200px 1fr; gap: 16px; padding: 12px 20px; border-bottom: 1px solid var(--goa-color-greyscale-100); }
+.svc-review-row:last-child { border-bottom: none; }
+.svc-review-row dt { font: var(--goa-typography-body-s); color: var(--goa-color-text-secondary); margin: 0; }
+.svc-review-row dd { font: var(--goa-typography-body-m); color: var(--goa-color-text-default); margin: 0; }
+
+/* ---- Action bar ---- */
+.svc-actions { display: flex; align-items: center; gap: 12px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--goa-color-greyscale-150); }
+.svc-actions .spacer { flex: 1; }
+
+/* ---- Confirmation ---- */
+.svc-confirm { max-width: 680px; margin: 0 auto; padding: 56px 32px; text-align: center; }
+.svc-confirm-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--goa-color-success-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+.svc-confirm-icon ion-icon { font-size: 44px; color: var(--goa-color-success-default); }
+.svc-confirm h1 { font: var(--goa-typography-heading-l); letter-spacing: var(--goa-letter-spacing-l); margin: 0 0 12px; }
+.svc-confirm .ref { display: inline-block; margin: 8px 0 20px; padding: 10px 18px; border-radius: var(--goa-border-radius-m); background: var(--goa-color-greyscale-100); font-family: var(--goa-font-family-number); font-size: 18px; color: var(--goa-color-text-default); }
+.svc-confirm p { font: var(--goa-typography-body-m); color: var(--goa-color-text-default); max-width: 52ch; margin: 0 auto 14px; }

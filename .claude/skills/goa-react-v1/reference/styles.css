@@ -1,0 +1,14 @@
+/* ============================================================
+   Government of Alberta Design System — global entry point
+   ------------------------------------------------------------
+   Consumers link THIS file only. It is a manifest of @imports;
+   every token + @font-face in the closure ships to consumers.
+
+   Version: 1.x ("V1" / v1.design.alberta.ca) — the standard the
+   GoA delivery teams build on. Token values are the compiled
+   output of @abgov/design-tokens@1.10.0.
+   ============================================================ */
+
+@import url("./tokens/goa-tokens.css"); /* all base, semantic & component tokens */
+@import url("./tokens/fonts.css"); /* webfonts + font-family overrides */
+@import url("./tokens/base.css"); /* page defaults built from tokens */
