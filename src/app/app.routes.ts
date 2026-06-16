@@ -22,16 +22,18 @@ import { MyProgramsComponent } from './my-programs/my-programs.component';
 class HelpCentrePage {}
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home-page-design', pathMatch: 'full' },
+  { path: '', component: PlatformPrototypesComponent, title: 'Platform prototypes', pathMatch: 'full' },
   { path: 'home-page-design', component: MyProgramsComponent, title: 'My Programs — Home Page Design' },
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },
   { path: 'menu', component: MainMenuComponent, title: 'Workspace menu' },
   { path: 'menu-2', component: MainMenu2Component, title: 'Workspace menu (variation)' },
   { path: 'eligibility-check', component: EligibilityCheckComponent, title: 'Check your eligibility' },
-  { path: 'platform-prototypes', component: PlatformPrototypesComponent, title: 'Platform prototypes' },
   {
     path: 'user-access-management',
     component: UserAccessManagementComponent,
     title: 'User Access Management',
   },
+  // Fallback for unknown routes. A specific route, once added, takes
+  // precedence over this wildcard.
+  { path: '**', redirectTo: '' },
 ];

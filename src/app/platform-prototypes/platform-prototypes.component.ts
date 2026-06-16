@@ -21,6 +21,11 @@ export class PlatformPrototypesComponent {
 
   readonly prototypes: PrototypeLink[] = [
     {
+      label: 'Home page redesign',
+      description: 'My Programs landing page redesign.',
+      path: '/home-page-design',
+    },
+    {
       label: 'AI Assistant',
       description: 'Help articles with the Sage chat assistant.',
       path: '/help-centre',
