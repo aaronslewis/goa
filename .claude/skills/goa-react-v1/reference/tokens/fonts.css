@@ -1,0 +1,26 @@
+/* ============================================================
+   Government of Alberta — Web fonts
+   ------------------------------------------------------------
+   The GoA design system ships Adobe Typekit "Acumin Pro" (sans)
+   and "Roboto Mono" (numeric). Typekit kit fonts are licensed to
+   specific domains and cannot be re-hosted here, so the sans face
+   is SUBSTITUTED with Source Sans 3 — the closest open humanist
+   sans (also an Adobe family, near-identical proportions to
+   Acumin). Roboto Mono is the real face, served from Google Fonts.
+
+   >>> SUBSTITUTION FLAGGED: Acumin Pro -> Source Sans 3.
+       Drop the licensed Acumin woff2 files into this folder and
+       restore the original @font-face blocks for pixel-fidelity.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Roboto+Mono:wght@400;500&display=swap");
+
+:root {
+  /* Re-point the GoA font-family tokens at the loaded webfonts.
+     Every typography token resolves through these two variables. */
+  --goa-font-family-sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --goa-font-family-number: "Roboto Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Acumin needed a small optical valign nudge; Source Sans does not. */
+  --font-valign-fix: 0rem;
+}

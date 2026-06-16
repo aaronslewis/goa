@@ -12,7 +12,16 @@ import {
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { OWL_SVG } from './owl.svg';
-import { INTRO_SCRIPT, SageMessage, SageSource, MessageKind, TypingVariant } from './sage-messages';
+import {
+  INTRO_SCRIPT,
+  IntroStep,
+  buildReturningScript,
+  RETURNING_SUGGESTIONS,
+  SageMessage,
+  SageSource,
+  MessageKind,
+  TypingVariant,
+} from './sage-messages';
 
 type ExpandState = 'compact' | 'wide';
 
@@ -45,6 +54,15 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
 
   /** Time Sage 'thinks' (typing dots) before replying, in ms. */
   private readonly THINKING_MS = 5000;
+
+  /** Returning-user flow: pause after the prompt before considering the
+   *  suggestion-list nudge. If the user has started typing by now, the list is
+   *  skipped entirely. */
+  private readonly RETURNING_GATE_PAUSE_MS = 1500;
+
+  /** Returning-user flow: if still idle after the pause, wait this much longer
+   *  before the suggestion list lands. */
+  private readonly RETURNING_GATE_REVEAL_MS = 2000;
 
   /** How long the user must be inactive before the "Need help?" peek surfaces. */
   private readonly IDLE_MS = 7000;
@@ -123,6 +141,9 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   private nextId = 1;
   private cannedIndex = 0;
   private cancelled = false;
+  /** Set when the user types into the composer; gates the returning-user
+   *  suggestion list so it only appears for a user who stays idle. */
+  private userTypedSinceReturn = false;
 
   private readonly onActivity = (): void => {
     // Any page interaction queues the peek to fade out (with a brief delay
@@ -259,6 +280,38 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     this.scheduleIdle();
   }
 
+  /** Hidden demo trigger: simulate a returning visitor. Clears any existing
+   *  conversation and replays a fresh "welcome back" intro every time. The
+   *  greeting and prompt play first; the suggestion list only follows if the
+   *  user hasn't started typing their own question. */
+  async startReturningUser(): Promise<void> {
+    this.cancelTimers();
+    this.messages.set([]);
+    this.hasPlayedIntro.set(false);
+    this.userTypedSinceReturn = false;
+    this.isOpen.set(true);
+    this.cancelPeekHideTimers();
+    this.peekState.set('hidden');
+
+    await this.runIntro(buildReturningScript());
+
+    // Gated third message: a 1.5s pause, then — only if the user is still idle —
+    // 2s more before the suggestion list lands. Any typing cancels it.
+    if (this.cancelled || this.userTypedSinceReturn) return;
+    await this.sleep(this.RETURNING_GATE_PAUSE_MS);
+    if (this.cancelled || this.userTypedSinceReturn) return;
+    await this.sleep(this.RETURNING_GATE_REVEAL_MS);
+    if (this.cancelled || this.userTypedSinceReturn) return;
+
+    this.pushTyping();
+    await this.sleep(600);
+    if (this.cancelled || this.userTypedSinceReturn) {
+      this.messages.update(list => list.filter(m => m.kind !== 'typing'));
+      return;
+    }
+    this.replaceTyping('list', RETURNING_SUGGESTIONS);
+  }
+
   resetAndReplay(): void {
     this.cancelTimers();
     this.messages.set([]);
@@ -299,6 +352,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   onTextareaInput(event: Event): void {
     const ta = event.target as HTMLTextAreaElement;
     this.draft.set(ta.value);
+    this.userTypedSinceReturn = true;
     this.autoResize(ta);
   }
 
@@ -367,9 +421,9 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     return m.id;
   }
 
-  private async runIntro(): Promise<void> {
+  private async runIntro(script: IntroStep[] = INTRO_SCRIPT): Promise<void> {
     this.cancelled = false;
-    for (const step of INTRO_SCRIPT) {
+    for (const step of script) {
       if (this.cancelled) return;
       if (step.type === 'wait') {
         await this.sleep(step.ms);

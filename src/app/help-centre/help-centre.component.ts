@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Output, signal } from '@angular/core';
 
 interface GuideLink {
   label: string;
@@ -20,6 +20,10 @@ interface Guide {
   styleUrl: './help-centre.component.scss',
 })
 export class HelpCentreComponent {
+  /** Fired by the hidden "Help Centre - NEW" menu item to replay the Sage
+   *  widget as a returning-user experience. */
+  @Output() returningUserTrigger = new EventEmitter<void>();
+
   readonly userMenuOpen = signal(false);
 
   readonly navSections = [
@@ -35,7 +39,7 @@ export class HelpCentreComponent {
       expanded: true,
       children: [
         { label: 'User Access Management', href: '#', active: false },
-        { label: 'Help Centre - NEW', href: '/', active: true },
+        { label: 'Help Centre - NEW', href: '#', active: true, trigger: true },
       ],
     },
   ];
@@ -123,5 +127,12 @@ export class HelpCentreComponent {
 
   toggleUserMenu(): void {
     this.userMenuOpen.update(v => !v);
+  }
+
+  onNavChildClick(event: Event, child: { trigger?: boolean }): void {
+    if (child.trigger) {
+      event.preventDefault();
+      this.returningUserTrigger.emit();
+    }
   }
 }

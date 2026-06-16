@@ -33,8 +33,9 @@ yarn-error.log
 /.angular
 # Netlify
 .netlify/
-# Claude local files
-.claude/launch.json
+# Claude / agent tooling (local only)
+.agents/
+skills-lock.json
 .sass-cache/
 /connect.lock
 /coverage
