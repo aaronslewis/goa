@@ -62,6 +62,8 @@ export class MainMenu2Component {
     }
   }
 
+  isMenuOpen = true;
+
   activePanel = 'root';
 
   private readonly panelTitles: Record<string, string> = {

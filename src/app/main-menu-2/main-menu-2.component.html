@@ -2,11 +2,13 @@
   [attr.heading]="heading"
   [attr.user-name]="userName"
   [attr.user-secondary-text]="userSecondaryText"
-  open
+  [open]="isMenuOpen"
+  (collapse)="isMenuOpen = false"
+  (expand)="isMenuOpen = true"
   aria-label="Workspace navigation">
 
   <div slot="primary">
-    @if (!isRoot) {
+    @if (!isRoot && isMenuOpen) {
       <goa-work-side-menu-item
         icon="arrow-back"
         label="Back to all"
