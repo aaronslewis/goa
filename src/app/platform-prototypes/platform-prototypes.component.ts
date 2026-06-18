@@ -31,13 +31,13 @@ export class PlatformPrototypesComponent {
       path: '/help-centre',
     },
     {
-      label: 'Workspace menu',
+      label: 'Workspace menu (original)',
       description: 'Workspace side navigation for the Early Childhood Development System.',
       path: '/menu',
     },
     {
-      label: 'Workspace menu (variation)',
-      description: 'Side navigation with a Funding drill-down panel.',
+      label: 'Workspace menu (updated)',
+      description: 'ECDS side navigation with service drill downs.',
       path: '/menu-2',
     },
     {
