@@ -7,6 +7,10 @@ goa-work-side-menu {
   height: 100%;
 }
 
+goa-work-side-menu:not([open]) .panel-title {
+  display: none;
+}
+
 .panel-title {
   margin: var(--goa-space-2xs) var(--goa-space-m) var(--goa-space-xs);
   color: var(--goa-color-text-secondary);

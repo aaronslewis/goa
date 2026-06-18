@@ -3,7 +3,7 @@
   [attr.user-name]="userName"
   [attr.user-secondary-text]="userSecondaryText"
   [open]="isMenuOpen"
-  (collapse)="isMenuOpen = false"
+  (collapse)="isMenuOpen = false; backToRoot()"
   (expand)="isMenuOpen = true"
   aria-label="Workspace navigation">
 

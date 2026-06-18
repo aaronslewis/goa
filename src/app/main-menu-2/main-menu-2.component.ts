@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 interface MenuLeaf {
@@ -40,8 +40,25 @@ type MenuEntry = MenuItem | MenuGroup | MenuDrill;
   templateUrl: './main-menu-2.component.html',
   styleUrl: './main-menu-2.component.scss',
 })
-export class MainMenu2Component {
-  constructor(private router: Router) {}
+export class MainMenu2Component implements AfterViewInit, OnDestroy {
+  constructor(private router: Router, private el: ElementRef) {}
+
+  private observer?: MutationObserver;
+
+  ngAfterViewInit(): void {
+    const menu = this.el.nativeElement.querySelector('goa-work-side-menu');
+    if (!menu) return;
+    this.observer = new MutationObserver(() => {
+      const isOpen = menu.hasAttribute('open');
+      this.isMenuOpen = isOpen;
+      if (!isOpen) this.backToRoot();
+    });
+    this.observer.observe(menu, { attributes: true, attributeFilter: ['open'] });
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+  }
 
   readonly heading = 'Early Childhood Development System';
   readonly userName = 'Edna Mode';
