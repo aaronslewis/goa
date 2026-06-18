@@ -1,0 +1,50 @@
+<goa-work-side-menu
+  [attr.heading]="heading"
+  [attr.user-name]="userName"
+  [attr.user-secondary-text]="userSecondaryText"
+  open
+  aria-label="Provider portal navigation">
+
+  <div slot="primary">
+    @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
+      @if (entry.kind === 'item') {
+        <goa-work-side-menu-item
+          [attr.icon]="entry.icon"
+          [attr.label]="entry.label"
+          [attr.url]="entry.url"
+          [attr.current]="entry.current ? true : null"></goa-work-side-menu-item>
+      } @else {
+        <goa-work-side-menu-group
+          [attr.heading]="entry.heading"
+          [attr.icon]="entry.icon">
+          @for (child of entry.items; track child.label) {
+            <goa-work-side-menu-item
+              [attr.label]="child.label"
+              [attr.url]="child.url"
+              [attr.current]="child.current ? true : null"></goa-work-side-menu-item>
+          }
+        </goa-work-side-menu-group>
+      }
+    }
+  </div>
+
+  <div slot="secondary">
+    <goa-work-side-menu-item
+      [attr.icon]="helpItem.icon"
+      [attr.label]="helpItem.label"
+      [attr.url]="helpItem.url"></goa-work-side-menu-item>
+  </div>
+
+  <div slot="account" class="account-menu" role="menu" aria-label="Account menu for {{ userName }}">
+    @for (item of accountMenuItems; track item.action) {
+      <button
+        type="button"
+        role="menuitem"
+        class="account-menu-item"
+        (click)="onAccountAction(item.action)">
+        <goa-icon [attr.type]="item.icon" size="small"></goa-icon>
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  </div>
+</goa-work-side-menu>

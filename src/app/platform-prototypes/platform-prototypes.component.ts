@@ -41,6 +41,11 @@ export class PlatformPrototypesComponent {
       path: '/menu-2',
     },
     {
+      label: 'Provider portal menu',
+      description: 'Provider side navigation menu without drill-down behavior.',
+      path: '/provider-portal-menu',
+    },
+    {
       label: 'User Access Management',
       description: 'Manage who can access platform programs.',
       path: '/user-access-management',
