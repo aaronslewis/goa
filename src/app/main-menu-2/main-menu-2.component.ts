@@ -1,4 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface MenuLeaf {
   label: string;
@@ -40,6 +41,8 @@ type MenuEntry = MenuItem | MenuGroup | MenuDrill;
   styleUrl: './main-menu-2.component.scss',
 })
 export class MainMenu2Component {
+  constructor(private router: Router) {}
+
   readonly heading = 'Early Childhood Development System';
   readonly userName = 'Edna Mode';
   readonly userSecondaryText = 'edna.mode@gov.ab.ca';
@@ -50,10 +53,14 @@ export class MainMenu2Component {
 
   readonly accountMenuItems = [
     { label: 'Settings', icon: 'settings', action: 'settings' as const },
-    { label: 'Log out', icon: 'log-out', action: 'logout' as const },
+    { label: 'Sign out', icon: 'log-out', action: 'logout' as const },
   ];
 
-  onAccountAction(action: 'settings' | 'logout'): void {}
+  onAccountAction(action: 'settings' | 'logout'): void {
+    if (action === 'logout') {
+      this.router.navigate(['/']);
+    }
+  }
 
   activePanel = 'root';
 
