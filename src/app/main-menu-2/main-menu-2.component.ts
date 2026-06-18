@@ -128,7 +128,7 @@ export class MainMenu2Component {
       { kind: 'item', label: 'Space Creation', icon: 'expand', url: '#' },
       {
         kind: 'group',
-        heading: 'Wage Top-Up & PD',
+        heading: 'ECE Workforce Supports Grant',
         icon: 'trending-up',
         items: [
           { label: 'Programs', url: '#' },
