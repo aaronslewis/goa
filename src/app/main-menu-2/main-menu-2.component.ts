@@ -60,6 +60,7 @@ export class MainMenu2Component {
   private readonly panelTitles: Record<string, string> = {
     adminPenalties: 'Admin Penalties',
     certification: 'Certification',
+    childRegistration: 'Child Registration',
     claims: 'Claims',
     funding: 'Funding',
     goaUserMgmt: 'GOA User Management',
@@ -73,7 +74,7 @@ export class MainMenu2Component {
     root: [
       { kind: 'drill', label: 'Admin Penalties', icon: 'pricetag', panel: 'adminPenalties' },
       { kind: 'drill', label: 'Certification', icon: 'ribbon', panel: 'certification' },
-      { kind: 'item', label: 'Child Registration', icon: 'id-card', url: '#' },
+      { kind: 'drill', label: 'Child Registration', icon: 'id-card', panel: 'childRegistration' },
       { kind: 'drill', label: 'Claims', icon: 'list', panel: 'claims' },
       { kind: 'item', label: 'Family Portal', icon: 'home', url: '#' },
       { kind: 'drill', label: 'Funding', icon: 'file-tray-full', panel: 'funding' },
@@ -83,6 +84,10 @@ export class MainMenu2Component {
       { kind: 'drill', label: 'Program User Management', icon: 'finger-print', panel: 'programUserMgmt' },
       { kind: 'item', label: 'Registered Children Report', icon: 'document-text', url: '#' },
       { kind: 'drill', label: 'Subsidy', icon: 'body', panel: 'subsidy' },
+    ],
+    childRegistration: [
+      { kind: 'item', label: 'Manage children', url: '#' },
+      { kind: 'item', label: 'Resolve duplicates', url: '#' },
     ],
     certification: [
       { kind: 'item', label: 'Work Queue', url: '#' },
