@@ -9,7 +9,7 @@ interface MenuLeaf {
 interface MenuItem {
   kind: 'item';
   label: string;
-  icon: string;
+  icon?: string;
   url?: string;
   current?: boolean;
 }
@@ -53,94 +53,58 @@ export class MainMenu2Component {
     { label: 'Log out', icon: 'log-out', action: 'logout' as const },
   ];
 
-  onAccountAction(action: 'settings' | 'logout'): void {
-    // Hook into router/auth when those exist; no-op for now.
-  }
+  onAccountAction(action: 'settings' | 'logout'): void {}
 
-  // Which panel is showing: 'root' or a drill-in panel key.
   activePanel = 'root';
 
-  private readonly panelTitles: Record<string, string> = { funding: 'Funding' };
+  private readonly panelTitles: Record<string, string> = {
+    adminPenalties: 'Admin Penalties',
+    certification: 'Certification',
+    claims: 'Claims',
+    funding: 'Funding',
+    goaUserMgmt: 'GOA User Management',
+    licensing: 'Licensing',
+    postVerification: 'Post Verification',
+    programUserMgmt: 'Program User Management',
+    subsidy: 'Subsidy',
+  };
 
-  // Original IA, with the requested regrouping applied:
-  // - Funding is a drill-in panel (third layer) holding the funding programs.
-  // - GOA User Management groups the two access pages.
-  // - Payment Statements moved under Claims.
   private readonly panels: Record<string, MenuEntry[]> = {
     root: [
-      {
-        kind: 'group',
-        heading: 'Certification',
-        icon: 'ribbon',
-        items: [
-          { label: 'Work Queue', url: '#' },
-          { label: 'My Assignments', url: '#' },
-          { label: 'Search', url: '#' },
-          { label: 'Admin Data', url: '#' },
-        ],
-      },
-      { kind: 'item', label: 'Child Registration', icon: 'create', url: '#' },
-      {
-        kind: 'group',
-        heading: 'Claims',
-        icon: 'list',
-        items: [
-          { label: 'Assess Claims', url: '#' },
-          { label: 'Assess Adjustments', url: '#' },
-          { label: 'Submit Adjustments', url: '#' },
-          { label: 'Payment Statements', url: '#' },
-        ],
-      },
-      { kind: 'drill', label: 'Funding', icon: 'wallet', panel: 'funding' },
-      {
-        kind: 'group',
-        heading: 'GOA User Management',
-        icon: 'person',
-        items: [
-          { label: 'GOA User Management', url: '#' },
-          { label: 'Identity and Access Management', url: '#' },
-        ],
-      },
-      {
-        kind: 'group',
-        heading: 'Licensing',
-        icon: 'shield-checkmark',
-        items: [
-          { label: 'Dashboard', url: '#' },
-          { label: 'Child Care Program Search', url: '#' },
-          { label: 'Program Educator Search', url: '#' },
-          { label: 'People Search', url: '#' },
-          { label: 'Admin Data', url: '#' },
-        ],
-      },
-      {
-        kind: 'group',
-        heading: 'Program User Management',
-        icon: 'people',
-        items: [
-          { label: 'User Access Management', url: '#' },
-          { label: 'Legal Representative Management', url: '#' },
-          { label: 'Access Request', url: '#' },
-          { label: 'Removal Request', url: '#' },
-        ],
-      },
-      { kind: 'item', label: 'Subsidized Children Report', icon: 'bar-chart', url: '#' },
-      {
-        kind: 'group',
-        heading: 'Subsidy',
-        icon: 'cash',
-        items: [
-          { label: 'Work Queue', url: '#', current: true },
-          { label: 'My Assignments', url: '#' },
-          { label: 'Subsidy Application Form', url: '#' },
-        ],
-      },
+      { kind: 'drill', label: 'Admin Penalties', icon: 'pricetag', panel: 'adminPenalties' },
+      { kind: 'drill', label: 'Certification', icon: 'ribbon', panel: 'certification' },
+      { kind: 'item', label: 'Child Registration', icon: 'id-card', url: '#' },
+      { kind: 'drill', label: 'Claims', icon: 'list', panel: 'claims' },
+      { kind: 'item', label: 'Family Portal', icon: 'home', url: '#' },
+      { kind: 'drill', label: 'Funding', icon: 'file-tray-full', panel: 'funding' },
+      { kind: 'drill', label: 'GOA User Management', icon: 'key', panel: 'goaUserMgmt' },
+      { kind: 'drill', label: 'Licensing', icon: 'shield-checkmark', panel: 'licensing' },
+      { kind: 'drill', label: 'Post Verification', icon: 'checkmark-done', panel: 'postVerification' },
+      { kind: 'drill', label: 'Program User Management', icon: 'finger-print', panel: 'programUserMgmt' },
+      { kind: 'item', label: 'Registered Children Report', icon: 'document-text', url: '#' },
+      { kind: 'drill', label: 'Subsidy', icon: 'body', panel: 'subsidy' },
+    ],
+    certification: [
+      { kind: 'item', label: 'Work Queue', url: '#' },
+      { kind: 'item', label: 'My Assignments', url: '#' },
+      { kind: 'item', label: 'Search', url: '#' },
+      { kind: 'item', label: 'Admin Data', url: '#' },
+    ],
+    claims: [
+      { kind: 'item', label: 'Assess Claims', url: '#' },
+      { kind: 'item', label: 'Assess Adjustments', url: '#' },
+      { kind: 'item', label: 'Submit Adjustments', url: '#' },
+      { kind: 'item', label: 'Payment Statements', url: '#' },
+    ],
+    adminPenalties: [
+      { kind: 'item', label: 'Penalties', url: '#' },
+      { kind: 'item', label: 'Reports', url: '#' },
     ],
     funding: [
       {
         kind: 'group',
         heading: 'Affordability Grant',
-        icon: 'albums',
+        icon: 'shapes',
         items: [
           { label: 'Programs', url: '#' },
           { label: 'Agreement Management', url: '#' },
@@ -156,7 +120,7 @@ export class MainMenu2Component {
           { label: 'Contract Management', url: '#' },
         ],
       },
-      { kind: 'item', label: 'Space Creation', icon: 'grid', url: '#' },
+      { kind: 'item', label: 'Space Creation', icon: 'expand', url: '#' },
       {
         kind: 'group',
         heading: 'Wage Top-Up & PD',
@@ -166,6 +130,36 @@ export class MainMenu2Component {
           { label: 'Agreement Management', url: '#' },
         ],
       },
+    ],
+    postVerification: [
+      { kind: 'item', label: '30 Day Letter', url: '#' },
+      { kind: 'item', label: 'Warning Letter', url: '#' },
+      { kind: 'item', label: 'Suspension Letter', url: '#' },
+      { kind: 'item', label: 'RoR - File Closure', url: '#' },
+      { kind: 'item', label: 'RoR - Debt Recovery Team', url: '#' },
+      { kind: 'item', label: 'Completed', url: '#' },
+    ],
+    goaUserMgmt: [
+      { kind: 'item', label: 'GOA User Management', url: '#' },
+      { kind: 'item', label: 'Identity and Access Management', url: '#' },
+    ],
+    licensing: [
+      { kind: 'item', label: 'Dashboard', url: '#' },
+      { kind: 'item', label: 'Child Care Program Search', url: '#' },
+      { kind: 'item', label: 'Program Educator Search', url: '#' },
+      { kind: 'item', label: 'People Search', url: '#' },
+      { kind: 'item', label: 'Admin Data', url: '#' },
+    ],
+    programUserMgmt: [
+      { kind: 'item', label: 'User Access Management', url: '#' },
+      { kind: 'item', label: 'Legal Representative Management', url: '#' },
+      { kind: 'item', label: 'Access Request', url: '#' },
+      { kind: 'item', label: 'Removal Request', url: '#' },
+    ],
+    subsidy: [
+      { kind: 'item', label: 'Work Queue', url: '#', current: true },
+      { kind: 'item', label: 'My Assignments', url: '#' },
+      { kind: 'item', label: 'Subsidy Application Form', url: '#' },
     ],
   };
 
