@@ -95,7 +95,7 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
 
   private readonly panels: Record<string, MenuEntry[]> = {
     root: [
-      { kind: 'drill', label: 'Admin Penalties', icon: 'pricetag', panel: 'adminPenalties' },
+      { kind: 'drill', label: 'Admin Penalties', icon: 'ticket', panel: 'adminPenalties' },
       { kind: 'drill', label: 'Certification', icon: 'ribbon', panel: 'certification' },
       { kind: 'drill', label: 'Child Registration', icon: 'id-card', panel: 'childRegistration' },
       { kind: 'drill', label: 'Claims', icon: 'list', panel: 'claims' },
@@ -152,7 +152,7 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
       {
         kind: 'group',
         heading: 'ECE Workforce Supports Grant',
-        icon: 'trending-up',
+        icon: 'server',
         items: [
           { label: 'Programs', url: '#' },
           { label: 'Agreement Management', url: '#' },
