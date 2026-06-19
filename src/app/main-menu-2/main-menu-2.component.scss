@@ -11,6 +11,10 @@ goa-work-side-menu:not([open]) .panel-title {
   display: none;
 }
 
+goa-work-side-menu:not([open]) .in-subpanel {
+  display: none;
+}
+
 .panel-title {
   margin: var(--goa-space-2xs) var(--goa-space-m) var(--goa-space-xs);
   color: var(--goa-color-text-secondary);

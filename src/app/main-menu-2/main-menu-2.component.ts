@@ -49,9 +49,7 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
     const menu = this.el.nativeElement.querySelector('goa-work-side-menu');
     if (!menu) return;
     this.observer = new MutationObserver(() => {
-      const isOpen = menu.hasAttribute('open');
-      this.isMenuOpen = isOpen;
-      if (!isOpen) this.backToRoot();
+      this.isMenuOpen = menu.hasAttribute('open');
     });
     this.observer.observe(menu, { attributes: true, attributeFilter: ['open'] });
   }
@@ -69,7 +67,6 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
   readonly helpItem = { label: 'Help Centre', icon: 'help-circle', url: '#' };
 
   readonly accountMenuItems = [
-    { label: 'Settings', icon: 'settings', action: 'settings' as const },
     { label: 'Sign out', icon: 'log-out', action: 'logout' as const },
   ];
 
