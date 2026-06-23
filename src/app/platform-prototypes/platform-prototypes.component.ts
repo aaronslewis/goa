@@ -41,6 +41,11 @@ export class PlatformPrototypesComponent {
       path: '/menu-2',
     },
     {
+      label: 'Workspace menu (child icons)',
+      description: 'ECDS side navigation — collapsed Certification panel shows abstract child icons.',
+      path: '/menu-3',
+    },
+    {
       label: 'Provider portal menu',
       description: 'Provider side navigation menu without drill-down behavior.',
       path: '/provider-portal-menu',

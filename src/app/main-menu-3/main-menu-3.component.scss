@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  height: 100vh;
+}
+
+goa-work-side-menu {
+  height: 100%;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  margin: var(--goa-space-2xs) var(--goa-space-m) var(--goa-space-xs);
+  color: var(--goa-color-text-secondary);
+  font: var(--goa-typography-heading-xs);
+  font-family: var(--goa-font-family-sans);
+}
+
+goa-work-side-menu:not([open]) .panel-title {
+  justify-content: center;
+  margin-inline: 0;
+}
+
+.account-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-3xs);
+}
+
+.account-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-m);
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-radius: var(--goa-border-radius-m);
+  color: var(--goa-color-text-default);
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  text-align: left;
+  cursor: pointer;
+  min-height: 40px;
+}
+
+.account-menu-item:hover {
+  background: var(--goa-color-greyscale-100);
+}
+
+.account-menu-item:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: -2px;
+}
+
+.flyout-host {
+  display: block;
+}
+
+.flyout-panel {
+  position: fixed;
+  z-index: 1000;
+  min-width: 200px;
+  background: var(--goa-color-greyscale-white);
+  border: 1px solid var(--goa-color-greyscale-200);
+  border-radius: var(--goa-border-radius-m);
+  box-shadow: var(--goa-shadow-400);
+  padding: var(--goa-space-xs);
+}
+
+.flyout-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  margin: 0 0 var(--goa-space-2xs);
+  padding: var(--goa-space-2xs) var(--goa-space-s);
+  color: var(--goa-color-text-secondary);
+  font: var(--goa-typography-heading-xs);
+  font-family: var(--goa-font-family-sans);
+  border-bottom: 1px solid var(--goa-color-greyscale-100);
+}
+
+.flyout-item {
+  display: block;
+  padding: var(--goa-space-xs) var(--goa-space-s);
+  color: var(--goa-color-text-default);
+  text-decoration: none;
+  border-radius: var(--goa-border-radius-m);
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  cursor: pointer;
+}
+
+.flyout-item:hover {
+  background: var(--goa-color-greyscale-100);
+}
+
+.flyout-item:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: -2px;
+}

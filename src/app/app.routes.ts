@@ -4,6 +4,7 @@ import { HelpCentreComponent } from './help-centre/help-centre.component';
 import { SageWidgetComponent } from './sage-widget/sage-widget.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { MainMenu2Component } from './main-menu-2/main-menu-2.component';
+import { MainMenu3Component } from './main-menu-3/main-menu-3.component';
 import { ProviderPortalMenuComponent } from './provider-portal-menu/provider-portal-menu.component';
 import { PlatformPrototypesComponent } from './platform-prototypes/platform-prototypes.component';
 import { UserAccessManagementComponent } from './user-access-management/user-access-management.component';
@@ -27,6 +28,7 @@ export const routes: Routes = [
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },
   { path: 'menu', component: MainMenuComponent, title: 'Workspace menu' },
   { path: 'menu-2', component: MainMenu2Component, title: 'Workspace menu (variation)' },
+  { path: 'menu-3', component: MainMenu3Component, title: 'Workspace menu (child icons)' },
   { path: 'provider-portal-menu', component: ProviderPortalMenuComponent, title: 'Provider portal menu' },
   {
     path: 'user-access-management',
