@@ -44,6 +44,7 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
   constructor(private router: Router, private el: ElementRef) {}
 
   private observer?: MutationObserver;
+  private hoverTimer?: ReturnType<typeof setTimeout>;
 
   ngAfterViewInit(): void {
     const menu = this.el.nativeElement.querySelector('goa-work-side-menu');
@@ -56,6 +57,16 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
+    clearTimeout(this.hoverTimer);
+  }
+
+  onMenuMouseEnter(): void {
+    if (this.isMenuOpen) return;
+    this.hoverTimer = setTimeout(() => { this.isMenuOpen = true; }, 700);
+  }
+
+  onMenuMouseLeave(): void {
+    clearTimeout(this.hoverTimer);
   }
 
   readonly heading = 'Early Childhood Development System';
@@ -201,6 +212,13 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
 
   get panelTitle(): string {
     return this.panelTitles[this.activePanel] ?? '';
+  }
+
+  get panelIcon(): string {
+    const drill = this.panels['root'].find(
+      e => e.kind === 'drill' && e.panel === this.activePanel
+    ) as MenuDrill | undefined;
+    return drill?.icon ?? '';
   }
 
   drillInto(panel: string): void {

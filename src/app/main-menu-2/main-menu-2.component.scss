@@ -7,19 +7,19 @@ goa-work-side-menu {
   height: 100%;
 }
 
-goa-work-side-menu:not([open]) .panel-title {
-  display: none;
-}
-
-goa-work-side-menu:not([open]) .in-subpanel {
-  display: none;
-}
-
 .panel-title {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
   margin: var(--goa-space-2xs) var(--goa-space-m) var(--goa-space-xs);
   color: var(--goa-color-text-secondary);
   font: var(--goa-typography-heading-xs);
   font-family: var(--goa-font-family-sans);
+}
+
+goa-work-side-menu:not([open]) .panel-title {
+  justify-content: center;
+  margin-inline: 0;
 }
 
 .account-menu {

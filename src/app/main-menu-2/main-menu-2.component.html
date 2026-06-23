@@ -5,10 +5,12 @@
   [open]="isMenuOpen"
   (collapse)="isMenuOpen = false"
   (expand)="isMenuOpen = true"
+  (mouseenter)="onMenuMouseEnter()"
+  (mouseleave)="onMenuMouseLeave()"
   aria-label="Workspace navigation">
 
-  <div slot="primary" [class.in-subpanel]="!isRoot">
-    @if (!isRoot && isMenuOpen) {
+  <div slot="primary">
+    @if (!isRoot) {
       <goa-work-side-menu-item
         icon="arrow-back"
         label="Back to all"
@@ -16,9 +18,23 @@
         (click)="backToRoot()"
         (keydown.enter)="backToRoot()"
         (keydown.space)="$event.preventDefault(); backToRoot()"></goa-work-side-menu-item>
-      <p class="panel-title">{{ panelTitle }}</p>
+      @if (isMenuOpen) {
+        <p class="panel-title">
+          @if (panelIcon) {
+            <goa-icon [attr.type]="panelIcon" size="small"></goa-icon>
+          }
+          {{ panelTitle }}
+        </p>
+      } @else {
+        <goa-work-side-menu-item
+          [attr.icon]="panelIcon"
+          [attr.label]="panelTitle"
+          current="true">
+        </goa-work-side-menu-item>
+      }
     }
 
+    @if (isRoot || isMenuOpen) {
     @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
       @if (entry.kind === 'item') {
         <goa-work-side-menu-item
@@ -47,6 +63,7 @@
           }
         </goa-work-side-menu-group>
       }
+    }
     }
   </div>
 
