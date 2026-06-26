@@ -289,11 +289,25 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
       timestamp: new Date('2026-06-25T09:00:00'),
     },
     {
+      id: 'n4',
+      type: 'important',
+      heading: '45 claims adjustment requests for claim period May 2026',
+      body: '45 claims adjustment requests have been submitted for the May 2026 claim period and are pending review.',
+      timestamp: new Date('2026-06-26T07:00:00'),
+    },
+    {
       id: 'n2',
       type: 'important',
       heading: 'Suspected duplicate registrations require review',
       body: '14 suspected duplicate child registrations are awaiting review in Child Registration. Please resolve them before end of day.',
       timestamp: new Date('2026-06-26T08:30:00'),
+    },
+    {
+      id: 'n5',
+      type: 'information',
+      heading: '10 Family Day Home Agency Contracts signed for Apr 1, 2026 – Mar 31, 2027',
+      body: '10 Family Day Home Agency Contracts have been signed for the contract term April 1, 2026 to March 31, 2027.',
+      timestamp: new Date('2026-06-26T09:15:00'),
     },
     {
       id: 'n3',
@@ -341,10 +355,10 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
   readonly today = new Date();
 
   readonly stats = [
-    { label: 'Pending review', count: 14, accent: 'warning' },
-    { label: 'Needs action', count: 3, accent: 'emergency' },
-    { label: 'In progress', count: 8, accent: 'info' },
-    { label: 'Completed today', count: 6, accent: 'success' },
+    { label: 'New programs licensed', count: 10, accent: 'info', date: new Date('2026-06-26') },
+    { label: 'Claims assessments assigned to you', count: 3, accent: 'warning', date: null },
+    { label: 'Wage Top-Up contracts signed by provider', count: 3, accent: 'success', date: null },
+    { label: 'Work queue items assigned to you', count: 3, accent: 'emergency', date: null },
   ];
 
   // ── What's new ────────────────────────────────────────────────────────────

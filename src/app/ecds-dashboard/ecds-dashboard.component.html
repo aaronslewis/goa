@@ -131,6 +131,9 @@
               <button type="button" class="stat-btn" [attr.aria-label]="stat.count + ' ' + stat.label">
                 <span class="stat-btn__count" [class]="'stat-btn__count--' + stat.accent">{{ stat.count }}</span>
                 <span class="stat-btn__label">{{ stat.label }}</span>
+                @if (stat.date) {
+                  <span class="stat-btn__date">{{ stat.date | date: 'd MMM yyyy' }}</span>
+                }
               </button>
             </goa-container>
           </div>
@@ -160,32 +163,30 @@
             </goa-container>
           } @else {
             <div class="notif-stack">
-              @for (n of activeNotifications; track n.id) {
-                <goa-container [attr.type]="containerType(n.type)" padding="compact">
-                  <div slot="title">
-                    <div class="notif-title-row">
-                      <span class="notif-icon">
-                        @if (n.type === 'emergency') {
-                          <goa-icon type="warning" size="small"></goa-icon>
-                        } @else if (n.type === 'important') {
-                          <goa-icon type="alert-circle" size="small"></goa-icon>
-                        } @else {
-                          <goa-icon type="information-circle" size="small"></goa-icon>
-                        }
-                      </span>
-                      <span class="notif-heading-text">{{ n.heading }}</span>
-                      <button
-                        type="button"
-                        class="notif-dismiss"
-                        [attr.aria-label]="'Dismiss: ' + n.heading"
-                        (click)="dismissNotification(n.id)">
-                        <goa-icon type="close" size="small"></goa-icon>
-                      </button>
-                    </div>
+              @for (n of activeNotifications; track n.id; let i = $index) {
+                <div class="notif-card notif-card--{{ n.type }}" role="listitem">
+                  <span class="notif-icon notif-icon--{{ n.type }}">
+                    @if (n.type === 'emergency') {
+                      <goa-icon type="warning" size="medium"></goa-icon>
+                    } @else if (n.type === 'important') {
+                      <goa-icon type="alert-circle" size="medium"></goa-icon>
+                    } @else {
+                      <goa-icon type="information-circle" size="medium"></goa-icon>
+                    }
+                  </span>
+                  <div class="notif-content">
+                    <p class="notif-heading-text">{{ n.heading }}</p>
+                    <p class="notif-summary">{{ n.body }}</p>
                   </div>
-                  <p class="notif-body">{{ n.body }}</p>
-                  <p class="notif-time">{{ n.timestamp | date: 'd MMM yyyy, h:mm a' }}</p>
-                </goa-container>
+                  <a href="#" class="notif-view-link">View</a>
+                  <button
+                    type="button"
+                    class="notif-dismiss"
+                    [attr.aria-label]="'Dismiss: ' + n.heading"
+                    (click)="dismissNotification(n.id)">
+                    <goa-icon type="close" size="small"></goa-icon>
+                  </button>
+                </div>
               }
             </div>
           }
