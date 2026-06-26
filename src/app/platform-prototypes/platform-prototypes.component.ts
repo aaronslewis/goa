@@ -21,6 +21,12 @@ export class PlatformPrototypesComponent {
 
   readonly prototypes: PrototypeLink[] = [
     {
+      label: 'ECDS dashboard home',
+      description: 'Staff dashboard with left nav, notifications, and what\'s new panel.',
+      path: '/ecds-dashboard',
+      status: 'In progress',
+    },
+    {
       label: 'Home page redesign',
       description: 'My Programs landing page redesign.',
       path: '/home-page-design',

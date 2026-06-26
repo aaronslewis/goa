@@ -1,0 +1,227 @@
+<goa-work-side-menu
+  [attr.heading]="heading"
+  [attr.user-name]="userName"
+  [attr.user-secondary-text]="userSecondaryText"
+  [open]="isMenuOpen"
+  (collapse)="isMenuOpen = false"
+  (expand)="isMenuOpen = true"
+  (mouseenter)="onMenuMouseEnter()"
+  (mouseleave)="onMenuMouseLeave()"
+  aria-label="Workspace navigation">
+
+  <div slot="primary">
+    @if (!isRoot) {
+      <goa-work-side-menu-item
+        icon="arrow-back"
+        label="Back to all"
+        role="button"
+        (click)="backToRoot()"
+        (keydown.enter)="backToRoot()"
+        (keydown.space)="$event.preventDefault(); backToRoot()">
+      </goa-work-side-menu-item>
+      @if (isMenuOpen) {
+        <p class="panel-title">
+          @if (panelIcon) {
+            <goa-icon [attr.type]="panelIcon" size="small"></goa-icon>
+          }
+          {{ panelTitle }}
+        </p>
+      } @else {
+        <goa-work-side-menu-item
+          [attr.icon]="panelIcon"
+          [attr.label]="panelTitle"
+          current="true">
+        </goa-work-side-menu-item>
+      }
+    }
+
+    @if (isRoot || isMenuOpen) {
+      @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
+        @if (entry.kind === 'item') {
+          <div class="nav-item-wrapper">
+            <goa-work-side-menu-item
+              [attr.icon]="entry.icon"
+              [attr.label]="entry.label"
+              [attr.url]="entry.action ? null : entry.url"
+              [attr.current]="entry.current ? true : null"
+              [attr.role]="entry.action ? 'button' : null"
+              (click)="entry.action ? onNavItem(entry.action, entry.url) : null"
+              (keydown.enter)="entry.action ? onNavItem(entry.action, entry.url) : null"
+              (keydown.space)="onNavItemSpace($event, entry.action, entry.url)">
+            </goa-work-side-menu-item>
+            @if (entry.label === 'Home' && notificationCount > 0 && isMenuOpen) {
+              <span class="notif-badge" aria-label="{{ notificationCount }} unread notifications">
+                {{ notificationCount }}
+              </span>
+            }
+          </div>
+        } @else if (entry.kind === 'drill') {
+          <goa-work-side-menu-item
+            [attr.icon]="entry.icon"
+            [attr.label]="entry.label"
+            role="button"
+            (click)="drillInto(entry.panel)"
+            (keydown.enter)="drillInto(entry.panel)"
+            (keydown.space)="$event.preventDefault(); drillInto(entry.panel)">
+          </goa-work-side-menu-item>
+        } @else {
+          <goa-work-side-menu-group
+            [attr.heading]="entry.heading"
+            [attr.icon]="entry.icon">
+            @for (child of entry.items; track child.label) {
+              <goa-work-side-menu-item
+                [attr.label]="child.label"
+                [attr.url]="child.url"
+                [attr.current]="child.current ? true : null">
+              </goa-work-side-menu-item>
+            }
+          </goa-work-side-menu-group>
+        }
+      }
+    }
+  </div>
+
+  <div slot="secondary">
+    <goa-work-side-menu-item
+      [attr.icon]="searchItem.icon"
+      [attr.label]="searchItem.label"
+      [attr.url]="searchItem.url">
+    </goa-work-side-menu-item>
+    <goa-work-side-menu-item
+      [attr.icon]="helpItem.icon"
+      [attr.label]="helpItem.label"
+      [attr.url]="helpItem.url">
+    </goa-work-side-menu-item>
+  </div>
+
+  <div slot="account" class="account-menu" role="menu" [attr.aria-label]="'Account menu for ' + userName">
+    @for (item of accountMenuItems; track item.action) {
+      <button
+        type="button"
+        role="menuitem"
+        class="account-menu-item"
+        (click)="onAccountAction(item.action)">
+        <goa-icon [attr.type]="item.icon" size="small"></goa-icon>
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  </div>
+</goa-work-side-menu>
+
+<!-- ── Main content ─────────────────────────────────────────────────── -->
+<main class="dashboard-main" id="main-content">
+
+  @if (activeSection === 'home') {
+    <div class="home-content">
+
+      <!-- Greeting -->
+      <div class="greeting">
+        <div>
+          <h1 class="greeting__name">{{ greeting }}, {{ firstName }}</h1>
+          <p class="greeting__sub">Here's your workload overview</p>
+        </div>
+        <p class="greeting__date">{{ today | date: 'EEEE, d MMMM yyyy' }}</p>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="stat-row" role="list" aria-label="Workload summary">
+        @for (stat of stats; track stat.label) {
+          <div role="listitem" class="stat-cell">
+            <goa-container type="interactive" padding="compact">
+              <button type="button" class="stat-btn" [attr.aria-label]="stat.count + ' ' + stat.label">
+                <span class="stat-btn__count" [class]="'stat-btn__count--' + stat.accent">{{ stat.count }}</span>
+                <span class="stat-btn__label">{{ stat.label }}</span>
+              </button>
+            </goa-container>
+          </div>
+        }
+      </div>
+
+      <!-- Two-column body -->
+      <div class="body-grid">
+
+        <!-- Left: Notifications -->
+        <section aria-labelledby="notif-heading">
+          <div class="section-header">
+            <h2 class="section-title" id="notif-heading">
+              Notifications
+              @if (notificationCount > 0) {
+                <goa-badge type="emergency" [attr.content]="notificationCount.toString()"></goa-badge>
+              }
+            </h2>
+          </div>
+
+          @if (activeNotifications.length === 0) {
+            <goa-container type="non-interactive" padding="compact">
+              <div class="empty-state">
+                <goa-icon type="checkmark-circle" size="small"></goa-icon>
+                <span>No notifications at this time.</span>
+              </div>
+            </goa-container>
+          } @else {
+            <div class="notif-stack">
+              @for (n of activeNotifications; track n.id) {
+                <goa-container [attr.type]="containerType(n.type)" padding="compact">
+                  <div slot="title">
+                    <div class="notif-title-row">
+                      <span class="notif-icon">
+                        @if (n.type === 'emergency') {
+                          <goa-icon type="warning" size="small"></goa-icon>
+                        } @else if (n.type === 'important') {
+                          <goa-icon type="alert-circle" size="small"></goa-icon>
+                        } @else {
+                          <goa-icon type="information-circle" size="small"></goa-icon>
+                        }
+                      </span>
+                      <span class="notif-heading-text">{{ n.heading }}</span>
+                      <button
+                        type="button"
+                        class="notif-dismiss"
+                        [attr.aria-label]="'Dismiss: ' + n.heading"
+                        (click)="dismissNotification(n.id)">
+                        <goa-icon type="close" size="small"></goa-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <p class="notif-body">{{ n.body }}</p>
+                  <p class="notif-time">{{ n.timestamp | date: 'd MMM yyyy, h:mm a' }}</p>
+                </goa-container>
+              }
+            </div>
+          }
+        </section>
+
+        <!-- Right: New releases -->
+        <section aria-labelledby="whatsnew-heading">
+          <div class="section-header">
+            <h2 class="section-title" id="whatsnew-heading">New releases</h2>
+            <a href="#" class="section-link">View all</a>
+          </div>
+          <goa-container>
+            <ol class="release-list" aria-label="Recent releases">
+              @for (item of whatsNew; track item.version) {
+                <li class="release-item">
+                  <div class="release-meta">
+                    <goa-badge type="information" [attr.content]="item.service"></goa-badge>
+                    <span class="release-version">v{{ item.version }}</span>
+                    <span class="release-date">{{ item.date | date: 'd MMM yyyy' }}</span>
+                  </div>
+                  <p class="release-heading">{{ item.heading }}</p>
+                  <p class="release-summary">{{ item.summary }}</p>
+                </li>
+              }
+            </ol>
+          </goa-container>
+        </section>
+
+      </div>
+    </div>
+  } @else {
+    <div class="section-placeholder">
+      <goa-icon type="construct" size="large"></goa-icon>
+      <h2>{{ panelTitle }}</h2>
+      <p>This section is under construction in the prototype.</p>
+    </div>
+  }
+
+</main>

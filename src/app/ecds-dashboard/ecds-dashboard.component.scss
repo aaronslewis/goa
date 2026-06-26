@@ -1,0 +1,363 @@
+:host {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+goa-work-side-menu {
+  flex-shrink: 0;
+  height: 100%;
+}
+
+/* ── Nav helpers ─────────────────────────────────────────────────────────── */
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  margin: var(--goa-space-2xs) var(--goa-space-m) var(--goa-space-xs);
+  color: var(--goa-color-text-secondary);
+  font: var(--goa-typography-heading-xs);
+  font-family: var(--goa-font-family-sans);
+}
+
+.account-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-3xs);
+}
+
+.account-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-m);
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-radius: var(--goa-border-radius-m);
+  color: var(--goa-color-text-default);
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  text-align: left;
+  cursor: pointer;
+  min-height: 40px;
+}
+
+.account-menu-item:hover {
+  background: var(--goa-color-greyscale-100);
+}
+
+.account-menu-item:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: -2px;
+}
+
+.nav-item-wrapper {
+  position: relative;
+}
+
+.notif-badge {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--goa-space-3xs);
+  background: var(--goa-color-emergency-default);
+  border-radius: 9px;
+  color: var(--goa-color-greyscale-white);
+  font-family: var(--goa-font-family-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* ── Main content ────────────────────────────────────────────────────────── */
+
+.dashboard-main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  background: var(--goa-color-greyscale-50);
+}
+
+.home-content {
+  padding: var(--goa-space-2xl);
+  max-width: 1100px;
+}
+
+/* ── Greeting ────────────────────────────────────────────────────────────── */
+
+.greeting {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--goa-space-xl);
+}
+
+.greeting__name {
+  margin: 0 0 var(--goa-space-3xs);
+  font: var(--goa-typography-heading-xl);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.greeting__sub {
+  margin: 0;
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.greeting__date {
+  margin: 0;
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+  white-space: nowrap;
+  padding-top: var(--goa-space-3xs);
+}
+
+/* ── Stat row ────────────────────────────────────────────────────────────── */
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--goa-space-m);
+  margin-bottom: var(--goa-space-xl);
+}
+
+.stat-cell {
+  min-width: 0;
+}
+
+.stat-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--goa-space-2xs);
+  width: 100%;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: var(--goa-space-xs) 0;
+  text-align: left;
+}
+
+.stat-btn:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+  border-radius: var(--goa-border-radius-s);
+}
+
+.stat-btn__count {
+  font-family: var(--goa-font-family-sans);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-btn__count--warning  { color: var(--goa-color-warning-dark); }
+.stat-btn__count--emergency { color: var(--goa-color-emergency-default); }
+.stat-btn__count--info     { color: var(--goa-color-info-default); }
+.stat-btn__count--success  { color: var(--goa-color-status-success-dark, #1d6b3a); }
+
+.stat-btn__label {
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+/* ── Two-column body ─────────────────────────────────────────────────────── */
+
+.body-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--goa-space-xl);
+  align-items: start;
+}
+
+/* ── Section header ──────────────────────────────────────────────────────── */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--goa-space-m);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  margin: 0;
+  font: var(--goa-typography-heading-m);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.section-link {
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-interactive-default);
+  text-decoration: underline;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.section-link:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+  border-radius: var(--goa-border-radius-s);
+}
+
+/* ── Notifications ───────────────────────────────────────────────────────── */
+
+.notif-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-s);
+}
+
+.notif-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  width: 100%;
+}
+
+.notif-icon {
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.notif-heading-text {
+  flex: 1;
+  font: var(--goa-typography-heading-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.notif-dismiss {
+  flex-shrink: 0;
+  background: transparent;
+  border: 0;
+  border-radius: var(--goa-border-radius-s);
+  color: var(--goa-color-text-secondary);
+  cursor: pointer;
+  padding: var(--goa-space-3xs);
+  line-height: 0;
+}
+
+.notif-dismiss:hover {
+  color: var(--goa-color-text-default);
+}
+
+.notif-dismiss:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+}
+
+.notif-body {
+  margin: var(--goa-space-2xs) 0 var(--goa-space-3xs);
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.notif-time {
+  margin: 0;
+  font: var(--goa-typography-body-xs);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-s);
+  color: var(--goa-color-text-secondary);
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+}
+
+/* ── What's new ──────────────────────────────────────────────────────────── */
+
+.release-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.release-item {
+  padding: var(--goa-space-m) 0;
+  border-bottom: 1px solid var(--goa-color-greyscale-150);
+}
+
+.release-item:first-child {
+  padding-top: 0;
+}
+
+.release-item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.release-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-s);
+  margin-bottom: var(--goa-space-2xs);
+}
+
+.release-version,
+.release-date {
+  font: var(--goa-typography-body-xs);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.release-heading {
+  margin: 0 0 var(--goa-space-3xs);
+  font: var(--goa-typography-heading-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.release-summary {
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+/* ── Placeholder ─────────────────────────────────────────────────────────── */
+
+.section-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: var(--goa-space-m);
+  color: var(--goa-color-text-secondary);
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  text-align: center;
+  padding: var(--goa-space-3xl);
+}
+
+.section-placeholder h2 {
+  margin: 0;
+  font: var(--goa-typography-heading-l);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.section-placeholder p {
+  margin: 0;
+}

@@ -9,6 +9,7 @@ import { ProviderPortalMenuComponent } from './provider-portal-menu/provider-por
 import { PlatformPrototypesComponent } from './platform-prototypes/platform-prototypes.component';
 import { UserAccessManagementComponent } from './user-access-management/user-access-management.component';
 import { MyProgramsComponent } from './my-programs/my-programs.component';
+import { EcdsDashboardComponent } from './ecds-dashboard/ecds-dashboard.component';
 
 @Component({
   standalone: true,
@@ -25,6 +26,7 @@ class HelpCentrePage {}
 export const routes: Routes = [
   { path: '', component: PlatformPrototypesComponent, title: 'Platform prototypes', pathMatch: 'full' },
   { path: 'home-page-design', component: MyProgramsComponent, title: 'My Programs — Home Page Design' },
+  { path: 'ecds-dashboard', component: EcdsDashboardComponent, title: 'ECDS Dashboard — Home' },
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },
   { path: 'menu', component: MainMenuComponent, title: 'Workspace menu' },
   { path: 'menu-2', component: MainMenu2Component, title: 'Workspace menu (variation)' },
