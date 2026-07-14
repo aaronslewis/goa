@@ -156,126 +156,324 @@
         }
       </div>
 
-      <!-- Toolbar -->
-      <div class="toolbar">
-        <div class="toolbar-search">
-          <label for="staff-search" class="sr-only">Search staff</label>
-          <div class="search-field">
-            <goa-icon type="search" size="small" aria-hidden="true"></goa-icon>
-            <input
-              id="staff-search"
-              type="search"
-              class="search-input"
-              placeholder="Search by first name, last name or email"
-              [value]="searchQuery()"
-              (input)="onSearch($event)" />
+      <!-- Per-program staff view: reused inside the "By program" tab for Super
+           Admins, and shown directly (no tabs) for Access Managers and Staff. -->
+      <ng-template #byProgramView>
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <label for="staff-search" class="sr-only">Search staff</label>
+            <div class="search-field">
+              <goa-icon type="search" size="small" aria-hidden="true"></goa-icon>
+              <input
+                id="staff-search"
+                type="search"
+                class="search-input"
+                placeholder="Search by first name, last name or email"
+                [value]="searchQuery()"
+                (input)="onSearch($event)" />
+            </div>
           </div>
+          <goa-button (_click)="openInviteModal()">
+            <goa-icon slot="leadingIcon" type="add" size="small"></goa-icon>
+            Invite new staff
+          </goa-button>
         </div>
-        <goa-button (_click)="openInviteModal()">
-          <goa-icon slot="leadingIcon" type="add" size="small"></goa-icon>
-          Invite new staff
-        </goa-button>
-      </div>
 
-      <!-- Staff table -->
-      <div class="table-wrapper" role="region" aria-label="Staff list" tabindex="0">
-        <table class="staff-table">
-          <thead>
-            <tr>
-              <th scope="col">
-                <button type="button" class="col-sort">
-                  First name
-                  <goa-icon type="swap-vertical" size="small" aria-hidden="true"></goa-icon>
-                </button>
-              </th>
-              <th scope="col">
-                <button type="button" class="col-sort">
-                  Last name
-                  <goa-icon type="swap-vertical" size="small" aria-hidden="true"></goa-icon>
-                </button>
-              </th>
-              <th scope="col">
-                <button type="button" class="col-sort">
-                  User role
-                  <goa-icon type="swap-vertical" size="small" aria-hidden="true"></goa-icon>
-                </button>
-              </th>
-              <th scope="col">Account status</th>
-              <th scope="col">Email</th>
-              <th scope="col">Service access</th>
-              <th scope="col"><span class="sr-only">Actions</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            @if (staff.length === 0) {
+        <div class="table-wrapper" role="region" aria-label="Staff list" tabindex="0">
+          <table class="staff-table">
+            <thead>
               <tr>
-                <td colspan="7" class="empty-row">
-                  @if (searchQuery()) {
-                    No staff match your search.
-                  } @else {
-                    No staff have been added to this program yet.
-                  }
-                </td>
+                <th scope="col">
+                  <button type="button" class="col-sort">
+                    First name
+                    <goa-icon type="swap-vertical" size="small" aria-hidden="true"></goa-icon>
+                  </button>
+                </th>
+                <th scope="col">
+                  <button type="button" class="col-sort">
+                    Last name
+                    <goa-icon type="swap-vertical" size="small" aria-hidden="true"></goa-icon>
+                  </button>
+                </th>
+                <th scope="col">
+                  <button type="button" class="col-sort">
+                    User role
+                    <goa-icon type="swap-vertical" size="small" aria-hidden="true"></goa-icon>
+                  </button>
+                </th>
+                <th scope="col">Account status</th>
+                <th scope="col">Email</th>
+                <th scope="col">Service access</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
               </tr>
-            }
-            @for (member of staff; track member.id) {
-              <tr>
-                <td>{{ member.firstName }}</td>
-                <td>{{ member.lastName }}</td>
-                <td>{{ member.role }}</td>
-                <td>
-                  <goa-badge
-                    [attr.type]="statusType(member.status)"
-                    [attr.content]="member.status | titlecase">
-                  </goa-badge>
-                </td>
-                <td>{{ member.email }}</td>
-                <td>
-                  <ul class="service-list">
-                    @for (svc of member.services; track svc) {
-                      <li>{{ svc }}</li>
+            </thead>
+            <tbody>
+              @if (staff.length === 0) {
+                <tr>
+                  <td colspan="7" class="empty-row">
+                    @if (searchQuery()) {
+                      No staff match your search.
+                    } @else {
+                      No staff have been added to this program yet.
                     }
-                  </ul>
-                </td>
-                <td>
-                  <a href="#" class="action-link">Edit</a>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Invite staff modal -->
-      <goa-modal
-        [attr.open]="inviteModalOpen() || null"
-        heading="Invite new staff"
-        closable="true"
-        (_close)="closeInviteModal()">
-        <p class="modal-note">
-          The invited staff member will receive an email with instructions to access
-          <strong>{{ programService.displayName() }}</strong>.
-        </p>
-        <goa-form-item label="First name">
-          <goa-input name="invite-first" type="text" placeholder="Enter first name"></goa-input>
-        </goa-form-item>
-        <goa-form-item label="Last name">
-          <goa-input name="invite-last" type="text" placeholder="Enter last name"></goa-input>
-        </goa-form-item>
-        <goa-form-item label="Email address">
-          <goa-input name="invite-email" type="email" placeholder="name@example.com"></goa-input>
-        </goa-form-item>
-        <goa-form-item label="User role">
-          <goa-dropdown name="invite-role" placeholder="Select a role…">
-            <goa-dropdown-item value="staff" label="Staff"></goa-dropdown-item>
-            <goa-dropdown-item value="access-manager" label="Access Manager"></goa-dropdown-item>
-          </goa-dropdown>
-        </goa-form-item>
-        <div slot="actions">
-          <goa-button (_click)="closeInviteModal()">Send invitation</goa-button>
-          <goa-button type="secondary" (_click)="closeInviteModal()">Cancel</goa-button>
+                  </td>
+                </tr>
+              }
+              @for (member of staff; track member.id) {
+                <tr>
+                  <td>{{ member.firstName }}</td>
+                  <td>{{ member.lastName }}</td>
+                  <td>{{ member.role }}</td>
+                  <td>
+                    <goa-badge
+                      [attr.type]="statusType(member.status)"
+                      [attr.content]="statusLabel(member.status)">
+                    </goa-badge>
+                  </td>
+                  <td>{{ member.email }}</td>
+                  <td>
+                    <ul class="service-list">
+                      @for (svc of member.services; track svc) {
+                        <li>{{ svc }}</li>
+                      }
+                    </ul>
+                  </td>
+                  <td>
+                    <a href="#" class="action-link">Edit</a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
-      </goa-modal>
+
+        <!-- Invite staff modal -->
+        <goa-modal
+          [attr.open]="inviteModalOpen() || null"
+          heading="Invite new staff"
+          closable="true"
+          (_close)="closeInviteModal()">
+          <p class="modal-note">
+            The invited staff member will receive an email with instructions to access
+            <strong>{{ programService.displayName() }}</strong>.
+          </p>
+          <goa-form-item label="First name">
+            <goa-input name="invite-first" type="text" placeholder="Enter first name"></goa-input>
+          </goa-form-item>
+          <goa-form-item label="Last name">
+            <goa-input name="invite-last" type="text" placeholder="Enter last name"></goa-input>
+          </goa-form-item>
+          <goa-form-item label="Email address">
+            <goa-input name="invite-email" type="email" placeholder="name@example.com"></goa-input>
+          </goa-form-item>
+          <goa-form-item label="User role">
+            <goa-dropdown name="invite-role" placeholder="Select a role…">
+              <goa-dropdown-item value="staff" label="Staff"></goa-dropdown-item>
+              <goa-dropdown-item value="access-manager" label="Access Manager"></goa-dropdown-item>
+            </goa-dropdown>
+          </goa-form-item>
+          <div slot="actions">
+            <goa-button (_click)="closeInviteModal()">Send invitation</goa-button>
+            <goa-button type="secondary" (_click)="closeInviteModal()">Cancel</goa-button>
+          </div>
+        </goa-modal>
+      </ng-template>
+
+      @if (programService.role() === 'super-admin') {
+        <div class="view-toggle" role="group" aria-label="Choose a view">
+          <button
+            type="button"
+            class="view-toggle-btn"
+            [class.active]="!orgView()"
+            [attr.aria-pressed]="!orgView()"
+            (click)="setOrgView(false)">
+            By program
+          </button>
+          <button
+            type="button"
+            class="view-toggle-btn"
+            [class.active]="orgView()"
+            [attr.aria-pressed]="orgView()"
+            (click)="setOrgView(true)">
+            All programs
+          </button>
+        </div>
+
+        @if (!orgView()) {
+          <ng-container [ngTemplateOutlet]="byProgramView"></ng-container>
+        } @else {
+            <p class="page-desc org-desc">
+              Manage a person's access across every program in your organization.
+            </p>
+
+            @if (successMessage()) {
+              <goa-callout type="success" heading="Access updated" mb="l">
+                {{ successMessage() }}
+              </goa-callout>
+            }
+
+            <div class="toolbar">
+              <div class="toolbar-search">
+                <label for="org-staff-search" class="sr-only">Search staff</label>
+                <div class="search-field">
+                  <goa-icon type="search" size="small" aria-hidden="true"></goa-icon>
+                  <input
+                    id="org-staff-search"
+                    type="search"
+                    class="search-input"
+                    placeholder="Search by first name, last name or email"
+                    [value]="orgSearchQuery()"
+                    (input)="onOrgSearch($event)" />
+                </div>
+              </div>
+              <goa-form-item label="Filter by status" class="status-filter">
+                <goa-dropdown
+                  name="org-status-filter"
+                  [attr.value]="orgStatusFilter()"
+                  (_change)="onStatusFilterChange($event)">
+                  <goa-dropdown-item value="all" label="All statuses"></goa-dropdown-item>
+                  <goa-dropdown-item value="active" label="Active"></goa-dropdown-item>
+                  <goa-dropdown-item value="partial" label="Partially active"></goa-dropdown-item>
+                  <goa-dropdown-item value="inactive" label="Inactive"></goa-dropdown-item>
+                  <goa-dropdown-item value="on-leave" label="On leave"></goa-dropdown-item>
+                </goa-dropdown>
+              </goa-form-item>
+            </div>
+
+            <div class="table-wrapper" role="region" aria-label="Organization staff list" tabindex="0">
+              <table class="staff-table">
+                <thead>
+                  <tr>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Programs</th>
+                    <th scope="col">Account status</th>
+                    <th scope="col"><span class="sr-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if (orgUsers.length === 0) {
+                    <tr>
+                      <td colspan="6" class="empty-row">
+                        @if (orgSearchQuery() || orgStatusFilter() !== 'all') {
+                          No staff match your search.
+                        } @else {
+                          No staff have any program access yet.
+                        }
+                      </td>
+                    </tr>
+                  }
+                  @for (member of orgUsers; track member.id) {
+                    <tr>
+                      <td>{{ member.firstName }}</td>
+                      <td>{{ member.lastName }}</td>
+                      <td>{{ member.email }}</td>
+                      <td>
+                        <ul class="service-list">
+                          @for (a of member.access; track a.programId) {
+                            <li>{{ a.programName }}</li>
+                          }
+                        </ul>
+                      </td>
+                      <td>
+                        <goa-badge
+                          [attr.type]="orgStatusBadgeType(member.aggStatus.status)"
+                          [attr.content]="orgStatusLabel(member.aggStatus.status)">
+                        </goa-badge>
+                        @if (member.aggStatus.status === 'on-leave' && member.aggStatus.returnDate) {
+                          <div class="status-subtext">Returns {{ formatDate(member.aggStatus.returnDate) }}</div>
+                        }
+                        @if (member.aggStatus.status === 'partial') {
+                          <div class="status-subtext">{{ member.aggStatus.activeCount }} of {{ member.aggStatus.total }} programs</div>
+                        }
+                      </td>
+                      <td>
+                        <div class="action-stack">
+                          @if (hasActivePrograms(member)) {
+                            <a href="#" class="action-link" (click)="$event.preventDefault(); openManageModal(member, 'deactivate')">Deactivate access</a>
+                          }
+                          @if (hasInactivePrograms(member)) {
+                            <a href="#" class="action-link" (click)="$event.preventDefault(); openManageModal(member, 'reactivate')">Reactivate access</a>
+                          }
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+        }
+
+        <!-- Manage organization access modal -->
+        <goa-modal
+          [attr.open]="manageModalOpen() || null"
+          [attr.heading]="modalHeading"
+          closable="true"
+          (_close)="closeManageModal()">
+          @if (manageUser(); as user) {
+            <dl class="modal-summary">
+              <div>
+                <dt>Email</dt>
+                <dd>{{ user.email }}</dd>
+              </div>
+              <div>
+                <dt>Programs affected</dt>
+                <dd>{{ relevantAccess().length }}</dd>
+              </div>
+            </dl>
+
+            <goa-callout type="information" [attr.heading]="calloutHeading" size="medium" mb="l">
+              {{ calloutBody }}
+            </goa-callout>
+
+            <p class="modal-note">Select the programs to include.</p>
+            <div class="program-checklist">
+              @for (a of relevantAccess(); track a.programId) {
+                <goa-checkbox
+                  [attr.name]="'program-' + a.programId"
+                  [attr.text]="a.programName"
+                  [attr.description]="accessDescription(a)"
+                  [attr.checked]="selectedProgramIds().has(a.programId)"
+                  (_change)="toggleProgram(a.programId)">
+                </goa-checkbox>
+              }
+            </div>
+
+            @if (manageMode() === 'deactivate') {
+              <goa-form-item label="Why are you deactivating this account?" mt="l">
+                <goa-radio-group name="reason" [attr.value]="deactivateReason()" (_change)="onReasonChange($event)">
+                  <goa-radio-item value="offboard" label="This person no longer needs access"></goa-radio-item>
+                  <goa-radio-item value="leave" label="This person is going on leave and will return"></goa-radio-item>
+                </goa-radio-group>
+              </goa-form-item>
+
+              @if (deactivateReason() === 'leave') {
+                <goa-form-item
+                  label="Automatically reactivate on"
+                  helptext="We'll turn access back on for the selected programs on this date."
+                  mt="l">
+                  <goa-date-picker
+                    name="return-date"
+                    [attr.min]="todayIso"
+                    [attr.value]="returnDate()"
+                    (_change)="onReturnDateChange($event)">
+                  </goa-date-picker>
+                </goa-form-item>
+              }
+            }
+
+            <p class="modal-summary-text">{{ summaryText }}</p>
+          }
+
+          <div slot="actions">
+            <goa-button [attr.disabled]="!canSubmit || null" (_click)="submitManage()">{{ primaryActionLabel }}</goa-button>
+            <goa-button type="secondary" (_click)="closeManageModal()">Cancel</goa-button>
+          </div>
+        </goa-modal>
+      } @else {
+        <ng-container [ngTemplateOutlet]="byProgramView"></ng-container>
+      }
     }
   </main>
 </div>

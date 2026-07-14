@@ -284,37 +284,51 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
     {
       id: 'n1',
       type: 'emergency',
-      heading: 'System maintenance — 28 Jun 2026, 10 pm to 2 am',
-      body: 'ECDS will be unavailable for scheduled maintenance. Save any in-progress work before 10 pm on Saturday.',
-      timestamp: new Date('2026-06-25T09:00:00'),
-    },
-    {
-      id: 'n4',
-      type: 'important',
-      heading: '45 claims adjustment requests for claim period May 2026',
-      body: '45 claims adjustment requests have been submitted for the May 2026 claim period and are pending review.',
-      timestamp: new Date('2026-06-26T07:00:00'),
+      heading: 'Calamari Kindergarden\'s licence will expire on Oct 12, 2026',
+      body: 'Calamari Kindergarden\'s licence is expiring soon. Immediate action is required before the expiry date.',
+      timestamp: new Date('2026-07-14T08:00:00'),
     },
     {
       id: 'n2',
       type: 'important',
-      heading: 'Suspected duplicate registrations require review',
-      body: '14 suspected duplicate child registrations are awaiting review in Child Registration. Please resolve them before end of day.',
-      timestamp: new Date('2026-06-26T08:30:00'),
+      heading: 'Critical incident report submitted for Tiramisu Daycare — Jul 14, 2026',
+      body: 'A new critical incident report has been submitted for Tiramisu Daycare and requires your attention.',
+      timestamp: new Date('2026-07-14T09:00:00'),
+    },
+    {
+      id: 'n3',
+      type: 'important',
+      heading: 'Dunder Mifflin Family Day Homes updated a non-compliance for review',
+      body: 'A non-compliance record has been updated by Dunder Mifflin Family Day Homes and requires your review.',
+      timestamp: new Date('2026-07-14T09:30:00'),
+    },
+    {
+      id: 'n4',
+      type: 'important',
+      heading: 'Scott\'s Tots has 1 unresolved non-compliance — action required before May 20, 2026',
+      body: 'Scott\'s Tots has an unresolved non-compliance that must be resolved before May 20, 2026.',
+      timestamp: new Date('2026-07-14T10:00:00'),
     },
     {
       id: 'n5',
       type: 'information',
-      heading: '10 Family Day Home Agency Contracts signed for Apr 1, 2026 – Mar 31, 2027',
-      body: '10 Family Day Home Agency Contracts have been signed for the contract term April 1, 2026 to March 31, 2027.',
-      timestamp: new Date('2026-06-26T09:15:00'),
+      heading: 'Draft inspection to complete for MSPC Daycare',
+      body: 'You have 1 draft inspection to complete for MSPC Daycare.',
+      timestamp: new Date('2026-07-14T10:15:00'),
     },
     {
-      id: 'n3',
+      id: 'n6',
       type: 'information',
-      heading: 'Updated citizenship status policy — effective 1 Jul 2026',
-      body: 'The updated eligibility criteria for citizenship status changes will take effect on 1 July 2026. Review the policy guide for details.',
-      timestamp: new Date('2026-06-24T14:00:00'),
+      heading: 'Tiramisu Daycare — insurance documentation expires Sep 12, 2026',
+      body: 'Insurance documentation for Tiramisu Daycare will expire on September 12, 2026.',
+      timestamp: new Date('2026-07-14T10:30:00'),
+    },
+    {
+      id: 'n7',
+      type: 'information',
+      heading: 'Scott\'s Tots uploaded a new document — Jul 14, 2026',
+      body: 'Complaint Form was uploaded by Scott\'s Tots on July 14, 2026.',
+      timestamp: new Date('2026-07-14T11:00:00'),
     },
   ];
 
@@ -355,10 +369,10 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
   readonly today = new Date();
 
   readonly stats = [
-    { label: 'New programs licensed', count: 10, accent: 'info', date: new Date('2026-06-26') },
-    { label: 'Claims assessments assigned to you', count: 3, accent: 'warning', date: null },
-    { label: 'Wage Top-Up contracts signed by provider', count: 3, accent: 'success', date: null },
-    { label: 'Work queue items assigned to you', count: 3, accent: 'emergency', date: null },
+    { label: 'Licences expiring soon', count: 1, accent: 'emergency', date: null },
+    { label: 'Non-compliances requiring action', count: 2, accent: 'warning', date: null },
+    { label: 'Draft inspections to complete', count: 1, accent: 'warning', date: null },
+    { label: 'Critical incident reports', count: 1, accent: 'info', date: null },
   ];
 
   // ── What's new ────────────────────────────────────────────────────────────

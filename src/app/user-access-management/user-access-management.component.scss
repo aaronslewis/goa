@@ -363,12 +363,108 @@
   }
 }
 
+// ── All programs (organization) view ─────────────────────────────────────────
+
+.view-toggle {
+  display: inline-flex;
+  gap: var(--goa-space-2xs);
+  padding: var(--goa-space-2xs);
+  background: var(--goa-color-greyscale-100);
+  border-radius: var(--goa-border-radius-m);
+  margin-bottom: var(--goa-space-l);
+}
+
+.view-toggle-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--goa-font-size-3);
+  font-weight: var(--goa-font-weight-bold);
+  color: var(--goa-color-text-secondary);
+  padding: var(--goa-space-xs) var(--goa-space-l);
+  border-radius: var(--goa-border-radius-m);
+
+  &:hover {
+    color: var(--goa-color-text-default);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--goa-color-interactive-focus);
+    outline-offset: 2px;
+  }
+
+  &.active {
+    background: var(--goa-color-greyscale-white);
+    color: var(--goa-color-brand);
+    box-shadow: var(--goa-shadow-200);
+  }
+}
+
+.org-desc {
+  margin-bottom: var(--goa-space-l);
+}
+
+.status-filter {
+  min-width: 220px;
+}
+
+.status-subtext {
+  margin-top: var(--goa-space-2xs);
+  font-size: var(--goa-font-size-1);
+  color: var(--goa-color-text-secondary);
+}
+
+.action-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-xs);
+}
+
 // ── Modal ─────────────────────────────────────────────────────────────────────
 
 .modal-note {
   margin: 0 0 var(--goa-space-m);
   font-size: var(--goa-font-size-3);
   color: var(--goa-color-text-secondary);
+  line-height: var(--goa-line-height-2);
+}
+
+.modal-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--goa-space-l);
+  margin: 0 0 var(--goa-space-l);
+  padding-bottom: var(--goa-space-m);
+  border-bottom: 1px solid var(--goa-color-greyscale-200);
+
+  dt {
+    font-size: var(--goa-font-size-1);
+    color: var(--goa-color-text-secondary);
+    margin: 0 0 var(--goa-space-2xs);
+  }
+
+  dd {
+    margin: 0;
+    font-size: var(--goa-font-size-3);
+    color: var(--goa-color-text-default);
+  }
+}
+
+.program-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-m);
+  margin-bottom: var(--goa-space-m);
+}
+
+.modal-summary-text {
+  margin: var(--goa-space-l) 0 0;
+  padding: var(--goa-space-m);
+  background: var(--goa-color-greyscale-100);
+  border-radius: var(--goa-border-radius-m);
+  font-size: var(--goa-font-size-3);
+  color: var(--goa-color-text-default);
   line-height: var(--goa-line-height-2);
 }
 

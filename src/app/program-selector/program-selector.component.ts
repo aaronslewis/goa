@@ -54,8 +54,10 @@ export class ProgramSelectorComponent {
     // On My Programs page (first visit), don't force-open the modal —
     // let the page CTA drive it. On other pages, open automatically.
     // We detect "other pages" by checking if the URL is not my-programs.
-    const isMyPrograms = window.location.pathname === '/' ||
-      window.location.pathname.includes('my-programs');
+    // The app uses hash-based routing, so the route lives in location.hash,
+    // not location.pathname (which is always just "/").
+    const path = window.location.hash.replace(/^#/, '') || '/';
+    const isMyPrograms = path === '/' || path.includes('my-programs');
     if (!this.programService.hasProgram() && !isMyPrograms) {
       this.modalOpen.set(true);
     }
