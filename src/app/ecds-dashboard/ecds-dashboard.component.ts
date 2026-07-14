@@ -291,7 +291,7 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
     {
       id: 'n2',
       type: 'important',
-      heading: 'Critical incident report submitted for Tiramisu Daycare — Jul 14, 2026',
+      heading: 'Critical incident report submitted for Tiramisu Daycare',
       body: 'A new critical incident report has been submitted for Tiramisu Daycare and requires your attention.',
       timestamp: new Date('2026-07-14T09:00:00'),
     },
@@ -326,7 +326,7 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
     {
       id: 'n7',
       type: 'information',
-      heading: 'Scott\'s Tots uploaded a new document — Jul 14, 2026',
+      heading: 'Scott\'s Tots uploaded a new document',
       body: 'Complaint Form was uploaded by Scott\'s Tots on July 14, 2026.',
       timestamp: new Date('2026-07-14T11:00:00'),
     },
