@@ -375,6 +375,21 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
     { label: 'Critical incident reports', count: 1, accent: 'info', date: null },
   ];
 
+  // ── My programs ──────────────────────────────────────────────────────────
+
+  readonly myPrograms = [
+    { name: 'Calamari Kindergarden', url: '#' },
+    { name: 'Tiramisu Daycare', url: '#' },
+    { name: 'MSPC Daycare', url: '#' },
+    { name: 'Scott\'s Tots', url: '#' },
+    { name: 'Dunder Mifflin Family Day Homes', url: '#' },
+    { name: 'Rainbow Bridge Child Care', url: '#' },
+    { name: 'Sunflower Learning Centre', url: '#' },
+    { name: 'Little Explorers Daycare', url: '#' },
+    { name: 'Maple Grove Child Care', url: '#' },
+    { name: 'Bright Beginnings Preschool', url: '#' },
+  ];
+
   // ── What's new ────────────────────────────────────────────────────────────
 
   readonly whatsNew: WhatsNewItem[] = [

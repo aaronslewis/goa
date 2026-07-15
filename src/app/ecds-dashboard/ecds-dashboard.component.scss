@@ -187,9 +187,58 @@ goa-work-side-menu {
 /* ── Two-column body ─────────────────────────────────────────────────────── */
 
 .body-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 280px;
   gap: var(--goa-space-xl);
+  align-items: start;
+  margin-bottom: var(--goa-space-xl);
+}
+
+.body-main {
+  min-width: 0;
+}
+
+.releases-section {
+  margin-top: 0;
+}
+
+/* ── My programs sidebar ─────────────────────────────────────────────────── */
+
+.program-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.program-item {
+  padding: var(--goa-space-xs) 0;
+  border-bottom: 1px solid var(--goa-color-greyscale-150);
+}
+
+.program-item:first-child {
+  padding-top: 0;
+}
+
+.program-item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.program-link {
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-interactive-default);
+  text-decoration: none;
+}
+
+.program-link:hover {
+  text-decoration: underline;
+}
+
+.program-link:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+  border-radius: var(--goa-border-radius-s);
 }
 
 /* ── Section header ──────────────────────────────────────────────────────── */

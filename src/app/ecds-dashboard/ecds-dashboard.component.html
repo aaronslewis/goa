@@ -144,6 +144,7 @@
       <div class="body-grid">
 
         <!-- Left: Notifications -->
+        <div class="body-main">
         <section aria-labelledby="notif-heading">
           <div class="section-header">
             <h2 class="section-title" id="notif-heading">
@@ -191,31 +192,48 @@
             </div>
           }
         </section>
+        </div><!-- /body-main -->
 
-        <!-- Right: New releases -->
-        <section aria-labelledby="whatsnew-heading">
+        <!-- Right: My caseload -->
+        <aside class="programs-sidebar" aria-labelledby="programs-heading">
           <div class="section-header">
-            <h2 class="section-title" id="whatsnew-heading">New releases</h2>
-            <a href="#" class="section-link">View all</a>
+            <h2 class="section-title" id="programs-heading">My caseload</h2>
           </div>
-          <goa-container>
-            <ol class="release-list" aria-label="Recent releases">
-              @for (item of whatsNew; track item.version) {
-                <li class="release-item">
-                  <div class="release-meta">
-                    <goa-badge type="information" [attr.content]="item.service"></goa-badge>
-                    <span class="release-version">v{{ item.version }}</span>
-                    <span class="release-date">{{ item.date | date: 'd MMM yyyy' }}</span>
-                  </div>
-                  <p class="release-heading">{{ item.heading }}</p>
-                  <p class="release-summary">{{ item.summary }}</p>
+          <goa-container padding="compact">
+            <ul class="program-list" aria-label="Assigned programs">
+              @for (p of myPrograms; track p.name) {
+                <li class="program-item">
+                  <a [attr.href]="p.url" class="program-link">{{ p.name }}</a>
                 </li>
               }
-            </ol>
+            </ul>
           </goa-container>
-        </section>
+        </aside>
 
       </div>
+
+      <!-- New releases (full width below) -->
+      <section aria-labelledby="whatsnew-heading" class="releases-section">
+        <div class="section-header">
+          <h2 class="section-title" id="whatsnew-heading">New releases</h2>
+          <a href="#" class="section-link">View all</a>
+        </div>
+        <goa-container>
+          <ol class="release-list" aria-label="Recent releases">
+            @for (item of whatsNew; track item.version) {
+              <li class="release-item">
+                <div class="release-meta">
+                  <goa-badge type="information" [attr.content]="item.service"></goa-badge>
+                  <span class="release-version">v{{ item.version }}</span>
+                  <span class="release-date">{{ item.date | date: 'd MMM yyyy' }}</span>
+                </div>
+                <p class="release-heading">{{ item.heading }}</p>
+                <p class="release-summary">{{ item.summary }}</p>
+              </li>
+            }
+          </ol>
+        </goa-container>
+      </section>
     </div>
   } @else {
     <div class="section-placeholder">
