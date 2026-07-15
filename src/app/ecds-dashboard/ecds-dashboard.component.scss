@@ -165,12 +165,8 @@ goa-work-side-menu {
   font-size: 2rem;
   font-weight: 700;
   line-height: 1;
+  color: var(--goa-color-text-default);
 }
-
-.stat-btn__count--warning  { color: var(--goa-color-warning-dark); }
-.stat-btn__count--emergency { color: var(--goa-color-emergency-default); }
-.stat-btn__count--info     { color: var(--goa-color-info-default); }
-.stat-btn__count--success  { color: var(--goa-color-status-success-dark, #1d6b3a); }
 
 .stat-btn__label {
   font: var(--goa-typography-body-s);

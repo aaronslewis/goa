@@ -345,6 +345,16 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
     if (n) n.dismissed = true;
   }
 
+  statContainerType(accent: string): string {
+    const map: Record<string, string> = {
+      emergency: 'error',
+      warning: 'important',
+      success: 'success',
+      info: 'info',
+    };
+    return map[accent] ?? 'non-interactive';
+  }
+
   containerType(type: NotificationType): string {
     const map: Record<NotificationType, string> = {
       emergency: 'error',
@@ -369,10 +379,10 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
   readonly today = new Date();
 
   readonly stats = [
-    { label: 'Licences expiring soon', count: 1, accent: 'emergency', date: null },
-    { label: 'Non-compliances requiring action', count: 2, accent: 'warning', date: null },
-    { label: 'Draft inspections to complete', count: 1, accent: 'warning', date: null },
-    { label: 'Critical incident reports', count: 1, accent: 'info', date: null },
+    { label: 'Incident reports raised', count: 3, accent: 'emergency', period: 'Past 30 days' },
+    { label: 'Non-compliance cases raised', count: 8, accent: 'warning', period: 'Past 30 days' },
+    { label: 'Inspections completed', count: 5, accent: 'success', period: 'Past 30 days' },
+    { label: 'Licences reviewed', count: 12, accent: 'info', period: 'Past 30 days' },
   ];
 
   // ── My programs ──────────────────────────────────────────────────────────

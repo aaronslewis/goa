@@ -118,7 +118,7 @@
       <div class="greeting">
         <div>
           <h1 class="greeting__name">{{ greeting }}, {{ firstName }}</h1>
-          <p class="greeting__sub">Here's your workload overview</p>
+          <p class="greeting__sub">Here's your activity summary</p>
         </div>
         <p class="greeting__date">{{ today | date: 'EEEE, d MMMM yyyy' }}</p>
       </div>
@@ -127,12 +127,12 @@
       <div class="stat-row" role="list" aria-label="Workload summary">
         @for (stat of stats; track stat.label) {
           <div role="listitem" class="stat-cell">
-            <goa-container type="interactive" padding="compact">
+            <goa-container [attr.type]="statContainerType(stat.accent)" padding="compact">
               <button type="button" class="stat-btn" [attr.aria-label]="stat.count + ' ' + stat.label">
-                <span class="stat-btn__count" [class]="'stat-btn__count--' + stat.accent">{{ stat.count }}</span>
+                <span class="stat-btn__count">{{ stat.count }}</span>
                 <span class="stat-btn__label">{{ stat.label }}</span>
-                @if (stat.date) {
-                  <span class="stat-btn__date">{{ stat.date | date: 'd MMM yyyy' }}</span>
+                @if (stat.period) {
+                  <span class="stat-btn__date">{{ stat.period }}</span>
                 }
               </button>
             </goa-container>
