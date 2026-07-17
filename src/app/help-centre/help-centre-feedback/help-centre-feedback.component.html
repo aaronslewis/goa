@@ -1,0 +1,111 @@
+<goa-modal
+  [attr.open]="isOpen() || null"
+  heading="Feedback on the Help Centre guides"
+  closable="true"
+  width="640px"
+  (_close)="closeModal()">
+
+  @if (step() === 1) {
+    <p class="feedback-intro">
+      Tell us what you think of the Help Centre guides and videos. Your feedback
+      helps us make them better.
+    </p>
+
+    <goa-form-item label="Your name">
+      <goa-input name="name" autocomplete="name" [attr.value]="name()" (_change)="onNameChange($event)"></goa-input>
+    </goa-form-item>
+
+    <goa-form-item
+      label="Email address"
+      helptext="We'll only use this to follow up on your feedback."
+      mt="l">
+      <goa-input
+        name="email"
+        type="email"
+        autocomplete="email"
+        [attr.value]="email()"
+        (_change)="onEmailChange($event)">
+      </goa-input>
+    </goa-form-item>
+
+    <goa-form-item label="Program ID or name" requirement="optional" mt="l">
+      <goa-input
+        name="program"
+        autocomplete="off"
+        [attr.value]="programIdOrName()"
+        (_change)="onProgramChange($event)">
+      </goa-input>
+    </goa-form-item>
+
+    <goa-form-item
+      label="Which guides does your feedback relate to?"
+      helptext="Select all that apply."
+      mt="l">
+      <goa-dropdown
+        name="guides"
+        multiselect="true"
+        placeholder="Select guides"
+        [value]="selectedGuidesValue()"
+        (_change)="onGuidesChange($event)">
+        @for (title of guideTitles; track title) {
+          <goa-dropdown-item [attr.value]="title" [attr.label]="title"></goa-dropdown-item>
+        }
+        <goa-dropdown-item [attr.value]="otherGuideLabel" [attr.label]="otherGuideLabel"></goa-dropdown-item>
+      </goa-dropdown>
+    </goa-form-item>
+  }
+
+  @if (step() === 2) {
+    <goa-form-item label="What would you like to do?">
+      <goa-radio-group name="intent" [attr.value]="intent()" (_change)="onIntentChange($event)">
+        <goa-radio-item value="improve" label="Suggest an improvement"></goa-radio-item>
+        <goa-radio-item value="report" label="Report a problem with a guide"></goa-radio-item>
+        <goa-radio-item value="like" label="Tell us what you like"></goa-radio-item>
+      </goa-radio-group>
+    </goa-form-item>
+  }
+
+  @if (step() === 3) {
+    <goa-form-item [attr.label]="commentsLabel()">
+      <goa-textarea
+        name="comments"
+        rows="6"
+        [attr.value]="comments()"
+        (_change)="onCommentsChange($event)">
+      </goa-textarea>
+    </goa-form-item>
+  }
+
+  @if (step() === 4) {
+    <goa-callout type="success" heading="Thanks for your feedback">
+      We received your feedback about the Help Centre guides. We use it to make
+      the guides better for everyone.
+    </goa-callout>
+  }
+
+  <div slot="actions">
+    @switch (step()) {
+      @case (1) {
+        <goa-button type="start" [attr.disabled]="!canContinueFromContact() ? true : null" (_click)="goToStep(2)">
+          Start
+        </goa-button>
+        <goa-button type="tertiary" (_click)="closeModal()">Cancel</goa-button>
+      }
+      @case (2) {
+        <goa-button [attr.disabled]="!canContinueFromIntent() ? true : null" (_click)="goToStep(3)">
+          Next
+        </goa-button>
+        <goa-button type="secondary" (_click)="goToStep(1)">Back</goa-button>
+      }
+      @case (3) {
+        <goa-button [attr.disabled]="!canSend() ? true : null" (_click)="sendFeedback()">
+          Send feedback
+        </goa-button>
+        <goa-button type="secondary" (_click)="goToStep(2)">Back</goa-button>
+      }
+      @case (4) {
+        <goa-button (_click)="closeModal()">Close</goa-button>
+      }
+    }
+  </div>
+</goa-modal>

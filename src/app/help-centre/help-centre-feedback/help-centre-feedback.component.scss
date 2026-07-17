@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+
+.feedback-intro {
+  margin: 0 0 var(--goa-space-l);
+  font-size: var(--goa-font-size-3);
+  color: var(--goa-color-text-secondary);
+  line-height: var(--goa-line-height-2);
+}

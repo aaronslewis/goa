@@ -137,7 +137,17 @@
         }
       </div>
     </section>
+
+    <section class="feedback-prompt">
+      <div class="feedback-prompt-text">
+        <h2 class="feedback-prompt-title">Help us improve these guides</h2>
+        <p class="feedback-prompt-body">Tell us if a guide helped, or if something's missing.</p>
+      </div>
+      <goa-button type="secondary" (_click)="feedback.openModal()">Give feedback</goa-button>
+    </section>
   </main>
 </div>
+
+<help-centre-feedback #feedback [guideTitles]="guideTitles"></help-centre-feedback>
 
 <goa-app-footer></goa-app-footer>

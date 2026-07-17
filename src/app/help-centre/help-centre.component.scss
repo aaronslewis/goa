@@ -248,3 +248,26 @@
 .guide-link:hover {
   color: var(--goa-color-interactive-hover);
 }
+
+.feedback-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--goa-space-l);
+  margin-top: var(--goa-space-2xl);
+  padding: var(--goa-space-l);
+  background: var(--goa-color-greyscale-100);
+  border-radius: var(--goa-border-radius-m);
+}
+
+.feedback-prompt-title {
+  margin: 0 0 var(--goa-space-2xs);
+  font-size: var(--goa-font-size-4);
+  color: var(--goa-color-text-default);
+}
+
+.feedback-prompt-body {
+  margin: 0;
+  font-size: var(--goa-font-size-2);
+  color: var(--goa-color-text-secondary);
+}

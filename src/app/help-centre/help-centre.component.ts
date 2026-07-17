@@ -1,4 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Output, signal } from '@angular/core';
+import { HelpCentreFeedbackComponent } from './help-centre-feedback/help-centre-feedback.component';
 
 interface GuideLink {
   label: string;
@@ -15,6 +16,7 @@ interface Guide {
 @Component({
   selector: 'help-centre',
   standalone: true,
+  imports: [HelpCentreFeedbackComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './help-centre.component.html',
   styleUrl: './help-centre.component.scss',
@@ -124,6 +126,10 @@ export class HelpCentreComponent {
       links: [{ label: 'Open guide', href: '#' }],
     },
   ];
+
+  get guideTitles(): string[] {
+    return this.guides.map((g) => g.title);
+  }
 
   toggleUserMenu(): void {
     this.userMenuOpen.update(v => !v);
