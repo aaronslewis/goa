@@ -1,0 +1,150 @@
+<ng-template #primaryNav>
+  <goab-work-side-menu-item icon="home" label="Home" [active]="true"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="ticket" label="Admin Penalties"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="ribbon" label="Certification"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="id-card" label="Child Registration"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="list" label="Claims"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="home" label="Family Portal"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="file-tray-full" label="Funding"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="key" label="GOA User Management"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="shield-checkmark" label="Licensing"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="checkmark-done" label="Post Verification"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="document-text" label="Registered Children Report"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="body" label="Subsidy"></goab-work-side-menu-item>
+</ng-template>
+
+<ng-template #secondaryNav>
+  <goab-work-side-menu-item icon="search" label="Search"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="help-circle" label="Help Centre"></goab-work-side-menu-item>
+</ng-template>
+
+<goab-work-side-menu
+  [heading]="heading"
+  url="#"
+  [userName]="userName"
+  [userSecondaryText]="userSecondaryText"
+  [open]="isMenuOpen"
+  [primaryContent]="primaryNav"
+  [secondaryContent]="secondaryNav"
+  (onToggle)="onMenuToggle($event)"
+  aria-label="Workspace navigation">
+</goab-work-side-menu>
+
+<!-- ── Main content ─────────────────────────────────────────────────── -->
+<main class="dashboard-main" id="main-content">
+  <div class="home-content">
+
+    <!-- Greeting -->
+    <div class="greeting">
+      <div>
+        <h1 class="greeting__name">{{ greeting }}, {{ firstName }}</h1>
+        <p class="greeting__sub">Here's your activity summary</p>
+      </div>
+      <p class="greeting__date">{{ today | date: 'EEEE, d MMMM yyyy' }}</p>
+    </div>
+
+    <!-- Stat tiles -->
+    <div class="stat-row" role="list" aria-label="Activity summary">
+      @for (stat of stats; track stat.label) {
+        <div role="listitem" class="stat-cell">
+          <goab-container [type]="stat.type" padding="compact">
+            <button type="button" class="stat-btn" [attr.aria-label]="stat.count + ' ' + stat.label">
+              <span class="stat-btn__count">{{ stat.count }}</span>
+              <span class="stat-btn__label">{{ stat.label }}</span>
+              <span class="stat-btn__period">{{ stat.period }}</span>
+            </button>
+          </goab-container>
+        </div>
+      }
+    </div>
+
+    <!-- Body grid -->
+    <div class="body-grid">
+
+      <!-- Notifications using DS v2 WorkSideNotificationPanel -->
+      <div class="body-main">
+        <section aria-labelledby="notif-heading">
+          <div class="section-header">
+            <h2 class="section-title" id="notif-heading">
+              Notifications
+              @if (notificationCount > 0) {
+                <goab-badge type="emergency" [content]="notificationCount.toString()"></goab-badge>
+              }
+            </h2>
+          </div>
+
+          <div class="notif-stack" role="list">
+            @if (activeNotifications.length === 0) {
+              <goab-callout type="information" heading="All caught up">
+                No notifications at this time.
+              </goab-callout>
+            }
+            @for (n of activeNotifications; track n.id) {
+              <div class="notif-row" role="listitem">
+                <goab-callout
+                  [type]="n.calloutType"
+                  [heading]="n.title"
+                  size="medium"
+                  iconTheme="filled"
+                  emphasis="medium"
+                  class="notif-callout">
+                  <span class="notif-body">
+                    {{ n.description }}
+                    <a href="#" class="notif-view-link">View</a>
+                  </span>
+                </goab-callout>
+                <button
+                  type="button"
+                  class="notif-dismiss"
+                  [attr.aria-label]="'Dismiss: ' + n.title"
+                  (click)="dismiss(n.id)">
+                  <goab-icon type="close" size="small"></goab-icon>
+                </button>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- New releases -->
+        <section aria-labelledby="whatsnew-heading" class="releases-section">
+          <div class="section-header">
+            <h2 class="section-title" id="whatsnew-heading">New releases</h2>
+            <a href="#" class="section-link">View all</a>
+          </div>
+          <goab-container>
+            <ol class="release-list" aria-label="Recent releases">
+              @for (item of whatsNew; track item.version) {
+                <li class="release-item">
+                  <div class="release-meta">
+                    <goab-badge type="information" [content]="item.service"></goab-badge>
+                    <span class="release-version">v{{ item.version }}</span>
+                    <span class="release-date">{{ item.date | date: 'd MMM yyyy' }}</span>
+                  </div>
+                  <p class="release-heading">{{ item.heading }}</p>
+                  <p class="release-summary">{{ item.summary }}</p>
+                </li>
+              }
+            </ol>
+          </goab-container>
+        </section>
+      </div>
+
+      <!-- My caseload sidebar -->
+      <aside class="caseload-sidebar" aria-labelledby="caseload-heading">
+        <div class="section-header">
+          <h2 class="section-title" id="caseload-heading">My caseload</h2>
+        </div>
+        <goab-container padding="compact">
+          <ul class="caseload-list" aria-label="Assigned programs">
+            @for (p of caseload; track p.name) {
+              <li class="caseload-item">
+                <a [attr.href]="p.url" class="caseload-link">{{ p.name }}</a>
+              </li>
+            }
+          </ul>
+        </goab-container>
+      </aside>
+
+    </div>
+  </div>
+</main>

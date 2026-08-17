@@ -1,0 +1,34 @@
+<goa-work-side-menu
+  heading="Early Childhood Development System"
+  user-name="Edna Mode"
+  user-secondary-text="edna.mode@gov.ab.ca"
+  [open]="isMenuOpen"
+  (collapse)="isMenuOpen = false"
+  (expand)="isMenuOpen = true"
+  aria-label="Workspace navigation">
+
+  <div slot="primary">
+    @for (item of navItems; track item.label) {
+      <goa-work-side-menu-item
+        [attr.icon]="item.icon"
+        [attr.label]="item.label"
+        [attr.url]="item.path ?? null">
+      </goa-work-side-menu-item>
+    }
+  </div>
+
+  <div slot="secondary">
+    <goa-work-side-menu-item
+      icon="notifications"
+      label="Notifications"
+      url="/notifications">
+    </goa-work-side-menu-item>
+    <goa-work-side-menu-item icon="search" label="Search"></goa-work-side-menu-item>
+    <goa-work-side-menu-item icon="help-circle" label="Help centre"></goa-work-side-menu-item>
+  </div>
+
+</goa-work-side-menu>
+
+<main class="shell-main">
+  <ng-content></ng-content>
+</main>

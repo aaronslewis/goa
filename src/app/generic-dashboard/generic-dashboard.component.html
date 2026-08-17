@@ -1,0 +1,152 @@
+<div class="dash-shell">
+
+  <!-- ── Sidebar nav ──────────────────────────────────────────────────────── -->
+  <nav class="dash-nav" aria-label="Service navigation">
+    <div class="dash-nav__logo">
+      <goa-icon type="shapes" size="medium"></goa-icon>
+      <span class="dash-nav__system">Child Care Services</span>
+    </div>
+    <ul class="dash-nav__list" role="list">
+      <li class="dash-nav__item dash-nav__item--active">
+        <goa-icon type="home" size="small"></goa-icon>
+        <span>Home</span>
+      </li>
+      <li class="dash-nav__item">
+        <goa-icon type="shield-checkmark" size="small"></goa-icon>
+        <span>Licensing</span>
+      </li>
+      <li class="dash-nav__item">
+        <goa-icon type="id-card" size="small"></goa-icon>
+        <span>Child registration</span>
+      </li>
+      <li class="dash-nav__item">
+        <goa-icon type="list" size="small"></goa-icon>
+        <span>Claims</span>
+      </li>
+      <li class="dash-nav__item">
+        <goa-icon type="file-tray-full" size="small"></goa-icon>
+        <span>Funding</span>
+      </li>
+      <li class="dash-nav__item">
+        <goa-icon type="document-text" size="small"></goa-icon>
+        <span>Subsidized children report</span>
+      </li>
+    </ul>
+    <div class="dash-nav__footer">
+      <goa-icon type="person-circle" size="small"></goa-icon>
+      <span>{{ userName }}</span>
+    </div>
+  </nav>
+
+  <!-- ── Main content ─────────────────────────────────────────────────────── -->
+  <main class="dash-main" id="main-content">
+    <div class="dash-content">
+
+      <!-- Role switcher (prototype helper) -->
+      <div class="role-switcher">
+        <label class="role-switcher__label" for="role-select">Viewing as:</label>
+        <select id="role-select" class="role-switcher__select" (change)="onRoleChange($event)">
+          @for (r of roles; track r.id) {
+            <option [value]="r.id" [selected]="r.id === selectedRoleId">{{ r.label }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Greeting -->
+      <div class="greeting">
+        <div>
+          <h1 class="greeting__name">{{ greeting }}, {{ userName }}</h1>
+          <p class="greeting__sub">Here is your activity summary across services</p>
+        </div>
+        <p class="greeting__date">{{ today | date: 'EEEE, d MMMM yyyy' }}</p>
+      </div>
+
+      <!-- Stat tiles -->
+      <div class="tile-row" role="list" aria-label="Activity summary">
+        @for (tile of role.tiles; track tile.label) {
+          <div role="listitem" class="tile-cell">
+            <goa-container [attr.type]="tileContainerType(tile.accent)" padding="compact">
+              <button type="button" class="tile-btn" [attr.aria-label]="tile.count + ' ' + tile.label">
+                <span class="tile-btn__count">{{ tile.count }}</span>
+                <span class="tile-btn__label">{{ tile.label }}</span>
+                <span class="tile-btn__period">{{ tile.period }}</span>
+              </button>
+            </goa-container>
+          </div>
+        }
+      </div>
+
+      <!-- Middle: to-dos + assignments -->
+      <div class="body-grid">
+
+        <!-- To-dos -->
+        <div class="body-main">
+          <section aria-labelledby="todo-heading">
+            <div class="section-header">
+              <h2 class="section-title" id="todo-heading">
+                To do
+                <goa-badge type="important" [attr.content]="role.todos.length.toString()"></goa-badge>
+              </h2>
+            </div>
+            <div class="todo-stack" role="list">
+              @for (item of role.todos; track item.id) {
+                <div class="todo-card todo-card--{{ item.priority }}" role="listitem">
+                  <span class="todo-priority-bar" aria-hidden="true"></span>
+                  <div class="todo-content">
+                    <p class="todo-text">{{ item.text }}</p>
+                    @if (item.due) {
+                      <p class="todo-due">Due {{ item.due }}</p>
+                    }
+                  </div>
+                  <span class="todo-priority-label todo-priority-label--{{ item.priority }}">{{ priorityLabel(item.priority) }}</span>
+                  <a href="#" class="todo-action-link">View</a>
+                </div>
+              }
+            </div>
+          </section>
+
+          <!-- Recent activity -->
+          <section aria-labelledby="activity-heading" class="activity-section">
+            <div class="section-header">
+              <h2 class="section-title" id="activity-heading">Recent activity</h2>
+            </div>
+            <goa-container type="non-interactive" padding="compact">
+              <ol class="activity-list" aria-label="Recent activity">
+                @for (item of role.activity; track item.id) {
+                  <li class="activity-item">
+                    <span class="activity-icon">
+                      <goa-icon [attr.type]="item.icon" size="small"></goa-icon>
+                    </span>
+                    <span class="activity-description">{{ item.description }}</span>
+                    <time class="activity-time" [attr.datetime]="item.timestamp.toISOString()">
+                      {{ item.timestamp | date: 'MMM d, h:mm a' }}
+                    </time>
+                  </li>
+                }
+              </ol>
+            </goa-container>
+          </section>
+        </div>
+
+        <!-- Assignments sidebar -->
+        <aside class="assignments-sidebar" [attr.aria-labelledby]="'assignments-heading'">
+          <div class="section-header">
+            <h2 class="section-title" id="assignments-heading">{{ role.assignmentsHeading }}</h2>
+          </div>
+          <goa-container padding="compact">
+            <ul class="assignment-list" aria-label="Assigned items">
+              @for (a of role.assignments; track a.name) {
+                <li class="assignment-item">
+                  <a [attr.href]="a.url" class="assignment-link">{{ a.name }}</a>
+                </li>
+              }
+            </ul>
+          </goa-container>
+        </aside>
+
+      </div>
+
+    </div>
+  </main>
+
+</div>

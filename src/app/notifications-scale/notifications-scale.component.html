@@ -1,0 +1,262 @@
+<workspace-shell>
+<div class="page-shell">
+
+  <header class="page-header">
+    <div class="page-header__title">
+      <h1 class="page-header__heading">Notifications</h1>
+      <goa-badge type="emergency" [attr.content]="total.toString()"></goa-badge>
+      <span class="page-header__sub">30 programs · Licensing officer</span>
+    </div>
+
+    <!-- View switcher -->
+    <div class="view-switcher" role="tablist" aria-label="Notification view">
+      <button class="view-btn" [class.view-btn--active]="activeView === 'severity'"
+        role="tab" [attr.aria-selected]="activeView === 'severity'"
+        (click)="setView('severity')">
+        <goa-icon type="funnel" size="small"></goa-icon>
+        By severity
+      </button>
+      <button class="view-btn" [class.view-btn--active]="activeView === 'tabs'"
+        role="tab" [attr.aria-selected]="activeView === 'tabs'"
+        (click)="setView('tabs')">
+        <goa-icon type="list" size="small"></goa-icon>
+        Tabs + filter
+      </button>
+      <button class="view-btn" [class.view-btn--active]="activeView === 'summary'"
+        role="tab" [attr.aria-selected]="activeView === 'summary'"
+        (click)="setView('summary')">
+        <goa-icon type="flash" size="small"></goa-icon>
+        Smart summary
+      </button>
+      <button class="view-btn" [class.view-btn--active]="activeView === 'program'"
+        role="tab" [attr.aria-selected]="activeView === 'program'"
+        (click)="setView('program')">
+        <goa-icon type="home" size="small"></goa-icon>
+        By program
+      </button>
+    </div>
+  </header>
+
+  <div class="page-body">
+
+    <!-- ── View 1: Grouped by severity ───────────────────────────────────── -->
+    @if (activeView === 'severity') {
+      <div class="view-label">
+        <p>Notifications grouped by severity. Emergency items expand by default — scan urgent items first, then work down.</p>
+      </div>
+      <div class="severity-groups">
+        @for (group of [
+          { type: 'emergency', label: 'Emergency', items: emergency },
+          { type: 'important', label: 'Important', items: important },
+          { type: 'information', label: 'Informational', items: information }
+        ]; track group.type) {
+          @if (group.items.length > 0) {
+            <div class="severity-group severity-group--{{ group.type }}">
+              <button class="severity-group__header"
+                [attr.aria-expanded]="openGroups[group.type]"
+                (click)="toggleGroup(group.type)">
+                <span class="severity-group__title">
+                  <goa-icon [attr.type]="iconFor(group.type)" size="small"></goa-icon>
+                  {{ group.label }}
+                </span>
+                <goa-badge [attr.type]="containerTypeFor(group.type) === 'error' ? 'emergency' : containerTypeFor(group.type) === 'important' ? 'important' : 'information'"
+                  [attr.content]="group.items.length.toString()"></goa-badge>
+                <goa-icon [attr.type]="openGroups[group.type] ? 'chevron-up' : 'chevron-down'" size="small"></goa-icon>
+              </button>
+              @if (openGroups[group.type]) {
+                <div class="severity-group__body">
+                  @for (n of group.items; track n.id) {
+                    <div class="notif-card notif-card--{{ n.type }}">
+                      <span class="notif-icon">
+                        <goa-icon [attr.type]="iconFor(n.type)" size="medium"></goa-icon>
+                      </span>
+                      <div class="notif-content">
+                        <p class="notif-heading">{{ n.heading }}</p>
+                        <p class="notif-program">{{ n.program }}</p>
+                        <p class="notif-body-text">{{ n.body }}</p>
+                      </div>
+                      <a routerLink="/notifications" class="notif-view-link">View</a>
+                      <button type="button" class="notif-dismiss" [attr.aria-label]="'Dismiss ' + n.heading" (click)="dismiss(n.id)">
+                        <goa-icon type="close" size="small"></goa-icon>
+                      </button>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
+    }
+
+    <!-- ── View 2: Tabs + filter ──────────────────────────────────────────── -->
+    @if (activeView === 'tabs') {
+      <div class="view-label">
+        <p>Tabs separate notification types. Use the program filter to focus on a single facility.</p>
+      </div>
+      <div class="tabs-toolbar">
+        <goa-dropdown
+          name="program-filter"
+          placeholder="All programs"
+          [value]="filterProgram"
+          (change)="onFilterChange($event)">
+          <goa-dropdown-item label="All programs" value="all"></goa-dropdown-item>
+          @for (p of programs; track p) {
+            <goa-dropdown-item [attr.label]="p" [attr.value]="p"></goa-dropdown-item>
+          }
+        </goa-dropdown>
+      </div>
+      <goa-tabs (change)="onTabChange($event)">
+        @for (tab of [
+          { type: 'emergency', label: 'Emergency' },
+          { type: 'important', label: 'Important' },
+          { type: 'information', label: 'Informational' }
+        ]; track tab.type) {
+          <goa-tab [attr.heading]="tab.label + ' (' + tabTotal(tab.type) + ')'">
+            @if (tabItems(tab.type).length === 0) {
+              <p class="empty-state">No {{ tab.label.toLowerCase() }} notifications.</p>
+            } @else {
+              <div class="notif-list">
+                @for (n of tabItems(tab.type); track n.id) {
+                  <div class="notif-card notif-card--{{ n.type }}">
+                    <span class="notif-icon">
+                      <goa-icon [attr.type]="iconFor(n.type)" size="medium"></goa-icon>
+                    </span>
+                    <div class="notif-content">
+                      <p class="notif-program">{{ n.program }}</p>
+                      <p class="notif-heading">{{ n.heading }}</p>
+                      <p class="notif-body-text">{{ n.body }}</p>
+                    </div>
+                    <a href="#" class="notif-view-link">View</a>
+                    <button type="button" class="notif-dismiss" [attr.aria-label]="'Dismiss ' + n.heading" (click)="dismiss(n.id)">
+                      <goa-icon type="close" size="small"></goa-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+              <div class="pagination-bar">
+                <goa-button type="secondary" size="compact" [attr.disabled]="!hasPrevPage(activeTab) || null"
+                  (click)="prevPage(activeTab)">Previous</goa-button>
+                <span class="pagination-info">
+                  Showing {{ tabsPage[activeTab] * tabsPageSize + 1 }}–{{ tabsPage[activeTab] * tabsPageSize + tabItems(activeTab).length }} of {{ tabTotal(activeTab) }}
+                </span>
+                <goa-button type="secondary" size="compact" [attr.disabled]="!hasNextPage(activeTab) || null"
+                  (click)="nextPage(activeTab)">Next</goa-button>
+              </div>
+            }
+          </goa-tab>
+        }
+      </goa-tabs>
+    }
+
+    <!-- ── View 3: Smart summary ──────────────────────────────────────────── -->
+    @if (activeView === 'summary') {
+      <div class="view-label">
+        <p>Home page shows only the 5 most urgent items. A "View all" expands the full list with no page change.</p>
+      </div>
+      <div class="summary-stats">
+        <goa-container type="error" padding="compact">
+          <p class="summary-stat__count">{{ emergency.length }}</p>
+          <p class="summary-stat__label">Emergency</p>
+        </goa-container>
+        <goa-container type="important" padding="compact">
+          <p class="summary-stat__count">{{ important.length }}</p>
+          <p class="summary-stat__label">Important</p>
+        </goa-container>
+        <goa-container type="info" padding="compact">
+          <p class="summary-stat__count">{{ information.length }}</p>
+          <p class="summary-stat__label">Informational</p>
+        </goa-container>
+      </div>
+      <div class="notif-list">
+        @for (n of summaryItems; track n.id) {
+          <div class="notif-card notif-card--{{ n.type }}">
+            <span class="notif-icon">
+              <goa-icon [attr.type]="iconFor(n.type)" size="medium"></goa-icon>
+            </span>
+            <div class="notif-content">
+              <p class="notif-program">{{ n.program }}</p>
+              <p class="notif-heading">{{ n.heading }}</p>
+              <p class="notif-body-text">{{ n.body }}</p>
+            </div>
+            <a href="#" class="notif-view-link">View</a>
+            <button type="button" class="notif-dismiss" [attr.aria-label]="'Dismiss ' + n.heading" (click)="dismiss(n.id)">
+              <goa-icon type="close" size="small"></goa-icon>
+            </button>
+          </div>
+        }
+      </div>
+      @if (!showAll && total > summaryTop) {
+        <button type="button" class="view-all-btn" (click)="showAll = true">
+          View all {{ total }} notifications
+          <goa-icon type="chevron-down" size="small"></goa-icon>
+        </button>
+      } @else if (showAll) {
+        <button type="button" class="view-all-btn" (click)="showAll = false">
+          Show less
+          <goa-icon type="chevron-up" size="small"></goa-icon>
+        </button>
+      }
+    }
+
+    <!-- ── View 4: By program ─────────────────────────────────────────────── -->
+    @if (activeView === 'program') {
+      <div class="view-label">
+        <p>Notifications grouped under each program. LOs can manage their caseload program by program.</p>
+      </div>
+      <div class="program-search-bar">
+        <goa-icon type="search" size="small"></goa-icon>
+        <input
+          type="search"
+          class="program-search-input"
+          placeholder="Search programs…"
+          [value]="programSearch"
+          (input)="onProgramSearch($event)"
+          aria-label="Search programs">
+      </div>
+      <div class="program-groups">
+        @for (g of programsWithNotifs; track g.name) {
+          <div class="program-group">
+            <button class="program-group__header"
+              [attr.aria-expanded]="openPrograms[g.name]"
+              (click)="toggleProgramGroup(g.name)">
+              <span class="program-group__icon program-group__icon--{{ g.items[0].type }}">
+                <goa-icon [attr.type]="programIcon(g.items)" size="small"></goa-icon>
+              </span>
+              <span class="program-group__name">{{ g.name }}</span>
+              <goa-badge
+                [attr.type]="programBadgeType(g.items) === 'error' ? 'emergency' : programBadgeType(g.items)"
+                [attr.content]="g.items.length.toString()">
+              </goa-badge>
+              <goa-icon [attr.type]="openPrograms[g.name] ? 'chevron-up' : 'chevron-down'" size="small"></goa-icon>
+            </button>
+            @if (openPrograms[g.name]) {
+              <div class="program-group__body">
+                @for (n of g.items; track n.id) {
+                  <div class="notif-card notif-card--{{ n.type }}">
+                    <span class="notif-icon">
+                      <goa-icon [attr.type]="iconFor(n.type)" size="medium"></goa-icon>
+                    </span>
+                    <div class="notif-content">
+                      <p class="notif-heading">{{ n.heading }}</p>
+                      <p class="notif-body-text">{{ n.body }}</p>
+                    </div>
+                    <a href="#" class="notif-view-link">View</a>
+                    <button type="button" class="notif-dismiss" [attr.aria-label]="'Dismiss ' + n.heading" (click)="dismiss(n.id)">
+                      <goa-icon type="close" size="small"></goa-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+        @if (programsWithNotifs.length === 0) {
+          <p class="empty-state">No programs match your search.</p>
+        }
+      </div>
+    }
+
+  </div>
+</div>
+</workspace-shell>

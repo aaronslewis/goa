@@ -205,7 +205,7 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
       { kind: 'item', label: 'Completed', url: '#' },
     ],
     goaUserMgmt: [
-      { kind: 'item', label: 'GOA User Management', url: '#' },
+      { kind: 'item', label: 'GOA User Management', url: '/goa-user-management' },
       { kind: 'item', label: 'Identity and Access Management', url: '#' },
     ],
     licensing: [

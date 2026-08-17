@@ -1,0 +1,289 @@
+:host {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+goab-work-side-menu {
+  flex-shrink: 0;
+  height: 100%;
+}
+
+/* ── Main content ────────────────────────────────────────────────────────── */
+
+.dashboard-main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  background: var(--goa-color-greyscale-50);
+}
+
+.home-content {
+  padding: var(--goa-space-2xl);
+}
+
+/* ── Greeting ────────────────────────────────────────────────────────────── */
+
+.greeting {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--goa-space-xl);
+}
+
+.greeting__name {
+  margin: 0 0 var(--goa-space-xs);
+  font: var(--goa-typography-heading-xl);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.greeting__sub {
+  margin: 0;
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.greeting__date {
+  margin: 0;
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+  white-space: nowrap;
+  padding-top: var(--goa-space-xs);
+}
+
+/* ── Stat tiles ──────────────────────────────────────────────────────────── */
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--goa-space-m);
+  margin-bottom: var(--goa-space-xl);
+  align-items: stretch;
+}
+
+.stat-cell {
+  display: flex;
+  min-width: 0;
+}
+
+.stat-cell goab-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--goa-space-xs);
+  width: 100%;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: var(--goa-space-xs) 0;
+  text-align: left;
+}
+
+.stat-btn:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+  border-radius: var(--goa-border-radius-s);
+}
+
+.stat-btn__count {
+  font-family: var(--goa-font-family-sans);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--goa-color-text-default);
+}
+
+.stat-btn__label {
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.stat-btn__period {
+  font: var(--goa-typography-body-xs);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+/* ── Body grid ───────────────────────────────────────────────────────────── */
+
+.body-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: var(--goa-space-xl);
+  align-items: start;
+}
+
+.body-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-xl);
+}
+
+/* ── Section header ──────────────────────────────────────────────────────── */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--goa-space-m);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  margin: 0;
+  font: var(--goa-typography-heading-m);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.section-link {
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-interactive-default);
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+/* ── Notifications ───────────────────────────────────────────────────────── */
+
+.notif-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-s);
+}
+
+.notif-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--goa-space-xs);
+  min-width: 0;
+}
+
+.notif-callout {
+  flex: 1;
+  min-width: 0;
+}
+
+.notif-body {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-m);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+}
+
+.notif-view-link {
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  font-weight: 600;
+  color: var(--goa-color-interactive-default);
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.notif-dismiss {
+  flex-shrink: 0;
+  margin-top: var(--goa-space-s);
+  background: transparent;
+  border: 0;
+  border-radius: var(--goa-border-radius-s);
+  color: var(--goa-color-text-secondary);
+  cursor: pointer;
+  padding: var(--goa-space-3xs);
+  line-height: 0;
+}
+
+.notif-dismiss:hover { color: var(--goa-color-text-default); }
+
+.notif-dismiss:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+}
+
+/* ── New releases ────────────────────────────────────────────────────────── */
+
+.release-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.release-item {
+  padding: var(--goa-space-m) 0;
+  border-bottom: 1px solid var(--goa-color-greyscale-150);
+}
+
+.release-item:first-child { padding-top: 0; }
+.release-item:last-child  { border-bottom: 0; padding-bottom: 0; }
+
+.release-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-s);
+  margin-bottom: var(--goa-space-2xs);
+}
+
+.release-version,
+.release-date {
+  font: var(--goa-typography-body-xs);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.release-heading {
+  margin: 0 0 var(--goa-space-3xs);
+  font: var(--goa-typography-heading-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.release-summary {
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+/* ── My caseload sidebar ─────────────────────────────────────────────────── */
+
+.caseload-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.caseload-item {
+  padding: var(--goa-space-xs) 0;
+  border-bottom: 1px solid var(--goa-color-greyscale-150);
+}
+
+.caseload-item:first-child { padding-top: 0; }
+.caseload-item:last-child  { border-bottom: 0; padding-bottom: 0; }
+
+.caseload-link {
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-interactive-default);
+  text-decoration: none;
+}
+
+.caseload-link:hover { text-decoration: underline; }
+
+.caseload-link:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+  border-radius: var(--goa-border-radius-s);
+}

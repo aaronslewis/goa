@@ -21,6 +21,30 @@ export class PlatformPrototypesComponent {
 
   readonly prototypes: PrototypeLink[] = [
     {
+      label: 'All notifications page',
+      description: 'Full notification history with unread/urgent/all tabs, date grouping, and read state.',
+      path: '/notifications',
+      status: 'In progress',
+    },
+    {
+      label: 'Notifications — scaling (30 programs)',
+      description: 'Four approaches for handling 65+ notifications across 30 programs: by severity, tabs + filter, smart summary, and by program.',
+      path: '/notifications-scale',
+      status: 'In progress',
+    },
+    {
+      label: 'ECDS dashboard — DS v2',
+      description: 'ECDS dashboard rebuilt with Design System v2 components (GoabWorkSideMenu, GoabCallout, GoabContainer).',
+      path: '/ecds-dashboard-v2',
+      status: 'In progress',
+    },
+    {
+      label: 'Staff dashboard (generic)',
+      description: 'Role-adaptive home page with to-dos, recent activity, and assignments across child care services.',
+      path: '/generic-dashboard',
+      status: 'In progress',
+    },
+    {
       label: 'ECDS dashboard home',
       description: 'Staff dashboard with left nav, notifications, and what\'s new panel.',
       path: '/ecds-dashboard',

@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+goa-work-side-menu {
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.shell-main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  background: var(--goa-color-greyscale-100);
+}
