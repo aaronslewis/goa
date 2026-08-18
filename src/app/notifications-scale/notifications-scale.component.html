@@ -203,6 +203,7 @@
     @if (activeView === 'program') {
       <div class="view-label">
         <p>Notifications grouped under each program. LOs can manage their caseload program by program.</p>
+        <p class="week-range-note">Showing {{ weekRangeLabel }}. <a routerLink="/notifications">View full history</a>.</p>
       </div>
       <div class="program-search-bar">
         <goa-icon type="search" size="small"></goa-icon>

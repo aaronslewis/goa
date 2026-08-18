@@ -242,4 +242,11 @@ export class NotificationsScaleComponent {
   }
 
   setView(v: 'severity' | 'tabs' | 'summary' | 'program'): void { this.activeView = v; }
+
+  get weekRangeLabel(): string {
+    const fmt = (d: Date) => d.toLocaleDateString('en-CA', { day: 'numeric', month: 'short', year: 'numeric' });
+    const end = new Date();
+    const start = new Date(Date.now() - 6 * 24 * 60 * 60 * 1000);
+    return `${fmt(start)} – ${fmt(end)}`;
+  }
 }

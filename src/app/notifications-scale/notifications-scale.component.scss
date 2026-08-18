@@ -111,6 +111,13 @@
   font-style: italic;
 }
 
+.week-range-note {
+  margin-top: var(--goa-space-xs);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
 /* ── Notification card (shared) ──────────────────────────────────────────── */
 
 .notif-list {
