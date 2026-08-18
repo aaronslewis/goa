@@ -9,26 +9,43 @@
     }
   </div>
 
-  <!-- Filter tabs -->
-  <div class="filter-tabs" role="tablist" aria-label="Filter notifications">
-    <button class="filter-tab" [class.filter-tab--active]="activeTab === 'unread'"
-      role="tab" [attr.aria-selected]="activeTab === 'unread'" (click)="setTab('unread')">
-      Unread
-      @if (unreadCount > 0) {
-        <span class="filter-tab__count">{{ unreadCount }}</span>
-      }
-    </button>
-    <button class="filter-tab" [class.filter-tab--active]="activeTab === 'urgent'"
-      role="tab" [attr.aria-selected]="activeTab === 'urgent'" (click)="setTab('urgent')">
-      Urgent
-      @if (urgentCount > 0) {
-        <span class="filter-tab__count filter-tab__count--urgent">{{ urgentCount }}</span>
-      }
-    </button>
-    <button class="filter-tab" [class.filter-tab--active]="activeTab === 'all'"
-      role="tab" [attr.aria-selected]="activeTab === 'all'" (click)="setTab('all')">
-      All
-    </button>
+  <!-- Filter tabs + timeframe -->
+  <div class="filter-bar">
+    <div class="filter-tabs" role="tablist" aria-label="Filter notifications">
+      <button class="filter-tab" [class.filter-tab--active]="activeTab === 'unread'"
+        role="tab" [attr.aria-selected]="activeTab === 'unread'" (click)="setTab('unread')">
+        Unread
+        @if (unreadCount > 0) {
+          <span class="filter-tab__count">{{ unreadCount }}</span>
+        }
+      </button>
+      <button class="filter-tab" [class.filter-tab--active]="activeTab === 'urgent'"
+        role="tab" [attr.aria-selected]="activeTab === 'urgent'" (click)="setTab('urgent')">
+        Urgent
+        @if (urgentCount > 0) {
+          <span class="filter-tab__count filter-tab__count--urgent">{{ urgentCount }}</span>
+        }
+      </button>
+      <button class="filter-tab" [class.filter-tab--active]="activeTab === 'all'"
+        role="tab" [attr.aria-selected]="activeTab === 'all'" (click)="setTab('all')">
+        All
+      </button>
+    </div>
+
+    <div class="timeframe-filter">
+      <label class="timeframe-filter__label" for="timeframe-select">Timeframe</label>
+      <goa-dropdown
+        id="timeframe-select"
+        [attr.value]="timeframe"
+        width="200px"
+        (change)="onTimeframeChange($event)">
+        <goa-dropdown-item label="Last 7 days" value="7d"></goa-dropdown-item>
+        <goa-dropdown-item label="Last 30 days" value="30d"></goa-dropdown-item>
+        <goa-dropdown-item label="Last 3 months" value="3m"></goa-dropdown-item>
+        <goa-dropdown-item label="Last 6 months" value="6m"></goa-dropdown-item>
+        <goa-dropdown-item label="All time" value="all"></goa-dropdown-item>
+      </goa-dropdown>
+    </div>
   </div>
 
   <!-- Notification groups -->

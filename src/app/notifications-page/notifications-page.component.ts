@@ -171,15 +171,31 @@ export interface DateGroup {
 })
 export class NotificationsPageComponent {
   activeTab: 'unread' | 'urgent' | 'all' = 'all';
+  timeframe: '7d' | '30d' | '3m' | '6m' | 'all' = 'all';
   notifs: PageNotif[] = ALL_NOTIFS;
 
   get unreadCount(): number { return this.notifs.filter(n => !n.read).length; }
   get urgentCount(): number { return this.notifs.filter(n => n.tag === 'urgent').length; }
 
+  private get timeframeCutoff(): Date | null {
+    const now = Date.now();
+    if (this.timeframe === '7d')  return new Date(now - 7  * 24 * 60 * 60 * 1000);
+    if (this.timeframe === '30d') return new Date(now - 30 * 24 * 60 * 60 * 1000);
+    if (this.timeframe === '3m')  return new Date(now - 90 * 24 * 60 * 60 * 1000);
+    if (this.timeframe === '6m')  return new Date(now - 180 * 24 * 60 * 60 * 1000);
+    return null;
+  }
+
   get filtered(): PageNotif[] {
-    if (this.activeTab === 'unread') return this.notifs.filter(n => !n.read);
-    if (this.activeTab === 'urgent') return this.notifs.filter(n => n.tag === 'urgent');
-    return this.notifs;
+    const cutoff = this.timeframeCutoff;
+    let items = cutoff ? this.notifs.filter(n => n.timestamp >= cutoff!) : this.notifs;
+    if (this.activeTab === 'unread') return items.filter(n => !n.read);
+    if (this.activeTab === 'urgent') return items.filter(n => n.tag === 'urgent');
+    return items;
+  }
+
+  onTimeframeChange(e: Event): void {
+    this.timeframe = (e as CustomEvent).detail.value as typeof this.timeframe;
   }
 
   get dateGroups(): DateGroup[] {

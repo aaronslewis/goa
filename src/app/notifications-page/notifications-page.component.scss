@@ -48,6 +48,27 @@
 
 /* ── Filter tabs ─────────────────────────────────────────────────────────── */
 
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--goa-space-m);
+  flex-wrap: wrap;
+}
+
+.timeframe-filter {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-s);
+}
+
+.timeframe-filter__label {
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+  white-space: nowrap;
+}
+
 .filter-tabs {
   display: flex;
   gap: 0;
