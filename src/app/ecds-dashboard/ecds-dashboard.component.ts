@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 export type NotificationType = 'emergency' | 'important' | 'information' | 'event';
 
@@ -63,7 +64,7 @@ type MenuEntry = MenuItem | MenuGroup | MenuDrill;
 @Component({
   selector: 'ecds-dashboard',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './ecds-dashboard.component.html',
   styleUrl: './ecds-dashboard.component.scss',
@@ -280,60 +281,72 @@ export class EcdsDashboardComponent implements AfterViewInit, OnDestroy {
 
   // ── Notifications ─────────────────────────────────────────────────────────
 
+  private hoursAgo(h: number): Date {
+    return new Date(Date.now() - h * 60 * 60 * 1000);
+  }
+
+  private daysAgo(d: number, h = 9): Date {
+    const dt = new Date();
+    dt.setDate(dt.getDate() - d);
+    dt.setHours(h, 0, 0, 0);
+    return dt;
+  }
+
   notifications: Notification[] = [
     {
       id: 'n1',
       type: 'emergency',
       heading: 'Calamari Kindergarden\'s licence will expire on Oct 12, 2026',
       body: 'Immediate action is required before the expiry date.',
-      timestamp: new Date('2026-07-14T08:00:00'),
+      timestamp: this.hoursAgo(2),
     },
     {
       id: 'n2',
       type: 'important',
       heading: 'Critical incident report submitted for Tiramisu Daycare',
       body: 'A new critical incident report has been submitted for Tiramisu Daycare and requires your attention.',
-      timestamp: new Date('2026-07-14T09:00:00'),
+      timestamp: this.hoursAgo(5),
     },
     {
       id: 'n3',
       type: 'important',
       heading: 'Dunder Mifflin Family Day Homes updated a non-compliance for review',
       body: 'A non-compliance record has been updated by Dunder Mifflin Family Day Homes and requires your review.',
-      timestamp: new Date('2026-07-14T09:30:00'),
+      timestamp: this.daysAgo(1, 14),
     },
     {
       id: 'n4',
       type: 'important',
       heading: 'Scott\'s Tots has 1 unresolved non-compliance',
       body: 'Action required before May 20, 2026.',
-      timestamp: new Date('2026-07-14T10:00:00'),
+      timestamp: this.daysAgo(2, 10),
     },
     {
       id: 'n5',
       type: 'information',
       heading: 'MSPC Daycare inspection needs to be completed',
       body: 'You have 1 draft inspection to complete for MSPC Daycare.',
-      timestamp: new Date('2026-07-14T10:15:00'),
+      timestamp: this.daysAgo(3, 11),
     },
     {
       id: 'n6',
       type: 'information',
       heading: 'Tiramisu Daycare insurance documentation expiring in a month',
       body: 'Insurance documentation for Tiramisu Daycare will expire on September 12, 2026.',
-      timestamp: new Date('2026-07-14T10:30:00'),
+      timestamp: this.daysAgo(5, 9),
     },
     {
       id: 'n7',
       type: 'information',
       heading: 'Scott\'s Tots uploaded a new document',
-      body: 'Complaint Form was uploaded by Scott\'s Tots on July 14, 2026.',
-      timestamp: new Date('2026-07-14T11:00:00'),
+      body: 'Complaint Form was uploaded by Scott\'s Tots.',
+      timestamp: this.daysAgo(6, 15),
     },
   ];
 
   get activeNotifications(): Notification[] {
-    return this.notifications.filter(n => !n.dismissed);
+    const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    return this.notifications.filter(n => !n.dismissed && n.timestamp >= oneWeekAgo);
   }
 
   get notificationCount(): number {

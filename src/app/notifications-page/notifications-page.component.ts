@@ -170,7 +170,7 @@ export interface DateGroup {
   styleUrl: './notifications-page.component.scss',
 })
 export class NotificationsPageComponent {
-  activeTab: 'unread' | 'urgent' | 'all' = 'unread';
+  activeTab: 'unread' | 'urgent' | 'all' = 'all';
   notifs: PageNotif[] = ALL_NOTIFS;
 
   get unreadCount(): number { return this.notifs.filter(n => !n.read).length; }
