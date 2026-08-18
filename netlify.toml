@@ -4,7 +4,11 @@
 
 [build.environment]
   NPM_FLAGS = "--legacy-peer-deps"
-  NODE_VERSION = "20"
+  NODE_VERSION = "22.23.1"
+
+[[plugins]]
+  package = "@netlify/angular-runtime"
+  pinned_version = "3.0.1"
 
 [[redirects]]
   from = "/*"
