@@ -115,12 +115,21 @@ export function setUpWorkSideMenuScrollFix(hostEl: HTMLElement): void {
       // (4.5rem) and this wrapper's own scrollbar — thinned to match
       // goa-scrollable's, but still real width — has nowhere to go but on
       // top of the centered icons. Only widen the rail when a scrollbar is
-      // actually present; leave the library's default alone otherwise.
+      // actually present; leave the library's default alone otherwise. The
+      // rail also gets a little wider than the scrollbar alone needs, and
+      // that sliver becomes --primary-scroll-gutter-gap — a small
+      // breathing-room padding the caller's .primary-scroll applies before
+      // the scrollbar, so it doesn't sit flush against the icons.
       const needsScroll = primaryScroll.scrollHeight > primaryScroll.clientHeight;
       if (!menu.hasAttribute('open') && needsScroll) {
-        hostEl.style.setProperty('--goa-work-side-menu-width-closed', 'calc(4.5rem + var(--goa-space-xs))');
+        hostEl.style.setProperty(
+          '--goa-work-side-menu-width-closed',
+          'calc(4.5rem + var(--goa-space-xs) + var(--goa-space-2xs))'
+        );
+        hostEl.style.setProperty('--primary-scroll-gutter-gap', 'var(--goa-space-2xs)');
       } else {
         hostEl.style.removeProperty('--goa-work-side-menu-width-closed');
+        hostEl.style.removeProperty('--primary-scroll-gutter-gap');
       }
     };
 

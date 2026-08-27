@@ -18,6 +18,12 @@ goab-work-side-menu {
   overflow-y: auto;
   max-height: var(--primary-max-height, none);
 
+  // Collapsed, leaves a little breathing room between the centered icons
+  // and the scrollbar instead of the two sitting flush against each other
+  // (--primary-scroll-gutter-gap is only set in that state — see
+  // provider-portal-menu.component.ts).
+  padding-right: var(--primary-scroll-gutter-gap, 0);
+
   // Matches goa-scrollable's own scrollbar styling (see its shadow CSS) so
   // this reads as one system, and so it takes as little width as possible
   // out of the collapsed 4.5rem rail (widened in
