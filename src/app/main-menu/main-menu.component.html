@@ -1,24 +1,22 @@
 <ng-template #primaryNav>
-  <div class="primary-scroll">
-    @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
-      @if (entry.kind === 'item') {
-        <goab-work-side-menu-item
-          [icon]="entry.icon"
-          [label]="entry.label"
-          [url]="entry.url"
-          [current]="entry.current ?? false"></goab-work-side-menu-item>
-      } @else {
-        <goab-work-side-menu-group [heading]="entry.heading" [icon]="entry.icon">
-          @for (child of entry.items; track child.label) {
-            <goab-work-side-menu-item
-              [label]="child.label"
-              [url]="child.url"
-              [current]="child.current ?? false"></goab-work-side-menu-item>
-          }
-        </goab-work-side-menu-group>
-      }
+  @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
+    @if (entry.kind === 'item') {
+      <goab-work-side-menu-item
+        [icon]="entry.icon"
+        [label]="entry.label"
+        [url]="entry.url"
+        [current]="entry.current ?? false"></goab-work-side-menu-item>
+    } @else {
+      <goab-work-side-menu-group [heading]="entry.heading" [icon]="entry.icon">
+        @for (child of entry.items; track child.label) {
+          <goab-work-side-menu-item
+            [label]="child.label"
+            [url]="child.url"
+            [current]="child.current ?? false"></goab-work-side-menu-item>
+        }
+      </goab-work-side-menu-group>
     }
-  </div>
+  }
 </ng-template>
 
 <ng-template #secondaryNav>

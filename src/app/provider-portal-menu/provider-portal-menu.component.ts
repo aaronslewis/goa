@@ -7,7 +7,6 @@ import {
   GoabWorkSideMenuItem,
   GoabIcon,
 } from '@abgov/angular-components';
-import { setUpWorkSideMenuScrollFix } from '../shared/work-side-menu-scroll-fix';
 
 interface MenuItem {
   kind: 'item';
@@ -37,24 +36,30 @@ export class ProviderPortalMenuComponent implements AfterViewInit {
   constructor(private router: Router, private el: ElementRef<HTMLElement>) {}
 
   ngAfterViewInit(): void {
-    setUpWorkSideMenuScrollFix(this.el.nativeElement);
-
-    // The web component's shadow DOM sets line-height: 12px on the email text,
-    // which clips descenders ('y', 'g', etc.). Patch it after the element
-    // upgrades. goab-work-side-menu is a real Angular component wrapping
-    // that same goa-work-side-menu underneath, so this reaches one level
-    // deeper than the plain v1 usage did — and, like everything else built
-    // on these goab-* wrappers, it gates its own first render behind an
-    // async "isReady" flip, so a single immediate + one-retry attempt (which
-    // sufficed for v1's near-instant custom element upgrade) isn't reliably
-    // enough time here.
+    // The web component's shadow DOM sets line-height:1 on the profile's
+    // secondary text (matching font-size exactly, with overflow:hidden for
+    // ellipsis truncation), which clips descenders ('y', 'g', etc.) — this
+    // has held across at least two rewrites of the component's internals
+    // (the class name below is versioned to the currently-installed
+    // @abgov/web-components; re-check this patch on any future bump). Patch
+    // it after the element upgrades. goab-work-side-menu is a real Angular
+    // component wrapping that same goa-work-side-menu underneath, so this
+    // reaches one level deeper than the plain v1 usage did — and, like
+    // everything else built on these goab-* wrappers, it gates its own first
+    // render behind an async "isReady" flip, so a single immediate +
+    // one-retry attempt (which sufficed for v1's near-instant custom element
+    // upgrade) isn't reliably enough time here.
     const patch = (): boolean => {
       const shadow = this.el.nativeElement.querySelector('goab-work-side-menu')?.querySelector('goa-work-side-menu')?.shadowRoot;
       if (!shadow) return false;
       if (shadow.querySelector('style[data-patch]')) return true;
       const style = document.createElement('style');
       style.setAttribute('data-patch', '');
-      style.textContent = '.profile.svelte-i9l4k4 { padding-bottom: 16px !important; }';
+      // No Svelte scope-hash class needed — this <style> is appended
+      // directly into the same shadow root, so a plain class selector
+      // matches; !important is still needed to outrank the library's own
+      // higher-specificity rule for the same property.
+      style.textContent = '.profile-secondary { line-height: 1.3 !important; }';
       shadow.appendChild(style);
       return true;
     };
