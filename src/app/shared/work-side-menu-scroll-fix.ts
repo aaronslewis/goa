@@ -56,11 +56,20 @@ export function setUpWorkSideMenuScrollFix(hostEl: HTMLElement): void {
       clearTimeout(fallbackTimer);
       const budget = scrollableDiv.clientHeight;
       const belowPrimary = scrollableDiv.scrollHeight - primaryScroll.scrollHeight;
-      // A couple of px of safety margin: some very last bit of async
-      // upgrade/paint can still land a tick after the debounce settles, and
-      // this is cheap insurance against that reintroducing a sliver of
-      // outer scroll.
-      hostEl.style.setProperty('--primary-max-height', `${budget - belowPrimary - 4}px`);
+      hostEl.style.setProperty('--primary-max-height', `${budget - belowPrimary}px`);
+
+      // On some menus, a very last bit of async upgrade/paint still lands a
+      // tick after the debounce settles, leaving goa-scrollable a couple of
+      // px short of what it actually needs (a real outer scrollbar). A flat
+      // safety margin applied to every menu isn't the fix — on a short list
+      // that already fits exactly, it just manufactures an unnecessary
+      // scrollbar of its own. Instead, check for that gap after applying and
+      // trim exactly what's left, so a menu that already fits perfectly
+      // (immediately true here) is never touched again.
+      const shortfall = scrollableDiv.scrollHeight - scrollableDiv.clientHeight;
+      if (shortfall > 0) {
+        hostEl.style.setProperty('--primary-max-height', `${budget - belowPrimary - shortfall}px`);
+      }
 
       // Collapsed, the rail narrows to --goa-work-side-menu-width-closed
       // (4.5rem) and this wrapper's own scrollbar — thinned to match
