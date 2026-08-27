@@ -5,12 +5,7 @@
   open
   aria-label="Workspace navigation">
 
-  <div slot="primary">
-    <goa-work-side-menu-item
-      [attr.icon]="searchItem.icon"
-      [attr.label]="searchItem.label"
-      [attr.url]="searchItem.url"></goa-work-side-menu-item>
-
+  <div slot="primary" class="primary-scroll">
     @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
       @if (entry.kind === 'item') {
         <goa-work-side-menu-item
@@ -34,6 +29,14 @@
   </div>
 
   <div slot="secondary">
+    <goa-work-side-menu-item
+      [attr.icon]="searchItem.icon"
+      [attr.label]="searchItem.label"
+      [attr.url]="searchItem.url"></goa-work-side-menu-item>
+    <goa-work-side-menu-item
+      [attr.icon]="notificationsItem.icon"
+      [attr.label]="notificationsItem.label"
+      [attr.url]="notificationsItem.url"></goa-work-side-menu-item>
     <goa-work-side-menu-item
       [attr.icon]="helpItem.icon"
       [attr.label]="helpItem.label"

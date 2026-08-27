@@ -7,6 +7,17 @@ goa-work-side-menu {
   height: 100%;
 }
 
+// goa-work-side-menu lays out header + primary + secondary + the profile
+// trigger in one flex column with no internal scroll region of its own, so a
+// long primary list just pushes the secondary section and account trigger
+// past the viewport instead of scrolling. --primary-max-height is measured
+// at runtime (see main-menu.component.ts) from the surrounding chrome so
+// this wrapper can scroll on its own and keep the rest pinned in view.
+.primary-scroll {
+  overflow-y: auto;
+  max-height: var(--primary-max-height, none);
+}
+
 .account-menu {
   display: flex;
   flex-direction: column;

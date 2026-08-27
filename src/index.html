@@ -13,8 +13,11 @@
     href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
 
-  <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7.4.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7.4.0/dist/ionicons/ionicons.js"></script>
+  <!-- Self-hosted (not the jsdelivr CDN): some networks intermittently 404 on
+       its lazy-loaded chunk files, dropping icons with no visible error.
+       Served from our own build via the "ionicons" asset entry in angular.json. -->
+  <script type="module" src="ionicons/ionicons.esm.js"></script>
+  <script nomodule src="ionicons/ionicons.js"></script>
 </head>
 <body>
   <app-root></app-root>

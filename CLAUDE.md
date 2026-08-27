@@ -2,7 +2,7 @@
 
 A help-centre prototype for the Government of Alberta. **This branch will be frozen soon and handed to developers**; subsequent design explorations move to a separate branch.
 
-For new prototypes or screens **in this repo**, invoke the **`goa-angular-v1`** skill — it packages the brand voice, V1 component selectors, token reference, and the scaffold-draft-preview-verify workflow that enforces the rules below. (The skill family also includes `goa-react-v1`, `goa-angular-v2`, and `goa-react-v2` for other stacks — never use the v2 ones here.)
+For new prototypes or screens **in this repo**, invoke the **`goa-angular-v1`** skill — it packages the brand voice, V1 component selectors, token reference, and the scaffold-draft-preview-verify workflow that enforces the rules below. (The skill family also includes `goa-react-v1`, `goa-angular-v2`, and `goa-react-v2` for other stacks.) **Default to DS 1.0. Only switch to a v2 skill when the user explicitly asks for DS 2.0.**
 
 ## Stack
 - Angular 20 (latest stable), npm, hosted on Netlify.
@@ -11,9 +11,9 @@ For new prototypes or screens **in this repo**, invoke the **`goa-angular-v1`** 
 
 ## Use the GoA Design System v1 (not v2)
 
-**Components.** `@abgov/angular-components` ships both design systems in one package. The selector prefix is the switch:
-- **v1 — use:** `<goa-button>`, `<goa-callout>`, `<goa-input>`, …
-- **v2 — do NOT use:** `<goab-button>`, `<goab-callout>`, `<goab-input>`, …
+**Default is DS 1.0.** Only use DS 2.0 when the user explicitly asks for it.
+
+**Components.** `@abgov/angular-components` ships both design systems in one package. Both v1 and v2 use the same `goa-*` component handles (e.g. `<goa-button>`, `<goa-callout>`, `<goa-input>`). This is why v1 and v2 cannot coexist in the same app or on the same page — they would collide. The `goab-*` prefix appeared during the v2 beta and is no longer current; do not use it.
 
 **Tokens.** `@abgov/design-tokens` releases v1 and v2 as separate npm lines — *not* a switch within one package. Pin to `^1.10.0`; never widen to `2.x`. ~15% of v1 token names were renamed or dropped in v2, so a v2-only token will silently resolve to nothing.
 
@@ -39,6 +39,8 @@ WCAG 2.1 AA: visible focus, adequate tap targets, labelled fields, semantic land
 - No commented-out code.
 
 ## Don't
-- Don't import `goab-*` components or install any `@abgov/*` 2.x package.
+- Don't use DS 2.0 unless the user explicitly asks for it.
+- Don't use `goab-*` component handles (beta-era prefix, no longer valid).
+- Don't install any `@abgov/*` 2.x package.
 - Don't hand-build a component that already exists in `@abgov/angular-components`.
 - Don't hard-code a design value that has a `--goa-*` token.

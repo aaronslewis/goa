@@ -77,11 +77,14 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
 
   readonly helpItem = { label: 'Help Centre', icon: 'help-circle', url: '#' };
 
+  readonly notificationsItem = { label: 'Notifications', icon: 'notifications', url: '/notifications' };
+
   readonly accountMenuItems = [
+    { label: 'My Profile', icon: 'person-circle', action: 'profile' as const },
     { label: 'Sign out', icon: 'log-out', action: 'logout' as const },
   ];
 
-  onAccountAction(action: 'settings' | 'logout'): void {
+  onAccountAction(action: 'profile' | 'settings' | 'logout'): void {
     if (action === 'logout') {
       this.router.navigate(['/']);
     }
@@ -92,7 +95,7 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
   activePanel = 'root';
 
   private readonly panelTitles: Record<string, string> = {
-    adminPenalties: 'Admin Penalties',
+    adminPenalties: 'Administrative Penalties',
     certification: 'Certification',
     childRegistration: 'Child Registration',
     claims: 'Claims',
@@ -106,11 +109,11 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
 
   private readonly panels: Record<string, MenuEntry[]> = {
     root: [
-      { kind: 'drill', label: 'Admin Penalties', icon: 'ticket', panel: 'adminPenalties' },
+      { kind: 'drill', label: 'Administrative Penalties', icon: 'ticket', panel: 'adminPenalties' },
       { kind: 'drill', label: 'Certification', icon: 'ribbon', panel: 'certification' },
       { kind: 'drill', label: 'Child Registration', icon: 'id-card', panel: 'childRegistration' },
       { kind: 'drill', label: 'Claims', icon: 'list', panel: 'claims' },
-      { kind: 'item', label: 'Family Portal', icon: 'home', url: '#' },
+      { kind: 'item', label: 'Family Portal', icon: 'heart', url: '#' },
       { kind: 'drill', label: 'Funding', icon: 'file-tray-full', panel: 'funding' },
       { kind: 'drill', label: 'GOA User Management', icon: 'key', panel: 'goaUserMgmt' },
       { kind: 'drill', label: 'Licensing', icon: 'shield-checkmark', panel: 'licensing' },
@@ -149,7 +152,8 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
           { label: 'Agreement Management', url: '#' },
         ],
       },
-      { kind: 'item', label: 'Agreement Configuration', icon: 'document-text', url: '#' },
+      { kind: 'item', label: 'Affordability Grant Financial Reporting', icon: 'bar-chart', url: '#' },
+      { kind: 'item', label: 'Agreement Configuration', icon: 'documents', url: '#' },
       {
         kind: 'group',
         heading: 'Family Day Home Agency Contract',
@@ -162,7 +166,7 @@ export class MainMenu2Component implements AfterViewInit, OnDestroy {
       { kind: 'item', label: 'Space Creation', icon: 'expand', url: '#' },
       {
         kind: 'group',
-        heading: 'ECE Workforce Supports Grant',
+        heading: 'ECE Workforce Supports',
         icon: 'server',
         items: [
           { label: 'Programs', url: '#' },

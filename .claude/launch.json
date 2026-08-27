@@ -3,9 +3,9 @@
   "configurations": [
     {
       "name": "sage",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["start"],
-      "port": 4200
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["ng", "serve", "--port", "4201"],
+      "port": 4201
     }
   ]
 }
