@@ -112,7 +112,7 @@ export class MainMenu3Component implements AfterViewInit, OnDestroy {
       { kind: 'drill', label: 'Certification', icon: 'ribbon', panel: 'certification' },
       { kind: 'drill', label: 'Child Registration', icon: 'id-card', panel: 'childRegistration' },
       { kind: 'drill', label: 'Claims', icon: 'list', panel: 'claims' },
-      { kind: 'item', label: 'Family Portal', icon: 'heart', url: '#' },
+      { kind: 'item', label: 'Family Portal', icon: 'people', url: '#' },
       { kind: 'drill', label: 'Funding', icon: 'file-tray-full', panel: 'funding' },
       { kind: 'drill', label: 'GOA User Management', icon: 'key', panel: 'goaUserMgmt' },
       { kind: 'drill', label: 'Licensing', icon: 'shield-checkmark', panel: 'licensing' },
@@ -146,7 +146,7 @@ export class MainMenu3Component implements AfterViewInit, OnDestroy {
       {
         kind: 'group',
         heading: 'Affordability Grant',
-        icon: 'shapes',
+        icon: 'pie-chart',
         items: [
           { label: 'Programs', url: '#' },
           { label: 'Agreement Management', url: '#' },

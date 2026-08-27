@@ -79,11 +79,10 @@ export class MainMenuComponent implements AfterViewInit {
 
   readonly accountMenuItems = [
     { label: 'My Profile', icon: 'person-circle', action: 'profile' as const },
-    { label: 'Settings', icon: 'settings', action: 'settings' as const },
     { label: 'Log out', icon: 'log-out', action: 'logout' as const },
   ];
 
-  onAccountAction(action: 'profile' | 'settings' | 'logout'): void {
+  onAccountAction(action: 'profile' | 'logout'): void {
     // Hook into router/auth when those exist; no-op for now.
   }
 
@@ -100,7 +99,7 @@ export class MainMenuComponent implements AfterViewInit {
     {
       kind: 'group',
       heading: 'Affordability Grant',
-      icon: 'shapes',
+      icon: 'pie-chart',
       items: [
         { label: 'Programs', url: '#' },
         { label: 'Agreement Management', url: '#' },
@@ -139,7 +138,7 @@ export class MainMenuComponent implements AfterViewInit {
         { label: 'Contract Management', url: '#' },
       ],
     },
-    { kind: 'item', label: 'Family Portal', icon: 'heart', url: '#' },
+    { kind: 'item', label: 'Family Portal', icon: 'people', url: '#' },
     { kind: 'item', label: 'GOA User Management', icon: 'key', url: '#' },
     { kind: 'item', label: 'Identity and Access Management', icon: 'lock-closed', url: '#' },
     {
