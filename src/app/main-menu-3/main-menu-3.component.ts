@@ -1,4 +1,4 @@
-import { Component, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { GoabIconType } from '@abgov/ui-components-common';
 import {
@@ -7,7 +7,6 @@ import {
   GoabWorkSideMenuItem,
   GoabIcon,
 } from '@abgov/angular-components';
-import { setUpWorkSideMenuScrollFix } from '../shared/work-side-menu-scroll-fix';
 
 interface MenuLeaf {
   label: string;
@@ -50,14 +49,10 @@ const PANELS_WITH_FLYOUT = new Set(['certification']);
   templateUrl: './main-menu-3.component.html',
   styleUrl: './main-menu-3.component.scss',
 })
-export class MainMenu3Component implements AfterViewInit {
+export class MainMenu3Component {
   constructor(private router: Router, private el: ElementRef<HTMLElement>) {}
 
   private hoverTimer?: ReturnType<typeof setTimeout>;
-
-  ngAfterViewInit(): void {
-    setUpWorkSideMenuScrollFix(this.el.nativeElement);
-  }
 
   // goab-work-side-menu's (onToggle) emits void, not an open/closed payload,
   // so this is the source of truth for whether the menu is expanded.

@@ -7,40 +7,6 @@ goab-work-side-menu {
   height: 100%;
 }
 
-// goab-work-side-menu's Angular wrapper still renders the same underlying
-// goa-work-side-menu web component (no DS 2.0 render mode exists for it yet
-// in the installed package), so it inherits the same layout quirk: header +
-// primary + secondary + profile + collapse-toggle all live in one flex
-// column with no internal scroll region of its own — even the 12-item root
-// panel overflows it. --primary-max-height is measured at runtime (see
-// main-menu-2.component.ts) from the surrounding chrome so this wrapper can
-// scroll on its own and keep the rest pinned in view.
-.primary-scroll {
-  overflow-y: auto;
-  max-height: var(--primary-max-height, none);
-
-  // Matches goa-scrollable's own scrollbar styling (see its shadow CSS) so
-  // this reads as one system, and so it takes as little width as possible
-  // out of the collapsed 4.5rem rail (widened in main-menu-2.component.ts
-  // only when this scrollbar is actually present).
-  &::-webkit-scrollbar {
-    width: var(--goa-space-xs);
-  }
-
-  &::-webkit-scrollbar-track {
-    border-radius: var(--goa-border-radius-m);
-  }
-
-  &::-webkit-scrollbar-track:hover {
-    background: var(--goa-color-greyscale-200);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--goa-color-greyscale-400);
-    border-radius: var(--goa-border-radius-m);
-  }
-}
-
 .panel-title {
   display: flex;
   align-items: center;

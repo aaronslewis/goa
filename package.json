@@ -28,7 +28,7 @@
     "@abgov/angular-components": "^5.2.1",
     "@abgov/design-tokens": "^1.10.0",
     "@abgov/ui-components-common": "^2.2.0",
-    "@abgov/web-components": "^1.41.0",
+    "@abgov/web-components": "^2.4.0",
     "@angular/common": "^20.3.0",
     "@angular/compiler": "^20.3.0",
     "@angular/core": "^20.3.0",
