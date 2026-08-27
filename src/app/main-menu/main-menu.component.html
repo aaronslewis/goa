@@ -1,58 +1,56 @@
-<goa-work-side-menu
-  [attr.heading]="heading"
-  [attr.user-name]="userName"
-  [attr.user-secondary-text]="userSecondaryText"
-  open
-  aria-label="Workspace navigation">
-
-  <div slot="primary" class="primary-scroll">
+<ng-template #primaryNav>
+  <div class="primary-scroll">
     @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
       @if (entry.kind === 'item') {
-        <goa-work-side-menu-item
-          [attr.icon]="entry.icon"
-          [attr.label]="entry.label"
-          [attr.url]="entry.url"
-          [attr.current]="entry.current ? true : null"></goa-work-side-menu-item>
+        <goab-work-side-menu-item
+          [icon]="entry.icon"
+          [label]="entry.label"
+          [url]="entry.url"
+          [current]="entry.current ?? false"></goab-work-side-menu-item>
       } @else {
-        <goa-work-side-menu-group
-          [attr.heading]="entry.heading"
-          [attr.icon]="entry.icon">
+        <goab-work-side-menu-group [heading]="entry.heading" [icon]="entry.icon">
           @for (child of entry.items; track child.label) {
-            <goa-work-side-menu-item
-              [attr.label]="child.label"
-              [attr.url]="child.url"
-              [attr.current]="child.current ? true : null"></goa-work-side-menu-item>
+            <goab-work-side-menu-item
+              [label]="child.label"
+              [url]="child.url"
+              [current]="child.current ?? false"></goab-work-side-menu-item>
           }
-        </goa-work-side-menu-group>
+        </goab-work-side-menu-group>
       }
     }
   </div>
+</ng-template>
 
-  <div slot="secondary">
-    <goa-work-side-menu-item
-      [attr.icon]="searchItem.icon"
-      [attr.label]="searchItem.label"
-      [attr.url]="searchItem.url"></goa-work-side-menu-item>
-    <goa-work-side-menu-item
-      [attr.icon]="notificationsItem.icon"
-      [attr.label]="notificationsItem.label"
-      [attr.url]="notificationsItem.url"></goa-work-side-menu-item>
-    <goa-work-side-menu-item
-      [attr.icon]="helpItem.icon"
-      [attr.label]="helpItem.label"
-      [attr.url]="helpItem.url"></goa-work-side-menu-item>
-  </div>
+<ng-template #secondaryNav>
+  <goab-work-side-menu-item [icon]="searchItem.icon" [label]="searchItem.label" [url]="searchItem.url"></goab-work-side-menu-item>
+  <goab-work-side-menu-item [icon]="notificationsItem.icon" [label]="notificationsItem.label" [url]="notificationsItem.url"></goab-work-side-menu-item>
+  <goab-work-side-menu-item [icon]="helpItem.icon" [label]="helpItem.label" [url]="helpItem.url"></goab-work-side-menu-item>
+</ng-template>
 
-  <div slot="account" class="account-menu" role="menu" aria-label="Account menu for {{ userName }}">
+<ng-template #accountNav>
+  <div class="account-menu" role="menu" aria-label="Account menu for {{ userName }}">
     @for (item of accountMenuItems; track item.action) {
       <button
         type="button"
         role="menuitem"
         class="account-menu-item"
         (click)="onAccountAction(item.action)">
-        <goa-icon [attr.type]="item.icon" size="small"></goa-icon>
+        <goab-icon [type]="item.icon" size="small"></goab-icon>
         <span>{{ item.label }}</span>
       </button>
     }
   </div>
-</goa-work-side-menu>
+</ng-template>
+
+<goab-work-side-menu
+  [heading]="heading"
+  url="#"
+  [userName]="userName"
+  [userSecondaryText]="userSecondaryText"
+  [open]="isMenuOpen"
+  [primaryContent]="primaryNav"
+  [secondaryContent]="secondaryNav"
+  [accountContent]="accountNav"
+  (onToggle)="onMenuToggle()"
+  aria-label="Workspace navigation">
+</goab-work-side-menu>

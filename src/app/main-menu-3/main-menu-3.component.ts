@@ -1,9 +1,17 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, AfterViewInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GoabIconType } from '@abgov/ui-components-common';
+import {
+  GoabWorkSideMenu,
+  GoabWorkSideMenuGroup,
+  GoabWorkSideMenuItem,
+  GoabIcon,
+} from '@abgov/angular-components';
+import { setUpWorkSideMenuScrollFix } from '../shared/work-side-menu-scroll-fix';
 
 interface MenuLeaf {
   label: string;
-  icon?: string;
+  icon?: GoabIconType;
   url?: string;
   current?: boolean;
 }
@@ -11,7 +19,7 @@ interface MenuLeaf {
 interface MenuItem {
   kind: 'item';
   label: string;
-  icon?: string;
+  icon?: GoabIconType;
   url?: string;
   current?: boolean;
 }
@@ -19,14 +27,14 @@ interface MenuItem {
 interface MenuGroup {
   kind: 'group';
   heading: string;
-  icon: string;
+  icon: GoabIconType;
   items: MenuLeaf[];
 }
 
 interface MenuDrill {
   kind: 'drill';
   label: string;
-  icon: string;
+  icon: GoabIconType;
   panel: string;
 }
 
@@ -38,28 +46,23 @@ const PANELS_WITH_FLYOUT = new Set(['certification']);
 @Component({
   selector: 'main-menu-3',
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [GoabWorkSideMenu, GoabWorkSideMenuGroup, GoabWorkSideMenuItem, GoabIcon],
   templateUrl: './main-menu-3.component.html',
   styleUrl: './main-menu-3.component.scss',
 })
-export class MainMenu3Component implements AfterViewInit, OnDestroy {
-  constructor(private router: Router, private el: ElementRef, private zone: NgZone) {}
+export class MainMenu3Component implements AfterViewInit {
+  constructor(private router: Router, private el: ElementRef<HTMLElement>) {}
 
-  private observer?: MutationObserver;
   private hoverTimer?: ReturnType<typeof setTimeout>;
 
   ngAfterViewInit(): void {
-    const menu = this.el.nativeElement.querySelector('goa-work-side-menu');
-    if (!menu) return;
-    this.observer = new MutationObserver(() => {
-      this.zone.run(() => { this.isMenuOpen = menu.hasAttribute('open'); });
-    });
-    this.observer.observe(menu, { attributes: true, attributeFilter: ['open'] });
+    setUpWorkSideMenuScrollFix(this.el.nativeElement);
   }
 
-  ngOnDestroy(): void {
-    this.observer?.disconnect();
-    clearTimeout(this.hoverTimer);
+  // goab-work-side-menu's (onToggle) emits void, not an open/closed payload,
+  // so this is the source of truth for whether the menu is expanded.
+  onMenuToggle(): void {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   onMenuMouseEnter(): void {
@@ -76,15 +79,15 @@ export class MainMenu3Component implements AfterViewInit, OnDestroy {
   readonly userName = 'Edna Mode';
   readonly userSecondaryText = 'edna.mode@gov.ab.ca';
 
-  readonly searchItem: MenuItem = { kind: 'item', label: 'Search', icon: 'search', url: '#' };
-  readonly helpItem = { label: 'Help Centre', icon: 'help-circle', url: '#' };
-  readonly notificationsItem = { label: 'Notifications', icon: 'notifications', url: '/notifications' };
+  readonly searchItem: MenuItem = { kind: 'item', label: 'Search', icon: 'search:outline', url: '#' };
+  readonly helpItem = { label: 'Help Centre', icon: 'help-circle:outline' as GoabIconType, url: '#' };
+  readonly notificationsItem = { label: 'Notifications', icon: 'notifications:outline' as GoabIconType, url: '/notifications' };
   readonly accountMenuItems = [
-    { label: 'My Profile', icon: 'person-circle', action: 'profile' as const },
-    { label: 'Sign out', icon: 'log-out', action: 'logout' as const },
+    { label: 'My Profile', icon: 'person-circle:outline' as GoabIconType, action: 'profile' as const },
+    { label: 'Sign out', icon: 'log-out:outline' as GoabIconType, action: 'logout' as const },
   ];
 
-  onAccountAction(action: 'profile' | 'settings' | 'logout'): void {
+  onAccountAction(action: 'profile' | 'logout'): void {
     if (action === 'logout') {
       this.router.navigate(['/']);
     }
@@ -108,18 +111,18 @@ export class MainMenu3Component implements AfterViewInit, OnDestroy {
 
   private readonly panels: Record<string, MenuEntry[]> = {
     root: [
-      { kind: 'drill', label: 'Administrative Penalties', icon: 'ticket', panel: 'adminPenalties' },
-      { kind: 'drill', label: 'Certification', icon: 'ribbon', panel: 'certification' },
-      { kind: 'drill', label: 'Child Registration', icon: 'id-card', panel: 'childRegistration' },
-      { kind: 'drill', label: 'Claims', icon: 'list', panel: 'claims' },
-      { kind: 'item', label: 'Family Portal', icon: 'people', url: '#' },
-      { kind: 'drill', label: 'Funding', icon: 'file-tray-full', panel: 'funding' },
-      { kind: 'drill', label: 'GOA User Management', icon: 'key', panel: 'goaUserMgmt' },
-      { kind: 'drill', label: 'Licensing', icon: 'shield-checkmark', panel: 'licensing' },
-      { kind: 'drill', label: 'Post Verification', icon: 'checkmark-done', panel: 'postVerification' },
-      { kind: 'drill', label: 'Program User Management', icon: 'finger-print', panel: 'programUserMgmt' },
-      { kind: 'item', label: 'Registered Children Report', icon: 'document-text', url: '#' },
-      { kind: 'drill', label: 'Subsidy', icon: 'body', panel: 'subsidy' },
+      { kind: 'drill', label: 'Administrative Penalties', icon: 'ticket:outline', panel: 'adminPenalties' },
+      { kind: 'drill', label: 'Certification', icon: 'ribbon:outline', panel: 'certification' },
+      { kind: 'drill', label: 'Child Registration', icon: 'id-card:outline', panel: 'childRegistration' },
+      { kind: 'drill', label: 'Claims', icon: 'list:outline', panel: 'claims' },
+      { kind: 'item', label: 'Family Portal', icon: 'people:outline', url: '#' },
+      { kind: 'drill', label: 'Funding', icon: 'file-tray-full:outline', panel: 'funding' },
+      { kind: 'drill', label: 'GOA User Management', icon: 'key:outline', panel: 'goaUserMgmt' },
+      { kind: 'drill', label: 'Licensing', icon: 'shield-checkmark:outline', panel: 'licensing' },
+      { kind: 'drill', label: 'Post Verification', icon: 'checkmark-done:outline', panel: 'postVerification' },
+      { kind: 'drill', label: 'Program User Management', icon: 'finger-print:outline', panel: 'programUserMgmt' },
+      { kind: 'item', label: 'Registered Children Report', icon: 'document-text:outline', url: '#' },
+      { kind: 'drill', label: 'Subsidy', icon: 'body:outline', panel: 'subsidy' },
     ],
     childRegistration: [
       { kind: 'item', label: 'Manage children', url: '#' },
@@ -127,10 +130,10 @@ export class MainMenu3Component implements AfterViewInit, OnDestroy {
     ],
     // Abstract icons represent each item when the rail is collapsed.
     certification: [
-      { kind: 'item', label: 'Work Queue', icon: 'time', url: '#' },
-      { kind: 'item', label: 'My Assignments', icon: 'person', url: '#' },
-      { kind: 'item', label: 'Search', icon: 'search', url: '#' },
-      { kind: 'item', label: 'Admin Data', icon: 'analytics', url: '#' },
+      { kind: 'item', label: 'Work Queue', icon: 'time:outline', url: '#' },
+      { kind: 'item', label: 'My Assignments', icon: 'person:outline', url: '#' },
+      { kind: 'item', label: 'Search', icon: 'search:outline', url: '#' },
+      { kind: 'item', label: 'Admin Data', icon: 'analytics:outline', url: '#' },
     ],
     claims: [
       { kind: 'item', label: 'Assess Claims', url: '#' },
@@ -146,28 +149,28 @@ export class MainMenu3Component implements AfterViewInit, OnDestroy {
       {
         kind: 'group',
         heading: 'Affordability Grant',
-        icon: 'pie-chart',
+        icon: 'pie-chart:outline',
         items: [
           { label: 'Programs', url: '#' },
           { label: 'Agreement Management', url: '#' },
         ],
       },
-      { kind: 'item', label: 'Affordability Grant Financial Reporting', icon: 'bar-chart', url: '#' },
-      { kind: 'item', label: 'Agreement Configuration', icon: 'documents', url: '#' },
+      { kind: 'item', label: 'Affordability Grant Financial Reporting', icon: 'bar-chart:outline', url: '#' },
+      { kind: 'item', label: 'Agreement Configuration', icon: 'documents:outline', url: '#' },
       {
         kind: 'group',
         heading: 'Family Day Home Agency Contract',
-        icon: 'home',
+        icon: 'home:outline',
         items: [
           { label: 'Programs', url: '#' },
           { label: 'Contract Management', url: '#' },
         ],
       },
-      { kind: 'item', label: 'Space Creation', icon: 'expand', url: '#' },
+      { kind: 'item', label: 'Space Creation', icon: 'expand:outline', url: '#' },
       {
         kind: 'group',
         heading: 'ECE Workforce Supports',
-        icon: 'server',
+        icon: 'server:outline',
         items: [
           { label: 'Programs', url: '#' },
           { label: 'Agreement Management', url: '#' },
@@ -218,11 +221,11 @@ export class MainMenu3Component implements AfterViewInit, OnDestroy {
     return this.panelTitles[this.activePanel] ?? '';
   }
 
-  get panelIcon(): string {
+  get panelIcon(): GoabIconType | undefined {
     const drill = this.panels['root'].find(
       e => e.kind === 'drill' && e.panel === this.activePanel
     ) as MenuDrill | undefined;
-    return drill?.icon ?? '';
+    return drill?.icon;
   }
 
   showFlyout = false;
@@ -248,13 +251,31 @@ export class MainMenu3Component implements AfterViewInit, OnDestroy {
   drillInto(panel: string): void {
     this.activePanel = panel;
     if (PANELS_WITH_FLYOUT.has(panel)) {
-      // goa-work-side-menu-group uses an internal <details> element that doesn't
-      // respond to an open attribute — force it open after Angular renders.
-      setTimeout(() => {
-        const group = this.el.nativeElement.querySelector('goa-work-side-menu-group');
-        const details = group?.shadowRoot?.querySelector('details');
-        if (details) details.open = true;
-      });
+      // goa-work-side-menu-group uses an internal <details> element that
+      // doesn't respond to an open attribute — force it open once rendered.
+      // goab-work-side-menu-group is a real Angular component wrapping that
+      // same goa-work-side-menu-group underneath, so this reaches one level
+      // deeper than the plain v1 usage did — and, like everything else built
+      // on these goab-* wrappers, the group gates its own first render
+      // behind an async "isReady" flip, so the element (and its shadow DOM)
+      // may not exist for a tick or several after this runs. A single
+      // setTimeout (which sufficed for v1's near-instant custom element
+      // upgrade) isn't reliably enough time here — wait for it instead.
+      const tryOpen = (): boolean => {
+        const details = this.el.nativeElement
+          .querySelector('goab-work-side-menu-group')
+          ?.querySelector('goa-work-side-menu-group')
+          ?.shadowRoot?.querySelector('details');
+        if (!details) return false;
+        details.open = true;
+        return true;
+      };
+      if (!tryOpen()) {
+        const observer = new MutationObserver(() => {
+          if (tryOpen()) observer.disconnect();
+        });
+        observer.observe(this.el.nativeElement, { childList: true, subtree: true });
+      }
     }
   }
 

@@ -1,15 +1,23 @@
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef } from '@angular/core';
+import { GoabIconType } from '@abgov/ui-components-common';
+import {
+  GoabWorkSideMenu,
+  GoabWorkSideMenuGroup,
+  GoabWorkSideMenuItem,
+  GoabIcon,
+} from '@abgov/angular-components';
+import { setUpWorkSideMenuScrollFix } from '../shared/work-side-menu-scroll-fix';
 
 interface MenuItem {
   label: string;
-  icon: string;
+  icon: GoabIconType;
   url?: string;
   current?: boolean;
 }
 
 interface MenuGroup {
   heading: string;
-  icon: string;
+  icon: GoabIconType;
   items: { label: string; url?: string; current?: boolean }[];
 }
 
@@ -18,68 +26,38 @@ type MenuEntry = ({ kind: 'item' } & MenuItem) | ({ kind: 'group' } & MenuGroup)
 @Component({
   selector: 'main-menu',
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [GoabWorkSideMenu, GoabWorkSideMenuGroup, GoabWorkSideMenuItem, GoabIcon],
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.scss',
 })
 export class MainMenuComponent implements AfterViewInit {
   constructor(private el: ElementRef<HTMLElement>) {}
 
+  isMenuOpen = true;
+
+  // GoabWorkSideMenu's (onToggle) emits void, not an open/closed payload, so
+  // this is the source of truth for whether the menu is expanded.
+  onMenuToggle(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
   ngAfterViewInit(): void {
-    // goa-work-side-menu already wraps its whole nav (primary + secondary +
-    // profile + the collapse toggle) in an internal <goa-scrollable> capped
-    // to calc(100vh - <fixed chrome>), with its own overflow-y:auto — that's
-    // the mechanism that used to scroll everything away together. Measuring
-    // and reacting to it happens off its shadow DOM (no public API for this).
-    const menu = this.el.nativeElement.querySelector('goa-work-side-menu');
-    const shadow = menu?.shadowRoot;
-    const nav = shadow?.querySelector('.menu');
-    const scrollableDiv = shadow?.querySelector('goa-scrollable')?.shadowRoot?.querySelector('.goa-scrollable');
-    const primaryScroll = this.el.nativeElement.querySelector('.primary-scroll');
-    if (!nav || !scrollableDiv || !primaryScroll) return;
-
-    // Each goa-work-side-menu-item/-group upgrades and renders its own
-    // shadow DOM asynchronously, so the nav's real height keeps growing for
-    // a few ticks after view init — measuring too early undercounts
-    // "everything below the list" and caps this wrapper too generously,
-    // which is exactly what let an outer scrollbar creep back in. Debounce
-    // on resize until the nav stops growing (a one-time layout decision, not
-    // a live binding to keep re-deriving), with a fixed-delay fallback for
-    // contexts where ResizeObserver never fires (e.g. a backgrounded tab).
-    let applied = false;
-    const apply = () => {
-      if (applied) return;
-      applied = true;
-      observer.disconnect();
-      clearTimeout(settleTimer);
-      clearTimeout(fallbackTimer);
-      const budget = scrollableDiv.clientHeight;
-      const belowPrimary = scrollableDiv.scrollHeight - primaryScroll.scrollHeight;
-      this.el.nativeElement.style.setProperty('--primary-max-height', `${budget - belowPrimary}px`);
-    };
-
-    let settleTimer: ReturnType<typeof setTimeout>;
-    const observer = new ResizeObserver(() => {
-      clearTimeout(settleTimer);
-      settleTimer = setTimeout(apply, 100);
-    });
-    observer.observe(nav);
-    const fallbackTimer = setTimeout(apply, 500);
+    setUpWorkSideMenuScrollFix(this.el.nativeElement);
   }
 
   readonly heading = 'Early Childhood Development System';
   readonly userName = 'Edna Mode';
   readonly userSecondaryText = 'edna.mode@gov.ab.ca';
 
-  readonly searchItem: MenuItem = { label: 'Search', icon: 'search', url: '#' };
+  readonly searchItem: MenuItem = { label: 'Search', icon: 'search:outline', url: '#' };
 
-  readonly helpItem: MenuItem = { label: 'Help Centre', icon: 'help-circle', url: '#' };
+  readonly helpItem: MenuItem = { label: 'Help Centre', icon: 'help-circle:outline', url: '#' };
 
-  readonly notificationsItem: MenuItem = { label: 'Notifications', icon: 'notifications', url: '/notifications' };
+  readonly notificationsItem: MenuItem = { label: 'Notifications', icon: 'notifications:outline', url: '/notifications' };
 
   readonly accountMenuItems = [
-    { label: 'My Profile', icon: 'person-circle', action: 'profile' as const },
-    { label: 'Log out', icon: 'log-out', action: 'logout' as const },
+    { label: 'My Profile', icon: 'person-circle:outline' as GoabIconType, action: 'profile' as const },
+    { label: 'Log out', icon: 'log-out:outline' as GoabIconType, action: 'logout' as const },
   ];
 
   onAccountAction(action: 'profile' | 'logout'): void {
@@ -90,7 +68,7 @@ export class MainMenuComponent implements AfterViewInit {
     {
       kind: 'group',
       heading: 'Administrative Penalties',
-      icon: 'ticket',
+      icon: 'ticket:outline',
       items: [
         { label: 'Penalties', url: '#' },
         { label: 'Reports', url: '#' },
@@ -99,18 +77,18 @@ export class MainMenuComponent implements AfterViewInit {
     {
       kind: 'group',
       heading: 'Affordability Grant',
-      icon: 'pie-chart',
+      icon: 'pie-chart:outline',
       items: [
         { label: 'Programs', url: '#' },
         { label: 'Agreement Management', url: '#' },
       ],
     },
-    { kind: 'item', label: 'Affordability Grant Financial Reporting', icon: 'bar-chart', url: '#' },
-    { kind: 'item', label: 'Agreement Configuration', icon: 'documents', url: '#' },
+    { kind: 'item', label: 'Affordability Grant Financial Reporting', icon: 'bar-chart:outline', url: '#' },
+    { kind: 'item', label: 'Agreement Configuration', icon: 'documents:outline', url: '#' },
     {
       kind: 'group',
       heading: 'Certification',
-      icon: 'ribbon',
+      icon: 'ribbon:outline',
       items: [
         { label: 'Work Queue', url: '#' },
         { label: 'My Assignments', url: '#' },
@@ -118,11 +96,11 @@ export class MainMenuComponent implements AfterViewInit {
         { label: 'Admin Data', url: '#' },
       ],
     },
-    { kind: 'item', label: 'Child Registration', icon: 'id-card', url: '#' },
+    { kind: 'item', label: 'Child Registration', icon: 'id-card:outline', url: '#' },
     {
       kind: 'group',
       heading: 'Claims',
-      icon: 'list',
+      icon: 'list:outline',
       items: [
         { label: 'Assess Claims', url: '#' },
         { label: 'Assess Adjustments', url: '#' },
@@ -132,19 +110,19 @@ export class MainMenuComponent implements AfterViewInit {
     {
       kind: 'group',
       heading: 'Family Day Home Agency Contract',
-      icon: 'home',
+      icon: 'home:outline',
       items: [
         { label: 'Programs', url: '#' },
         { label: 'Contract Management', url: '#' },
       ],
     },
-    { kind: 'item', label: 'Family Portal', icon: 'people', url: '#' },
-    { kind: 'item', label: 'GOA User Management', icon: 'key', url: '#' },
-    { kind: 'item', label: 'Identity and Access Management', icon: 'lock-closed', url: '#' },
+    { kind: 'item', label: 'Family Portal', icon: 'people:outline', url: '#' },
+    { kind: 'item', label: 'GOA User Management', icon: 'key:outline', url: '#' },
+    { kind: 'item', label: 'Identity and Access Management', icon: 'lock-closed:outline', url: '#' },
     {
       kind: 'group',
       heading: 'Licensing',
-      icon: 'shield-checkmark',
+      icon: 'shield-checkmark:outline',
       items: [
         { label: 'Dashboard', url: '#' },
         { label: 'Child Care Program Search', url: '#' },
@@ -153,11 +131,11 @@ export class MainMenuComponent implements AfterViewInit {
         { label: 'Admin Data', url: '#' },
       ],
     },
-    { kind: 'item', label: 'Payment Statements', icon: 'receipt', url: '#' },
+    { kind: 'item', label: 'Payment Statements', icon: 'receipt:outline', url: '#' },
     {
       kind: 'group',
       heading: 'Post Verification',
-      icon: 'checkmark-done',
+      icon: 'checkmark-done:outline',
       items: [
         { label: '30 Day Letter', url: '#' },
         { label: 'Warning Letter', url: '#' },
@@ -170,7 +148,7 @@ export class MainMenuComponent implements AfterViewInit {
     {
       kind: 'group',
       heading: 'Program User Management',
-      icon: 'finger-print',
+      icon: 'finger-print:outline',
       items: [
         { label: 'User Access Management', url: '#' },
         { label: 'Legal Representative Management', url: '#' },
@@ -178,12 +156,12 @@ export class MainMenuComponent implements AfterViewInit {
         { label: 'Removal Request', url: '#' },
       ],
     },
-    { kind: 'item', label: 'Space Creation', icon: 'expand', url: '#' },
-    { kind: 'item', label: 'Registered Children Report', icon: 'document-text', url: '#' },
+    { kind: 'item', label: 'Space Creation', icon: 'expand:outline', url: '#' },
+    { kind: 'item', label: 'Registered Children Report', icon: 'document-text:outline', url: '#' },
     {
       kind: 'group',
       heading: 'Subsidy',
-      icon: 'body',
+      icon: 'body:outline',
       items: [
         { label: 'Work Queue', url: '#', current: true },
         { label: 'My Assignments', url: '#' },
@@ -193,7 +171,7 @@ export class MainMenuComponent implements AfterViewInit {
     {
       kind: 'group',
       heading: 'ECE Workforce Supports',
-      icon: 'server',
+      icon: 'server:outline',
       items: [
         { label: 'Programs', url: '#' },
         { label: 'Agreement Management', url: '#' },
