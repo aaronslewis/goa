@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef } from '@angular/core';
 import { GoabIconType } from '@abgov/ui-components-common';
 import {
   GoabWorkSideMenu,
@@ -6,6 +6,7 @@ import {
   GoabWorkSideMenuItem,
   GoabIcon,
 } from '@abgov/angular-components';
+import { hideWorkSideMenuScrollbarButtons } from '../shared/hide-work-side-menu-scrollbar-buttons';
 
 interface MenuItem {
   label: string;
@@ -29,7 +30,13 @@ type MenuEntry = ({ kind: 'item' } & MenuItem) | ({ kind: 'group' } & MenuGroup)
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.scss',
 })
-export class MainMenuComponent {
+export class MainMenuComponent implements AfterViewInit {
+  constructor(private el: ElementRef<HTMLElement>) {}
+
+  ngAfterViewInit(): void {
+    hideWorkSideMenuScrollbarButtons(this.el.nativeElement);
+  }
+
   isMenuOpen = true;
 
   // GoabWorkSideMenu's (onToggle) emits void, not an open/closed payload, so

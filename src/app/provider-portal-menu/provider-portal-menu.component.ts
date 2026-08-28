@@ -7,6 +7,7 @@ import {
   GoabWorkSideMenuItem,
   GoabIcon,
 } from '@abgov/angular-components';
+import { hideWorkSideMenuScrollbarButtons } from '../shared/hide-work-side-menu-scrollbar-buttons';
 
 interface MenuItem {
   kind: 'item';
@@ -36,6 +37,8 @@ export class ProviderPortalMenuComponent implements AfterViewInit {
   constructor(private router: Router, private el: ElementRef<HTMLElement>) {}
 
   ngAfterViewInit(): void {
+    hideWorkSideMenuScrollbarButtons(this.el.nativeElement);
+
     // The web component's shadow DOM sets line-height:1 on the profile's
     // secondary text (matching font-size exactly, with overflow:hidden for
     // ellipsis truncation), which clips descenders ('y', 'g', etc.) — this
