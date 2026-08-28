@@ -72,8 +72,8 @@ export class MainMenuComponent {
       heading: 'Affordability Grant',
       icon: 'pie-chart:outline',
       items: [
-        { label: 'Agreement Management', url: '#' },
         { label: 'Programs', url: '#' },
+        { label: 'Agreement Management', url: '#' },
       ],
     },
     { kind: 'item', label: 'Affordability Grant Financial Reporting', icon: 'bar-chart:outline', url: '#' },
@@ -83,10 +83,10 @@ export class MainMenuComponent {
       heading: 'Certification',
       icon: 'ribbon:outline',
       items: [
-        { label: 'Admin Data', url: '#' },
+        { label: 'Work Queue', url: '#' },
         { label: 'My Assignments', url: '#' },
         { label: 'Search', url: '#' },
-        { label: 'Work Queue', url: '#' },
+        { label: 'Admin Data', url: '#' },
       ],
     },
     { kind: 'item', label: 'Child Registration', icon: 'id-card:outline', url: '#' },
@@ -95,8 +95,8 @@ export class MainMenuComponent {
       heading: 'Claims',
       icon: 'list:outline',
       items: [
-        { label: 'Assess Adjustments', url: '#' },
         { label: 'Assess Claims', url: '#' },
+        { label: 'Assess Adjustments', url: '#' },
         { label: 'Submit Adjustments', url: '#' },
       ],
     },
@@ -105,8 +105,8 @@ export class MainMenuComponent {
       heading: 'ECE Workforce Supports',
       icon: 'server:outline',
       items: [
-        { label: 'Agreement Management', url: '#' },
         { label: 'Programs', url: '#' },
+        { label: 'Agreement Management', url: '#' },
       ],
     },
     {
@@ -114,8 +114,8 @@ export class MainMenuComponent {
       heading: 'Family Day Home Agency Contract',
       icon: 'home:outline',
       items: [
-        { label: 'Contract Management', url: '#' },
         { label: 'Programs', url: '#' },
+        { label: 'Contract Management', url: '#' },
       ],
     },
     { kind: 'item', label: 'Family Portal', icon: 'people:outline', url: '#' },
@@ -126,11 +126,11 @@ export class MainMenuComponent {
       heading: 'Licensing',
       icon: 'shield-checkmark:outline',
       items: [
-        { label: 'Admin Data', url: '#' },
-        { label: 'Child Care Program Search', url: '#' },
         { label: 'Dashboard', url: '#' },
-        { label: 'People Search', url: '#' },
+        { label: 'Child Care Program Search', url: '#' },
         { label: 'Program Educator Search', url: '#' },
+        { label: 'People Search', url: '#' },
+        { label: 'Admin Data', url: '#' },
       ],
     },
     { kind: 'item', label: 'Payment Statements', icon: 'receipt:outline', url: '#' },
@@ -140,11 +140,11 @@ export class MainMenuComponent {
       icon: 'checkmark-done:outline',
       items: [
         { label: '30 Day Letter', url: '#' },
-        { label: 'Completed', url: '#' },
-        { label: 'RoR - Debt Recovery Team', url: '#' },
-        { label: 'RoR - File Closure', url: '#' },
-        { label: 'Suspension Letter', url: '#' },
         { label: 'Warning Letter', url: '#' },
+        { label: 'Suspension Letter', url: '#' },
+        { label: 'RoR - File Closure', url: '#' },
+        { label: 'RoR - Debt Recovery Team', url: '#' },
+        { label: 'Completed', url: '#' },
       ],
     },
     {
@@ -152,10 +152,10 @@ export class MainMenuComponent {
       heading: 'Program User Management',
       icon: 'finger-print:outline',
       items: [
-        { label: 'Access Request', url: '#' },
-        { label: 'Legal Representative Management', url: '#' },
-        { label: 'Removal Request', url: '#' },
         { label: 'User Access Management', url: '#' },
+        { label: 'Legal Representative Management', url: '#' },
+        { label: 'Access Request', url: '#' },
+        { label: 'Removal Request', url: '#' },
       ],
     },
     { kind: 'item', label: 'Registered Children Report', icon: 'document-text:outline', url: '#' },
@@ -165,9 +165,9 @@ export class MainMenuComponent {
       heading: 'Subsidy',
       icon: 'body:outline',
       items: [
+        { label: 'Work Queue', url: '#', current: true },
         { label: 'My Assignments', url: '#' },
         { label: 'Subsidy Application Form', url: '#' },
-        { label: 'Work Queue', url: '#', current: true },
       ],
     },
   ];
