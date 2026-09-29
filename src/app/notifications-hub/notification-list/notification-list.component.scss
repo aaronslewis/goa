@@ -1,0 +1,113 @@
+:host {
+  display: block;
+}
+
+.empty {
+  margin: 0;
+  padding: var(--goa-space-xl) var(--goa-space-l);
+  font: var(--goa-typography-body-m);
+  color: var(--goa-color-text-secondary);
+}
+
+.group__label {
+  margin: 0;
+  padding: var(--goa-space-l) var(--goa-space-l) var(--goa-space-s);
+  font: var(--goa-typography-heading-xs);
+  color: var(--goa-color-text-secondary);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: flex;
+  gap: var(--goa-space-m);
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--goa-space-s) var(--goa-space-l);
+  border-top: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+  background: var(--goa-color-greyscale-white);
+}
+
+.row--urgent {
+  background: var(--goa-color-emergency-background);
+}
+
+.row--important {
+  background: var(--goa-color-warning-background);
+}
+
+.row--information {
+  background: var(--goa-color-info-background);
+}
+
+.row--user {
+  background: var(--goa-color-extended-lilac-light);
+}
+
+.row--dismissed {
+  background: var(--goa-color-greyscale-100);
+
+  .row__title,
+  .row__message {
+    color: var(--goa-color-text-secondary);
+  }
+}
+
+.row__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.row__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  margin-bottom: var(--goa-space-2xs);
+}
+
+.row__title {
+  margin: 0;
+  font: var(--goa-typography-heading-xs);
+  color: var(--goa-color-text-default);
+}
+
+.row__message {
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  color: var(--goa-color-text-default);
+}
+
+.row__program {
+  margin: var(--goa-space-3xs) 0 0;
+  font: var(--goa-typography-body-xs);
+  color: var(--goa-color-text-secondary);
+}
+
+.row__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  flex-shrink: 0;
+}
+
+.row__time {
+  font: var(--goa-typography-body-xs);
+  color: var(--goa-color-text-secondary);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .row {
+    flex-direction: column-reverse;
+  }
+
+  .row__meta {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+}

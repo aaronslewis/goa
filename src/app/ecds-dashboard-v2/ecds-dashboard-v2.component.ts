@@ -21,6 +21,7 @@ export interface NotificationV2 {
 
 @Component({
   selector: 'ecds-dashboard-v2',
+  host: { class: 'goa-ds-v2' },
   standalone: true,
   imports: [
     DatePipe,

@@ -45,6 +45,7 @@ const PANELS_WITH_FLYOUT = new Set(['certification']);
 
 @Component({
   selector: 'main-menu-3',
+  host: { class: 'goa-ds-v2' },
   standalone: true,
   imports: [GoabWorkSideMenu, GoabWorkSideMenuGroup, GoabWorkSideMenuItem, GoabIcon],
   templateUrl: './main-menu-3.component.html',

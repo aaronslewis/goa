@@ -1,0 +1,96 @@
+.page {
+  max-width: 1200px;
+  padding: var(--goa-space-2xl);
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--goa-space-m);
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--goa-space-xl);
+}
+
+.page-title {
+  margin: 0 0 var(--goa-space-xs);
+  font: var(--goa-typography-heading-xl);
+  color: var(--goa-color-text-default);
+}
+
+.lede {
+  margin: 0;
+  font: var(--goa-typography-body-l);
+  color: var(--goa-color-text-secondary);
+}
+
+.filters {
+  margin-bottom: var(--goa-space-l);
+}
+
+.filters__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr));
+  gap: var(--goa-space-m);
+  align-items: start;
+}
+
+// goa-date-picker wraps its input in an inline goa-popover whose 24px line box
+// adds a gap *above* the input, so it sits ~9px lower than the dropdowns. The
+// input is always flush with the bottom of the picker, so a slot exactly one
+// input tall, bottom-aligned, lines it up with the dropdowns (the gap overflows
+// upward, invisibly).
+.date-slot {
+  display: flex;
+  align-items: flex-end;
+  height: var(--goa-text-input-height);
+}
+
+.date-slot goab-date-picker {
+  flex: 1;
+  min-width: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  margin-top: var(--goa-space-m);
+}
+
+.result-count {
+  margin: 0 0 var(--goa-space-s);
+  font: var(--goa-typography-body-s);
+  color: var(--goa-color-text-secondary);
+}
+
+.list {
+  margin: calc(-1 * var(--goa-space-m)) calc(-1 * var(--goa-space-l));
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--goa-space-l);
+}
+
+@media (max-width: 1100px) {
+  .filters__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filters__program {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: var(--goa-space-l) var(--goa-space-m);
+  }
+
+  .filters__grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -15,6 +15,9 @@ import { EcdsDashboardV2Component } from './ecds-dashboard-v2/ecds-dashboard-v2.
 import { NotificationsScaleComponent } from './notifications-scale/notifications-scale.component';
 import { NotificationsPageComponent } from './notifications-page/notifications-page.component';
 import { GoaUserManagementComponent } from './goa-user-management/goa-user-management.component';
+import { HubShellComponent } from './notifications-hub/hub-shell.component';
+import { HubHomeComponent } from './notifications-hub/home/hub-home.component';
+import { HubNotificationsPageComponent } from './notifications-hub/notifications-page/hub-notifications-page.component';
 
 @Component({
   standalone: true,
@@ -36,6 +39,15 @@ export const routes: Routes = [
   { path: 'ecds-dashboard-v2', component: EcdsDashboardV2Component, title: 'ECDS Dashboard v2 — Home' },
   { path: 'notifications-scale', component: NotificationsScaleComponent, title: 'Notifications — Scaling exploration' },
   { path: 'notifications', component: NotificationsPageComponent, title: 'All notifications' },
+  {
+    path: 'notifications-hub',
+    component: HubShellComponent,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HubHomeComponent, title: 'Home — Notifications hub' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub' },
+    ],
+  },
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },
   { path: 'menu', component: MainMenuComponent, title: 'Workspace menu' },
   { path: 'menu-2', component: MainMenu2Component, title: 'Workspace menu (variation)' },

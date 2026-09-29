@@ -1,0 +1,81 @@
+@if (open()) {
+<ng-template #drawerActions>
+  <goab-button-group alignment="start">
+    <goab-button type="primary" (onClick)="save()">Save</goab-button>
+    <goab-button type="secondary" (onClick)="close()">Cancel</goab-button>
+  </goab-button-group>
+</ng-template>
+
+<goab-drawer
+  [open]="open()"
+  position="right"
+  heading="Add notification"
+  maxSize="480px"
+  [actions]="drawerActions"
+  (onClose)="close()">
+  <div class="fields">
+    <goab-form-item label="Title" [error]="submitted ? errors.title : ''">
+      <goab-input
+        name="title"
+        width="100%"
+        [value]="form.title"
+        [error]="submitted && !!errors.title"
+        (onChange)="onTitle($event)"></goab-input>
+    </goab-form-item>
+
+    <goab-form-item label="Program" requirement="optional">
+      <goab-dropdown
+        name="programId"
+        width="100%"
+        [filterable]="true"
+        placeholder="Select a program"
+        [value]="form.programId"
+        (onChange)="onDropdown('programId', $event)">
+        @for (p of programs; track p.id) {
+          <goab-dropdown-item [value]="p.id" [label]="p.name"></goab-dropdown-item>
+        }
+      </goab-dropdown>
+    </goab-form-item>
+
+    <goab-form-item label="Notify">
+      <goab-dropdown
+        name="notifyTo"
+        width="100%"
+        [value]="form.notifyTo"
+        (onChange)="onDropdown('notifyTo', $event)">
+        @for (g of notifyTo; track g) {
+          <goab-dropdown-item [value]="g" [label]="g"></goab-dropdown-item>
+        }
+      </goab-dropdown>
+    </goab-form-item>
+
+    <goab-form-item label="Message" [error]="submitted ? errors.message : ''">
+      <goab-textarea
+        name="message"
+        width="100%"
+        [rows]="4"
+        [value]="form.message"
+        [error]="submitted && !!errors.message"
+        (onChange)="onMessage($event)"></goab-textarea>
+    </goab-form-item>
+
+    <goab-form-item
+      label="Start date"
+      helpText="The notification appears on this date."
+      [error]="submitted ? errors.startDate : ''">
+      <div class="date-row">
+        <goab-date-picker
+          name="startDate"
+          [value]="form.startDate"
+          [error]="submitted && !!errors.startDate"
+          (onChange)="onDate($event)"></goab-date-picker>
+        <goab-checkbox
+          name="approximate"
+          text="Approximate date"
+          [checked]="form.approximate"
+          (onChange)="onApproximate($event)"></goab-checkbox>
+      </div>
+    </goab-form-item>
+  </div>
+</goab-drawer>
+}

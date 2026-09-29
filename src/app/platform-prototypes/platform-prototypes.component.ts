@@ -1,4 +1,5 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
+import { GoabBadge } from '@abgov/angular-components';
 import { RouterLink } from '@angular/router';
 
 interface PrototypeLink {
@@ -10,9 +11,9 @@ interface PrototypeLink {
 
 @Component({
   selector: 'platform-prototypes',
+  host: { class: 'goa-ds-v2' },
   standalone: true,
-  imports: [RouterLink],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [RouterLink, GoabBadge],
   templateUrl: './platform-prototypes.component.html',
   styleUrl: './platform-prototypes.component.scss',
 })
@@ -20,6 +21,13 @@ export class PlatformPrototypesComponent {
   readonly heading = 'Platform prototypes';
 
   readonly prototypes: PrototypeLink[] = [
+    {
+      label: 'Notifications hub — DS v2',
+      description:
+        'Home page with last-30-day notifications, plus a full Notifications page filtered by program, severity, status, and date range.',
+      path: '/notifications-hub',
+      status: 'In progress',
+    },
     {
       label: 'All notifications page',
       description: 'Full notification history with unread/urgent/all tabs, date grouping, and read state.',

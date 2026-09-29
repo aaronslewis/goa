@@ -9,7 +9,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "tokens:v2": "node scripts/build-ds-v2-tokens.mjs",
+    "prestart": "npm run tokens:v2",
+    "prebuild": "npm run tokens:v2"
   },
   "prettier": {
     "printWidth": 100,
@@ -35,6 +38,7 @@
     "@angular/forms": "^20.3.0",
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
+    "design-tokens-v2": "npm:@abgov/design-tokens@^2.12.8",
     "ionicons": "^7.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

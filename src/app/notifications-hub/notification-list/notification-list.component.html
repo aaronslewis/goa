@@ -1,0 +1,68 @@
+@if (groups().length === 0) {
+  <p class="empty">{{ emptyMessage() }}</p>
+}
+
+@for (group of groups(); track group.key) {
+  <section class="group" [attr.aria-labelledby]="'grp-' + group.key">
+    <h3 class="group__label" [id]="'grp-' + group.key">{{ group.label }}</h3>
+    <ul class="list">
+      @for (n of group.items; track n.id) {
+        <li
+          class="row"
+          [class.row--urgent]="!n.createdByUser && n.severity === 'urgent'"
+          [class.row--important]="!n.createdByUser && n.severity === 'important'"
+          [class.row--information]="!n.createdByUser && n.severity === 'information'"
+          [class.row--user]="n.createdByUser"
+          [class.row--dismissed]="n.dismissed">
+          <div class="row__main">
+            <div class="row__heading">
+              <h4 class="row__title">{{ n.title }}</h4>
+              @if (showBadges || (n.dismissed && allowRestore())) {
+                @if (n.severity) {
+                  <goab-badge
+                    [type]="severityMeta[n.severity].badge"
+                    [emphasis]="n.dismissed ? 'subtle' : 'strong'"
+                    [content]="severityMeta[n.severity].label"
+                    [icon]="true"></goab-badge>
+                }
+                @if (n.createdByUser) {
+                  <goab-badge type="lilac" [emphasis]="n.dismissed ? 'subtle' : 'strong'" content="Created by you"></goab-badge>
+                }              }
+            </div>
+            <p class="row__message">
+              @for (part of n.message; track $index) {@if (part.bold && boldProgramNames) {<strong>{{ part.text }}</strong>} @else {<span>{{ part.text }}</span>}}
+              @if (n.linkLabel) {
+                {{ ' ' }}<goab-link><a href="#" (click)="$event.preventDefault()">{{ n.linkLabel }}</a></goab-link>
+              }
+            </p>
+            @if (n.createdByUser && n.programId) {
+              <p class="row__program">
+                @if (boldProgramNames) {<strong>{{ programName(n.programId) }}</strong>} @else {<span>{{ programName(n.programId) }}</span>}
+              </p>
+            }
+          </div>
+          <div class="row__meta">
+            <span class="row__time">{{ timeLabel(n) }}@if (n.approximateDate) { (approx.)}</span>
+            @if (!n.dismissed) {
+              <goab-icon-button
+                icon="close"
+                size="small"
+                variant="dark"
+                [ariaLabel]="'Dismiss: ' + n.title"
+                [title]="'Dismiss'"
+                (onClick)="dismiss.emit(n.id)"></goab-icon-button>
+            } @else if (allowRestore()) {
+              <goab-icon-button
+                icon="arrow-undo"
+                size="small"
+                variant="dark"
+                [ariaLabel]="'Restore: ' + n.title"
+                [title]="'Restore'"
+                (onClick)="restore.emit(n.id)"></goab-icon-button>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+  </section>
+}

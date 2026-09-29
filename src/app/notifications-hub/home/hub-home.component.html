@@ -1,0 +1,44 @@
+<div class="page">
+  <h1 class="greeting">{{ greeting }}, {{ firstName }}</h1>
+
+  <goab-container type="interactive">
+    <div class="card-body">
+      <div class="card-header">
+        <h2 class="card-title">Notifications</h2>
+        <div class="card-actions">
+          @if (service.homeItems().length > 0) {
+            <goab-button type="tertiary" (onClick)="dismissAll()">Mark all as complete</goab-button>
+          }
+          <goab-button type="primary" leadingIcon="add" (onClick)="drawerOpen.set(true)">Add notification</goab-button>
+        </div>
+      </div>
+
+      <goab-tabs variant="segmented" navigation="none" orientation="horizontal">
+        @for (tab of tabs(); track tab.key) {
+          <ng-template #tabHeading>
+            <span class="tab-heading">
+              {{ tab.label }}
+              @if (tab.badge) {
+                <goab-badge [type]="tab.badge" [content]="'' + tab.items.length" size="medium"></goab-badge>
+              }
+            </span>
+          </ng-template>
+          <goab-tab [heading]="tabHeading">
+            <hub-notification-list
+              class="list"
+              [items]="tab.items"
+              emptyMessage="You're all caught up. There are no notifications from the last 30 days."
+              (dismiss)="service.dismiss($event)"></hub-notification-list>
+          </goab-tab>
+        }
+      </goab-tabs>
+
+      <p class="footer-link">
+        Showing active notifications from the last 30 days.
+        <goab-link trailingIcon="arrow-forward"><a [href]="notificationsUrl">View all notifications</a></goab-link>
+      </p>
+    </div>
+  </goab-container>
+</div>
+
+<hub-add-notification-drawer [open]="drawerOpen()" (closed)="drawerOpen.set(false)"></hub-add-notification-drawer>

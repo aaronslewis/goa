@@ -1,0 +1,100 @@
+<div class="page">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Notifications</h1>
+      <p class="lede">All notifications for the programs in your caseload.</p>
+    </div>
+    <goab-button type="primary" leadingIcon="add" (onClick)="drawerOpen.set(true)">Add notification</goab-button>
+  </header>
+
+  <section class="filters" aria-label="Filter notifications">
+    @for (k of [filterKey()]; track k) {
+      <div class="filters__grid">
+        <goab-form-item label="Program" class="filters__program">
+          <goab-dropdown
+            name="program"
+            width="100%"
+            [filterable]="true"
+            placeholder="All programs"
+            [value]="program()"
+            (onChange)="onProgram($event)">
+            @for (p of programs; track p.id) {
+              <goab-dropdown-item [value]="p.id" [label]="p.name"></goab-dropdown-item>
+            }
+          </goab-dropdown>
+        </goab-form-item>
+
+        <goab-form-item label="Severity">
+          <goab-dropdown
+            name="severity"
+            width="100%"
+            placeholder="All severities"
+            [value]="severity()"
+            (onChange)="onSeverity($event)">
+            @for (s of severities; track s.value) {
+              <goab-dropdown-item [value]="s.value" [label]="s.label"></goab-dropdown-item>
+            }
+          </goab-dropdown>
+        </goab-form-item>
+
+        <goab-form-item label="Status">
+          <goab-dropdown
+            name="status"
+            width="100%"
+            placeholder="All statuses"
+            [value]="status()"
+            (onChange)="onStatus($event)">
+            @for (s of statusOptions; track s.value) {
+              <goab-dropdown-item [value]="s.value" [label]="s.label"></goab-dropdown-item>
+            }
+          </goab-dropdown>
+        </goab-form-item>
+
+        <goab-form-item label="From" [error]="dateRangeError()">
+          <div class="date-slot">
+            <goab-date-picker name="from" width="100%" [value]="from()" [error]="!!dateRangeError()" (onChange)="onFrom($event)"></goab-date-picker>
+          </div>
+        </goab-form-item>
+
+        <goab-form-item label="To">
+          <div class="date-slot">
+            <goab-date-picker name="to" width="100%" [value]="to()" [error]="!!dateRangeError()" (onChange)="onTo($event)"></goab-date-picker>
+          </div>
+        </goab-form-item>
+      </div>
+    }
+
+    @if (chips().length > 0) {
+      <div class="chips" aria-label="Applied filters">
+        @for (chip of chips(); track chip.key) {
+          <goab-filter-chip [content]="chip.label" (onClick)="removeChip(chip.key)"></goab-filter-chip>
+        }
+        <goab-button type="tertiary" size="compact" (onClick)="clearAll()">Clear all</goab-button>
+      </div>
+    }
+  </section>
+
+  <p class="result-count" role="status">{{ rangeLabel() }}</p>
+
+  <goab-container padding="compact">
+    <hub-notification-list
+      class="list"
+      [items]="pageItems()"
+      [allowRestore]="true"
+      emptyMessage="Try removing a filter or choosing a wider date range."
+      (dismiss)="service.dismiss($event)"
+      (restore)="service.restore($event)"></hub-notification-list>
+  </goab-container>
+
+  @if (filtered().length > pageSize) {
+    <div class="pagination">
+      <goab-pagination
+        [itemCount]="filtered().length"
+        [perPageCount]="pageSize"
+        [pageNumber]="page()"
+        (onChange)="onPage($event)"></goab-pagination>
+    </div>
+  }
+</div>
+
+<hub-add-notification-drawer [open]="drawerOpen()" (closed)="drawerOpen.set(false)"></hub-add-notification-drawer>

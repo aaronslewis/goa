@@ -1,0 +1,56 @@
+<ng-template #primaryNav>
+  <goab-work-side-menu-item
+    [icon]="homeItem.icon"
+    [label]="homeItem.label"
+    [url]="homeItem.url"
+    [divider]="true"></goab-work-side-menu-item>
+  @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
+    @if (entry.kind === 'item') {
+      <goab-work-side-menu-item [icon]="entry.icon" [label]="entry.label" [url]="entry.url"></goab-work-side-menu-item>
+    } @else {
+      <goab-work-side-menu-group [heading]="entry.heading" [icon]="entry.icon">
+        @for (child of entry.items; track child.label) {
+          <goab-work-side-menu-item [label]="child.label" [url]="child.url"></goab-work-side-menu-item>
+        }
+      </goab-work-side-menu-group>
+    }
+  }
+</ng-template>
+
+<ng-template #secondaryNav>
+  <goab-work-side-menu-item [icon]="searchItem.icon" [label]="searchItem.label" [url]="searchItem.url"></goab-work-side-menu-item>
+  <goab-work-side-menu-item
+    [icon]="notificationsItem.icon"
+    [label]="notificationsItem.label"
+    [url]="notificationsItem.url"></goab-work-side-menu-item>
+  <goab-work-side-menu-item [icon]="helpItem.icon" [label]="helpItem.label" [url]="helpItem.url"></goab-work-side-menu-item>
+</ng-template>
+
+<ng-template #accountNav>
+  <div class="account-menu" role="menu" aria-label="Account menu for {{ userName }}">
+    @for (item of accountMenuItems; track item.label) {
+      <button type="button" role="menuitem" class="account-menu-item">
+        <goab-icon [type]="item.icon" size="small"></goab-icon>
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  </div>
+</ng-template>
+
+<goab-work-side-menu
+  [heading]="heading"
+  [url]="homeItem.url!"
+  [userName]="userName"
+  [userSecondaryText]="userSecondaryText"
+  [open]="isMenuOpen"
+  [primaryContent]="primaryNav"
+  [secondaryContent]="secondaryNav"
+  [accountContent]="accountNav"
+  (onToggle)="onMenuToggle()"
+  (onNavigate)="onNavigate($event)"
+  aria-label="Workspace navigation">
+</goab-work-side-menu>
+
+<main class="hub-main" id="main-content">
+  <router-outlet></router-outlet>
+</main>

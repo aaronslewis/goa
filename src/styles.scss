@@ -1,7 +1,12 @@
-/* GoA Design System 1.0 only. The DS 1.0 token set ships inside
-   @abgov/web-components/index.css; do NOT import @abgov/design-tokens
-   (that package is DS 2.0 and would override these with 2.0 values). */
+/* DS 1.0 tokens at :root: the default for every prototype. The DS 1.0 token
+   set ships inside @abgov/web-components/index.css. */
 @import "@abgov/web-components/index.css";
+
+/* DS 2.0 tokens, scoped to `.goa-ds-v2`. Same token names as v1 but different
+   values, so they must never be loaded at :root. A v2 prototype opts in by
+   putting `goa-ds-v2` on its host element. Generated file; see
+   scripts/build-ds-v2-tokens.mjs. */
+@import "./styles/ds-v2-tokens.css";
 
 /* DS 1.0 typeface is acumin-pro-semi-condensed (proprietary Adobe). Use it
    when available locally / via an Adobe kit, otherwise fall back to the

@@ -43,6 +43,7 @@ type MenuEntry = MenuItem | MenuGroup | MenuDrill;
 
 @Component({
   selector: 'main-menu-2',
+  host: { class: 'goa-ds-v2' },
   standalone: true,
   imports: [GoabWorkSideMenu, GoabWorkSideMenuGroup, GoabWorkSideMenuItem, GoabIcon],
   templateUrl: './main-menu-2.component.html',

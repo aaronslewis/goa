@@ -28,6 +28,7 @@ type MenuEntry = MenuItem | MenuGroup;
 
 @Component({
   selector: 'provider-portal-menu',
+  host: { class: 'goa-ds-v2' },
   standalone: true,
   imports: [GoabWorkSideMenu, GoabWorkSideMenuGroup, GoabWorkSideMenuItem, GoabIcon],
   templateUrl: './provider-portal-menu.component.html',
