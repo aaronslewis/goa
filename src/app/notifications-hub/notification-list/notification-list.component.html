@@ -44,7 +44,7 @@
           </div>
           <div class="row__meta">
             @if (showTimestamp) {
-              <span class="row__time">{{ timeLabel(n) }}@if (n.approximateDate) { (approx.)}</span>
+              <span class="row__time">{{ timeLabel(n) }}</span>
             }
             @if (!n.dismissed) {
               <goab-icon-button

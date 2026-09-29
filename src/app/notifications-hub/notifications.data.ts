@@ -22,7 +22,6 @@ export interface HubNotification {
   createdAt: Date;
   dismissed: boolean;
   createdByUser?: boolean;
-  approximateDate?: boolean;
   notifyTo?: string;
 }
 

@@ -2,7 +2,6 @@ import { Component, inject, input, output } from '@angular/core';
 import {
   GoabButton,
   GoabButtonGroup,
-  GoabCheckbox,
   GoabDatePicker,
   GoabDrawer,
   GoabDropdown,
@@ -12,7 +11,6 @@ import {
   GoabTextArea,
 } from '@abgov/angular-components';
 import {
-  GoabCheckboxOnChangeDetail,
   GoabDatePickerOnChangeDetail,
   GoabDropdownOnChangeDetail,
   GoabInputOnChangeDetail,
@@ -26,8 +24,7 @@ interface FormState {
   programId: string;
   notifyTo: string;
   message: string;
-  startDate: string;
-  approximate: boolean;
+  reminderDate: string;
 }
 
 const todayIso = () => {
@@ -40,8 +37,7 @@ const emptyForm = (): FormState => ({
   programId: '',
   notifyTo: NOTIFY_TO[0],
   message: '',
-  startDate: todayIso(),
-  approximate: false,
+  reminderDate: todayIso(),
 });
 
 @Component({
@@ -50,7 +46,6 @@ const emptyForm = (): FormState => ({
   imports: [
     GoabButton,
     GoabButtonGroup,
-    GoabCheckbox,
     GoabDatePicker,
     GoabDrawer,
     GoabDropdown,
@@ -78,7 +73,7 @@ export class AddNotificationDrawerComponent {
     return {
       title: !this.form.title.trim() ? 'Enter a title' : '',
       message: !this.form.message.trim() ? 'Enter a message' : '',
-      startDate: !this.form.startDate ? 'Enter a start date' : '',
+      reminderDate: !this.form.reminderDate ? 'Enter a reminder date' : '',
     };
   }
 
@@ -95,18 +90,15 @@ export class AddNotificationDrawerComponent {
   }
 
   onDate(d: GoabDatePickerOnChangeDetail): void {
-    this.form = { ...this.form, startDate: d.valueStr ?? '' };
+    this.form = { ...this.form, reminderDate: d.valueStr ?? '' };
   }
 
-  onApproximate(d: GoabCheckboxOnChangeDetail): void {
-    this.form = { ...this.form, approximate: d.checked };
-  }
 
   save(): void {
     this.submitted = true;
     if (Object.values(this.errors).some(Boolean)) return;
 
-    const [y, m, day] = this.form.startDate.split('-').map(Number);
+    const [y, m, day] = this.form.reminderDate.split('-').map(Number);
     const now = new Date();
     // Keep the current time of day so a notification for today sorts as "Just now".
     const createdAt = new Date(y, m - 1, day, now.getHours(), now.getMinutes(), now.getSeconds());
@@ -116,7 +108,6 @@ export class AddNotificationDrawerComponent {
       message: [{ text: this.form.message.trim() }],
       programId: this.form.programId || undefined,
       notifyTo: this.form.notifyTo,
-      approximateDate: this.form.approximate,
       createdAt,
     });
     this.close();
