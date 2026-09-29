@@ -80,6 +80,8 @@ interface Template {
   message: (p: Program, person: string, educator: string, date: Date) => MessagePart[];
   linkLabel?: string;
   weight: number;
+  // Raised by a Family Day Home Agency rather than a program; `p` is the agency.
+  agency?: boolean;
 }
 
 // Program names render bold: interpolate prog(p) inside a msg`...` template.
@@ -94,95 +96,91 @@ function msg(strings: TemplateStringsArray, ...values: (string | MessagePart)[])
   });
   return parts;
 }
-const shortDate = (d: Date) => d.toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
-
+// Events and wording from CCCRT-4170 (LO notification events), limited to those
+// whose trigger already exists or is available. Numbers are the ticket's rows.
+// IDs in the ticket's messages are deliberately dropped. Not included (trigger
+// not available yet): #5 program plan update, #6 licence renewal, #11 complaint
+// received, #12 program visit overdue.
 const TEMPLATES: Template[] = [
   {
+    // #1: red, trigger already exists
     severity: 'urgent',
     title: 'Critical incident report was submitted',
-    message: (p, person, e) => msg`${person} submitted a critical incident report about educator ${e} at ${prog(p)}.`,
+    message: (p, person, e) =>
+      msg`A new critical incident report has been submitted by ${person} about educator ${e} at ${prog(p)}.`,
     linkLabel: 'View incident report',
     weight: 2,
   },
   {
+    // #8: red, trigger available
     severity: 'urgent',
+    title: 'Critical incident report was updated',
+    message: (p, _, e) => msg`An update has been added to an existing critical incident report for ${e} at ${prog(p)}.`,
+    linkLabel: 'View incident report',
+    weight: 1,
+  },
+  {
+    // #2: yellow, trigger already exists
+    severity: 'important',
+    title: 'Incident report was submitted',
+    message: (p, person, e) =>
+      msg`A new incident report has been submitted by ${person} about educator ${e} at ${prog(p)}.`,
+    linkLabel: 'View incident report',
+    weight: 4,
+  },
+  {
+    // #7: yellow, trigger available (program comment on a report in
+    // "ministry to review" or "program to action" status)
+    severity: 'important',
+    title: 'Incident report was updated',
+    message: (p, _, e) => msg`An update has been added to an existing incident report for ${e} at ${prog(p)}.`,
+    linkLabel: 'View incident report',
+    weight: 3,
+  },
+  {
+    // #4: yellow, trigger already exists. "[PE name if present]" read as the
+    // educator involved; present on about half the seeded items.
+    severity: 'important',
     title: 'Safety plan uploaded or updated',
-    message: (p, person) => msg`${person} uploaded a new safety plan for ${prog(p)}.`,
+    message: (p, person, e, d) =>
+      d.getMinutes() % 2
+        ? msg`A new safety plan document has been uploaded by ${person} for ${e} at ${prog(p)}.`
+        : msg`A new safety plan document has been uploaded by ${person} for ${prog(p)}.`,
     linkLabel: 'View document',
     weight: 2,
   },
   {
-    severity: 'urgent',
-    title: 'Licence expires in 7 days',
-    message: (p, _, __, d) => msg`The licence for ${prog(p)} expires on ${shortDate(new Date(d.getTime() + 7 * 864e5))}.`,
-    linkLabel: 'View licence',
-    weight: 1,
-  },
-  {
-    severity: 'important',
-    title: 'Incident report was submitted',
-    message: (p, person, e) => msg`${person} submitted an incident report about educator ${e} at ${prog(p)}.`,
-    linkLabel: 'View incident report',
-    weight: 3,
-  },
-  {
-    severity: 'important',
-    title: 'Licence renewal in 2 weeks',
-    message: (p, _, __, d) => msg`The licence for ${prog(p)} is due for renewal on ${shortDate(new Date(d.getTime() + 14 * 864e5))}.`,
-    linkLabel: 'Start renewal',
-    weight: 2,
-  },
-  {
-    severity: 'important',
-    title: 'New agency review has been submitted',
-    message: (p) => msg`${prog(p)} added a follow-up comment to an agency review. Review the update and ask for more information if needed.`,
-    linkLabel: 'View review',
-    weight: 2,
-  },
-  {
-    severity: 'important',
-    title: 'Staff ratio below requirement',
-    message: (p) => msg`${prog(p)} reported a staff-to-child ratio below the licensed requirement.`,
-    linkLabel: 'View staffing report',
-    weight: 1,
-  },
-  {
+    // #3: blue, trigger already exists (agency-led Educator Review only)
     severity: 'information',
-    title: 'Program plan update notice',
-    message: (p) => msg`${prog(p)} updated its program plan.`,
-    linkLabel: 'View program plan',
+    title: 'Non-compliance was submitted',
+    message: (p, _, e) =>
+      msg`A new non-compliance has been identified by ${prog(p)} for educator ${e} during an agency-led Educator Review.`,
+    linkLabel: 'View non-compliance',
     weight: 2,
+    agency: true,
   },
   {
+    // #9: blue, trigger available
     severity: 'information',
-    title: 'Program contact information updated',
-    message: (p, person) => msg`${prog(p)} changed its primary program contact to ${person}.`,
+    title: 'Agency review was updated',
+    message: (p, _, __, d) =>
+      msg`${prog(p)} has added a ${d.getMinutes() % 2 ? 'comment' : 'follow-up'} to an agency review.`,
+    linkLabel: 'View agency review',
+    weight: 2,
+    agency: true,
+  },
+  {
+    // #10: blue, trigger available
+    severity: 'information',
+    title: 'Program contact was updated',
+    message: (p, person) => msg`${prog(p)} has updated their primary program contact to ${person}.`,
     linkLabel: 'View program details',
     weight: 3,
-  },
-  {
-    severity: 'information',
-    title: 'Safety plan document uploaded',
-    message: (p, person) => msg`${person} uploaded a safety plan document for ${prog(p)}.`,
-    linkLabel: 'View program details',
-    weight: 2,
-  },
-  {
-    severity: 'information',
-    title: 'Incident report has been completed',
-    message: (p, _, e) => msg`The Licensing team marked your incident report about ${e} at ${prog(p)} as complete.`,
-    linkLabel: 'View incident report',
-    weight: 3,
-  },
-  {
-    severity: 'information',
-    title: 'Inspection scheduled',
-    message: (p, person, _, d) =>
-      msg`${person} scheduled an inspection at ${prog(p)} for ${shortDate(new Date(d.getTime() + 10 * 864e5))}.`,
-    linkLabel: 'View inspection',
-    weight: 2,
   },
 ];
+
+// Family Day Home Agencies are the 7000xxxx IDs in the caseload.
+const AGENCIES = PROGRAMS.filter((p) => p.id.startsWith('7'));
 
 // Seeded PRNG so every visitor (and every reload) sees the same mock history.
 function mulberry32(seed: number) {
@@ -203,10 +201,10 @@ export function buildSeedNotifications(now = new Date()): HubNotification[] {
 
   // Hand-placed recent items so Home always opens with a spread like the Figma.
   const recentOffsetsMin = [5, 15, 20, 118, 178, 290, 358, 418, 60 * 24 + 125];
-  const recentTemplates = [0, 1, 3, 4, 5, 7, 8, 9, 10];
+  const recentTemplates = [0, 4, 2, 3, 1, 5, 6, 7, 2];
   recentOffsetsMin.forEach((mins, i) => {
     const t = TEMPLATES[recentTemplates[i]];
-    const p = PROGRAMS[i * 3 % PROGRAMS.length];
+    const p = t.agency ? AGENCIES[i % AGENCIES.length] : PROGRAMS[(i * 3) % PROGRAMS.length];
     const createdAt = new Date(now.getTime() - mins * 60_000);
     result.push({
       id: `n-r${i}`,
@@ -227,7 +225,7 @@ export function buildSeedNotifications(now = new Date()): HubNotification[] {
     createdAt.setDate(createdAt.getDate() - daysAgo);
     createdAt.setHours(7 + Math.floor(rand() * 11), Math.floor(rand() * 60), 0, 0);
     const t = pick(weighted);
-    const p = pick(PROGRAMS);
+    const p = pick(t.agency ? AGENCIES : PROGRAMS);
     // Older items are far more likely to have been dismissed already.
     const dismissChance = daysAgo > 30 ? 0.85 : 0.25;
     result.push({
