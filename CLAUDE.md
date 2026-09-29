@@ -47,7 +47,7 @@ grep -- "--goa-<name>:" node_modules/@abgov/web-components/index.css      # v1
 grep -- "--goa-<name>:" node_modules/design-tokens-v2/dist/tokens.css     # v2
 ```
 
-**Font.** The v2 typeface `acumin-variable` is an Adobe font that isn't loaded here, so v2 prototypes fall back to Helvetica Neue / Arial. Add an Adobe Fonts kit to get the real typeface.
+**Fonts: already provided, don't self-host or override.** `@abgov/web-components/index.css` declares `@font-face` rules pointing at the design system's Adobe Fonts kit: `acumin-variable` (DS 2.0), `acumin-pro-semi-condensed` 400/600/700 plus italics (DS 1.0), and `roboto-mono`. Verified loading on both `localhost` and `goa-cc.netlify.app`. So the token font stacks resolve to the real typefaces. Don't commit font files (they're licensed, and the repo is public), and don't override `--goa-font-family-sans`. (The workspace demo at workspace-demo-v4.netlify.app renders in Arial because its older stylesheet lacks the `acumin-variable` declaration. Don't copy its font behaviour.)
 
 **Docs:**
 - v1: https://v1.design.alberta.ca

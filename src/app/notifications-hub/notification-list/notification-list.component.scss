@@ -9,11 +9,16 @@
   color: var(--goa-color-text-secondary);
 }
 
+// Row anatomy follows goa-work-side-notification-card (the DS 2.0 card used in
+// the workspace demo; not yet in a published @abgov/web-components release, so
+// it's matched here with the same tokens). Severity tints are ours, kept on
+// purpose: the card only tints urgent.
 .group__label {
   margin: 0;
   padding: var(--goa-space-l) var(--goa-space-l) var(--goa-space-s);
-  font: var(--goa-typography-heading-xs);
-  color: var(--goa-color-text-secondary);
+  font: var(--goa-typography-heading-2xs);
+  color: var(--goa-color-greyscale-600);
+  border-bottom: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
 }
 
 .list {
@@ -24,11 +29,11 @@
 
 .row {
   display: flex;
-  gap: var(--goa-space-m);
+  gap: var(--goa-space-s);
   justify-content: space-between;
   align-items: flex-start;
-  padding: var(--goa-space-s) var(--goa-space-l);
-  border-top: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+  padding: var(--goa-space-m) var(--goa-space-l);
+  border-bottom: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
   background: var(--goa-color-greyscale-white);
 }
 
@@ -48,16 +53,19 @@
   background: var(--goa-color-extended-lilac-light);
 }
 
+// Matches the card's "read" state.
 .row--dismissed {
-  background: var(--goa-color-greyscale-100);
+  background: var(--goa-color-greyscale-50);
 
-  .row__title,
-  .row__message {
-    color: var(--goa-color-text-secondary);
+  .row__title {
+    color: var(--goa-color-greyscale-700);
   }
 }
 
 .row__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-xs);
   flex: 1;
   min-width: 0;
 }
@@ -67,12 +75,11 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--goa-space-xs);
-  margin-bottom: var(--goa-space-2xs);
 }
 
 .row__title {
   margin: 0;
-  font: var(--goa-typography-heading-xs);
+  font: var(--goa-typography-heading-2xs);
   color: var(--goa-color-text-default);
 }
 
@@ -80,24 +87,26 @@
   margin: 0;
   font: var(--goa-typography-body-s);
   color: var(--goa-color-text-default);
+  overflow-wrap: break-word;
 }
 
 .row__program {
-  margin: var(--goa-space-3xs) 0 0;
+  margin: 0;
   font: var(--goa-typography-body-xs);
-  color: var(--goa-color-text-secondary);
+  color: var(--goa-color-greyscale-600);
 }
 
 .row__meta {
   display: flex;
   align-items: center;
-  gap: var(--goa-space-xs);
+  gap: var(--goa-space-2xs);
   flex-shrink: 0;
+  margin-top: var(--goa-space-3xs);
 }
 
 .row__time {
   font: var(--goa-typography-body-xs);
-  color: var(--goa-color-text-secondary);
+  color: var(--goa-color-greyscale-600);
   white-space: nowrap;
 }
 

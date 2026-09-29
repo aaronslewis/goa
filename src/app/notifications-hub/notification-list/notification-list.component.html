@@ -27,12 +27,13 @@
                 }
                 @if (n.createdByUser) {
                   <goab-badge type="lilac" [emphasis]="n.dismissed ? 'subtle' : 'strong'" content="Created by you"></goab-badge>
-                }              }
+                }
+              }
             </div>
             <p class="row__message">
               @for (part of n.message; track $index) {@if (part.bold && boldProgramNames) {<strong>{{ part.text }}</strong>} @else {<span>{{ part.text }}</span>}}
               @if (n.linkLabel) {
-                {{ ' ' }}<goab-link><a href="#" (click)="$event.preventDefault()">{{ n.linkLabel }}</a></goab-link>
+                {{ ' ' }}<goab-link size="small"><a href="#" (click)="$event.preventDefault()">{{ n.linkLabel }}</a></goab-link>
               }
             </p>
             @if (n.createdByUser && n.programId) {

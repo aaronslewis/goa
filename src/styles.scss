@@ -8,9 +8,9 @@
    scripts/build-ds-v2-tokens.mjs. */
 @import "./styles/ds-v2-tokens.css";
 
-/* DS 1.0 typeface is acumin-pro-semi-condensed (proprietary Adobe). Use it
-   when available locally / via an Adobe kit, otherwise fall back to the
-   open-source Source Sans family. */
+/* DS 1.0 typeface is acumin-pro-semi-condensed, served from the design
+   system's Adobe Fonts kit via the @font-face rules in
+   @abgov/web-components/index.css. Source Sans is the fallback while it loads. */
 :root {
   --goa-font-family-sans: "Acumin Pro SemiCondensed", "acumin-pro-semi-condensed", "Source Sans 3", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif !important;
 }
