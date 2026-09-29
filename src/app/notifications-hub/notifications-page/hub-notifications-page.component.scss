@@ -65,8 +65,9 @@
   color: var(--goa-color-text-secondary);
 }
 
+// Rows run edge to edge: pull out by exactly the compact goab-container padding.
 .list {
-  margin: calc(-1 * var(--goa-space-m)) calc(-1 * var(--goa-space-l));
+  margin: calc(-1 * var(--goa-container-padding-compact));
 }
 
 .pagination {

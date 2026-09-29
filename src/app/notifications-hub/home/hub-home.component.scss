@@ -37,8 +37,10 @@
   gap: var(--goa-space-xs);
 }
 
+// Rows run edge to edge: pull out by exactly goab-container's own padding,
+// which is relaxed by default and switches to compact below 624px.
 .list {
-  margin: var(--goa-space-m) calc(-1 * var(--goa-space-l)) 0;
+  margin: var(--goa-space-m) calc(-1 * var(--goa-container-padding)) 0;
 }
 
 .footer-link {
@@ -50,6 +52,12 @@
   margin: var(--goa-space-l) 0 0;
   font: var(--goa-typography-body-s);
   color: var(--goa-color-text-secondary);
+}
+
+@media (max-width: 623px) {
+  .list {
+    margin-inline: calc(-1 * var(--goa-container-padding-compact));
+  }
 }
 
 @media (max-width: 768px) {
