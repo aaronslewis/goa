@@ -11,9 +11,7 @@
           class="row"
           [class.row--urgent]="!n.createdByUser && n.severity === 'urgent'"
           [class.row--important]="!n.createdByUser && n.severity === 'important'"
-          [class.row--information]="!n.createdByUser && n.severity === 'information'"
-          [class.row--user]="n.createdByUser"
-          [class.row--dismissed]="n.dismissed">
+          [class.row--information]="!n.createdByUser && n.severity === 'information'"          [class.row--dismissed]="n.dismissed">
           <div class="row__main">
             <div class="row__heading">
               <h4 class="row__title">{{ n.title }}</h4>
@@ -26,7 +24,7 @@
                     [icon]="true"></goab-badge>
                 }
                 @if (n.createdByUser) {
-                  <goab-badge type="lilac" emphasis="subtle" content="Created by you"></goab-badge>
+                  <goab-badge type="lilac" emphasis="subtle" [icon]="true" iconType="alarm" content="My reminder"></goab-badge>
                 }
               }
             </div>
@@ -36,11 +34,6 @@
                 {{ ' ' }}<goab-link size="small"><a href="#" (click)="$event.preventDefault()">{{ n.linkLabel }}</a></goab-link>
               }
             </p>
-            @if (n.createdByUser && n.programId) {
-              <p class="row__program">
-                @if (boldProgramNames) {<strong>{{ programName(n.programId) }}</strong>} @else {<span>{{ programName(n.programId) }}</span>}
-              </p>
-            }
           </div>
           <div class="row__meta">
             @if (showTimestamp) {

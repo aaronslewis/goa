@@ -54,7 +54,7 @@
         [value]="form.programId"
         (onChange)="onDropdown('programId', $event)">
         @for (p of programs; track p.id) {
-          <goab-dropdown-item [value]="p.id" [label]="p.name"></goab-dropdown-item>
+          <goab-dropdown-item [value]="p.id" [label]="p.name + ' (' + p.id + ')'"></goab-dropdown-item>
         }
       </goab-dropdown>
     </goab-form-item>

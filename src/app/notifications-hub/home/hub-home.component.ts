@@ -49,7 +49,7 @@ export class HubHomeComponent {
         badge: s.badge,
         items: items.filter((n) => n.severity === s.value),
       })),
-      { key: 'mine', label: 'Created by you', badge: 'lilac', items: items.filter((n) => n.createdByUser) },
+      { key: 'mine', label: 'My reminders', badge: 'lilac', items: items.filter((n) => n.createdByUser) },
     ];
     return tabs;
   });

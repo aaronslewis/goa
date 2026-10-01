@@ -19,7 +19,7 @@
             <span class="tab-heading">
               {{ tab.label }}
               @if (tab.badge) {
-                <goab-badge [type]="tab.badge" [content]="'' + tab.items.length" size="medium"></goab-badge>
+                <goab-badge [type]="tab.badge" emphasis="subtle" [content]="'' + tab.items.length" size="medium"></goab-badge>
               }
             </span>
           </ng-template>

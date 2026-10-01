@@ -79,10 +79,14 @@ export function relativeTime(d: Date, now = new Date()): string {
   return `${d.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })} at ${time(d)}`;
 }
 
-const rank = (n: HubNotification) => (n.severity ? SEVERITY_RANK[n.severity] : Object.keys(SEVERITY_RANK).length);
+// The user's own reminders sit between critical and important.
+const REMINDER_RANK = (SEVERITY_RANK.urgent + SEVERITY_RANK.important) / 2;
 
-// Within a day, severity leads (urgent first) and recency breaks ties — matches the Figma ordering.
-// User-created notifications have no severity, so they follow the system ones.
+const rank = (n: HubNotification) =>
+  n.createdByUser ? REMINDER_RANK : n.severity ? SEVERITY_RANK[n.severity] : Object.keys(SEVERITY_RANK).length;
+
+// Within a day: critical, then the user's reminders, then important and
+// informational, with recency breaking ties.
 export function groupByDay(items: HubNotification[]): DateGroup[] {
   const groups = new Map<string, DateGroup>();
   for (const n of items) {

@@ -16,7 +16,7 @@ import {
   GoabInputOnChangeDetail,
   GoabTextAreaOnChangeDetail,
 } from '@abgov/ui-components-common';
-import { NOTIFY_TO, PROGRAMS } from '../notifications.data';
+import { MessagePart, NOTIFY_TO, PROGRAMS, PROGRAM_BY_ID } from '../notifications.data';
 import { NotificationsService } from '../notifications.service';
 
 interface FormState {
@@ -103,9 +103,17 @@ export class AddNotificationDrawerComponent {
     // Keep the current time of day so a notification for today sorts as "Just now".
     const createdAt = new Date(y, m - 1, day, now.getHours(), now.getMinutes(), now.getSeconds());
 
+    const program = PROGRAM_BY_ID.get(this.form.programId);
+    const text = this.form.message.trim();
+    // A reminder about a program leads with it, ID included:
+    // "Concerning Bow River Daycare (80002817): <message>".
+    const message: MessagePart[] = program
+      ? [{ text: 'Concerning ' }, { text: program.name, bold: true }, { text: ` (${program.id}): ${text}` }]
+      : [{ text }];
+
     this.service.add({
       title: this.form.title.trim(),
-      message: [{ text: this.form.message.trim() }],
+      message,
       programId: this.form.programId || undefined,
       notifyTo: this.form.notifyTo,
       createdAt,

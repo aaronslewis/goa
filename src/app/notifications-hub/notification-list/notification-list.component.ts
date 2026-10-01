@@ -1,6 +1,6 @@
 import { Component, DestroyRef, computed, inject, input, output, signal } from '@angular/core';
 import { GoabBadge, GoabIconButton, GoabLink } from '@abgov/angular-components';
-import { HubNotification, PROGRAM_BY_ID, SEVERITIES } from '../notifications.data';
+import { HubNotification, SEVERITIES } from '../notifications.data';
 import { groupByDay, relativeTime } from '../notifications.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class NotificationListComponent {
 
   readonly severityMeta = Object.fromEntries(SEVERITIES.map((s) => [s.value, s]));
 
-  // Row badges (severity, "Created by you") on every row, all in the muted
+  // Row badges (severity, "My reminder") on every row, all in the muted
   // subtle style. Pass false to hide them on active rows.
   readonly showBadges = input(true);
 
@@ -44,9 +44,5 @@ export class NotificationListComponent {
 
   timeLabel(n: HubNotification): string {
     return relativeTime(n.createdAt, this.now());
-  }
-
-  programName(id: string): string {
-    return PROGRAM_BY_ID.get(id)?.name ?? '';
   }
 }

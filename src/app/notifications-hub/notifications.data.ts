@@ -76,7 +76,7 @@ export const PROGRAMS: Program[] = [
 
 export const PROGRAM_BY_ID = new Map(PROGRAMS.map((p) => [p.id, p]));
 
-export const NOTIFY_TO = ['Just me', 'My caseload team', 'Licensing officers', 'Program managers', 'All staff'];
+export const NOTIFY_TO = ['Me', 'My supervisor (Krista Kool)', 'Regional licensing admin', 'Child Care Connect'];
 
 const PEOPLE = ['Priya Sharma', 'Jordan Blake', 'Mei Chen', 'Omar Haddad', 'Sarah Tremblay', 'Liam Wong', 'Ava Morin'];
 const EDUCATORS = ['Hannah Clarke', 'Marcus Reid', 'Sofia Alvarez', 'Noah Singh', 'Grace Olsen'];

@@ -49,10 +49,6 @@
   background: var(--goa-color-info-background);
 }
 
-.row--user {
-  background: var(--goa-color-extended-lilac-light);
-}
-
 // Matches the card's "read" state.
 .row--dismissed {
   background: var(--goa-color-greyscale-50);
@@ -88,12 +84,6 @@
   font: var(--goa-typography-body-s);
   color: var(--goa-color-text-default);
   overflow-wrap: break-word;
-}
-
-.row__program {
-  margin: 0;
-  font: var(--goa-typography-body-xs);
-  color: var(--goa-color-greyscale-600);
 }
 
 .row__meta {
