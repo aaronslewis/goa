@@ -17,16 +17,16 @@
           <div class="row__main">
             <div class="row__heading">
               <h4 class="row__title">{{ n.title }}</h4>
-              @if (showBadges || (n.dismissed && allowRestore())) {
-                @if (n.severity) {
+              @if (showBadges() || (n.dismissed && allowRestore())) {
+                @if (n.severity && (severityMeta[n.severity].rowBadge || (n.dismissed && allowRestore()))) {
                   <goab-badge
                     [type]="severityMeta[n.severity].badge"
-                    [emphasis]="n.dismissed ? 'subtle' : 'strong'"
+                    emphasis="subtle"
                     [content]="severityMeta[n.severity].label"
                     [icon]="true"></goab-badge>
                 }
                 @if (n.createdByUser) {
-                  <goab-badge type="lilac" [emphasis]="n.dismissed ? 'subtle' : 'strong'" content="Created by you"></goab-badge>
+                  <goab-badge type="lilac" emphasis="subtle" content="Created by you"></goab-badge>
                 }
               }
             </div>

@@ -23,12 +23,9 @@ export class NotificationListComponent {
 
   readonly severityMeta = Object.fromEntries(SEVERITIES.map((s) => [s.value, s]));
 
-  // Row badges (severity, "Created by you") are hidden on active
-  // rows for now; row colour still carries severity. Dismissed rows on the
-  // Notifications page (allowRestore) always show them, in the lighter subtle
-  // style, since their grey row loses the severity colour. Flip to true to show
-  // them on every row.
-  readonly showBadges = false;
+  // Row badges (severity, "Created by you") on every row, all in the muted
+  // subtle style. Pass false to hide them on active rows.
+  readonly showBadges = input(true);
 
   // Program names are marked bold in the message data; flip to true to render them bold.
   readonly boldProgramNames = false;

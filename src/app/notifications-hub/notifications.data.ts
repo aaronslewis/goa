@@ -25,10 +25,18 @@ export interface HubNotification {
   notifyTo?: string;
 }
 
-export const SEVERITIES: { value: Severity; label: string; badge: 'emergency' | 'important' | 'information' }[] = [
-  { value: 'urgent', label: 'Urgent', badge: 'emergency' },
-  { value: 'important', label: 'Important', badge: 'important' },
-  { value: 'information', label: 'Information', badge: 'information' },
+// `rowBadge: false` drops the badge on that severity's active rows (the blue row
+// tint already marks informational items). Dismissed rows on the Notifications
+// page still get it, since their grey row loses the tint.
+export const SEVERITIES: {
+  value: Severity;
+  label: string;
+  badge: 'emergency' | 'important' | 'information';
+  rowBadge: boolean;
+}[] = [
+  { value: 'urgent', label: 'Critical', badge: 'emergency', rowBadge: true },
+  { value: 'important', label: 'Important', badge: 'important', rowBadge: true },
+  { value: 'information', label: 'Informational', badge: 'information', rowBadge: false },
 ];
 
 export const SEVERITY_RANK: Record<Severity, number> = { urgent: 0, important: 1, information: 2 };
