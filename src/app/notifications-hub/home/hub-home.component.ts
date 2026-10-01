@@ -31,6 +31,9 @@ export class HubHomeComponent {
   readonly notificationsUrl = HUB_NOTIFICATIONS_URL;
   readonly drawerOpen = signal(false);
 
+  // "Mark all as complete" is hidden for now; flip to true to bring it back.
+  readonly showMarkAllComplete = false;
+
   // Recomputed on each render per the Figma note, so it tracks the user's local clock.
   get greeting(): string {
     const h = new Date().getHours();

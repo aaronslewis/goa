@@ -68,15 +68,14 @@ export function groupLabel(d: Date, now = new Date()): string {
   return fullDate(d);
 }
 
+// Time only: each row sits under a date heading (see groupLabel), so the day
+// would repeat it.
 export function relativeTime(d: Date, now = new Date()): string {
   const mins = Math.round((now.getTime() - d.getTime()) / 60_000);
-  const diffDays = Math.round((startOfDay(now) - startOfDay(d)) / 864e5);
   // `now` comes from a clock that ticks once a minute, so an item created since
   // the last tick is slightly "in the future" — still just now.
   if (mins > -2 && mins < 60) return mins <= 1 ? 'Just now' : `${mins} minutes ago`;
-  if (diffDays === 0) return `Today at ${time(d)}`;
-  if (diffDays === 1) return `Yesterday at ${time(d)}`;
-  return `${d.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })} at ${time(d)}`;
+  return time(d);
 }
 
 // The user's own reminders sit between critical and important.

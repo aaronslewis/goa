@@ -30,8 +30,8 @@ export class NotificationListComponent {
   // Program names are marked bold in the message data; flip to true to render them bold.
   readonly boldProgramNames = false;
 
-  // Trialling rows without the relative time ("5 minutes ago"); flip to true to restore.
-  readonly showTimestamp = false;
+  // Relative time ("5 minutes ago") on the right of each row; flip to false to hide it.
+  readonly showTimestamp = true;
 
   // A single clock for every relative label: reading Date.now() during render
   // lets "5 minutes ago" change between Angular's check passes (NG0100).

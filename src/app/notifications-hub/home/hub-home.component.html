@@ -6,7 +6,7 @@
       <div class="card-header">
         <h2 class="card-title">Notifications</h2>
         <div class="card-actions">
-          @if (service.homeItems().length > 0) {
+          @if (showMarkAllComplete && service.homeItems().length > 0) {
             <goab-button type="tertiary" (onClick)="dismissAll()">Mark all as complete</goab-button>
           }
           <goab-button type="primary" leadingIcon="add" (onClick)="drawerOpen.set(true)">Add notification</goab-button>
