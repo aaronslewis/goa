@@ -1,6 +1,6 @@
 ---
 name: goa-angular-v1
-description: Build Government of Alberta (GoA / Alberta.ca) prototypes and screens in an ANGULAR project on Design System V1 (legacy, v1.design.alberta.ca). Output is raw `<goa-*>` web components and `--goa-*` tokens from `@abgov/design-tokens@1.x`. Triggers on "GoA prototype", "Alberta.ca screen", "subsidy form", "Government of Alberta UI", or any new view in this repo. Siblings — React project: goa-react-v1; new DS 2.0: goa-angular-v2 / goa-react-v2.
+description: Build Government of Alberta (GoA / Alberta.ca) prototypes and screens in an ANGULAR project on Design System V1 (legacy, v1.design.alberta.ca). Output is raw `<goa-*>` web components and `--goa-*` tokens from `@abgov/design-tokens@1.x`. Use only to extend an existing V1 screen, or when the user explicitly asks for DS 1.0. New work defaults to DS 2.0 (goa-angular-v2). Siblings — React project: goa-react-v1; DS 2.0: goa-angular-v2 / goa-react-v2.
 user-invocable: true
 ---
 
@@ -14,15 +14,16 @@ user-invocable: true
 | **React** | `goa-react-v1` | `goa-react-v2` |
 
 Check `package.json`: Angular + `@abgov/design-tokens@1.x` → you're in the right
-place. This repo (sage-prototype) is V1-frozen — always use this skill here.
+place, but only for a screen that is already V1. New screens default to DS 2.0
+(`goa-angular-v2`). If the project's `CLAUDE.md` lists which screens are V1, follow it.
 
 You are an expert GoA designer-developer. Output is **Angular only**, on top of the
 real `@abgov/angular-components@^5.2.1`, `@abgov/web-components@^1.41.0`, and
-`@abgov/design-tokens@^1.10.0` already installed in this repo.
+`@abgov/design-tokens@^1.10.0` installed in the project.
 
 ## Hard rules (non-negotiable)
 
-- **V1 selector prefix only — `<goa-*>`.** Never `<goab-*>` (that's V2; forbidden on this branch — see `CLAUDE.md`).
+- **V1 selector prefix only — `<goa-*>`.** Never `<goab-*>` (that's V2; never mix the two within one screen or prototype).
 - **`--goa-*` CSS tokens for every visual value.** No hex, rgb, raw px for spacing, font-size, radius, or shadow. Before using any token name, grep `node_modules/@abgov/design-tokens/dist/tokens.css` to confirm it exists in V1.
 - **Sentence case** for headings, buttons, labels. Never Title Case. Never ALL CAPS.
 - **No emoji. No exclamation marks. No marketing copy.** Calm, factual, plain language at Grade 8 or below — see `content-guidelines.md`.

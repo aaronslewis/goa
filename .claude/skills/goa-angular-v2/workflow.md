@@ -2,8 +2,10 @@
 
 ## 0. Confirm you're in the right place
 
-- This skill is for Angular projects targeting **DS 2.0**. The sage-prototype
-  repo is **V1-frozen** — if you're there, stop and use `goa-angular-v1`.
+- This skill is for Angular projects on **DS 2.0**, the default for new work.
+  If you're extending a screen already built on V1, use `goa-angular-v1`.
+  If the project's `CLAUDE.md` describes its own DS 2.0 setup, follow that
+  instead of installing or importing anything below.
 - Check `package.json` for `@abgov/angular-components@^5`,
   `@abgov/web-components@^2`, `@abgov/design-tokens@^2`. Install what's missing:
   ```bash

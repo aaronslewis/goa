@@ -2,7 +2,22 @@
 
 A set of prototypes for the Government of Alberta.
 
-For new prototypes or screens **in this repo**, invoke the **`goa-angular-v1`** skill for DS 1.0 work, or **`goa-angular-v2`** for DS 2.0 work — pick per prototype (see below). (The skill family also includes `goa-react-v1` and `goa-react-v2` for React stacks.) **Default to DS 1.0 for a new prototype unless the user says otherwise; some existing prototypes in this repo are deliberately DS 2.0 — check the prototype before assuming.** Ask to confirm when you can.
+**DS 2.0 is the default.** For a new prototype or screen in this repo, invoke the **`goa-angular-v2`** skill and build with `goab-*` components inside a `goa-ds-v2` host (see below). Use **`goa-angular-v1`** only to extend a prototype that the table below lists as v1, or when the user asks for DS 1.0. Before you change an existing prototype, check its row in the table. Never mix the two DS versions within one prototype. (The same skill family has `goa-react-v1` and `goa-react-v2` for React projects.)
+
+## Design system sources: check these, don't guess
+
+The design system's live docs outrank memory, and they outrank the snapshot docs bundled in the `goa-angular-*` skills. When the two disagree, the live docs win.
+
+- **Index: https://design.alberta.ca/llms.txt.** It lists every component with its doc slug, and every example pattern. Slugs don't always match the component name (Header is `app-header`, Radio is `radio-group`, Notification banner is `notification`, Notification Panel is `work-side-notification-panel`), so look the slug up here.
+- **Component API: `https://design.alberta.ca/components/{slug}.md`.** Each page covers the Angular props and events, usage guidance and accessibility guidance. Fetch it before using a component for the first time in a session, before setting a prop you haven't checked, and whenever a component misbehaves.
+- **Patterns:** before you compose a page or flow, check the llms.txt **Examples** list for a match and follow it. Matches include the task list, question, review and result pages; filtering a table; adding a record in a drawer; and confirming a destructive action. Example pages are HTML only, with no `.md` version.
+- **Check for a purpose-built component** before building one from parts. For example, Work Side Menu, Workspace Layout, Notification Panel, Push Drawer and Scroll Panel already exist.
+- **Copy:** most prototypes here are worker tools (GoA product type `workspace`): dense, efficient, written in the domain's own terms. Citizen-facing screens (`public-form`) use plain language at about a grade 9 level, one step at a time. GoA's `content-design` skill covers both; use it for labels, errors, empty states and notifications.
+
+GoA publishes these agent skills at [GovAlta/ui-components/skills](https://github.com/GovAlta/ui-components/tree/dev/skills); install one with `npx skills add GovAlta/ui-components --skill <name>`:
+- `content-design`: writes copy for the right reader, citizen or worker. Worth installing.
+- `component-search`: the llms.txt and `.md` lookup described above. Optional, because these rules already cover it.
+- `using-goa-design-system`: maps an intent to a product type, templates and components. It depends on the `goa-design-system` MCP server, which isn't configured here, so don't rely on it.
 
 ## Stack
 - Angular 20 (latest stable), npm, hosted on Netlify.
@@ -36,7 +51,7 @@ One quirk survived the rewrite: the profile's secondary text (`.profile-secondar
 
 **Tokens: v1 at `:root`, v2 scoped to `.goa-ds-v2`.** DS 1.0 and DS 2.0 use the *same token names with different values* (e.g. `--goa-border-radius-m` is `0.25rem` in v1 and `0.5rem` in v2; `--goa-font-family-sans` is Acumin SemiCondensed vs `acumin-variable`). DS 2.0 components get their whole look from these values, so they only look like DS 2.0 when v2 values are in scope. Some component tokens (drawer offset, lilac/default badges, pagination text) exist *only* in v2, and those components break without them.
 
-- v1 tokens load globally at `:root` via `@abgov/web-components/index.css` in [src/styles.scss](src/styles.scss). This is the default for every prototype.
+- v1 tokens load globally at `:root` via `@abgov/web-components/index.css` in [src/styles.scss](src/styles.scss). They're the baseline that any prototype outside `.goa-ds-v2` inherits.
 - v2 tokens come from `@abgov/design-tokens@2.x`, installed as `design-tokens-v2`. [scripts/build-ds-v2-tokens.mjs](scripts/build-ds-v2-tokens.mjs) rewrites its single `:root` block to `.goa-ds-v2` and writes [src/styles/ds-v2-tokens.css](src/styles/ds-v2-tokens.css), which `styles.scss` imports. The script runs on `npm start` / `npm run build` (`prestart`/`prebuild`), and the output is committed so `npx ng serve` works too. Regenerate with `npm run tokens:v2` after bumping the package.
 - **Every v2 prototype's top-level component sets `host: { class: 'goa-ds-v2' }`.** Custom properties inherit into shadow roots, so every `goab-*` inside gets v2 values, and v1 prototypes are untouched.
 - Never load the v2 token file at `:root`: it would restyle every v1 prototype.
@@ -49,9 +64,11 @@ grep -- "--goa-<name>:" node_modules/design-tokens-v2/dist/tokens.css     # v2
 
 **Fonts: already provided, don't self-host or override.** `@abgov/web-components/index.css` declares `@font-face` rules pointing at the design system's Adobe Fonts kit: `acumin-variable` (DS 2.0), `acumin-pro-semi-condensed` 400/600/700 plus italics (DS 1.0), and `roboto-mono`. Verified loading on both `localhost` and `goa-cc.netlify.app`. So the token font stacks resolve to the real typefaces. Don't commit font files (they're licensed, and the repo is public), and don't override `--goa-font-family-sans`. (The workspace demo at workspace-demo-v4.netlify.app renders in Arial because its older stylesheet lacks the `acumin-variable` declaration. Don't copy its font behaviour.)
 
+Each DS gets its typeface through the token scope, not through per-component CSS. Text inside `.goa-ds-v2` resolves `--goa-font-family-sans` to `acumin-variable`, and everything else gets the v1 stack. In prototype styles, set type with `font: var(--goa-typography-*)` and `font-family: var(--goa-font-family-sans)`, never with a font name. If a v2 prototype renders in Acumin SemiCondensed, the `goa-ds-v2` host class is missing. If it renders in Arial or Helvetica, the Adobe Fonts kit failed to load. Check the browser's network panel for `use.typekit.net`. `styles.scss` re-declares the v1 stack at `:root`. That's harmless, because `.goa-ds-v2` redefines the variable, but don't add any more overrides.
+
 **Docs:**
 - v1: https://v1.design.alberta.ca
-- v2: https://design.alberta.ca
+- v2: https://design.alberta.ca (machine-readable: [llms.txt](https://design.alberta.ca/llms.txt), `/components/{slug}.md`; see "Design system sources" above)
 
 ## Components and tokens
 - Always use components from `@abgov/angular-components` (source: https://github.com/GovAlta/ui-components) for buttons, inputs, form fields, callouts, badges, etc. Never hand-build these.
@@ -66,7 +83,8 @@ WCAG 2.1 AA: visible focus, adequate tap targets, labelled fields, semantic land
 - No commented-out code.
 
 ## Don't
-- Don't default a *new* prototype to DS 2.0 without checking — DS 1.0 is still the default absent other direction.
+- Don't start a *new* prototype on DS 1.0 unless the user asks; DS 2.0 is the default. Don't silently convert an existing v1 prototype either; that's a deliberate migration, so update the table when it happens.
+- Don't guess a component's props, events or slots from memory. Fetch its `/components/{slug}.md` page.
 - Don't mix `goa-*` (raw v1) and `goab-*` (v2 wrapper) selectors *within the same component* — pick one DS per prototype.
 - Don't build a v2 prototype without `host: { class: 'goa-ds-v2' }` on its top-level component — its `goab-*` components will render with v1 token values and look like DS 1.0.
 - Don't widen `@abgov/design-tokens` past `^1.10.0` or load v2 tokens at `:root` — that package is the global v1 token set for all v1 prototypes. DS 2.0 tokens come from the `design-tokens-v2` alias, scoped to `.goa-ds-v2`.

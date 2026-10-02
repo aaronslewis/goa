@@ -1,6 +1,6 @@
 ---
 name: goa-angular-v2
-description: Build Government of Alberta (GoA / Alberta.ca) prototypes and screens in an ANGULAR project on Design System V2 (the new standard, design.alberta.ca). Output uses `<goab-*>` Angular components from `@abgov/angular-components` and `--goa-*` tokens from `@abgov/design-tokens@2.x`. Use when the project targets DS 2.0. Siblings — DS V1 (legacy): goa-angular-v1; React: goa-react-v2 / goa-react-v1. Do NOT use in the sage-prototype repo (V1-frozen).
+description: Build Government of Alberta (GoA / Alberta.ca) prototypes and screens in an ANGULAR project on Design System V2 (the new standard, design.alberta.ca). Output uses `<goab-*>` Angular components from `@abgov/angular-components` and `--goa-*` tokens from `@abgov/design-tokens@2.x`. The default for new GoA Angular prototypes and screens. Triggers on "GoA prototype", "Alberta.ca screen", "Government of Alberta UI", or any new view in a GoA Angular project. Siblings — DS V1 (legacy, only for extending existing V1 screens): goa-angular-v1; React: goa-react-v2 / goa-react-v1.
 user-invocable: true
 ---
 
@@ -16,8 +16,14 @@ the new standard documented at <https://design.alberta.ca/>.
 | **Angular** | `goa-angular-v1` | **this skill** |
 | **React** | `goa-react-v1` | `goa-react-v2` |
 
-Check `package.json`: `@abgov/design-tokens@2.x` (or a stated DS 2.0 target) →
-this skill. **The sage-prototype repo is V1-frozen — never use this skill there.**
+DS 2.0 is the default for new work. Use `goa-angular-v1` only to extend a screen
+that is already built on V1. If the project's `CLAUDE.md` says how DS 2.0 is set
+up there (for example, v2 tokens installed under an alias and scoped to a host
+class), follow it over the generic setup in this skill.
+
+The component docs bundled here (`components/*.md`) are snapshots. The live docs
+at <https://design.alberta.ca/llms.txt> and
+`https://design.alberta.ca/components/{slug}.md` win when they disagree.
 
 ## V2 vs V1 — what changes in Angular
 

@@ -6,7 +6,7 @@ public-facing pages on **Alberta.ca**.
 
 > **Version: V1 (1.x)** — the standard most delivery teams ship on (docs:
 > <https://v1.design.alberta.ca/>). V2 (2.x) lives at <https://design.alberta.ca/>
-> and is **forbidden** in this repo until the team migrates. Token values here come
+> and is the default for new work; use V1 only to extend existing V1 screens. Token values here come
 > from `@abgov/design-tokens@1.10.0` and components from `@abgov/web-components@1.41.0`.
 
 ## Quick reference
