@@ -4,15 +4,16 @@
       <h1 class="page-title">Notifications</h1>
       <p class="lede">All notifications for the programs in your caseload.</p>
     </div>
-    <goab-button type="primary" leadingIcon="add" (onClick)="drawerOpen.set(true)">Add notification</goab-button>
+    <goab-button type="primary" size="compact" leadingIcon="add" (onClick)="drawerOpen.set(true)">Add notification</goab-button>
   </header>
 
   <section class="filters" aria-label="Filter notifications">
     @for (k of [filterKey()]; track k) {
       <div class="filters__grid">
-        <goab-form-item label="Program" class="filters__program">
+        <goab-form-item labelSize="compact" label="Program" class="filters__program">
           <goab-dropdown
             name="program"
+            size="compact"
             width="100%"
             [filterable]="true"
             placeholder="All programs"
@@ -24,22 +25,26 @@
           </goab-dropdown>
         </goab-form-item>
 
-        <goab-form-item label="Severity">
+        <goab-form-item labelSize="compact" label="Severity">
           <goab-dropdown
             name="severity"
+            size="compact"
             width="100%"
             placeholder="All severities"
             [value]="severity()"
             (onChange)="onSeverity($event)">
             @for (s of severities; track s.value) {
-              <goab-dropdown-item [value]="s.value" [label]="s.label"></goab-dropdown-item>
+              <goab-dropdown-item [value]="s.value" [label]="s.label">
+                <goab-badge [type]="s.badge" emphasis="subtle" [content]="s.label" [icon]="true"></goab-badge>
+              </goab-dropdown-item>
             }
           </goab-dropdown>
         </goab-form-item>
 
-        <goab-form-item label="Status">
+        <goab-form-item labelSize="compact" label="Status">
           <goab-dropdown
             name="status"
+            size="compact"
             width="100%"
             placeholder="All statuses"
             [value]="status()"
@@ -50,15 +55,15 @@
           </goab-dropdown>
         </goab-form-item>
 
-        <goab-form-item label="From" [error]="dateRangeError()">
+        <goab-form-item labelSize="compact" label="From" [error]="dateRangeError()">
           <div class="date-slot">
-            <goab-date-picker name="from" width="100%" [value]="from()" [error]="!!dateRangeError()" (onChange)="onFrom($event)"></goab-date-picker>
+            <goab-date-picker hubCompact name="from" width="100%" [value]="from()" [error]="!!dateRangeError()" (onChange)="onFrom($event)"></goab-date-picker>
           </div>
         </goab-form-item>
 
-        <goab-form-item label="To">
+        <goab-form-item labelSize="compact" label="To">
           <div class="date-slot">
-            <goab-date-picker name="to" width="100%" [value]="to()" [error]="!!dateRangeError()" (onChange)="onTo($event)"></goab-date-picker>
+            <goab-date-picker hubCompact name="to" width="100%" [value]="to()" [error]="!!dateRangeError()" (onChange)="onTo($event)"></goab-date-picker>
           </div>
         </goab-form-item>
       </div>

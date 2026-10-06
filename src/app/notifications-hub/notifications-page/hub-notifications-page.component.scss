@@ -39,11 +39,12 @@
 // adds a gap *above* the input, so it sits ~9px lower than the dropdowns. The
 // input is always flush with the bottom of the picker, so a slot exactly one
 // input tall, bottom-aligned, lines it up with the dropdowns (the gap overflows
-// upward, invisibly).
+// upward, invisibly). The filters use the compact size, so the slot uses the
+// compact input height.
 .date-slot {
   display: flex;
   align-items: flex-end;
-  height: var(--goa-text-input-height);
+  height: var(--goa-text-input-height-compact);
 }
 
 .date-slot goab-date-picker {

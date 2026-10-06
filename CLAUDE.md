@@ -21,7 +21,7 @@ GoA publishes these agent skills at [GovAlta/ui-components/skills](https://githu
 
 ## Stack
 - Angular 20 (latest stable), npm, hosted on Netlify.
-- `@abgov/angular-components@^5.2.1` (wraps `@abgov/web-components@^2.4.0`)
+- `@abgov/angular-components@~5.4.0` + `@abgov/ui-components-common@~2.4.0` (wrap `@abgov/web-components@^2.4.0`). These three GoA packages release in step: Angular 5.**N** pairs with common 2.**N** and web-components 2.**N**. Keep their minors matched and bump them together. 5.4.0 is the first wrapper that projects content into `goab-dropdown-item`, which rich dropdown items (e.g. badges in the severity filter) need. 5.5.0 won't build against common 2.4 because it imports newer types.
 - `@abgov/design-tokens@^1.10.0` (DS 1.0 tokens) **and** `design-tokens-v2` → `npm:@abgov/design-tokens@^2.12.8` (DS 2.0 tokens, installed under an alias). See "Tokens" below.
 
 ## DS 1.0 and DS 2.0 coexist in this repo, per prototype

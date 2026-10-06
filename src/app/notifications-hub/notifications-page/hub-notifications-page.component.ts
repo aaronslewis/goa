@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import {
+  GoabBadge,
   GoabButton,
   GoabContainer,
   GoabDatePicker,
@@ -14,6 +15,7 @@ import {
   GoabDropdownOnChangeDetail,
   GoabPaginationOnChangeDetail,
 } from '@abgov/ui-components-common';
+import { CompactDatePickerDirective } from '../compact-date-picker.directive';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
 import { AddNotificationDrawerComponent } from '../add-notification-drawer/add-notification-drawer.component';
 import { NotificationsService } from '../notifications.service';
@@ -38,6 +40,7 @@ function parseIsoDate(s: string): Date | null {
   selector: 'hub-notifications-page',
   standalone: true,
   imports: [
+    GoabBadge,
     GoabButton,
     GoabContainer,
     GoabDatePicker,
@@ -46,6 +49,7 @@ function parseIsoDate(s: string): Date | null {
     GoabFilterChip,
     GoabFormItem,
     GoabPagination,
+    CompactDatePickerDirective,
     NotificationListComponent,
     AddNotificationDrawerComponent,
   ],
