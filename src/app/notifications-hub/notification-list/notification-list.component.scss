@@ -9,10 +9,10 @@
   color: var(--goa-color-text-secondary);
 }
 
-// Row anatomy follows goa-work-side-notification-card (the DS 2.0 card used in
-// the workspace demo; not yet in a published @abgov/web-components release, so
-// it's matched here with the same tokens). Severity tints are ours, kept on
-// purpose: the card only tints urgent.
+// Row anatomy follows the DS Notification Item (goab-work-side-notification-item),
+// matched with the same tokens rather than using the component, which has no
+// links, dismiss button or per-severity tints. Severity tints are ours, kept on
+// purpose: the item only tints urgent.
 .group__label {
   margin: 0;
   padding: var(--goa-space-l) var(--goa-space-l) var(--goa-space-s);

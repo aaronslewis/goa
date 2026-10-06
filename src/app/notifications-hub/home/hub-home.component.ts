@@ -1,12 +1,11 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { GoabBadge, GoabButton, GoabContainer, GoabLink, GoabTab, GoabTabs } from '@abgov/angular-components';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
-import { AddNotificationDrawerComponent } from '../add-notification-drawer/add-notification-drawer.component';
 import { NotificationsService } from '../notifications.service';
 import { SEVERITIES, Severity } from '../notifications.data';
 import { HUB_NOTIFICATIONS_URL } from '../hub-shell.component';
 
-type TabKey = 'all' | Severity | 'mine';
+type TabKey = 'all' | Severity;
 
 @Component({
   selector: 'hub-home',
@@ -19,7 +18,6 @@ type TabKey = 'all' | Severity | 'mine';
     GoabTab,
     GoabTabs,
     NotificationListComponent,
-    AddNotificationDrawerComponent,
   ],
   templateUrl: './hub-home.component.html',
   styleUrl: './hub-home.component.scss',
@@ -29,7 +27,6 @@ export class HubHomeComponent {
 
   readonly firstName = 'Edna';
   readonly notificationsUrl = HUB_NOTIFICATIONS_URL;
-  readonly drawerOpen = signal(false);
 
   // "Mark all as complete" is hidden for now; flip to true to bring it back.
   readonly showMarkAllComplete = false;
@@ -44,7 +41,7 @@ export class HubHomeComponent {
 
   readonly tabs = computed(() => {
     const items = this.service.homeItems();
-    const tabs: { key: TabKey; label: string; badge?: 'emergency' | 'important' | 'information' | 'lilac'; items: typeof items }[] = [
+    const tabs: { key: TabKey; label: string; badge?: 'emergency' | 'important' | 'information'; items: typeof items }[] = [
       { key: 'all', label: 'All', items },
       ...SEVERITIES.map((s) => ({
         key: s.value as TabKey,
@@ -52,7 +49,6 @@ export class HubHomeComponent {
         badge: s.badge,
         items: items.filter((n) => n.severity === s.value),
       })),
-      { key: 'mine', label: 'My reminders', badge: 'lilac', items: items.filter((n) => n.createdByUser) },
     ];
     return tabs;
   });
