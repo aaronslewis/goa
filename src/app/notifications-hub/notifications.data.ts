@@ -86,7 +86,8 @@ interface Template {
   title: string;
   message: (p: Program, person: string, educator: string, date: Date) => MessagePart[];
   linkLabel?: string;
-  weight: number;
+  // Expected notifications per month for one LO with a 30-program caseload.
+  perMonth: number;
   // Raised by a Family Day Home Agency rather than a program; `p` is the agency.
   agency?: boolean;
 }
@@ -116,7 +117,7 @@ const TEMPLATES: Template[] = [
     message: (p, person, e) =>
       msg`A new critical incident report has been submitted by ${person} about educator ${e} at ${prog(p)}.`,
     linkLabel: 'View incident report',
-    weight: 2,
+    perMonth: 3,
   },
   {
     // #8: red, trigger available
@@ -124,7 +125,7 @@ const TEMPLATES: Template[] = [
     title: 'Critical incident report was updated',
     message: (p, _, e) => msg`An update has been added to an existing critical incident report for ${e} at ${prog(p)}.`,
     linkLabel: 'View incident report',
-    weight: 1,
+    perMonth: 2,
   },
   {
     // #2: yellow, trigger already exists
@@ -133,7 +134,7 @@ const TEMPLATES: Template[] = [
     message: (p, person, e) =>
       msg`A new incident report has been submitted by ${person} about educator ${e} at ${prog(p)}.`,
     linkLabel: 'View incident report',
-    weight: 4,
+    perMonth: 17,
   },
   {
     // #7: yellow, trigger available (program comment on a report in
@@ -142,7 +143,7 @@ const TEMPLATES: Template[] = [
     title: 'Incident report was updated',
     message: (p, _, e) => msg`An update has been added to an existing incident report for ${e} at ${prog(p)}.`,
     linkLabel: 'View incident report',
-    weight: 3,
+    perMonth: 8,
   },
   {
     // #4: yellow, trigger already exists. "[PE name if present]" read as the
@@ -154,7 +155,7 @@ const TEMPLATES: Template[] = [
         ? msg`A new safety plan document has been uploaded by ${person} for ${e} at ${prog(p)}.`
         : msg`A new safety plan document has been uploaded by ${person} for ${prog(p)}.`,
     linkLabel: 'View document',
-    weight: 2,
+    perMonth: 2,
   },
   {
     // #3: blue, trigger already exists (agency-led Educator Review only)
@@ -163,7 +164,7 @@ const TEMPLATES: Template[] = [
     message: (p, _, e) =>
       msg`A new non-compliance has been identified by ${prog(p)} for educator ${e} during an agency-led Educator Review.`,
     linkLabel: 'View non-compliance',
-    weight: 2,
+    perMonth: 1,
     agency: true,
   },
   {
@@ -173,7 +174,7 @@ const TEMPLATES: Template[] = [
     message: (p, _, __, d) =>
       msg`${prog(p)} has added a ${d.getMinutes() % 2 ? 'comment' : 'follow-up'} to an agency review.`,
     linkLabel: 'View agency review',
-    weight: 2,
+    perMonth: 1,
     agency: true,
   },
   {
@@ -182,7 +183,7 @@ const TEMPLATES: Template[] = [
     title: 'Program contact was updated',
     message: (p, person) => msg`${prog(p)} has updated their primary program contact to ${person}.`,
     linkLabel: 'View program details',
-    weight: 3,
+    perMonth: 2,
   },
 ];
 
@@ -200,51 +201,62 @@ function mulberry32(seed: number) {
   };
 }
 
+const HISTORY_MONTHS = 18;
+const DAYS_PER_MONTH = 30;
+
 export function buildSeedNotifications(now = new Date()): HubNotification[] {
   const rand = mulberry32(20260929);
   const pick = <T>(arr: T[]) => arr[Math.floor(rand() * arr.length)];
-  const weighted = TEMPLATES.flatMap((t) => Array(t.weight).fill(t) as Template[]);
   const result: HubNotification[] = [];
 
-  // Hand-placed recent items so Home always opens with a spread like the Figma.
-  const recentOffsetsMin = [5, 15, 20, 118, 178, 290, 358, 418, 60 * 24 + 125];
-  const recentTemplates = [0, 4, 2, 3, 1, 5, 6, 7, 2];
-  recentOffsetsMin.forEach((mins, i) => {
-    const t = TEMPLATES[recentTemplates[i]];
-    const p = t.agency ? AGENCIES[i % AGENCIES.length] : PROGRAMS[(i * 3) % PROGRAMS.length];
-    const createdAt = new Date(now.getTime() - mins * 60_000);
+  const push = (id: string, t: Template, createdAt: Date, dismissed: boolean, p = pick(t.agency ? AGENCIES : PROGRAMS)) =>
     result.push({
-      id: `n-r${i}`,
+      id,
       title: t.title,
       message: t.message(p, pick(PEOPLE), pick(EDUCATORS), createdAt),
       linkLabel: t.linkLabel,
       severity: t.severity,
       programId: p.id,
       createdAt,
-      dismissed: false,
+      dismissed,
     });
+
+  // A few hand-placed items so Home always opens with something from today:
+  // one critical, plus the two most common events.
+  const today: [number, number][] = [
+    [0, 5], // critical incident report submitted, 5 minutes ago
+    [2, 40], // incident report submitted
+    [3, 150], // incident report updated
+  ];
+  today.forEach(([templateIndex, minsAgo], i) =>
+    push(`n-r${i}`, TEMPLATES[templateIndex], new Date(now.getTime() - minsAgo * 60_000), false),
+  );
+
+  // Exactly each event's monthly rate in every 30-day window, so the current
+  // month (what Home shows) matches the rates rather than random drift. Today's
+  // hand-placed items count toward the current month.
+  TEMPLATES.forEach((t, ti) => {
+    for (let m = 0; m < HISTORY_MONTHS; m++) {
+      const placedToday = m === 0 ? today.filter(([index]) => index === ti).length : 0;
+      for (let i = 0; i < t.perMonth - placedToday; i++) {
+        const createdAt = weekdayInWindow(m);
+        // Older items are far more likely to have been dismissed already.
+        const dismissChance = m > 0 ? 0.85 : 0.25;
+        push(`n-${ti}-${m}-${i}`, t, createdAt, rand() < dismissChance);
+      }
+    }
   });
 
-  // ~18 months of history, denser in recent weeks.
-  for (let i = 0; i < 300; i++) {
-    const daysAgo = Math.floor(Math.pow(rand(), 1.6) * 540) + 2;
-    const createdAt = new Date(now);
-    createdAt.setDate(createdAt.getDate() - daysAgo);
-    createdAt.setHours(7 + Math.floor(rand() * 11), Math.floor(rand() * 60), 0, 0);
-    const t = pick(weighted);
-    const p = pick(t.agency ? AGENCIES : PROGRAMS);
-    // Older items are far more likely to have been dismissed already.
-    const dismissChance = daysAgo > 30 ? 0.85 : 0.25;
-    result.push({
-      id: `n-${i}`,
-      title: t.title,
-      message: t.message(p, pick(PEOPLE), pick(EDUCATORS), createdAt),
-      linkLabel: t.linkLabel,
-      severity: t.severity,
-      programId: p.id,
-      createdAt,
-      dismissed: rand() < dismissChance,
-    });
+  // A working-hours time on a weekday (programs report on weekdays) in the
+  // m-th 30-day window back from yesterday.
+  function weekdayInWindow(m: number): Date {
+    const d = new Date(now);
+    do {
+      d.setTime(now.getTime());
+      d.setDate(d.getDate() - (m * DAYS_PER_MONTH + 1 + Math.floor(rand() * DAYS_PER_MONTH)));
+    } while (d.getDay() === 0 || d.getDay() === 6);
+    d.setHours(8 + Math.floor(rand() * 9), Math.floor(rand() * 60), 0, 0);
+    return d;
   }
 
   return result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
