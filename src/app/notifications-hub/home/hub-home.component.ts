@@ -1,4 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { GoabTabsOnChangeDetail } from '@abgov/ui-components-common';
 import { GoabBadge, GoabButton, GoabContainer, GoabLink, GoabTab, GoabTabs } from '@abgov/angular-components';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
 import { NotificationsService } from '../notifications.service';
@@ -28,8 +29,8 @@ export class HubHomeComponent {
   readonly firstName = 'Edna';
   readonly notificationsUrl = HUB_NOTIFICATIONS_URL;
 
-  // "Mark all as complete" is hidden for now; flip to true to bring it back.
-  readonly showMarkAllComplete = false;
+  // goab-tabs reports a 1-based index; 1 is "All".
+  readonly activeTab = signal(1);
 
   // Recomputed on each render per the Figma note, so it tracks the user's local clock.
   get greeting(): string {
@@ -53,7 +54,18 @@ export class HubHomeComponent {
     return tabs;
   });
 
-  dismissAll(): void {
-    this.service.dismissMany(this.service.homeItems().map((n) => n.id));
+  // "Mark all as done" applies to one severity at a time, never to All.
+  readonly activeSeverityTab = computed(() => {
+    const tab = this.tabs()[this.activeTab() - 1];
+    return tab && tab.key !== 'all' ? tab : null;
+  });
+
+  onTabChange(detail: GoabTabsOnChangeDetail): void {
+    this.activeTab.set(detail.tab);
+  }
+
+  markAllDone(): void {
+    const tab = this.activeSeverityTab();
+    if (tab) this.service.dismissMany(tab.items.map((n) => n.id));
   }
 }

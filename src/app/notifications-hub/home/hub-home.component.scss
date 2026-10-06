@@ -42,6 +42,32 @@ goab-tabs {
   display: block;
 }
 
+// The tab tray lives inside goab-tabs' shadow DOM, so the action is overlaid on
+// the right end of the tray's row rather than placed beside it in the flow.
+.tabs-area {
+  position: relative;
+  container-type: inline-size;
+}
+
+.tab-action {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
+// The tray (~440px) plus the button (~170px) need about 40rem. Sized by the
+// area's own width, not the viewport, because the side menu takes a variable
+// share of the screen. Must follow the base rule to win the cascade.
+@container (max-width: 40rem) {
+  .tab-action {
+    position: static;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: var(--goa-space-xs);
+  }
+}
+
 // Rows run edge to edge inside the card: pull out by exactly its compact padding.
 .list {
   margin: calc(-1 * var(--goa-container-padding-compact));

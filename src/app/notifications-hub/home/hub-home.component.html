@@ -3,13 +3,19 @@
 
   <div class="section-header">
     <h2 class="section-title">Notifications</h2>
-    @if (showMarkAllComplete && service.homeItems().length > 0) {
-      <goab-button type="tertiary" (onClick)="dismissAll()">Mark all as complete</goab-button>
-    }
   </div>
 
   <!-- Title and tabs sit on the page; the bordered card wraps only the list. -->
-  <goab-tabs variant="segmented" navigation="none" orientation="horizontal">
+  <div class="tabs-area">
+  <!-- Level with the tab tray, so it reads as acting on the selected tab only. -->
+  @if (activeSeverityTab(); as tab) {
+    @if (tab.items.length > 0) {
+      <div class="tab-action">
+        <goab-button type="tertiary" size="compact" (onClick)="markAllDone()">Mark all as done</goab-button>
+      </div>
+    }
+  }
+  <goab-tabs variant="segmented" navigation="none" orientation="horizontal" (onChange)="onTabChange($event)">
     @for (tab of tabs(); track tab.key) {
       <ng-template #tabHeading>
         <span class="tab-heading">
@@ -30,6 +36,7 @@
       </goab-tab>
     }
   </goab-tabs>
+  </div>
 
   <p class="footer-link">
     Showing active notifications from the last 30 days.
