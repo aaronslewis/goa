@@ -1,0 +1,83 @@
+<goab-text tag="h1" mt="none">Child Care Accountability Program and Portal Access Acknowledgement</goab-text>
+
+<goab-text size="body-m" mt="none" mb="s">
+  Complete these tasks to get access to the portal for {{ account.organization }} and its
+  {{ programCount }} licensed programs.
+</goab-text>
+<goab-text size="body-m" mt="none" mb="none">
+  Have questions? Visit our
+  <goab-link trailingIcon="open"><a href="#">Acknowledgement FAQ</a></goab-link>
+</goab-text>
+
+@if (state.submitted()) {
+  <goab-callout type="success" emphasis="low" heading="Acknowledgement complete" mb="2xl" mt="xl" maxWidth="360px">
+    You have completed {{ taskCount }} of {{ taskCount }} tasks.
+    <a routerLink="confirmation">View your confirmation</a>
+  </goab-callout>
+} @else {
+  <goab-callout type="important" emphasis="low" heading="Acknowledgement incomplete" mb="2xl" mt="xl" maxWidth="360px">
+    You have completed {{ state.completedCount() }} of {{ taskCount }} tasks.
+  </goab-callout>
+}
+
+<goab-text tag="h2">1. Confirm your details</goab-text>
+<goab-table width="100%" mt="l" mb="2xl">
+  <tbody>
+    <tr>
+      <td>
+        @if (state.submitted()) {
+          Declaration
+        } @else {
+          <a routerLink="declaration">Declaration</a>
+        }
+      </td>
+      <td class="goa-table-number-column">
+        <goab-badge
+          [type]="badge(state.declarationStatus()).type"
+          [content]="badge(state.declarationStatus()).content"
+          [icon]="false"></goab-badge>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        @if (state.submitted()) {
+          Verification of organization and signing authority
+        } @else {
+          <a routerLink="verification">Verification of organization and signing authority</a>
+        }
+      </td>
+      <td class="goa-table-number-column">
+        <goab-badge
+          [type]="badge(state.verificationStatus()).type"
+          [content]="badge(state.verificationStatus()).content"
+          [icon]="false"></goab-badge>
+      </td>
+    </tr>
+  </tbody>
+</goab-table>
+
+<goab-text tag="h2" [mb]="state.termsStatus() === 'cannot-start' ? 's' : 'none'">2. Sign the acknowledgement</goab-text>
+@if (state.termsStatus() === 'cannot-start') {
+  <goab-text size="body-s" color="secondary" mt="2xs">
+    You need to complete the previous section before you can start this task.
+  </goab-text>
+}
+<goab-table width="100%" mt="l" mb="3xl">
+  <tbody>
+    <tr>
+      <td>
+        @if (state.termsStatus() === 'not-started' || state.termsStatus() === 'in-progress') {
+          <a routerLink="terms">Review and agree to the terms</a>
+        } @else {
+          Review and agree to the terms
+        }
+      </td>
+      <td class="goa-table-number-column">
+        <goab-badge
+          [type]="badge(state.termsStatus()).type"
+          [content]="badge(state.termsStatus()).content"
+          [icon]="false"></goab-badge>
+      </td>
+    </tr>
+  </tbody>
+</goab-table>

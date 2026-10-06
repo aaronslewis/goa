@@ -22,6 +22,13 @@ export class PlatformPrototypesComponent {
 
   readonly prototypes: PrototypeLink[] = [
     {
+      label: 'Portal access acknowledgement — DS v2',
+      description:
+        'Revised Child Care Accountability Program acknowledgement: declaration, verification, terms and confirmation, using the task list page pattern.',
+      path: '/acknowledgement',
+      status: 'In progress',
+    },
+    {
       label: 'Notifications hub — DS v2',
       description:
         'Home page with last-30-day notifications, plus a full Notifications page filtered by program, severity, status, and date range.',

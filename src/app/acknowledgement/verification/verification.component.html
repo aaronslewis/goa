@@ -1,0 +1,49 @@
+<goab-link leadingIcon="arrow-back" size="small" mb="none"><a routerLink="/acknowledgement">Back</a></goab-link>
+
+<goab-text tag="p" size="body-m" mt="xl" mb="none" color="secondary">Step 2 of 3</goab-text>
+<goab-text tag="h1" mt="xs" mb="m">Verification of organization and signing authority</goab-text>
+
+<dl class="facts">
+  <div>
+    <dt>Organization type</dt>
+    <dd>{{ account.organizationType }}</dd>
+  </div>
+</dl>
+<goab-text size="body-s" color="secondary" mt="2xs" mb="xl">
+  Based on your organization’s registration with Alberta Corporate Registry.
+</goab-text>
+
+<goab-container type="non-interactive" padding="relaxed" mb="xl">
+  @for (section of sections; track section.heading; let first = $first) {
+    <h2 class="section-heading" [class.first]="first">{{ section.heading }}</h2>
+    <goab-text size="body-m" mt="none" mb="none">{{ section.body }}</goab-text>
+  }
+</goab-container>
+
+<ng-template #issueReveal>
+  <goab-form-item
+    label="Tell us what information is not correct"
+    helpText="We’ll review it and contact you within 2 business days."
+    [error]="issueError()">
+    <goab-textarea
+      name="verificationIssue"
+      [rows]="4"
+      width="100%"
+      [value]="issue()"
+      [error]="!!issueError()"
+      (onChange)="onIssue($event)"></goab-textarea>
+  </goab-form-item>
+</ng-template>
+
+<goab-form-item label="Is this information correct?" labelSize="large" [error]="answerError()">
+  <goab-radio-group
+    name="verification"
+    [value]="answer()"
+    [error]="!!answerError()"
+    (onChange)="onAnswer($event)">
+    <goab-radio-item value="yes" label="Yes, I declare that the information above is correct."></goab-radio-item>
+    <goab-radio-item value="no" label="No, the information above is not correct." [reveal]="issueReveal"></goab-radio-item>
+  </goab-radio-group>
+</goab-form-item>
+
+<goab-button type="primary" mt="2xl" (onClick)="save()">Save and continue</goab-button>

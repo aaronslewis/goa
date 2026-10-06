@@ -18,6 +18,12 @@ import { GoaUserManagementComponent } from './goa-user-management/goa-user-manag
 import { HubShellComponent } from './notifications-hub/hub-shell.component';
 import { HubHomeComponent } from './notifications-hub/home/hub-home.component';
 import { HubNotificationsPageComponent } from './notifications-hub/notifications-page/hub-notifications-page.component';
+import { AcknowledgementShellComponent } from './acknowledgement/shell/acknowledgement-shell.component';
+import { AcknowledgementTaskListComponent } from './acknowledgement/task-list/task-list.component';
+import { DeclarationComponent } from './acknowledgement/declaration/declaration.component';
+import { VerificationComponent } from './acknowledgement/verification/verification.component';
+import { TermsComponent } from './acknowledgement/terms/terms.component';
+import { ConfirmationComponent } from './acknowledgement/confirmation/confirmation.component';
 
 @Component({
   standalone: true,
@@ -62,6 +68,17 @@ export const routes: Routes = [
     path: 'goa-user-management',
     component: GoaUserManagementComponent,
     title: 'GOA User Management — Search',
+  },
+  {
+    path: 'acknowledgement',
+    component: AcknowledgementShellComponent,
+    children: [
+      { path: '', component: AcknowledgementTaskListComponent, title: 'Acknowledgement — Child Care Licensing Portal' },
+      { path: 'declaration', component: DeclarationComponent, title: 'Declaration — Child Care Licensing Portal' },
+      { path: 'verification', component: VerificationComponent, title: 'Verification — Child Care Licensing Portal' },
+      { path: 'terms', component: TermsComponent, title: 'Acknowledgement terms — Child Care Licensing Portal' },
+      { path: 'confirmation', component: ConfirmationComponent, title: 'Acknowledgement submitted — Child Care Licensing Portal' },
+    ],
   },
   // Fallback for unknown routes. A specific route, once added, takes
   // precedence over this wildcard.

@@ -40,6 +40,7 @@ This means a v1 prototype and a v2 prototype can run side by side in this same a
 | `notifications-page`, `notifications-scale`, `workspace-shell` | v1 | In scope for a future v2 pass — not yet converted. |
 | `ecds-dashboard`, `generic-dashboard` | v1 | In scope for a future v2 pass — not yet converted. `ecds-dashboard-v2` is the already-converted reference. |
 | `ecds-dashboard-v2` | v2 | Reference implementation for the dashboard conversions above. |
+| `acknowledgement` (`/acknowledgement/*`) | v2 | Revised Child Care Accountability Program and Portal Access acknowledgement, built on the DS [task list page](https://design.alberta.ca/examples/task-list-page) pattern (not `goab-form-stepper`): task list hub → question pages (*Step X of 3*, back link, *Save and continue*) → result page. Answers live in the root `AcknowledgementStateService`, so a full reload resets them. *Continue to the portal* goes to `home-page-design`. |
 | `home-page-design` (`MyProgramsComponent`) | v1 | In scope for a future v2 pass — not yet converted. |
 | `help-centre`, `help-centre-feedback`, `sage-widget` (AI Assistant) | v1 | Staying v1 — not in scope for conversion. |
 | `user-access-management`, `goa-user-management` | v1 | Staying v1 — not in scope for conversion. |

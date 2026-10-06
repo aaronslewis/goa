@@ -1,0 +1,24 @@
+<goab-text tag="h1" mt="none">You have completed the acknowledgement</goab-text>
+
+<goab-callout type="success" heading="Acknowledgement submitted">
+  <goab-text size="body-m" mt="none" mb="m">
+    You’ve acknowledged the Child Care Accountability Program and Portal Access terms for
+    {{ account.organization }}
+  </goab-text>
+  <goab-button type="secondary" size="compact" leadingIcon="download" (onClick)="download()">
+    Download acknowledgement
+  </goab-button>
+</goab-callout>
+
+<goab-text tag="h2" mt="xl" mb="m">What happens next</goab-text>
+<goab-text size="body-m" mt="none" mb="s">
+  You can now use the Child Care Licensing Portal for all {{ programCount }} programs. You can add
+  other people from your organization and choose what they can access.
+</goab-text>
+
+<goab-text tag="h2" mt="xl" mb="m">If you have questions about your acknowledgement</goab-text>
+<goab-text size="body-m" mt="none" mb="xl">
+  Visit our <goab-link trailingIcon="open"><a href="#">Acknowledgement FAQ</a></goab-link>
+</goab-text>
+
+<goab-button type="primary" (onClick)="continueToPortal()">Continue to the portal</goab-button>
