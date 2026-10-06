@@ -1,6 +1,7 @@
+// Sits inside the Workspace Layout card; padding matches the DS workspace page
+// header (space-l top, space-xl sides).
 .page {
-  max-width: 1200px;
-  padding: var(--goa-space-2xl);
+  padding: var(--goa-space-l) var(--goa-space-xl) var(--goa-space-2xl);
 }
 
 .page-header {
@@ -94,5 +95,13 @@
 
   .filters__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+// Below 624px the Workspace Layout shows its menu button over the card's
+// top-left corner; start the content below it.
+@media (max-width: 623px) {
+  .page {
+    padding-top: var(--goa-space-3xl);
   }
 }

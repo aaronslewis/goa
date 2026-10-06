@@ -1,6 +1,7 @@
+// Sits inside the Workspace Layout card; padding matches the DS workspace page
+// header (space-l top, space-xl sides).
 .page {
-  max-width: 1200px;
-  padding: var(--goa-space-2xl);
+  padding: var(--goa-space-l) var(--goa-space-xl) var(--goa-space-2xl);
 }
 
 .greeting {
@@ -9,26 +10,19 @@
   color: var(--goa-color-text-default);
 }
 
-.card-title {
-  margin: 0;
-  font: var(--goa-typography-heading-m);
-  color: var(--goa-color-text-default);
-}
-
-.card-header {
+.section-header {
   display: flex;
   flex-wrap: wrap;
   gap: var(--goa-space-m);
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--goa-space-l);
+  margin-bottom: var(--goa-space-m);
 }
 
-.card-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--goa-space-s);
-  align-items: center;
+.section-title {
+  margin: 0;
+  font: var(--goa-typography-heading-m);
+  color: var(--goa-color-text-default);
 }
 
 .tab-heading {
@@ -37,10 +31,20 @@
   gap: var(--goa-space-xs);
 }
 
-// Rows run edge to edge: pull out by exactly goab-container's own padding,
-// which is relaxed by default and switches to compact below 624px.
+// Segmented tabs default to 2rem below the tray (--goa-tabs-margin-bottom, the
+// hook the DS's own Notification Panel overrides). The workspace demo has the
+// list card space-m below the tray.
+goab-tabs {
+  --goa-tabs-margin-bottom: var(--goa-space-m);
+}
+
+.list-card {
+  display: block;
+}
+
+// Rows run edge to edge inside the card: pull out by exactly its compact padding.
 .list {
-  margin: var(--goa-space-m) calc(-1 * var(--goa-container-padding)) 0;
+  margin: calc(-1 * var(--goa-container-padding-compact));
 }
 
 .footer-link {
@@ -54,14 +58,16 @@
   color: var(--goa-color-text-secondary);
 }
 
-@media (max-width: 623px) {
-  .list {
-    margin-inline: calc(-1 * var(--goa-container-padding-compact));
-  }
-}
-
 @media (max-width: 768px) {
   .page {
     padding: var(--goa-space-l) var(--goa-space-m);
+  }
+}
+
+// Below 624px the Workspace Layout shows its menu button over the card's
+// top-left corner; start the content below it.
+@media (max-width: 623px) {
+  .page {
+    padding-top: var(--goa-space-3xl);
   }
 }

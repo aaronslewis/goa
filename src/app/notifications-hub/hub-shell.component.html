@@ -37,20 +37,23 @@
   </div>
 </ng-template>
 
-<goab-work-side-menu
-  [heading]="heading"
-  [url]="homeItem.url!"
-  [userName]="userName"
-  [userSecondaryText]="userSecondaryText"
-  [open]="isMenuOpen"
-  [primaryContent]="primaryNav"
-  [secondaryContent]="secondaryNav"
-  [accountContent]="accountNav"
-  (onToggle)="onMenuToggle()"
-  (onNavigate)="onNavigate($event)"
-  aria-label="Workspace navigation">
-</goab-work-side-menu>
+<ng-template #sideMenu>
+  <goab-work-side-menu
+    [heading]="heading"
+    [url]="homeItem.url!"
+    [userName]="userName"
+    [userSecondaryText]="userSecondaryText"
+    [open]="isMenuOpen"
+    [primaryContent]="primaryNav"
+    [secondaryContent]="secondaryNav"
+    [accountContent]="accountNav"
+    (onToggle)="onMenuToggle()"
+    (onNavigate)="onNavigate($event)"
+    aria-label="Workspace navigation">
+  </goab-work-side-menu>
+</ng-template>
 
-<main class="hub-main" id="main-content">
+<!-- DS Workspace Layout: side menu beside a white content card. -->
+<goab-workspace-layout [sideMenu]="sideMenu">
   <router-outlet></router-outlet>
-</main>
+</goab-workspace-layout>

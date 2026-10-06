@@ -5,6 +5,7 @@ import { filter, map } from 'rxjs';
 import { GoabIconType } from '@abgov/ui-components-common';
 import {
   GoabWorkSideMenu,
+  GoabWorkspaceLayout,
   GoabWorkSideMenuGroup,
   GoabWorkSideMenuItem,
   GoabIcon,
@@ -35,7 +36,7 @@ export const HUB_NOTIFICATIONS_URL = '#/notifications-hub/notifications';
   selector: 'hub-shell',
   host: { class: 'goa-ds-v2' },
   standalone: true,
-  imports: [RouterOutlet, GoabWorkSideMenu, GoabWorkSideMenuGroup, GoabWorkSideMenuItem, GoabIcon],
+  imports: [RouterOutlet, GoabWorkSideMenu, GoabWorkSideMenuGroup, GoabWorkSideMenuItem, GoabWorkspaceLayout, GoabIcon],
   templateUrl: './hub-shell.component.html',
   styleUrl: './hub-shell.component.scss',
 })

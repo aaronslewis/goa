@@ -1,18 +1,8 @@
+// The grey behind the Workspace Layout card. The page body sits outside the
+// goa-ds-v2 scope, so set the v2 value here.
 :host {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-}
-
-goab-work-side-menu {
-  flex-shrink: 0;
-  height: 100%;
-}
-
-.hub-main {
-  flex: 1;
-  min-width: 0;
-  overflow-y: auto;
+  display: block;
+  min-height: 100vh;
   background: var(--goa-color-greyscale-50);
 }
 
