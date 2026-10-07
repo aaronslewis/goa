@@ -5,13 +5,14 @@ import type { GoabBadgeType } from '@abgov/ui-components-common';
 import { ACCOUNT, PROGRAMS } from '../shared/acknowledgement-data';
 import { AcknowledgementStateService, TaskStatus } from '../shared/acknowledgement-state.service';
 
-// Status names and colours follow the task list page pattern's written guidance
-// ("In progress" dark grey, "Cannot start yet" light grey). Its sample code uses `default`
-// for "Cannot start yet", but in v2 `default` renders dark grey and `archived` light grey.
+// Colours follow the task list page pattern's written guidance ("In progress" dark grey,
+// "Cannot start yet" light grey). The pattern's sample code uses `default` for "Cannot start
+// yet", but in v2 `default` renders dark grey and `archived` light grey. A step that's ready
+// but not begun reads "Start" rather than the pattern's "Not started", as an invitation to begin.
 const STATUS_BADGE: Record<TaskStatus, { type: GoabBadgeType; content: string }> = {
   completed: { type: 'success', content: 'Completed' },
   'in-progress': { type: 'default', content: 'In progress' },
-  'not-started': { type: 'information', content: 'Not started' },
+  'not-started': { type: 'information', content: 'Start' },
   'cannot-start': { type: 'archived', content: 'Cannot start yet' },
 };
 

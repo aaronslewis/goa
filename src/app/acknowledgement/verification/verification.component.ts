@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   GoabButton,
@@ -31,7 +31,7 @@ import { Answer, AcknowledgementStateService } from '../shared/acknowledgement-s
   templateUrl: './verification.component.html',
   styleUrls: ['../shared/question-page.scss'],
 })
-export class VerificationComponent {
+export class VerificationComponent implements OnInit {
   private readonly state = inject(AcknowledgementStateService);
   private readonly router = inject(Router);
 
@@ -43,6 +43,13 @@ export class VerificationComponent {
   readonly issue = signal(this.state.verificationIssue());
   readonly answerError = signal('');
   readonly issueError = signal('');
+
+  ngOnInit(): void {
+    // Reached by URL before step 1 is done: the task list explains why this step is locked.
+    if (this.state.verificationStatus() === 'cannot-start') {
+      this.router.navigate(['/acknowledgement'], { replaceUrl: true });
+    }
+  }
 
   onAnswer(detail: GoabRadioGroupOnChangeDetail): void {
     this.answer.set(detail.value as Answer);

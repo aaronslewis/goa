@@ -1,7 +1,7 @@
-<goab-text tag="h1" mt="none">Child Care Accountability Program and Portal Access Acknowledgement</goab-text>
+<goab-text tag="h1" size="heading-m" mt="none">Child Care Accountability Program and Portal Access Acknowledgement</goab-text>
 
 <goab-text size="body-m" mt="none" mb="s">
-  Complete these tasks to get access to the portal for {{ account.organization }} and its
+  Complete these steps to get access to the portal for {{ account.organization }} and its
   {{ programCount }} licensed programs.
 </goab-text>
 <goab-text size="body-m" mt="none" mb="none">
@@ -11,58 +11,67 @@
 
 @if (state.submitted()) {
   <goab-callout type="success" emphasis="low" heading="Acknowledgement complete" mb="2xl" mt="xl" maxWidth="360px">
-    You have completed {{ taskCount }} of {{ taskCount }} tasks.
+    You have completed all {{ taskCount }} steps.
     <a routerLink="confirmation">View your confirmation</a>
-  </goab-callout>
-} @else {
-  <goab-callout type="important" emphasis="low" heading="Acknowledgement incomplete" mb="2xl" mt="xl" maxWidth="360px">
-    You have completed {{ state.completedCount() }} of {{ taskCount }} tasks.
   </goab-callout>
 }
 
-<goab-text tag="h2">1. Confirm your details</goab-text>
-<goab-table width="100%" mt="l" mb="2xl">
+<goab-text tag="h2" size="heading-s" [mt]="state.submitted() ? 'none' : '2xl'">Step 1 – Declaration</goab-text>
+<goab-table width="100%" variant="relaxed" mt="l" mb="2xl">
   <tbody>
     <tr>
       <td>
         @if (state.submitted()) {
-          Declaration
+          Confirm your legal name, organization and its licensed programs
         } @else {
-          <a routerLink="declaration">Declaration</a>
+          <a routerLink="declaration">Confirm your legal name, organization and its licensed programs</a>
         }
       </td>
       <td class="goa-table-number-column">
         <goab-badge
           [type]="badge(state.declarationStatus()).type"
           [content]="badge(state.declarationStatus()).content"
-          [icon]="false"></goab-badge>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        @if (state.submitted()) {
-          Verification of organization and signing authority
-        } @else {
-          <a routerLink="verification">Verification of organization and signing authority</a>
-        }
-      </td>
-      <td class="goa-table-number-column">
-        <goab-badge
-          [type]="badge(state.verificationStatus()).type"
-          [content]="badge(state.verificationStatus()).content"
+          size="large"
           [icon]="false"></goab-badge>
       </td>
     </tr>
   </tbody>
 </goab-table>
 
-<goab-text tag="h2" [mb]="state.termsStatus() === 'cannot-start' ? 's' : 'none'">2. Sign the acknowledgement</goab-text>
-@if (state.termsStatus() === 'cannot-start') {
+<goab-text tag="h2" size="heading-s" [mb]="state.verificationStatus() === 'cannot-start' ? 's' : 'none'">Step 2 – Verification</goab-text>
+@if (state.verificationStatus() === 'cannot-start') {
   <goab-text size="body-s" color="secondary" mt="2xs">
-    You need to complete the previous section before you can start this task.
+    You need to complete step 1 before you can start this step.
   </goab-text>
 }
-<goab-table width="100%" mt="l" mb="3xl">
+<goab-table width="100%" variant="relaxed" mt="l" mb="2xl">
+  <tbody>
+    <tr>
+      <td>
+        @if (state.submitted() || state.verificationStatus() === 'cannot-start') {
+          Verify your organization and signing authority
+        } @else {
+          <a routerLink="verification">Verify your organization and signing authority</a>
+        }
+      </td>
+      <td class="goa-table-number-column">
+        <goab-badge
+          [type]="badge(state.verificationStatus()).type"
+          [content]="badge(state.verificationStatus()).content"
+          size="large"
+          [icon]="false"></goab-badge>
+      </td>
+    </tr>
+  </tbody>
+</goab-table>
+
+<goab-text tag="h2" size="heading-s" [mb]="state.termsStatus() === 'cannot-start' ? 's' : 'none'">Step 3 – Acknowledgement</goab-text>
+@if (state.termsStatus() === 'cannot-start') {
+  <goab-text size="body-s" color="secondary" mt="2xs">
+    You need to complete step 2 before you can start this step.
+  </goab-text>
+}
+<goab-table width="100%" variant="relaxed" mt="l" mb="3xl">
   <tbody>
     <tr>
       <td>
@@ -76,6 +85,7 @@
         <goab-badge
           [type]="badge(state.termsStatus()).type"
           [content]="badge(state.termsStatus()).content"
+          size="large"
           [icon]="false"></goab-badge>
       </td>
     </tr>

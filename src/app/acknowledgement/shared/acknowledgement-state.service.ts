@@ -16,7 +16,9 @@ export class AcknowledgementStateService {
   readonly submitted = signal(false);
 
   readonly declarationStatus = computed(() => answerStatus(this.declaration()));
-  readonly verificationStatus = computed(() => answerStatus(this.verification()));
+  readonly verificationStatus = computed<TaskStatus>(() =>
+    this.declarationStatus() === 'completed' ? answerStatus(this.verification()) : 'cannot-start',
+  );
   readonly detailsConfirmed = computed(
     () => this.declarationStatus() === 'completed' && this.verificationStatus() === 'completed',
   );
