@@ -1,13 +1,13 @@
 import { Component, computed, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { GoabBadge, GoabCallout, GoabLink, GoabTable, GoabText } from '@abgov/angular-components';
+import { Router, RouterLink } from '@angular/router';
+import { GoabBadge, GoabButton, GoabCallout, GoabLink, GoabTable, GoabText } from '@abgov/angular-components';
 import type { GoabBadgeType } from '@abgov/ui-components-common';
 import { AcknowledgementV2StateService, TaskStatus } from '../shared/acknowledgement-state.service';
 
 // Colours follow the task list page pattern's written guidance ("In progress" dark grey,
 // "Cannot start yet" light grey). The pattern's sample code uses `default` for "Cannot start
 // yet", but in v2 `default` renders dark grey and `archived` light grey. A step that's ready
-// but not begun reads "Start" rather than the pattern's "Not started", as an invitation to begin.
+// but not begun gets a Start button in the template instead of a badge.
 const STATUS_BADGE: Record<TaskStatus, { type: GoabBadgeType; content: string }> = {
   completed: { type: 'success', content: 'Completed' },
   'in-progress': { type: 'default', content: 'In progress' },
@@ -18,12 +18,13 @@ const STATUS_BADGE: Record<TaskStatus, { type: GoabBadgeType; content: string }>
 @Component({
   selector: 'app-acknowledgement-v2-task-list',
   standalone: true,
-  imports: [RouterLink, GoabBadge, GoabCallout, GoabLink, GoabTable, GoabText],
+  imports: [RouterLink, GoabBadge, GoabButton, GoabCallout, GoabLink, GoabTable, GoabText],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss',
 })
 export class AcknowledgementV2TaskListComponent {
   readonly state = inject(AcknowledgementV2StateService);
+  private readonly router = inject(Router);
 
   readonly steps = computed(() => [
     {
@@ -49,6 +50,10 @@ export class AcknowledgementV2TaskListComponent {
   // Locked steps can't be opened, and once submitted the acknowledgement is final.
   canOpen(status: TaskStatus): boolean {
     return !this.state.submitted() && status !== 'cannot-start';
+  }
+
+  start(path: string): void {
+    this.router.navigate(['/acknowledgement-v2', path]);
   }
 
   badge(status: TaskStatus) {

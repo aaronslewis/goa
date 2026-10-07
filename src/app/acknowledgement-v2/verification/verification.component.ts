@@ -38,7 +38,7 @@ export class VerificationV2Component implements OnInit {
   readonly account = ACCOUNT;
   readonly sections = VERIFICATION_SECTIONS;
 
-  // Edits stay local until "Save and continue", so leaving with Back doesn't change the task status.
+  // Edits stay local until "Next", so leaving with Back doesn't change the task status.
   readonly answer = signal<Answer>(this.state.verification());
   readonly issue = signal(this.state.verificationIssue());
   readonly answerError = signal('');

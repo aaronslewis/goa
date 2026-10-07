@@ -38,7 +38,7 @@ export class DeclarationV2Component {
   readonly account = ACCOUNT;
   readonly programs = PROGRAMS;
 
-  // Edits stay local until "Save and continue", so leaving with Back doesn't change the task status.
+  // Edits stay local until "Next", so leaving with Back doesn't change the task status.
   readonly answer = signal<Answer>(this.state.declaration());
   readonly issue = signal(this.state.declarationIssue());
   readonly answerError = signal('');

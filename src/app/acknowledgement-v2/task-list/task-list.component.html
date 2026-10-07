@@ -30,11 +30,15 @@
           <span class="step-description" [id]="step.path + '-description'">{{ step.description }}</span>
         </td>
         <td class="goa-table-number-column">
-          <goab-badge
-            [type]="badge(step.status).type"
-            [content]="badge(step.status).content"
-            size="large"
-            [icon]="false"></goab-badge>
+          @if (step.status === 'not-started' && canOpen(step.status)) {
+            <goab-button type="primary" size="compact" (onClick)="start(step.path)">Start</goab-button>
+          } @else {
+            <goab-badge
+              [type]="badge(step.status).type"
+              [content]="badge(step.status).content"
+              size="large"
+              [icon]="false"></goab-badge>
+          }
         </td>
       </tr>
     }
