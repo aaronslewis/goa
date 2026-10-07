@@ -1,0 +1,16 @@
+<goab-microsite-header type="beta"></goab-microsite-header>
+
+<goab-app-header url="https://www.alberta.ca" heading="Child Care Licensing Portal">
+  <goab-menu-button
+    slot="utilities"
+    type="tertiary"
+    leadingIcon="person-circle"
+    [text]="compactHeader() ? '' : account.legalName"
+    [ariaLabel]="'Account menu for ' + account.legalName">
+    <goab-menu-action text="Sign out" action="sign-out" icon="log-out"></goab-menu-action>
+  </goab-menu-button>
+</goab-app-header>
+
+<main class="page" tabindex="-1" #main>
+  <router-outlet></router-outlet>
+</main>

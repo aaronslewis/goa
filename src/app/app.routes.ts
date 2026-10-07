@@ -28,6 +28,12 @@ import { DeclarationComponent } from './acknowledgement/declaration/declaration.
 import { VerificationComponent } from './acknowledgement/verification/verification.component';
 import { TermsComponent } from './acknowledgement/terms/terms.component';
 import { ConfirmationComponent } from './acknowledgement/confirmation/confirmation.component';
+import { AcknowledgementV2ShellComponent } from './acknowledgement-v2/shell/acknowledgement-shell.component';
+import { AcknowledgementV2TaskListComponent } from './acknowledgement-v2/task-list/task-list.component';
+import { DeclarationV2Component } from './acknowledgement-v2/declaration/declaration.component';
+import { VerificationV2Component } from './acknowledgement-v2/verification/verification.component';
+import { TermsV2Component } from './acknowledgement-v2/terms/terms.component';
+import { ConfirmationV2Component } from './acknowledgement-v2/confirmation/confirmation.component';
 import { UserProfileComponent } from './search-service/user-profile/user-profile.component';
 
 @Component({
@@ -108,6 +114,17 @@ export const routes: Routes = [
       { path: 'verification', component: VerificationComponent, title: 'Verification — Child Care Licensing Portal' },
       { path: 'terms', component: TermsComponent, title: 'Acknowledgement terms — Child Care Licensing Portal' },
       { path: 'confirmation', component: ConfirmationComponent, title: 'Acknowledgement submitted — Child Care Licensing Portal' },
+    ],
+  },
+  {
+    path: 'acknowledgement-v2',
+    component: AcknowledgementV2ShellComponent,
+    children: [
+      { path: '', component: AcknowledgementV2TaskListComponent, title: 'Acknowledgement (v2) — Child Care Licensing Portal' },
+      { path: 'declaration', component: DeclarationV2Component, title: 'Declaration (v2) — Child Care Licensing Portal' },
+      { path: 'verification', component: VerificationV2Component, title: 'Verification (v2) — Child Care Licensing Portal' },
+      { path: 'terms', component: TermsV2Component, title: 'Acknowledgement terms (v2) — Child Care Licensing Portal' },
+      { path: 'confirmation', component: ConfirmationV2Component, title: 'Acknowledgement submitted (v2) — Child Care Licensing Portal' },
     ],
   },
   // Fallback for unknown routes. A specific route, once added, takes

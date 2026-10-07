@@ -29,6 +29,13 @@ export class PlatformPrototypesComponent {
       status: 'In progress',
     },
     {
+      label: 'Portal access acknowledgement v2 — DS v2',
+      description:
+        'Revised acknowledgement with all three steps in one task list section. Save and continue moves straight to the next step.',
+      path: '/acknowledgement-v2',
+      status: 'In progress',
+    },
+    {
       label: 'Notifications hub — DS v2',
       description:
         'Home page with last-30-day notifications, plus a full Notifications page filtered by program, severity, status, and date range.',

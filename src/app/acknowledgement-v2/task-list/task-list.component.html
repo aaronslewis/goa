@@ -1,0 +1,42 @@
+<goab-text tag="h1" size="heading-m" mt="none">Child Care Accountability Program and Portal Access Acknowledgement</goab-text>
+
+<goab-text size="body-m" mt="none" mb="s">
+  Review and accept the updated acknowledgement before you can continue using the Child Care
+  Licensing Portal.
+</goab-text>
+<goab-text size="body-m" mt="none" mb="none">
+  Have questions? Visit our
+  <goab-link trailingIcon="open"><a href="#">Acknowledgement FAQ</a></goab-link>
+</goab-text>
+
+@if (state.submitted()) {
+  <goab-callout type="success" emphasis="low" heading="Acknowledgement complete" mb="2xl" mt="xl" maxWidth="360px">
+    You have completed all 3 steps.
+    <a routerLink="confirmation">View your confirmation</a>
+  </goab-callout>
+}
+
+<goab-text tag="h2" size="heading-s" [mt]="state.submitted() ? 'none' : '2xl'">Steps to complete</goab-text>
+<goab-table width="100%" variant="relaxed" mt="l" mb="3xl">
+  <tbody>
+    @for (step of steps(); track step.path) {
+      <tr>
+        <td>
+          @if (canOpen(step.status)) {
+            <a class="step-title" [routerLink]="step.path" [attr.aria-describedby]="step.path + '-description'">{{ step.title }}</a>
+          } @else {
+            <span class="step-title">{{ step.title }}</span>
+          }
+          <span class="step-description" [id]="step.path + '-description'">{{ step.description }}</span>
+        </td>
+        <td class="goa-table-number-column">
+          <goab-badge
+            [type]="badge(step.status).type"
+            [content]="badge(step.status).content"
+            size="large"
+            [icon]="false"></goab-badge>
+        </td>
+      </tr>
+    }
+  </tbody>
+</goab-table>
