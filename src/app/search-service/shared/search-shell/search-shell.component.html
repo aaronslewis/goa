@@ -1,0 +1,138 @@
+<ng-template #primaryNav>
+  @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
+    @if (entry.kind === 'item') {
+      <goab-work-side-menu-item
+        [icon]="entry.icon"
+        [label]="entry.label"
+        [url]="entry.url"
+        [current]="entry.current ?? false"></goab-work-side-menu-item>
+    } @else {
+      <goab-work-side-menu-group [heading]="entry.heading" [icon]="entry.icon">
+        @for (child of entry.items; track child.label) {
+          <goab-work-side-menu-item
+            [label]="child.label"
+            [url]="child.url"
+            [current]="child.current ?? false"></goab-work-side-menu-item>
+        }
+      </goab-work-side-menu-group>
+    }
+  }
+</ng-template>
+
+<ng-template #secondaryNav>
+  <goab-work-side-menu-item [icon]="searchItem.icon" [label]="searchItem.label" [url]="searchItem.url"></goab-work-side-menu-item>
+  <goab-work-side-menu-item [icon]="notificationsItem.icon" [label]="notificationsItem.label" [url]="notificationsItem.url"></goab-work-side-menu-item>
+  <goab-work-side-menu-item [icon]="helpItem.icon" [label]="helpItem.label" [url]="helpItem.url"></goab-work-side-menu-item>
+</ng-template>
+
+<ng-template #accountNav>
+  <div class="account-menu" role="menu" aria-label="Account menu for {{ userName }}">
+    @for (item of accountMenuItems; track item.action) {
+      <button
+        type="button"
+        role="menuitem"
+        class="account-menu-item"
+        (click)="onAccountAction(item.action)">
+        <goab-icon [type]="item.icon" size="small"></goab-icon>
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  </div>
+</ng-template>
+
+<goab-work-side-menu
+  [heading]="heading"
+  url="#"
+  [userName]="userName"
+  [userSecondaryText]="userSecondaryText"
+  [open]="isMenuOpen"
+  [primaryContent]="primaryNav"
+  [secondaryContent]="secondaryNav"
+  [accountContent]="accountNav"
+  (onToggle)="onMenuToggle()"
+  aria-label="Workspace navigation">
+</goab-work-side-menu>
+
+<!-- ── Main content ─────────────────────────────────────────────────── -->
+<main class="page" id="main-content">
+ <div class="page-card">
+
+  <!-- ── Search ──────────────────────────────────────────────────────────── -->
+  <section class="search-section" aria-labelledby="search-heading">
+    <h1 class="search-heading" id="search-heading">Search</h1>
+    <div class="search-field-wrapper">
+      <goab-form-item class="search-field">
+        <goab-input
+          type="search"
+          name="q"
+          leadingIcon="search"
+          trailingIcon="close"
+          trailingIconAriaLabel="Clear search"
+          ariaLabel="Search by program name, ID, or address; licence holder name or ID; user name or email."
+          placeholder="Search by program name, ID, or address; licence holder name or ID; user name or email."
+          [value]="query"
+          (onChange)="onSearchChange($event)"
+          (onFocus)="onSearchFocus()"
+          (onBlur)="onSearchBlur()"
+          (onTrailingIconClick)="clearSearch()"
+          (onKeyPress)="onSearchKeyPress($event)">
+        </goab-input>
+      </goab-form-item>
+
+      @if (dropdownOpen) {
+        <div class="search-dropdown" role="listbox" aria-label="Search suggestions">
+          @if (!hasResults) {
+            <p class="search-dropdown-empty">No results found for "{{ query }}".</p>
+          } @else {
+            @if (orgPreview.length) {
+              <div class="search-dropdown-group">
+                <p class="search-dropdown-label">Licence Holder Organizations</p>
+                @for (org of orgPreview; track org.id) {
+                  <button type="button" class="search-dropdown-item" (mousedown)="goToOrganization(org)">
+                    <span class="search-dropdown-item-title">{{ org.id }}: {{ org.name }}</span>
+                    <span class="search-dropdown-item-sub">{{ org.subtitle }}</span>
+                  </button>
+                }
+                <button type="button" class="search-dropdown-show-all" (mousedown)="showAllOrganizations()">
+                  Show all licence holders ({{ orgResults.length }})
+                </button>
+              </div>
+            }
+            @if (programPreview.length) {
+              <div class="search-dropdown-group">
+                <p class="search-dropdown-label">Programs</p>
+                @for (program of programPreview; track program.id) {
+                  <button type="button" class="search-dropdown-item" (mousedown)="goToProgram(program)">
+                    <span class="search-dropdown-item-title">{{ program.id }}: {{ program.name }}</span>
+                    <span class="search-dropdown-item-sub">{{ program.subtitle }}</span>
+                  </button>
+                }
+                <button type="button" class="search-dropdown-show-all" (mousedown)="showAllPrograms()">
+                  Show all programs ({{ programResults.length }})
+                </button>
+              </div>
+            }
+            @if (userPreview.length) {
+              <div class="search-dropdown-group">
+                <p class="search-dropdown-label">Users</p>
+                @for (user of userPreview; track user.id) {
+                  <button type="button" class="search-dropdown-item" (mousedown)="goToUser(user)">
+                    <span class="search-dropdown-item-title">{{ user.name }}</span>
+                    <span class="search-dropdown-item-sub">{{ user.email }}</span>
+                  </button>
+                }
+                <button type="button" class="search-dropdown-show-all" (mousedown)="showAllUsers()">
+                  Show all users ({{ userResults.length }})
+                </button>
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <ng-content></ng-content>
+
+ </div>
+</main>

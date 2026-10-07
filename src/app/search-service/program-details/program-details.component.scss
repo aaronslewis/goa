@@ -1,0 +1,142 @@
+/* ── Program header band ─────────────────────────────────────────────────── */
+
+.program-band {
+  margin: 0 calc(-1 * var(--goa-space-xl));
+  padding: var(--goa-space-l) var(--goa-space-xl);
+  background: var(--goa-color-greyscale-100);
+  border-bottom: 1px solid var(--goa-color-greyscale-200);
+}
+
+.program-kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-2xs);
+  margin: 0 0 var(--goa-space-xs);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.program-title {
+  margin: 0 0 var(--goa-space-xs);
+  font: var(--goa-typography-heading-l);
+  font-family: var(--goa-font-family-sans);
+  font-weight: 700;
+  color: var(--goa-color-text-default);
+}
+
+.program-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-m);
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+
+.program-tabs {
+  display: block;
+  margin-top: var(--goa-space-l);
+}
+
+/* ── Overview panel ──────────────────────────────────────────────────────── */
+
+.detail-panel {
+  display: block;
+  margin-bottom: var(--goa-space-l);
+  padding: var(--goa-space-l);
+  background: var(--goa-color-info-background);
+  border-top: var(--goa-space-3xs) solid var(--goa-color-info-default);
+  border-radius: 0 0 var(--goa-border-radius-m) var(--goa-border-radius-m);
+}
+
+.detail-list {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-m);
+}
+
+.detail-row dt {
+  margin: 0 0 var(--goa-space-3xs);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  font-weight: 700;
+  color: var(--goa-color-text-default);
+}
+
+.detail-row dd {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.address-line {
+  display: block;
+}
+
+.detail-links {
+  margin-top: var(--goa-space-l);
+  padding-top: var(--goa-space-m);
+  border-top: 1px solid var(--goa-color-greyscale-200);
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-2xs);
+}
+
+.detail-links p {
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--goa-space-3xs);
+  color: var(--goa-color-interactive-default);
+  text-decoration: underline;
+}
+
+.inline-link:hover { color: var(--goa-color-interactive-hover, var(--goa-color-interactive-default)); }
+
+.inline-link:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+  border-radius: var(--goa-border-radius-s);
+}
+
+/* ── Licence holder organization panel ───────────────────────────────────── */
+
+.org-panel {
+  display: block;
+}
+
+.org-heading {
+  margin: 0 0 var(--goa-space-m);
+  font: var(--goa-typography-heading-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.org-label {
+  margin: 0 0 var(--goa-space-3xs);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  font-weight: 700;
+  color: var(--goa-color-text-default);
+}
+
+.org-value {
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}

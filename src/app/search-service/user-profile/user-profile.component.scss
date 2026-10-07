@@ -1,0 +1,94 @@
+.user-header {
+  margin: 0 calc(-1 * var(--goa-space-xl));
+  padding: var(--goa-space-l) var(--goa-space-xl);
+  border-bottom: 1px solid var(--goa-color-greyscale-200);
+}
+
+.user-kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-2xs);
+  margin: 0 0 var(--goa-space-xs);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.user-title {
+  margin: 0 0 var(--goa-space-xs);
+  font: var(--goa-typography-heading-l);
+  font-family: var(--goa-font-family-sans);
+  font-weight: 700;
+  color: var(--goa-color-text-default);
+}
+
+.user-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.dot { color: var(--goa-color-greyscale-400); }
+
+.operating-model-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--goa-space-3xs) var(--goa-space-xs);
+  border-radius: var(--goa-border-radius-m);
+  background: var(--goa-color-greyscale-150);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.access-panel {
+  display: block;
+  margin-top: var(--goa-space-l);
+}
+
+.access-heading {
+  margin: 0 0 var(--goa-space-m);
+  font: var(--goa-typography-heading-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.simple-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.simple-table th {
+  text-align: left;
+  padding: var(--goa-space-xs) var(--goa-space-s);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  font-weight: 700;
+  color: var(--goa-color-text-default);
+  border-bottom: 1px solid var(--goa-color-greyscale-200);
+}
+
+.simple-table td {
+  padding: var(--goa-space-xs) var(--goa-space-s);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+  border-bottom: 1px solid var(--goa-color-greyscale-150);
+}
+
+.inline-link {
+  color: var(--goa-color-interactive-default);
+  text-decoration: underline;
+}
+
+.inline-link:hover { color: var(--goa-color-interactive-hover); }
+
+.inline-link:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+  border-radius: var(--goa-border-radius-s);
+}

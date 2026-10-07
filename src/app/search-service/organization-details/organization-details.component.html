@@ -1,0 +1,139 @@
+<ng-template #legalRepsTabHeading>
+  Legal representatives ({{ legalRepresentatives.length }})
+</ng-template>
+
+<ng-template #programsTabHeading>
+  Programs ({{ programs.length }})
+</ng-template>
+
+<app-search-shell [initialQuery]="searchValue">
+
+  <!-- ── Organization header band ──────────────────────────────────────── -->
+  <section class="org-band" aria-labelledby="org-heading">
+    <p class="org-kicker">
+      <goab-icon type="business" size="small"></goab-icon>
+      Licence Holder Organization
+    </p>
+    <h2 class="org-title" id="org-heading">
+      {{ org.name }}
+      @if (org.operatingModel === 'Non-profit') {
+        <goab-badge type="success" [content]="org.operatingModel"></goab-badge>
+      } @else {
+        <span class="operating-model-tag">{{ org.operatingModel }}</span>
+      }
+    </h2>
+    <p class="org-meta">Licence holder ID: {{ org.id }}</p>
+  </section>
+
+  <!-- ── Tabs ────────────────────────────────────────────────────────────── -->
+  <goab-tabs class="org-tabs">
+    <goab-tab heading="Basic information">
+      <goab-container class="basic-info-panel">
+        <goab-grid minChildWidth="220px" gap="l">
+          <div class="field">
+            <p class="field-label">Corporation type</p>
+            <p class="field-value">{{ org.type }}</p>
+          </div>
+          <div class="field">
+            <p class="field-label">Operating model</p>
+            <p class="field-value">{{ org.operatingModel }}</p>
+          </div>
+        </goab-grid>
+      </goab-container>
+
+      <goab-container class="contact-panel">
+        <goab-grid minChildWidth="260px" gap="l">
+          <div>
+            <h3 class="contact-heading">Primary contact</h3>
+            <dl class="detail-list">
+              <div class="detail-row">
+                <dt>Name</dt>
+                <dd>{{ org.primaryContact.name }}</dd>
+              </div>
+              <div class="detail-row">
+                <dt>Phone</dt>
+                <dd>{{ org.primaryContact.phone }}</dd>
+              </div>
+              <div class="detail-row">
+                <dt>Email</dt>
+                <dd>{{ org.primaryContact.email }}</dd>
+              </div>
+              <div class="detail-row">
+                <dt>Address</dt>
+                <dd>{{ org.primaryContact.address }}</dd>
+              </div>
+            </dl>
+          </div>
+          <div>
+            <h3 class="contact-heading">Secondary contact</h3>
+            <dl class="detail-list">
+              <div class="detail-row">
+                <dt>Name</dt>
+                <dd>{{ org.secondaryContact.name }}</dd>
+              </div>
+              <div class="detail-row">
+                <dt>Phone</dt>
+                <dd>{{ org.secondaryContact.phone }}</dd>
+              </div>
+              <div class="detail-row">
+                <dt>Email</dt>
+                <dd>{{ org.secondaryContact.email }}</dd>
+              </div>
+              <div class="detail-row">
+                <dt>Address</dt>
+                <dd>{{ org.secondaryContact.address }}</dd>
+              </div>
+            </dl>
+          </div>
+        </goab-grid>
+      </goab-container>
+    </goab-tab>
+
+    <goab-tab [heading]="legalRepsTabHeading">
+      <goab-container>
+        <table class="simple-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (rep of legalRepresentatives; track rep.name) {
+              <tr>
+                <td>{{ rep.name }}</td>
+                <td>{{ rep.role }}</td>
+                <td><goab-badge [type]="rep.status === 'Active' ? 'success' : 'important'" [content]="rep.status"></goab-badge></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </goab-container>
+    </goab-tab>
+
+    <goab-tab [heading]="programsTabHeading">
+      <goab-container>
+        <ul class="linked-list">
+          @for (program of programs; track program.id) {
+            <li>
+              <a [routerLink]="['/search-service/program-details']" [queryParams]="{ id: program.id }" class="inline-link">
+                {{ program.id }}: {{ program.name }}
+              </a>
+            </li>
+          }
+        </ul>
+      </goab-container>
+    </goab-tab>
+  </goab-tabs>
+
+  <!-- ── Report incorrect information ──────────────────────────────────── -->
+  <section class="report-info" aria-labelledby="report-info-heading">
+    <h3 id="report-info-heading">Noticed incorrect or outdated information?</h3>
+    <p>
+      Email us at
+      <a href="mailto:cclicensingsystemsupport@gov.ab.ca" class="inline-link">cclicensingsystemsupport@gov.ab.ca</a>
+    </p>
+  </section>
+
+</app-search-shell>

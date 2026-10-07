@@ -18,12 +18,17 @@ import { GoaUserManagementComponent } from './goa-user-management/goa-user-manag
 import { HubShellComponent } from './notifications-hub/hub-shell.component';
 import { HubHomeComponent } from './notifications-hub/home/hub-home.component';
 import { HubNotificationsPageComponent } from './notifications-hub/notifications-page/hub-notifications-page.component';
+import { ProgramDetailsComponent } from './search-service/program-details/program-details.component';
+import { SearchLandingComponent } from './search-service/search-landing/search-landing.component';
+import { SearchResultsComponent } from './search-service/search-results/search-results.component';
+import { OrganizationDetailsComponent } from './search-service/organization-details/organization-details.component';
 import { AcknowledgementShellComponent } from './acknowledgement/shell/acknowledgement-shell.component';
 import { AcknowledgementTaskListComponent } from './acknowledgement/task-list/task-list.component';
 import { DeclarationComponent } from './acknowledgement/declaration/declaration.component';
 import { VerificationComponent } from './acknowledgement/verification/verification.component';
 import { TermsComponent } from './acknowledgement/terms/terms.component';
 import { ConfirmationComponent } from './acknowledgement/confirmation/confirmation.component';
+import { UserProfileComponent } from './search-service/user-profile/user-profile.component';
 
 @Component({
   standalone: true,
@@ -68,6 +73,31 @@ export const routes: Routes = [
     path: 'goa-user-management',
     component: GoaUserManagementComponent,
     title: 'GOA User Management — Search',
+  },
+  {
+    path: 'search-service',
+    component: SearchLandingComponent,
+    title: 'Search — Search service',
+  },
+  {
+    path: 'search-service/results/:category',
+    component: SearchResultsComponent,
+    title: 'Search results — Search service',
+  },
+  {
+    path: 'search-service/program-details',
+    component: ProgramDetailsComponent,
+    title: 'Program details — Search service',
+  },
+  {
+    path: 'search-service/organization-details',
+    component: OrganizationDetailsComponent,
+    title: 'Organization details — Search service',
+  },
+  {
+    path: 'search-service/user-profile',
+    component: UserProfileComponent,
+    title: 'User profile — Search service',
   },
   {
     path: 'acknowledgement',

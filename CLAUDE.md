@@ -40,6 +40,7 @@ This means a v1 prototype and a v2 prototype can run side by side in this same a
 | `notifications-page`, `notifications-scale`, `workspace-shell` | v1 | In scope for a future v2 pass — not yet converted. |
 | `ecds-dashboard`, `generic-dashboard` | v1 | In scope for a future v2 pass — not yet converted. `ecds-dashboard-v2` is the already-converted reference. |
 | `ecds-dashboard-v2` | v2 | Reference implementation for the dashboard conversions above. |
+| `search-service` | v2 | New prototype (Figma: ECDS Enhancements, node `1052-137673`). `program-details` is the first screen; more screens to follow per-prototype under this same folder. |
 | `acknowledgement` (`/acknowledgement/*`) | v2 | Revised Child Care Accountability Program and Portal Access acknowledgement, built on the DS [task list page](https://design.alberta.ca/examples/task-list-page) pattern (not `goab-form-stepper`): task list hub → question pages (*Step X of 3*, back link, *Save and continue*) → result page. Answers live in the root `AcknowledgementStateService`, so a full reload resets them. *Continue to the portal* goes to `home-page-design`. |
 | `home-page-design` (`MyProgramsComponent`) | v1 | In scope for a future v2 pass — not yet converted. |
 | `help-centre`, `help-centre-feedback`, `sage-widget` (AI Assistant) | v1 | Staying v1 — not in scope for conversion. |
@@ -70,6 +71,10 @@ Each DS gets its typeface through the token scope, not through per-component CSS
 **Docs:**
 - v1: https://v1.design.alberta.ca
 - v2: https://design.alberta.ca (machine-readable: [llms.txt](https://design.alberta.ca/llms.txt), `/components/{slug}.md`; see "Design system sources" above)
+
+**Known-broken `goab-badge` values on this repo's v1 tokens.** The V2 `GoabBadgeType` union (`information`, `success`, `important`, `emergency`, `archived`, `default`, `sky`, `prairie`, `lilac`, `pasture`, `sunset`, `dawn`) is a TypeScript-only constraint — it doesn't mean the colour actually renders. Only `success`, `important`, and `emergency` have matching `--goa-badge-<type>-color-bg` tokens in the installed v1 stylesheet (grep confirms). `information` doesn't work either, even though a v1 token exists for it — the v1 name is `info`, not `information`, so the type-checked value produces a non-existent CSS variable. `default`, `archived`, and every extended-palette colour (`sky`/`prairie`/`lilac`/`pasture`/`sunset`/`dawn`) have **no v1 token at all** and render as an invisible/transparent pill — the badge silently has no background, easy to miss in a quick visual check. Likewise `emphasis="subtle"` has no matching `--goa-badge-<type>-subtle-*` tokens for *any* type in v1 — never use it here. For a neutral/no-color label, don't use `goab-badge` at all: render plain text or a small span styled with `--goa-color-greyscale-150` background + `--goa-color-text-secondary` (see `.operating-model-tag` in `search-service/*/*.component.scss` for the pattern). Re-verify this list after any `@abgov/design-tokens` bump.
+
+**`goab-badge` `iconType` needs `[icon]="true"` too.** The docs call `icon` "deprecated, prefer `iconType`", but the installed Angular wrapper still gates rendering on the boolean: `[attr.icon]="icon ? 'true' : 'false'"`. Setting `iconType` alone renders the badge with no icon at all (`class="goa-badge-no-icon"` in its shadow DOM). Always pair them: `[icon]="true" iconType="shield-checkmark"`.
 
 ## Components and tokens
 - Always use components from `@abgov/angular-components` (source: https://github.com/GovAlta/ui-components) for buttons, inputs, form fields, callouts, badges, etc. Never hand-build these.

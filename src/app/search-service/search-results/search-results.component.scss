@@ -1,0 +1,73 @@
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--goa-space-l);
+  margin-bottom: var(--goa-space-l);
+}
+
+.results-count {
+  margin: 0;
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.inline-link {
+  color: var(--goa-color-interactive-default);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.inline-link:hover { color: var(--goa-color-interactive-hover); }
+
+.inline-link:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+  border-radius: var(--goa-border-radius-s);
+}
+
+.operating-model-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--goa-space-3xs) var(--goa-space-xs);
+  border-radius: var(--goa-border-radius-m);
+  background: var(--goa-color-greyscale-150);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.row-id {
+  display: block;
+  font: var(--goa-typography-body-xs);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.empty-state {
+  padding: var(--goa-space-l) 0;
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.pagination-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--goa-space-l);
+}
+
+.per-page {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.per-page goab-dropdown {
+  width: 90px;
+}

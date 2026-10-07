@@ -1,0 +1,127 @@
+<app-search-shell [initialQuery]="query">
+
+  <div class="results-header">
+    <p class="results-count">
+      <strong>{{ totalCount }} {{ categoryLabel }}</strong> found for "{{ query }}".
+    </p>
+
+    @if (query) {
+      <goab-menu-button text="Show other results" type="primary" (onAction)="onCategorySwitch($event)">
+        @for (other of otherCategories; track other.category) {
+          <goab-menu-action [text]="other.label + ' (' + other.count + ')'" [action]="other.category"></goab-menu-action>
+        }
+      </goab-menu-button>
+    }
+  </div>
+
+  <goab-table width="100%" striped (onSort)="onSort($event)">
+    @switch (category) {
+      @case ('organizations') {
+        <table>
+          <thead>
+            <tr>
+              <th><goab-table-sort-header name="name" [direction]="sortDirFor('name')">Licence Holder Organization</goab-table-sort-header></th>
+              <th><goab-table-sort-header name="type" [direction]="sortDirFor('type')">Type</goab-table-sort-header></th>
+              <th><goab-table-sort-header name="operatingModel" [direction]="sortDirFor('operatingModel')">Operating model</goab-table-sort-header></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (org of pagedOrgs; track org.id) {
+              <tr>
+                <td>
+                  <a [routerLink]="['/search-service/organization-details']" [queryParams]="{ id: org.id }" class="inline-link">{{ org.name }}</a>
+                  <span class="row-id">{{ org.id }}</span>
+                </td>
+                <td>{{ org.type }}</td>
+                <td>
+                  @if (org.operatingModel === 'Non-profit') {
+                    <goab-badge type="success" [content]="org.operatingModel"></goab-badge>
+                  } @else {
+                    <span class="operating-model-tag">{{ org.operatingModel }}</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+      @case ('programs') {
+        <table>
+          <thead>
+            <tr>
+              <th><goab-table-sort-header name="name" [direction]="sortDirFor('name')">Program</goab-table-sort-header></th>
+              <th><goab-table-sort-header name="programType" [direction]="sortDirFor('programType')">Program type</goab-table-sort-header></th>
+              <th><goab-table-sort-header name="status" [direction]="sortDirFor('status')">Status</goab-table-sort-header></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (program of pagedPrograms; track program.id) {
+              <tr>
+                <td>
+                  <a [routerLink]="['/search-service/program-details']" [queryParams]="{ id: program.id }" class="inline-link">{{ program.name }}</a>
+                  <span class="row-id">{{ program.id }}</span>
+                </td>
+                <td>{{ program.programType }}</td>
+                <td><goab-badge [type]="program.status.includes('probationary') ? 'important' : 'success'" [content]="program.status"></goab-badge></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+      @case ('users') {
+        <table>
+          <thead>
+            <tr>
+              <th><goab-table-sort-header name="name" [direction]="sortDirFor('name')">User</goab-table-sort-header></th>
+              <th>Email</th>
+              <th><goab-table-sort-header name="portalStatus" [direction]="sortDirFor('portalStatus')">Portal account status</goab-table-sort-header></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of pagedUsers; track user.id) {
+              <tr>
+                <td><a [routerLink]="['/search-service/user-profile']" [queryParams]="{ id: user.id }" class="inline-link">{{ user.name }}</a></td>
+                <td>{{ user.email }}</td>
+                <td>
+                  @if (user.portalStatus === 'Active account') {
+                    <goab-badge type="success" [content]="user.portalStatus"></goab-badge>
+                  } @else {
+                    <span class="operating-model-tag">{{ user.portalStatus }}</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    }
+  </goab-table>
+
+  @if (totalCount === 0) {
+    <p class="empty-state">No results found for "{{ query }}".</p>
+  }
+
+  <div class="pagination-row">
+    <div class="per-page">
+      <span>Show</span>
+      <goab-dropdown
+        name="perPage"
+        [value]="perPageCount.toString()"
+        ariaLabel="Results per page"
+        (onChange)="onPerPageChange($event)">
+        <goab-dropdown-item value="10" label="10"></goab-dropdown-item>
+        <goab-dropdown-item value="25" label="25"></goab-dropdown-item>
+        <goab-dropdown-item value="50" label="50"></goab-dropdown-item>
+      </goab-dropdown>
+      <span>per page</span>
+    </div>
+
+    <goab-pagination
+      [itemCount]="totalCount"
+      [pageNumber]="pageNumber"
+      [perPageCount]="perPageCount"
+      (onChange)="onPageChange($event)">
+    </goab-pagination>
+  </div>
+
+</app-search-shell>

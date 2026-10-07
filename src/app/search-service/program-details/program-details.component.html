@@ -1,0 +1,116 @@
+<app-search-shell [initialQuery]="searchValue">
+
+  <!-- ── Program header band ────────────────────────────────────────────── -->
+  <section class="program-band" aria-labelledby="program-heading">
+    <p class="program-kicker">
+      <goab-icon type="business" size="small"></goab-icon>
+      Program
+    </p>
+    <h2 class="program-title" id="program-heading">{{ program.name }}</h2>
+    <p class="program-meta">
+      <span>Program ID: {{ program.id }}</span>
+      <goab-badge
+        [type]="program.status.includes('probationary') ? 'important' : 'success'"
+        [icon]="true"
+        iconType="shield-checkmark"
+        [content]="program.status"></goab-badge>
+    </p>
+  </section>
+
+  <!-- ── Tabs ────────────────────────────────────────────────────────────── -->
+  <goab-tabs class="program-tabs">
+    <goab-tab heading="Overview">
+      <section class="detail-panel">
+        <goab-grid minChildWidth="260px" gap="l">
+          <dl class="detail-list">
+            <div class="detail-row">
+              <dt>Program type</dt>
+              <dd>{{ program.type }}</dd>
+            </div>
+            <div class="detail-row">
+              <dt>Care type(s)</dt>
+              <dd>{{ program.careTypes }}</dd>
+            </div>
+            <div class="detail-row">
+              <dt>Physical address</dt>
+              <dd>
+                @for (line of program.physicalAddress; track line) {
+                  <span class="address-line">{{ line }}</span>
+                }
+              </dd>
+            </div>
+            <div class="detail-row">
+              <dt>Mailing address</dt>
+              <dd>
+                @for (line of program.mailingAddress; track line) {
+                  <span class="address-line">{{ line }}</span>
+                }
+              </dd>
+            </div>
+          </dl>
+
+          <dl class="detail-list">
+            <div class="detail-row">
+              <dt>Program contact</dt>
+              <dd>
+                <span class="address-line">{{ program.contact.name }}</span>
+                <span class="address-line">{{ program.contact.role }}</span>
+                <span class="address-line">{{ program.contact.phone }}</span>
+              </dd>
+            </div>
+            <div class="detail-row">
+              <dt>Program email</dt>
+              <dd>{{ program.email }}</dd>
+            </div>
+            <div class="detail-row">
+              <dt>Licensing Officer</dt>
+              <dd>{{ program.licensingOfficer }}</dd>
+            </div>
+            <div class="detail-row">
+              <dt>Regional authority</dt>
+              <dd>{{ program.regionalAuthority }}</dd>
+            </div>
+          </dl>
+        </goab-grid>
+
+        <div class="detail-links">
+          <p>
+            Open full program profile in
+            <a href="#" class="inline-link">Licensing service</a>
+          </p>
+          <p>
+            Open public
+            <a href="#" class="inline-link" target="_blank" rel="noopener">
+              Childcare search profile
+              <goab-icon type="open" size="small"></goab-icon>
+            </a>
+          </p>
+        </div>
+      </section>
+
+      <goab-container class="org-panel">
+        <h3 class="org-heading">Licence Holder Organization details</h3>
+        <goab-grid minChildWidth="260px" gap="l">
+          <div>
+            <p class="org-label">Name</p>
+            <a routerLink="/search-service/organization-details" class="inline-link">
+              <span class="address-line">{{ program.licenceHolder.name }}</span>
+              <span class="address-line">{{ program.licenceHolder.address }}</span>
+            </a>
+          </div>
+          <div>
+            <p class="org-label">Operating model</p>
+            <p class="org-value">{{ program.licenceHolder.operatingModel }}</p>
+          </div>
+        </goab-grid>
+      </goab-container>
+    </goab-tab>
+
+    <goab-tab heading="User access">
+      <goab-container>
+        <p>View and modify the access of your staff for the selected program.</p>
+      </goab-container>
+    </goab-tab>
+  </goab-tabs>
+
+</app-search-shell>

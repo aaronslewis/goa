@@ -1,0 +1,55 @@
+<app-search-shell [initialQuery]="searchValue">
+
+  <!-- ── User header ─────────────────────────────────────────────────────── -->
+  <section class="user-header" aria-labelledby="user-heading">
+    <p class="user-kicker">
+      <goab-icon type="person" size="small"></goab-icon>
+      User
+    </p>
+    <h2 class="user-title" id="user-heading">{{ user.name }}</h2>
+    <p class="user-meta">
+      <span>{{ user.email }}</span>
+      <span class="dot">·</span>
+      <span>Portal account status</span>
+      @if (user.portalStatus === 'Active account') {
+        <goab-badge type="success" [content]="user.portalStatus"></goab-badge>
+      } @else {
+        <span class="operating-model-tag">{{ user.portalStatus }}</span>
+      }
+    </p>
+  </section>
+
+  <!-- ── Program access ──────────────────────────────────────────────────── -->
+  <goab-container class="access-panel">
+    <h3 class="access-heading">Program access</h3>
+    <table class="simple-table">
+      <thead>
+        <tr>
+          <th>Program</th>
+          <th>Licence Holder Organization</th>
+          <th>Role</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of programAccess; track row.programId) {
+          <tr>
+            <td>
+              <a [routerLink]="['/search-service/program-details']" [queryParams]="{ id: row.programId }" class="inline-link">
+                {{ row.programId }}: {{ row.programName }}
+              </a>
+            </td>
+            <td>
+              <a [routerLink]="['/search-service/organization-details']" [queryParams]="{ id: row.orgId }" class="inline-link">
+                {{ row.orgName }}
+              </a>
+            </td>
+            <td>{{ row.role }}</td>
+            <td><goab-badge type="success" [content]="row.status"></goab-badge></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </goab-container>
+
+</app-search-shell>
