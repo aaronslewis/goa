@@ -1,0 +1,48 @@
+:host {
+  display: block;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-s);
+  padding: var(--goa-space-m);
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--goa-space-s);
+}
+
+.panel__heading {
+  margin: 0;
+  font: var(--goa-typography-heading-s);
+  color: var(--goa-color-text-default);
+}
+
+goab-tabs {
+  --goa-tabs-margin-bottom: var(--goa-space-s);
+}
+
+.tab-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+}
+
+// The panel lives in a popover beside the menu; the list scrolls inside it so
+// the heading, tabs and footer stay in view. 60vh is a layout bound, not a
+// design value.
+.panel__body {
+  max-height: 60vh;
+  overflow-y: auto;
+  border: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+  border-radius: var(--goa-border-radius-m);
+}
+
+.panel__footer {
+  display: flex;
+  justify-content: flex-end;
+}

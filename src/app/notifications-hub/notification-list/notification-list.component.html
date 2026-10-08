@@ -13,7 +13,6 @@
           [class.row--important]="!n.createdByUser && n.severity === 'important'"
           [class.row--information]="!n.createdByUser && n.severity === 'information'"
           [class.row--dismissed]="n.dismissed">
-          <div class="row__main">
             <div class="row__heading">
               <h4 class="row__title">{{ n.title }}</h4>
               @if (showBadges() || (n.dismissed && allowRestore())) {
@@ -35,7 +34,6 @@
                 {{ ' ' }}<goab-link size="small"><a href="#" (click)="$event.preventDefault()">{{ n.linkLabel }}</a></goab-link>
               }
             </p>
-          </div>
           <div class="row__meta">
             @if (showTimestamp) {
               <span class="row__time">{{ timeLabel(n) }}</span>

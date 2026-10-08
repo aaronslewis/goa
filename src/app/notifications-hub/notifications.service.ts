@@ -1,5 +1,12 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { HubNotification, SEVERITY_RANK, buildSeedNotifications } from './notifications.data';
+import { HubNotification, SEVERITIES, SEVERITY_RANK, Severity, buildSeedNotifications } from './notifications.data';
+
+export interface HomeTab {
+  key: 'all' | Severity;
+  label: string;
+  badge?: 'emergency' | 'important' | 'information';
+  items: HubNotification[];
+}
 
 export interface DateGroup {
   key: string;
@@ -23,6 +30,20 @@ export class NotificationsService {
       const t = n.createdAt.getTime();
       return !n.dismissed && t <= now && t >= cutoff;
     });
+  });
+
+  // Home and the side-menu Notifications panel show the same tabs.
+  readonly homeTabs = computed<HomeTab[]>(() => {
+    const items = this.homeItems();
+    return [
+      { key: 'all', label: 'All', items },
+      ...SEVERITIES.map((s) => ({
+        key: s.value,
+        label: s.label,
+        badge: s.badge,
+        items: items.filter((n) => n.severity === s.value),
+      })),
+    ];
   });
 
   dismiss(id: string): void {

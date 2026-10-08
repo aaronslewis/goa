@@ -1,0 +1,31 @@
+<section class="panel" aria-labelledby="notifications-panel-heading">
+  <div class="panel__header">
+    <h2 class="panel__heading" id="notifications-panel-heading">Notifications</h2>
+    <goab-icon-button icon="close" variant="dark" ariaLabel="Close notifications" (onClick)="close()"></goab-icon-button>
+  </div>
+
+  <goab-tabs variant="segmented" navigation="none" orientation="horizontal">
+    @for (tab of service.homeTabs(); track tab.key) {
+      <ng-template #tabHeading>
+        <span class="tab-heading">
+          {{ tab.label }}
+          @if (tab.badge) {
+            <goab-badge [type]="tab.badge" emphasis="subtle" [content]="'' + tab.items.length" size="medium"></goab-badge>
+          }
+        </span>
+      </ng-template>
+      <goab-tab [heading]="tabHeading">
+        <div class="panel__body">
+          <hub-notification-list
+            [items]="tab.items"
+            emptyMessage="You're all caught up."
+            (dismiss)="service.dismiss($event)"></hub-notification-list>
+        </div>
+      </goab-tab>
+    }
+  </goab-tabs>
+
+  <div class="panel__footer">
+    <goab-link trailingIcon="arrow-forward"><a [href]="hub.notificationsUrl" (click)="viewAll($event)">View all notifications</a></goab-link>
+  </div>
+</section>

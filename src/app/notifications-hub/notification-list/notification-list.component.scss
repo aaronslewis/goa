@@ -29,11 +29,16 @@
   padding: 0;
 }
 
+// Title and badges share the top line with the time and dismiss button; the
+// message spans the full width underneath.
 .row {
-  display: flex;
-  gap: var(--goa-space-s);
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'heading meta'
+    'message message';
+  column-gap: var(--goa-space-s);
+  row-gap: var(--goa-space-xs);
   padding: var(--goa-space-m) var(--goa-space-l);
   border-bottom: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
   background: var(--goa-color-greyscale-white);
@@ -60,15 +65,8 @@
   }
 }
 
-.row__main {
-  display: flex;
-  flex-direction: column;
-  gap: var(--goa-space-xs);
-  flex: 1;
-  min-width: 0;
-}
-
 .row__heading {
+  grid-area: heading;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -82,6 +80,7 @@
 }
 
 .row__message {
+  grid-area: message;
   margin: 0;
   font: var(--goa-typography-body-s);
   color: var(--goa-color-text-default);
@@ -89,26 +88,15 @@
 }
 
 .row__meta {
+  grid-area: meta;
+  align-self: start;
   display: flex;
   align-items: center;
   gap: var(--goa-space-2xs);
-  flex-shrink: 0;
-  margin-top: var(--goa-space-3xs);
 }
 
 .row__time {
   font: var(--goa-typography-body-xs);
   color: var(--goa-color-greyscale-600);
   white-space: nowrap;
-}
-
-@media (max-width: 640px) {
-  .row {
-    flex-direction: column-reverse;
-  }
-
-  .row__meta {
-    align-self: stretch;
-    justify-content: space-between;
-  }
 }
