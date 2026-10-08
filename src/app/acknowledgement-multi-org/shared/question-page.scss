@@ -1,0 +1,89 @@
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-s);
+  margin: 0;
+
+  dt {
+    font: var(--goa-typography-heading-xs);
+  }
+
+  dd {
+    font: var(--goa-typography-body-m);
+    margin: 0;
+  }
+}
+
+.program-list {
+  columns: 2 16rem;
+  column-gap: var(--goa-space-xl);
+  margin: 0;
+  padding-left: var(--goa-space-l);
+  font: var(--goa-typography-body-s);
+
+  li {
+    break-inside: avoid;
+    margin-bottom: var(--goa-space-2xs);
+  }
+}
+
+.section-heading {
+  font: var(--goa-typography-heading-xs);
+  margin: var(--goa-space-l) 0 var(--goa-space-2xs);
+
+  &.first {
+    margin-top: 0;
+  }
+}
+
+.intro-list {
+  margin: 0 0 var(--goa-space-m);
+  padding-left: var(--goa-space-l);
+  font: var(--goa-typography-body-m);
+}
+
+.terms {
+  max-height: 24rem;
+  overflow-y: auto;
+  padding: var(--goa-space-m) var(--goa-space-l);
+  border: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+  border-radius: var(--goa-border-radius-m);
+  background: var(--goa-color-greyscale-100);
+  font: var(--goa-typography-body-s);
+
+  &:focus-visible {
+    outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+    outline-offset: var(--goa-space-2xs);
+  }
+}
+
+.terms-sections {
+  margin: 0;
+  padding-left: var(--goa-space-l);
+
+  > li:first-child .section-heading {
+    margin-top: 0;
+  }
+}
+
+.terms-clauses {
+  list-style: lower-alpha;
+  margin: 0;
+  padding-left: var(--goa-space-l);
+
+  li {
+    margin-bottom: var(--goa-space-xs);
+  }
+}
+
+// Already-acknowledged organizations in the dropdown. The design system's dropdown has no
+// per-item disabled state, so these read as unavailable and the component rejects picking them.
+.org-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+
+  &--done {
+    color: var(--goa-color-text-secondary);
+  }
+}

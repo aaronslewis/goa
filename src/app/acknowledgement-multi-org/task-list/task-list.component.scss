@@ -1,0 +1,10 @@
+.step-title {
+  font: var(--goa-typography-heading-xs);
+}
+
+.step-description {
+  display: block;
+  margin-top: var(--goa-space-3xs);
+  font: var(--goa-typography-body-s);
+  color: var(--goa-color-text-secondary);
+}

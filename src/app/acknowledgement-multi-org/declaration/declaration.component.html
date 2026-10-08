@@ -1,0 +1,79 @@
+<goab-link leadingIcon="arrow-back" size="small" mb="none"><a routerLink="/acknowledgement-multi-org">Back</a></goab-link>
+
+<goab-text tag="p" size="body-m" mt="xl" mb="none" color="secondary">Step 1 of 3</goab-text>
+<goab-text tag="h1" size="heading-m" mt="xs" mb="m">Declaration</goab-text>
+
+<goab-text size="body-m" mt="none" mb="xl">
+  We’ve identified the following information with your account.
+</goab-text>
+
+<goab-container type="non-interactive" padding="relaxed" mb="xl">
+  <dl class="facts">
+    <div>
+      <dt>Your legal name</dt>
+      <dd>{{ account.legalName }}</dd>
+    </div>
+  </dl>
+  <goab-form-item
+    label="Your organization"
+    mt="m"
+    [helpText]="state.completedOrgIds().length ? 'Organizations with a checkmark are already acknowledged.' : 'You’re the signing authority for ' + state.organizations.length + ' organizations. Acknowledge each one separately.'"
+    [error]="orgError()">
+    <goab-dropdown
+      name="organization"
+      width="320px"
+      [value]="orgValue()"
+      [error]="!!orgError()"
+      (onChange)="onOrgChange($event)">
+      @for (org of state.organizations; track org.id) {
+        @if (state.isCompleted(org)) {
+          <goab-dropdown-item [value]="org.id" [label]="org.name + ' (acknowledged)'">
+            <span class="org-option org-option--done">
+              <goab-icon type="checkmark-circle" size="small" ariaLabel="Acknowledged"></goab-icon>
+              {{ org.name }}
+            </span>
+          </goab-dropdown-item>
+        } @else {
+          <goab-dropdown-item [value]="org.id" [label]="org.name"></goab-dropdown-item>
+        }
+      }
+    </goab-dropdown>
+  </goab-form-item>
+  <goab-text size="body-m" mt="l" mb="s">
+    This acknowledgement applies to the following {{ programs().length }} programs, and to any
+    licensed programs that operate under {{ state.currentOrg().name }} in Alberta now or in the future.
+  </goab-text>
+  <ul class="program-list">
+    @for (program of programs(); track program) {
+      <li>{{ program }}</li>
+    }
+  </ul>
+</goab-container>
+
+<ng-template #issueReveal>
+  <goab-form-item
+    label="Tell us what information is not correct"
+    helpText="We’ll review it and contact you within 2 business days."
+    [error]="issueError()">
+    <goab-textarea
+      name="declarationIssue"
+      [rows]="4"
+      width="100%"
+      [value]="issue()"
+      [error]="!!issueError()"
+      (onChange)="onIssue($event)"></goab-textarea>
+  </goab-form-item>
+</ng-template>
+
+<goab-form-item label="Is this information correct?" labelSize="large" [error]="answerError()">
+  <goab-radio-group
+    name="declaration"
+    [value]="answer()"
+    [error]="!!answerError()"
+    (onChange)="onAnswer($event)">
+    <goab-radio-item value="yes" label="Yes, I declare that the information above is correct."></goab-radio-item>
+    <goab-radio-item value="no" label="No, the information above is not correct." [reveal]="issueReveal"></goab-radio-item>
+  </goab-radio-group>
+</goab-form-item>
+
+<goab-button type="primary" mt="2xl" (onClick)="save()">Next</goab-button>

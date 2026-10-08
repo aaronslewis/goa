@@ -7,6 +7,8 @@ interface PrototypeLink {
   description: string;
   path: string;
   status?: string;
+  // Variants of this prototype, listed as an indented subsection under its card.
+  scenarios?: { heading: string; items: PrototypeLink[] };
 }
 
 @Component({
@@ -31,9 +33,21 @@ export class PlatformPrototypesComponent {
     {
       label: 'Portal access acknowledgement v2 — DS v2',
       description:
-        'Revised acknowledgement with all three steps in one task list section. Save and continue moves straight to the next step.',
+        'Revised acknowledgement with all three steps in one task list section. A Start button opens each step, and Next moves straight to the following one.',
       path: '/acknowledgement-v2',
       status: 'In progress',
+      scenarios: {
+        heading: 'Multi-organization scenarios',
+        items: [
+          {
+            label: 'Portal access acknowledgement — multiple organizations, grace period ended',
+            description:
+              'For providers who sign for several organizations and are past the ~3-month grace period: they acknowledge every organization, one at a time, before they can use the portal. Acknowledged organizations show a checkmark in the dropdown.',
+            path: '/acknowledgement-multi-org',
+            status: 'In progress',
+          },
+        ],
+      },
     },
     {
       label: 'Notifications hub — DS v2',

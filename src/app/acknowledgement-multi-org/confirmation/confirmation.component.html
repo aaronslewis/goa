@@ -1,0 +1,77 @@
+<goab-text tag="h1" size="heading-m" mt="none">Confirmation</goab-text>
+
+<goab-callout type="success" heading="Success">
+  <goab-text size="body-m" mt="none" mb="m">
+    You have successfully acknowledged the terms of the Child Care Accountability Program and Portal
+    Access Acknowledgement for <strong>{{ state.currentOrg().name }}</strong>
+  </goab-text>
+  <goab-button type="secondary" size="compact" leadingIcon="download" (onClick)="download()">
+    Download acknowledgement
+  </goab-button>
+</goab-callout>
+
+@if (state.allDone()) {
+  <goab-text tag="h2" size="heading-s" mt="2xl" mb="m">You’ve acknowledged all of your organizations</goab-text>
+  <goab-text size="body-m" mt="none" mb="l">
+    You can now use the Child Care Licensing Portal for all of their programs.
+  </goab-text>
+} @else {
+  <goab-text tag="h2" size="heading-s" mt="2xl" mb="s">Continue acknowledging the rest of your organizations</goab-text>
+  <goab-text size="body-m" mt="none" mb="l">
+    The grace period has ended, so you need to acknowledge all of your organizations before you can
+    continue using the Child Care Licensing Portal. You have {{ state.remainingOrgs().length }} left.
+  </goab-text>
+}
+
+<goab-container type="non-interactive" padding="relaxed" mb="xl">
+  <!-- In DS 2.0 the container's title/actions slots only show with a thick accent bar; the
+       design has the heading and button inside a plain card, so they live in the body. -->
+  <div class="orgs-header">
+    <goab-text tag="h3" size="heading-s" mt="none" mb="none">Organizations</goab-text>
+    @if (!state.allDone()) {
+      <goab-button type="primary" size="compact" (onClick)="startNextOrg()">Start next acknowledgement</goab-button>
+    }
+  </div>
+  <div class="table-scroll">
+    <goab-table width="100%">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Completion date</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (org of orgRows(); track org.id) {
+          <tr>
+            <td>
+              @if (state.isCompleted(org)) {
+                <span class="org-name">
+                  <goab-icon
+                    type="checkmark-circle"
+                    theme="filled"
+                    size="small"
+                    fillColor="var(--goa-color-success-default)"
+                    ariaLabel="Acknowledged"></goab-icon>
+                  {{ org.name }}
+                </span>
+              } @else {
+                {{ org.name }}
+              }
+            </td>
+            <td>{{ org.type }}</td>
+            <td>{{ completionDate(org) }}</td>
+          </tr>
+        }
+      </tbody>
+    </goab-table>
+  </div>
+</goab-container>
+
+<goab-text size="body-m" mt="none" mb="xl">
+  Have questions? Visit our <goab-link trailingIcon="open"><a href="#">Acknowledgement FAQ</a></goab-link>
+</goab-text>
+
+@if (state.allDone()) {
+  <goab-button type="primary" (onClick)="continueToPortal()">Continue to the portal</goab-button>
+}

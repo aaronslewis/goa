@@ -1,0 +1,18 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: var(--goa-color-greyscale-white);
+  color: var(--goa-color-text-default);
+  font-family: var(--goa-font-family-sans);
+}
+
+.page {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: var(--goa-space-xl) var(--goa-space-m) var(--goa-space-3xl);
+
+  // Focus lands here programmatically after navigation; it isn't a control the user tabs to.
+  &:focus {
+    outline: none;
+  }
+}

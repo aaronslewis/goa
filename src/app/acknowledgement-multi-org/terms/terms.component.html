@@ -1,0 +1,52 @@
+<goab-link leadingIcon="arrow-back" size="small" mb="none"><a routerLink="/acknowledgement-multi-org/verification">Back</a></goab-link>
+
+<goab-text tag="p" size="body-m" mt="xl" mb="none" color="secondary">Step 3 of 3</goab-text>
+<goab-text tag="h1" size="heading-m" mt="xs" mb="m">Acknowledgement</goab-text>
+
+<goab-text size="body-m" mt="none" mb="s">
+  Licensed child care organizations must acknowledge the terms below, as set out in
+  <goab-link><a href="#">Ministerial Order 000/24</a></goab-link>, related to:
+</goab-text>
+<ul class="intro-list">
+  <li>collecting and disclosing child information to the province</li>
+  <li>controlling who has access to your programs’ information and services on the portal</li>
+</ul>
+
+<goab-text size="body-m" mt="none" mb="s" id="terms-instruction">
+  <strong>Scroll to the end of the terms to review them before you agree.</strong>
+</goab-text>
+
+<!-- A plain scroll region rather than goab-scroll-panel: we need the scroll position to know
+     the user reached the end, and the panel's scroller is inside its shadow root where scroll
+     events don't reach us. -->
+<div
+  class="terms"
+  tabindex="0"
+  role="region"
+  aria-label="Acknowledgement terms"
+  aria-describedby="terms-instruction"
+  (scroll)="onScroll($event)">
+  <ol class="terms-sections">
+    @for (section of terms; track section.heading) {
+      <li>
+        <h2 class="section-heading">{{ section.heading }}</h2>
+        <ol class="terms-clauses">
+          @for (clause of section.clauses; track clause) {
+            <li>{{ clause }}</li>
+          }
+        </ol>
+      </li>
+    }
+  </ol>
+</div>
+
+<goab-form-item mt="xl" [error]="error()">
+  <goab-checkbox
+    name="agree"
+    text="I have read the above acknowledgement and agree to the terms."
+    [checked]="state.termsAgreed()"
+    [error]="!!error()"
+    (onChange)="onAgree($event)"></goab-checkbox>
+</goab-form-item>
+
+<goab-button type="primary" mt="2xl" (onClick)="submit()">Submit acknowledgement</goab-button>

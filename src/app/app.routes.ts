@@ -35,6 +35,12 @@ import { DeclarationV2Component } from './acknowledgement-v2/declaration/declara
 import { VerificationV2Component } from './acknowledgement-v2/verification/verification.component';
 import { TermsV2Component } from './acknowledgement-v2/terms/terms.component';
 import { ConfirmationV2Component } from './acknowledgement-v2/confirmation/confirmation.component';
+import { AckMultiOrgShellComponent } from './acknowledgement-multi-org/shell/acknowledgement-shell.component';
+import { AckMultiOrgTaskListComponent } from './acknowledgement-multi-org/task-list/task-list.component';
+import { DeclarationMultiOrgComponent } from './acknowledgement-multi-org/declaration/declaration.component';
+import { VerificationMultiOrgComponent } from './acknowledgement-multi-org/verification/verification.component';
+import { TermsMultiOrgComponent } from './acknowledgement-multi-org/terms/terms.component';
+import { ConfirmationMultiOrgComponent } from './acknowledgement-multi-org/confirmation/confirmation.component';
 import { UserProfileComponent } from './search-service/user-profile/user-profile.component';
 
 @Component({
@@ -139,6 +145,17 @@ export const routes: Routes = [
       { path: 'verification', component: VerificationV2Component, title: 'Verification (v2) — Child Care Licensing Portal' },
       { path: 'terms', component: TermsV2Component, title: 'Acknowledgement terms (v2) — Child Care Licensing Portal' },
       { path: 'confirmation', component: ConfirmationV2Component, title: 'Acknowledgement submitted (v2) — Child Care Licensing Portal' },
+    ],
+  },
+  {
+    path: 'acknowledgement-multi-org',
+    component: AckMultiOrgShellComponent,
+    children: [
+      { path: '', component: AckMultiOrgTaskListComponent, title: 'Acknowledgement (multiple organizations) — Child Care Licensing Portal' },
+      { path: 'declaration', component: DeclarationMultiOrgComponent, title: 'Declaration (multiple organizations) — Child Care Licensing Portal' },
+      { path: 'verification', component: VerificationMultiOrgComponent, title: 'Verification (multiple organizations) — Child Care Licensing Portal' },
+      { path: 'terms', component: TermsMultiOrgComponent, title: 'Acknowledgement terms (multiple organizations) — Child Care Licensing Portal' },
+      { path: 'confirmation', component: ConfirmationMultiOrgComponent, title: 'Acknowledgement submitted (multiple organizations) — Child Care Licensing Portal' },
     ],
   },
   // Fallback for unknown routes. A specific route, once added, takes

@@ -71,3 +71,18 @@
   font: var(--goa-typography-body-m);
   color: var(--goa-color-text-secondary);
 }
+
+.scenarios {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-s);
+  margin: var(--goa-space-m) 0 0 var(--goa-space-l);
+  padding-left: var(--goa-space-l);
+  border-left: var(--goa-border-width-m) solid var(--goa-color-greyscale-200);
+}
+
+.scenarios__heading {
+  font: var(--goa-typography-heading-xs);
+  color: var(--goa-color-text-secondary);
+  margin: 0;
+}

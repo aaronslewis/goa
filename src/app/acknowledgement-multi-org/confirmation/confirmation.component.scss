@@ -1,0 +1,19 @@
+.org-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+}
+
+.orgs-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--goa-space-m);
+  margin-bottom: var(--goa-space-l);
+}
+
+// Three columns don't fit at phone width; scroll the table rather than the page.
+.table-scroll {
+  overflow-x: auto;
+}
