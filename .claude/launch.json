@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["ng", "serve", "--port", "4201"],
       "port": 4201
+    },
+    {
+      "name": "sage-alt",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["ng", "serve", "--port", "4202"],
+      "port": 4202
     }
   ]
 }

@@ -19,11 +19,24 @@
 
 <ng-template #secondaryNav>
   <goab-work-side-menu-item [icon]="searchItem.icon" [label]="searchItem.label" [url]="searchItem.url"></goab-work-side-menu-item>
-  <goab-work-side-menu-item
-    [icon]="notificationsItem.icon"
-    [label]="notificationsItem.label"
-    [url]="notificationsItem.url"></goab-work-side-menu-item>
+  @if (hub.notificationsPanel) {
+    <goab-work-side-menu-item
+      [icon]="notificationsItem.icon"
+      [label]="notificationsItem.label"
+      [popoverContent]="notificationsPanel"></goab-work-side-menu-item>
+  } @else {
+    <goab-work-side-menu-item
+      [icon]="notificationsItem.icon"
+      [label]="notificationsItem.label"
+      [url]="notificationsItem.url"></goab-work-side-menu-item>
+  }
   <goab-work-side-menu-item [icon]="helpItem.icon" [label]="helpItem.label" [url]="helpItem.url"></goab-work-side-menu-item>
+</ng-template>
+
+<!-- Panel version only (see HubVariant): opens beside the menu, like the DS
+     workspace demo; "View all" goes to the page. -->
+<ng-template #notificationsPanel>
+  <hub-notifications-panel></hub-notifications-panel>
 </ng-template>
 
 <ng-template #accountNav>

@@ -16,6 +16,7 @@ import { NotificationsScaleComponent } from './notifications-scale/notifications
 import { NotificationsPageComponent } from './notifications-page/notifications-page.component';
 import { GoaUserManagementComponent } from './goa-user-management/goa-user-management.component';
 import { HubShellComponent } from './notifications-hub/hub-shell.component';
+import { HubRouteData } from './notifications-hub/hub-variant';
 import { HubHomeComponent } from './notifications-hub/home/hub-home.component';
 import { HubNotificationsPageComponent } from './notifications-hub/notifications-page/hub-notifications-page.component';
 import { ProgramDetailsComponent } from './search-service/program-details/program-details.component';
@@ -56,13 +57,26 @@ export const routes: Routes = [
   { path: 'ecds-dashboard-v2', component: EcdsDashboardV2Component, title: 'ECDS Dashboard v2 — Home' },
   { path: 'notifications-scale', component: NotificationsScaleComponent, title: 'Notifications — Scaling exploration' },
   { path: 'notifications', component: NotificationsPageComponent, title: 'All notifications' },
+  // The notifications hub, twice: the side menu's Notifications item links to
+  // the page in one and opens a panel in the other (see HubVariant).
   {
     path: 'notifications-hub',
     component: HubShellComponent,
+    data: { hubBase: '/notifications-hub', notificationsPanel: false } satisfies HubRouteData,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeComponent, title: 'Home — Notifications hub' },
       { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub' },
+    ],
+  },
+  {
+    path: 'notifications-hub-panel',
+    component: HubShellComponent,
+    data: { hubBase: '/notifications-hub-panel', notificationsPanel: true } satisfies HubRouteData,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HubHomeComponent, title: 'Home — Notifications hub (panel)' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub (panel)' },
     ],
   },
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },

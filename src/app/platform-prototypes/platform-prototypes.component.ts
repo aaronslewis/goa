@@ -43,6 +43,13 @@ export class PlatformPrototypesComponent {
       status: 'In progress',
     },
     {
+      label: 'Notifications hub with panel — DS v2',
+      description:
+        'The same hub, but Notifications in the side menu opens a notifications panel beside the menu, with a link through to the full page.',
+      path: '/notifications-hub-panel',
+      status: 'In progress',
+    },
+    {
       label: 'All notifications page',
       description: 'Full notification history with unread/urgent/all tabs, date grouping, and read state.',
       path: '/notifications',

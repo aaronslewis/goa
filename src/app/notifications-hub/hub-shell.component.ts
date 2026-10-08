@@ -11,6 +11,8 @@ import {
   GoabIcon,
 } from '@abgov/angular-components';
 import { hideWorkSideMenuScrollbarButtons } from '../shared/hide-work-side-menu-scrollbar-buttons';
+import { NotificationsPanelComponent } from './notifications-panel/notifications-panel.component';
+import { HubVariant } from './hub-variant';
 
 interface MenuItem {
   label: string;
@@ -28,21 +30,28 @@ type MenuEntry = ({ kind: 'item' } & MenuItem) | ({ kind: 'group' } & MenuGroup)
 
 type MenuItemElement = HTMLElement & { current?: boolean };
 
-export const HUB_HOME_URL = '#/notifications-hub/home';
-export const HUB_NOTIFICATIONS_URL = '#/notifications-hub/notifications';
-
 // Menu content mirrors /menu (MainMenuComponent), plus a pinned Home item.
 @Component({
   selector: 'hub-shell',
   host: { class: 'goa-ds-v2' },
   standalone: true,
-  imports: [RouterOutlet, GoabWorkSideMenu, GoabWorkSideMenuGroup, GoabWorkSideMenuItem, GoabWorkspaceLayout, GoabIcon],
+  providers: [HubVariant],
+  imports: [
+    RouterOutlet,
+    GoabWorkSideMenu,
+    GoabWorkSideMenuGroup,
+    GoabWorkSideMenuItem,
+    GoabWorkspaceLayout,
+    GoabIcon,
+    NotificationsPanelComponent,
+  ],
   templateUrl: './hub-shell.component.html',
   styleUrl: './hub-shell.component.scss',
 })
 export class HubShellComponent implements AfterViewInit {
   private readonly el = inject(ElementRef<HTMLElement>);
   private readonly router = inject(Router);
+  readonly hub = inject(HubVariant);
 
   readonly currentUrl = toSignal(
     this.router.events.pipe(
@@ -110,13 +119,13 @@ export class HubShellComponent implements AfterViewInit {
   readonly userName = 'Edna Mode';
   readonly userSecondaryText = 'edna.mode@gov.ab.ca';
 
-  readonly homeItem: MenuItem = { label: 'Home', icon: 'grid:outline', url: HUB_HOME_URL };
+  readonly homeItem: MenuItem = { label: 'Home', icon: 'grid:outline', url: this.hub.homeUrl };
   readonly searchItem: MenuItem = { label: 'Search', icon: 'search:outline', url: '#' };
   readonly helpItem: MenuItem = { label: 'Help Centre', icon: 'help-circle:outline', url: '#' };
   readonly notificationsItem: MenuItem = {
     label: 'Notifications',
     icon: 'notifications:outline',
-    url: HUB_NOTIFICATIONS_URL,
+    url: this.hub.notificationsUrl,
   };
 
   readonly accountMenuItems = [

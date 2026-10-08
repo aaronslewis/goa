@@ -3,10 +3,7 @@ import { GoabTabsOnChangeDetail } from '@abgov/ui-components-common';
 import { GoabBadge, GoabButton, GoabContainer, GoabLink, GoabTab, GoabTabs } from '@abgov/angular-components';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
 import { NotificationsService } from '../notifications.service';
-import { SEVERITIES, Severity } from '../notifications.data';
-import { HUB_NOTIFICATIONS_URL } from '../hub-shell.component';
-
-type TabKey = 'all' | Severity;
+import { HubVariant } from '../hub-variant';
 
 @Component({
   selector: 'hub-home',
@@ -27,7 +24,7 @@ export class HubHomeComponent {
   readonly service = inject(NotificationsService);
 
   readonly firstName = 'Edna';
-  readonly notificationsUrl = HUB_NOTIFICATIONS_URL;
+  readonly notificationsUrl = inject(HubVariant).notificationsUrl;
 
   // goab-tabs reports a 1-based index; 1 is "All".
   readonly activeTab = signal(1);
@@ -40,19 +37,7 @@ export class HubHomeComponent {
     return 'Good evening';
   }
 
-  readonly tabs = computed(() => {
-    const items = this.service.homeItems();
-    const tabs: { key: TabKey; label: string; badge?: 'emergency' | 'important' | 'information'; items: typeof items }[] = [
-      { key: 'all', label: 'All', items },
-      ...SEVERITIES.map((s) => ({
-        key: s.value as TabKey,
-        label: s.label,
-        badge: s.badge,
-        items: items.filter((n) => n.severity === s.value),
-      })),
-    ];
-    return tabs;
-  });
+  readonly tabs = this.service.homeTabs;
 
   // "Mark all as done" applies to one severity at a time, never to All.
   readonly activeSeverityTab = computed(() => {
