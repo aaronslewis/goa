@@ -1,4 +1,9 @@
 <ng-template #primaryNav>
+  <goab-work-side-menu-item
+    [icon]="homeItem.icon"
+    [label]="homeItem.label"
+    [url]="homeItem.url"
+    [divider]="true"></goab-work-side-menu-item>
   @for (entry of entries; track entry.kind === 'group' ? entry.heading : entry.label) {
     @if (entry.kind === 'item') {
       <goab-work-side-menu-item

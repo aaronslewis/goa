@@ -92,6 +92,8 @@ export class ProviderPortalMenuComponent implements AfterViewInit {
     }
   }
 
+  readonly homeItem = { label: 'Home', icon: 'grid:outline' as GoabIconType, url: '#' };
+
   readonly entries: MenuEntry[] = [
     {
       kind: 'group',
@@ -116,7 +118,7 @@ export class ProviderPortalMenuComponent implements AfterViewInit {
     {
       kind: 'group',
       heading: 'Claims',
-      icon: 'list:outline',
+      icon: 'newspaper:outline',
       items: [
         { label: 'Submit Claim', url: '#' },
         { label: 'Submit Adjustment', url: '#' },
