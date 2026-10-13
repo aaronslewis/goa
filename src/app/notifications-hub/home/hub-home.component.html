@@ -31,6 +31,8 @@
             class="list"
             [items]="tab.items"
             emptyMessage="You're all caught up. There are no notifications from the last 30 days."
+            [markReadOnClick]="hub.markReadOnClick"
+            (read)="service.markRead($event)"
             (dismiss)="service.dismiss($event)"></hub-notification-list>
         </goab-container>
       </goab-tab>

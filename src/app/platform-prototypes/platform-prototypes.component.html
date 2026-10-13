@@ -6,39 +6,44 @@
     </p>
   </header>
 
-  <ul class="proto-list">
-    @for (proto of prototypes; track proto.path) {
-      <li>
-        <a class="proto-card" [routerLink]="proto.path">
-          <span class="proto-card__header">
-            <span class="proto-card__title">{{ proto.label }}</span>
-            @if (proto.status) {
-              <goab-badge type="information" [content]="proto.status"></goab-badge>
+  @for (group of groups; track group.heading; let g = $index) {
+    <section class="group" [attr.aria-labelledby]="'group-' + g">
+      <h2 class="group__heading" [id]="'group-' + g">{{ group.heading }}</h2>
+      <ul class="proto-list">
+        @for (proto of group.items; track proto.path; let i = $index) {
+          <li>
+            <a class="proto-card" [routerLink]="proto.path">
+              <span class="proto-card__header">
+                <span class="proto-card__title">{{ proto.label }}</span>
+                @if (proto.status) {
+                  <goab-badge type="information" [content]="proto.status"></goab-badge>
+                }
+              </span>
+              <span class="proto-card__desc">{{ proto.description }}</span>
+            </a>
+            @if (proto.scenarios; as scenarios) {
+              <section class="scenarios" [attr.aria-labelledby]="'scenarios-' + g + '-' + i">
+                <h3 class="scenarios__heading" [id]="'scenarios-' + g + '-' + i">{{ scenarios.heading }}</h3>
+                <ul class="proto-list">
+                  @for (item of scenarios.items; track item.path) {
+                    <li>
+                      <a class="proto-card" [routerLink]="item.path">
+                        <span class="proto-card__header">
+                          <span class="proto-card__title">{{ item.label }}</span>
+                          @if (item.status) {
+                            <goab-badge type="information" [content]="item.status"></goab-badge>
+                          }
+                        </span>
+                        <span class="proto-card__desc">{{ item.description }}</span>
+                      </a>
+                    </li>
+                  }
+                </ul>
+              </section>
             }
-          </span>
-          <span class="proto-card__desc">{{ proto.description }}</span>
-        </a>
-        @if (proto.scenarios; as scenarios) {
-          <section class="scenarios" [attr.aria-labelledby]="'scenarios-' + $index">
-            <h2 class="scenarios__heading" [id]="'scenarios-' + $index">{{ scenarios.heading }}</h2>
-            <ul class="proto-list">
-              @for (item of scenarios.items; track item.path) {
-                <li>
-                  <a class="proto-card" [routerLink]="item.path">
-                    <span class="proto-card__header">
-                      <span class="proto-card__title">{{ item.label }}</span>
-                      @if (item.status) {
-                        <goab-badge type="information" [content]="item.status"></goab-badge>
-                      }
-                    </span>
-                    <span class="proto-card__desc">{{ item.description }}</span>
-                  </a>
-                </li>
-              }
-            </ul>
-          </section>
+          </li>
         }
-      </li>
-    }
-  </ul>
+      </ul>
+    </section>
+  }
 </main>

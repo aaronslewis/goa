@@ -21,6 +21,8 @@ export interface HubNotification {
   programId?: string;
   createdAt: Date;
   dismissed: boolean;
+  // Set by clicking a row, only in the hub version that marks items read on click.
+  read?: boolean;
   createdByUser?: boolean;
   notifyTo?: string;
 }

@@ -8,6 +8,8 @@ export interface HubRouteData {
   hubBase: string;
   // true: the menu's Notifications item opens the panel; false: it links to the page.
   notificationsPanel: boolean;
+  // true: clicking a notification greys it as read; it can still be dismissed.
+  markReadOnClick?: boolean;
 }
 
 @Injectable()
@@ -16,6 +18,7 @@ export class HubVariant {
 
   readonly base = this.data.hubBase;
   readonly notificationsPanel = this.data.notificationsPanel;
+  readonly markReadOnClick = this.data.markReadOnClick ?? false;
   readonly homeUrl = `#${this.base}/home`;
   readonly notificationsUrl = `#${this.base}/notifications`;
 }

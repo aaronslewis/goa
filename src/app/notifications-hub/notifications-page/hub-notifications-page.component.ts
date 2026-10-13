@@ -19,6 +19,7 @@ import { CompactDatePickerDirective } from '../compact-date-picker.directive';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
 import { AddNotificationDrawerComponent } from '../add-notification-drawer/add-notification-drawer.component';
 import { NotificationsService } from '../notifications.service';
+import { HubVariant } from '../hub-variant';
 import { PROGRAMS, PROGRAM_BY_ID, SEVERITIES } from '../notifications.data';
 
 const PAGE_SIZE = 20;
@@ -58,6 +59,7 @@ function parseIsoDate(s: string): Date | null {
 })
 export class HubNotificationsPageComponent {
   readonly service = inject(NotificationsService);
+  readonly hub = inject(HubVariant);
 
   readonly programs = PROGRAMS;
   readonly severities = SEVERITIES;

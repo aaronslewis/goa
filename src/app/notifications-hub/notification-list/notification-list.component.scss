@@ -65,6 +65,24 @@
   }
 }
 
+// Read rows go grey like dismissed ones, whatever their severity tint.
+.row--read {
+  background: var(--goa-color-greyscale-50);
+
+  .row__title {
+    color: var(--goa-color-greyscale-700);
+  }
+}
+
+.row--clickable {
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+    outline-offset: calc(-1 * var(--goa-border-width-l));
+  }
+}
+
 .row__heading {
   grid-area: heading;
   display: flex;

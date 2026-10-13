@@ -86,6 +86,8 @@
       class="list"
       [items]="pageItems()"
       [allowRestore]="true"
+      [markReadOnClick]="hub.markReadOnClick"
+      (read)="service.markRead($event)"
       emptyMessage="Try removing a filter or choosing a wider date range."
       (dismiss)="service.dismiss($event)"
       (restore)="service.restore($event)"></hub-notification-list>

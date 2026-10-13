@@ -12,7 +12,12 @@
           [class.row--urgent]="!n.createdByUser && n.severity === 'urgent'"
           [class.row--important]="!n.createdByUser && n.severity === 'important'"
           [class.row--information]="!n.createdByUser && n.severity === 'information'"
-          [class.row--dismissed]="n.dismissed">
+          [class.row--dismissed]="n.dismissed"
+          [class.row--read]="markReadOnClick() && n.read"
+          [class.row--clickable]="markReadOnClick() && !n.read"
+          [attr.tabindex]="markReadOnClick() && !n.read ? 0 : null"
+          (click)="onRowClick($event, n)"
+          (keydown.enter)="onRowClick($event, n)">
             <div class="row__heading">
               <h4 class="row__title">{{ n.title }}</h4>
               @if (showBadges() || (n.dismissed && allowRestore())) {

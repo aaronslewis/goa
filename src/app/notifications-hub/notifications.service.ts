@@ -50,6 +50,10 @@ export class NotificationsService {
     this.update(id, { dismissed: true });
   }
 
+  markRead(id: string): void {
+    this.update(id, { read: true });
+  }
+
   restore(id: string): void {
     this.update(id, { dismissed: false });
   }

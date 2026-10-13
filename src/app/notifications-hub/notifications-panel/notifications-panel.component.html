@@ -19,6 +19,8 @@
           <hub-notification-list
             [items]="tab.items"
             emptyMessage="You're all caught up."
+            [markReadOnClick]="hub.markReadOnClick"
+            (read)="service.markRead($event)"
             (dismiss)="service.dismiss($event)"></hub-notification-list>
         </div>
       </goab-tab>

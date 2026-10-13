@@ -24,7 +24,8 @@ export class HubHomeComponent {
   readonly service = inject(NotificationsService);
 
   readonly firstName = 'Edna';
-  readonly notificationsUrl = inject(HubVariant).notificationsUrl;
+  readonly hub = inject(HubVariant);
+  readonly notificationsUrl = this.hub.notificationsUrl;
 
   // goab-tabs reports a 1-based index; 1 is "All".
   readonly activeTab = signal(1);

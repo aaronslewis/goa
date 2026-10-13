@@ -63,8 +63,9 @@ export const routes: Routes = [
   { path: 'ecds-dashboard-v2', component: EcdsDashboardV2Component, title: 'ECDS Dashboard v2 — Home' },
   { path: 'notifications-scale', component: NotificationsScaleComponent, title: 'Notifications — Scaling exploration' },
   { path: 'notifications', component: NotificationsPageComponent, title: 'All notifications' },
-  // The notifications hub, twice: the side menu's Notifications item links to
-  // the page in one and opens a panel in the other (see HubVariant).
+  // The notifications hub, three times: the side menu's Notifications item links
+  // to the page in one and opens a panel in the others, one of which also greys
+  // a notification when it's clicked (see HubVariant).
   {
     path: 'notifications-hub',
     component: HubShellComponent,
@@ -83,6 +84,16 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeComponent, title: 'Home — Notifications hub (panel)' },
       { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub (panel)' },
+    ],
+  },
+  {
+    path: 'notifications-hub-read',
+    component: HubShellComponent,
+    data: { hubBase: '/notifications-hub-read', notificationsPanel: true, markReadOnClick: true } satisfies HubRouteData,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HubHomeComponent, title: 'Home — Notifications hub (mark read)' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub (mark read)' },
     ],
   },
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },

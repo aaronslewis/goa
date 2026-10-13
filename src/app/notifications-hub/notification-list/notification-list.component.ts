@@ -16,8 +16,19 @@ export class NotificationListComponent {
   // On the Notifications page dismissed items stay visible and can be restored.
   readonly allowRestore = input(false);
 
+  // Clicking a row marks it read (greyed), leaving dismiss available.
+  readonly markReadOnClick = input(false);
+
   readonly dismiss = output<string>();
   readonly restore = output<string>();
+  readonly read = output<string>();
+
+  // Dismiss and restore buttons handle their own clicks.
+  onRowClick(event: Event, n: HubNotification): void {
+    if (!this.markReadOnClick() || n.read) return;
+    if ((event.target as Element).closest('goab-icon-button')) return;
+    this.read.emit(n.id);
+  }
 
   readonly groups = computed(() => groupByDay(this.items()));
 

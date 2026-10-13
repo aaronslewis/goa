@@ -26,6 +26,20 @@
   margin: 0;
 }
 
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-m);
+}
+
+.group__heading {
+  font: var(--goa-typography-heading-l);
+  color: var(--goa-color-text-default);
+  margin: 0;
+  padding-bottom: var(--goa-space-s);
+  border-bottom: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+}
+
 .proto-list {
   list-style: none;
   margin: 0;
