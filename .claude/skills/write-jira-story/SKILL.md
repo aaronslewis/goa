@@ -163,30 +163,37 @@ of the two exists. If the user says there is neither, omit the section.
 Write a numbered to-do list the developer can work through and the tester can
 cite. Group related criteria under H2 headings, and number each criterion
 `AC <group>.<item>`. Each criterion is the number, a short **bold label**, a
-dash, then one sentence:
+dash, then one sentence. The label tells the developer what to do; the sentence
+tells what the user will experience:
 
 ```text
 1. Choosing an organization            (H2)
-AC 1.1 **Choose organization** — The Declaration step includes an organization dropdown.
-AC 1.2 **Show signed organizations** — Organizations that have signed appear disabled with a checkmark.
-AC 1.3 **Show next action** — Given the Licence Holder Organization has no
+AC 1.1 **Add organization dropdown** — The Declaration step includes an organization dropdown.
+AC 1.2 **Disable signed organizations** — Organizations that have signed appear disabled with a checkmark.
+AC 1.3 **Hide next action** — Given the Licence Holder Organization has no
 licensed programs, when the user starts the acknowledgement, then Start next
 acknowledgement is not shown.
 ```
 
 Rules:
 
-- The bold label is the only bold in a criterion. It names the behaviour in two
-  to four words so the list can be scanned. Do not bold terms inside the
+- **The label is a verb, then the subject or noun, written for the developer.**
+  Examples: Add menu item, Hide next action, Sort rows by organization, Remove
+  profile links. Use two to four words, in sentence case. Start with the thing
+  to build or change (Add, Show, Hide, Disable, Remove, Sort, Link, Validate),
+  not a description of the outcome.
+- **The sentence is what the user experiences,** in the user's terms: what they
+  see, can do or can't do. Don't repeat the label's wording or describe
+  implementation.
+- The bold label is the only bold in a criterion. Do not bold terms inside the
   sentence.
-- Write the sentence as what must be built or be true. When a condition or
-  trigger matters, use Given / when / then (see below); otherwise state it
-  plainly.
-- **Colour UI names; no quote marks.** Make a button or link name **dark blue**
-  (`#0747a6`) and a page, step or screen name **dark green** (`#006644`), written
-  exactly as it appears on screen. Colour only these two kinds of name, and only
-  in the Jira HTML. Because colour alone doesn't carry meaning, add the noun
-  where the name could be mistaken for something else ("the Start next
+- When a condition or trigger matters, write the sentence as Given / when / then
+  (see below); otherwise state it plainly.
+- **Colour button names only; no quote marks.** Make a button or link name
+  **dark blue** (`#0747a6`), written exactly as it appears on screen. Page,
+  step, screen, heading and container names stay regular black text, with no
+  colour and no quote marks. Colour alone doesn't carry meaning, so add the noun
+  where a name could be mistaken for something else ("the Start next
   acknowledgement button", "the Confirmation page"). In a chat draft there is no
   colour, so show the names as plain text.
 - One behaviour or business outcome per criterion.
@@ -213,16 +220,16 @@ Use it when a criterion depends on a state or trigger, especially when **one
 behaviour has several variations** (roles, states, data conditions) or reads
 best from the user's side. Keep it light:
 
-- **The label does the leading.** The short bold label says what the criterion
-  is about, so the reader does not have to reach the end of the sentence to find
-  the point. Write `Given`, `when` and `then` in plain text, in one sentence.
+- **The label does the leading.** The verb-first bold label says what to build,
+  so the reader does not have to reach the end of the sentence to find the
+  point. Write `Given`, `when` and `then` in plain text, in one sentence.
 - **Write the result last and keep it short.** Keep the Given to the state that
   matters.
 - **State the shared Given once.** For several variations, use one lead-in
   criterion and a table, not a repeated sentence:
 
   ```text
-  AC 2.3 **Next action** — Given the user has completed an acknowledgement:
+  AC 2.3 **Show next action** — Given the user has completed an acknowledgement:
 
   | When | Then |
   |---|---|
@@ -231,7 +238,7 @@ best from the user's side. Keep it light:
   ```
 
   Use `Given | When | Then` columns only if the Given also varies. Colour
-  button and page names in table cells the same way as in sentences.
+  button names in table cells the same way as in sentences.
 
 ### Out of scope
 
@@ -286,7 +293,7 @@ markdown cannot make panels or status lozenges. Shape:
 
 <h1>Acceptance criteria</h1>
 <h2>1. [Group name]</h2>
-<p>AC 1.1 <strong>[Label]</strong> — [Sentence. Button: <span style="color: #0747a6">Button name</span>. Page: <span style="color: #006644">Page name</span>.]</p>
+<p>AC 1.1 <strong>[Verb and noun]</strong> — [What the user experiences. Button: <span style="color: #0747a6">Button name</span>. Page names stay plain text.]</p>
 
 <h1>Out of scope</h1>
 <ul><li>❌ [Exclusion]</li></ul>
@@ -386,9 +393,9 @@ Then verify:
 - The portal (lozenge) and the user are stated up front.
 - The outcome explains why the capability matters.
 - The story describes one coherent behaviour or outcome.
-- Every acceptance criterion has an observable result and a short bold label,
-  with no other bold in the sentence.
-- Button and page names are coloured (dark blue, dark green) with no quote
+- Every acceptance criterion has an observable result and a short bold label
+  that starts with a verb, with no other bold in the sentence.
+- Button names are dark blue, page names are plain black, neither has quote
   marks, and every web address is a hyperlink.
 - Relevant alternate or failure cases are covered or raised as questions.
 - Variations use a table with the shared Given stated once.
