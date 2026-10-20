@@ -143,18 +143,31 @@ of the two exists. If the user says there is neither, omit the section.
 
 Write a numbered to-do list the developer can work through and the tester can
 cite. Group related criteria under H2 headings, and number each criterion
-`AC <group>.<item>`:
+`AC <group>.<item>`. Each criterion is the number, a short **bold label**, a
+dash, then one sentence:
 
 ```text
 1. Choosing an organization            (H2)
-AC 1.1 The Declaration step includes an **organization dropdown**.
-AC 1.2 Organizations that have signed appear **disabled with a checkmark**.
+AC 1.1 **Choose organization** — The Declaration step includes an organization dropdown.
+AC 1.2 **Show signed organizations** — Organizations that have signed appear disabled with a checkmark.
+AC 1.3 **Show next action** — Given the Licensed Holder Organization has no
+Licensed programs, when the user starts the acknowledgement, then 'Start next
+acknowledgement' is not shown.
 ```
 
 Rules:
 
-- Write each criterion as one sentence saying what must be built or be true,
-  with the key term in **bold** so it can be scanned.
+- The bold label is the only bold in a criterion. It names the behaviour in two
+  to four words so the list can be scanned. Do not bold terms inside the
+  sentence.
+- Write the sentence as what must be built or be true. When a condition or
+  trigger matters, use Given / when / then (see below); otherwise state it
+  plainly.
+- **Colour UI names, in quotes.** Wrap a button or link name in single quotes
+  and make the text **dark blue** (`#0747a6`). Wrap a page, step or screen name
+  in single quotes and make the text **dark green** (`#006644`). Quotes carry
+  the meaning, so colour is never the only cue. Colour only these two kinds of
+  name, and only in the Jira HTML; in a chat draft, show the name in quotes.
 - One behaviour or business outcome per criterion.
 - Make the result observable to the actor or through a defined system result.
 - Use concrete inputs and expected outputs for calculations and rules.
@@ -173,30 +186,31 @@ Rules:
 - End with a **Regression** group when existing flows could be affected, saying
   which flows must be unchanged.
 
-#### Given / When / Then for variations
+#### Given / when / then
 
-Plain to-do criteria are the default. Use Given / When / Then only when **one
-behaviour has several variations** (roles, states, data conditions) or when the
-scenario reads best from the user's side. Keep it light:
+Use it when a criterion depends on a state or trigger, especially when **one
+behaviour has several variations** (roles, states, data conditions) or reads
+best from the user's side. Keep it light:
 
-- **Lead with the point.** Start with a short bold label, then the sentence.
-  Put the outcome in bold so it isn't buried at the end.
-- **State the shared Given once.** Do not repeat it in every row.
-- **Use a table for variations** under one lead-in criterion:
+- **The label does the leading.** The short bold label says what the criterion
+  is about, so the reader does not have to reach the end of the sentence to find
+  the point. Write `Given`, `when` and `then` in plain text, in one sentence.
+- **Write the result last and keep it short.** Keep the Given to the state that
+  matters.
+- **State the shared Given once.** For several variations, use one lead-in
+  criterion and a table, not a repeated sentence:
 
   ```text
-  AC 2.3 **Next action depends on how many organizations are outstanding.**
-  Given the user has completed an acknowledgement:
+  AC 2.3 **Next action** — Given the user has completed an acknowledgement:
 
   | When | Then |
   |---|---|
-  | Organizations are outstanding | Show **Start next acknowledgement** |
-  | All are complete | Show **Continue to portal** only |
+  | Organizations are outstanding | 'Start next acknowledgement' is shown |
+  | All are complete | Only 'Continue to portal' is shown |
   ```
 
-  Use `Given | When | Then` columns only if the Given also varies.
-- **A single scenario can be one line:**
-  `AC 2.4 **Skip the wall.** Given the deadline has not passed, when a Super Admin signs in, then **no wall is shown**.`
+  Use `Given | When | Then` columns only if the Given also varies. Colour
+  button and page names in table cells the same way as in sentences.
 
 ### Out of scope
 
@@ -210,9 +224,14 @@ data sources, integration details, migration considerations, links to prototype
 code. Do not put required product behaviour here. **If there are no notes, omit
 the whole section, heading included.** Never write "None" or "N/A".
 
-## Links to other stories
+## Links
 
-Mentioned stories must be officially linked, in two ways:
+**Web addresses are always hyperlinks.** Any URL that appears in the story, such
+as `https://childcareoperators.alberta.ca/terms-of-use`, is written as
+`<a href="URL">…</a>`, never as plain text. Use the page name as the link text
+when it is known, otherwise the URL itself. This applies in every section.
+
+**Mentioned stories must be officially linked,** in two ways:
 
 1. In the text, write the key as an inline smart link, not plain text:
    `<a href="https://goa-dio.atlassian.net/browse/CCPM-3213" data-card-appearance="inline"></a>`.
@@ -246,7 +265,7 @@ markdown cannot make panels or status lozenges. Shape:
 
 <h1>Acceptance criteria</h1>
 <h2>1. [Group name]</h2>
-<p><strong>AC 1.1</strong> [Criterion with <strong>key term</strong> in bold.]</p>
+<p>AC 1.1 <strong>[Label]</strong> — [Sentence. Button: <span style="color: #0747a6">'Button name'</span>. Page: <span style="color: #006644">'Page name'</span>.]</p>
 
 <h1>Out of scope</h1>
 <ul><li>❌ [Exclusion]</li></ul>
@@ -312,7 +331,10 @@ Before returning or creating the Jira issue, verify:
 - The portal (lozenge) and the user are stated up front.
 - The outcome explains why the capability matters.
 - The story describes one coherent behaviour or outcome.
-- Every acceptance criterion has an observable result and a bolded key term.
+- Every acceptance criterion has an observable result and a short bold label,
+  with no other bold in the sentence.
+- Button and page names are in quotes and coloured (dark blue, dark green), and
+  every web address is a hyperlink.
 - Relevant alternate or failure cases are covered or raised as questions.
 - Variations use a table with the shared Given stated once.
 - The Design section has Figma and prototype links that point to the relevant
