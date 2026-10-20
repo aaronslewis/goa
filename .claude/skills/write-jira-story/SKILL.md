@@ -75,11 +75,10 @@ logistics inside the story's acceptance criteria.
   holder", "a valid licence", but "licensed programs" and "to license a
   facility" (the rule from [CCPM-2875](https://goa-dio.atlassian.net/browse/CCPM-2875)).
   This applies to prose, criteria and labels you write.
-- **Exact product terms win.** A name copied from the product keeps its spelling
-  exactly, even where it breaks these rules. **License Holder Organization** is
-  the correct current term and is always written that way. Don't "correct" it,
-  and never mix it with "Licensed Holder Organization" or "Licence Holder
-  Organization".
+- **The organization term is Licence Holder Organization.** It follows the noun
+  rule above and is always written that way. Never write "License Holder
+  Organization" or "Licensed Holder Organization". Where the prototype or
+  product still shows an older spelling, flag it as a fix instead of copying it.
 - **Capitalization:** page names may be in title case (Legal, Terms of Use). Button
   and link text, and headings (on-screen headings and the story's own headings),
   are in **sentence case**: Start next acknowledgement, Continue to portal,
@@ -170,7 +169,7 @@ dash, then one sentence:
 1. Choosing an organization            (H2)
 AC 1.1 **Choose organization** — The Declaration step includes an organization dropdown.
 AC 1.2 **Show signed organizations** — Organizations that have signed appear disabled with a checkmark.
-AC 1.3 **Show next action** — Given the License Holder Organization has no
+AC 1.3 **Show next action** — Given the Licence Holder Organization has no
 licensed programs, when the user starts the acknowledgement, then Start next
 acknowledgement is not shown.
 ```
@@ -365,8 +364,8 @@ once just to collect names, then compare:
    lowercase variant is a slip when it refers to the same thing.
    Example: "privacy notice", "Privacy Notice" and "Information and privacy
    notice" are three names for one container; use the exact name the user sees,
-   "Information and privacy notice", in every place. Likewise "License Holder
-   Organization" and "Licensed Holder Organization" cannot both appear.
+   "Information and privacy notice", in every place. Likewise "Licence Holder
+   Organization" and "License Holder Organization" cannot both appear.
 4. Take the exact wording from the prototype or Figma, not from memory. If the
    source uses two names, or you can't tell which is right, ask the user rather
    than picking one.
@@ -376,7 +375,7 @@ once just to collect names, then compare:
    nearby ("the privacy notice link in the Information and privacy notice
    container" is ok; "the privacy notice container" is not).
 7. Check wording against "Language and wording": Canadian spelling, licence
-   versus license, License Holder Organization written exactly, buttons and
+   versus license, Licence Holder Organization written exactly, buttons and
    headings in sentence case, pages in title case if you like but consistent.
 
 ### 2. Readiness check
