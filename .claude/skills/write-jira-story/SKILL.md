@@ -67,6 +67,26 @@ If a request combines product behaviour and testing operations, draft a story
 for the behaviour and recommend a linked testing task. Do not hide execution
 logistics inside the story's acceptance criteria.
 
+## Language and wording
+
+- **Canadian English spelling:** behaviour, colour, centre, organization (the
+  `-ize` ending is standard in Canada), cancelled, grey, and so on.
+- **Licence is the noun; license is the verb.** Write "licence status", "licence
+  holder", "a valid licence", but "licensed programs" and "to license a
+  facility" (the rule from [CCPM-2875](https://goa-dio.atlassian.net/browse/CCPM-2875)).
+  This applies to prose, criteria and labels you write.
+- **Exact product terms win.** A name copied from the product keeps its spelling
+  exactly, even where it breaks these rules. **License Holder Organization** is
+  the correct current term and is always written that way. Don't "correct" it,
+  and never mix it with "Licensed Holder Organization" or "Licence Holder
+  Organization".
+- **Capitalization:** page names may be in title case (Legal, Terms of Use). Button
+  and link text, and headings (on-screen headings and the story's own headings),
+  are in **sentence case**: Start next acknowledgement, Continue to portal,
+  Information and privacy notice. Copy a name's capitalization from the
+  prototype; if the prototype breaks this rule, raise it with the user as a
+  fix to the prototype instead of copying it.
+
 ## Story structure
 
 Top-level sections are **H1**. Acceptance-criteria groups are **H2**; anything
@@ -150,8 +170,8 @@ dash, then one sentence:
 1. Choosing an organization            (H2)
 AC 1.1 **Choose organization** — The Declaration step includes an organization dropdown.
 AC 1.2 **Show signed organizations** — Organizations that have signed appear disabled with a checkmark.
-AC 1.3 **Show next action** — Given the Licensed Holder Organization has no
-Licensed programs, when the user starts the acknowledgement, then Start next
+AC 1.3 **Show next action** — Given the License Holder Organization has no
+licensed programs, when the user starts the acknowledgement, then Start next
 acknowledgement is not shown.
 ```
 
@@ -343,18 +363,21 @@ once just to collect names, then compare:
    scope and Dev notes.
 3. Make each one match, including capitalization and wording. A short or
    lowercase variant is a slip when it refers to the same thing.
-   Example: "privacy notice", "Privacy Notice" and "Information and Privacy
-   Notice" are three names for one container; use the exact name the user sees,
-   "Information and Privacy Notice", in every place. Likewise "License Holder
+   Example: "privacy notice", "Privacy Notice" and "Information and privacy
+   notice" are three names for one container; use the exact name the user sees,
+   "Information and privacy notice", in every place. Likewise "License Holder
    Organization" and "Licensed Holder Organization" cannot both appear.
 4. Take the exact wording from the prototype or Figma, not from memory. If the
    source uses two names, or you can't tell which is right, ask the user rather
    than picking one.
 5. Make bold labels reuse the full name of the thing they describe, so a label
-   like "Privacy notice link" becomes "Information and Privacy Notice link".
+   like "Privacy notice link" becomes "Information and privacy notice link".
 6. Generic words are fine in running text only when the full name appears
-   nearby ("the privacy notice link in the Information and Privacy Notice
+   nearby ("the privacy notice link in the Information and privacy notice
    container" is ok; "the privacy notice container" is not).
+7. Check wording against "Language and wording": Canadian spelling, licence
+   versus license, License Holder Organization written exactly, buttons and
+   headings in sentence case, pages in title case if you like but consistent.
 
 ### 2. Readiness check
 
