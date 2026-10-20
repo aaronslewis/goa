@@ -327,8 +327,9 @@ the issue types are Story, Task, Bug, Spike and Design Task (plus Xray test
 types); use Task for the work listed under "Decide whether this is a story".
 
 Then create it with the paste-ready HTML, the epic as `parent`, `fixVersions`,
-and `assignToSprint`. Attach the Figma link to the issue's **Design** field as
-well as the Background section (see `jira-integration` for how). **Create it
+and `assignToSprint`. Put the Figma link in the Background section, and after
+creating, tell the user to paste it into the issue's **Design** field, which the
+connector can't set (see `jira-integration`). **Create it
 with the status Proposed**, so nobody picks it up before the team has reviewed
 it. If Proposed isn't available in that project, create it in the starting
 status and tell the user it still needs to be marked as proposed. Finally,

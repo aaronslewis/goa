@@ -66,9 +66,11 @@ Reads return markdown by default; ask for `responseContentFormat: "html"` when y
 | Fix version | `fixVersions`: `[{"name": "CCA 3.2 - Ack. flow update"}]`; list names with `getJiraProjectVersions` |
 | Sprint | `assignToSprint` on create (sprint name or numeric id); `customfield_10021` when reading |
 | Story points | `additional_fields: {"Story Points": 5}` (`customfield_10023`) |
-| Design (Figma link) | `customfield_10163`; holds an Atlassian design-link object. See below |
+| Design (Figma link) | Not settable through the connector; the user attaches it in the Jira UI. See below |
 
-**Design field.** On a story this shows as a design-link card (for example `Acknowledgement and onboarding - CCPM- 3215`) pointing at a Figma URL. Try `additional_fields: {"Design": "<figma url>"}` first. If the connector rejects a plain URL, put the link in the Background section of the description, tell the user the Design field needs attaching by hand, and note the result here so the next run skips the guesswork.
+**Design field: can't be set through the connector.** On a story it shows as a design-link card (for example `Acknowledgement and onboarding - CCPM- 3215`) pointing at a Figma URL. Tested on CCPM-3264: `Design` isn't on the create screen, so `createJiraIssue` rejects it, and `editJiraIssue` with `customfield_10163` and a plain URL reports success but stores nothing. The field holds an Atlassian design-link object that only the Jira UI creates. So put the Figma link in the Background section and tell the user to paste it into the issue's Design field by hand.
+
+**Listing sprints.** `getJiraBoardSprintData` for board 174 returns over a hundred closed sprints and can overflow the connector. Call it with `includeIssues: false` and `responseFields: ["sprints.name", "sprints.state", "sprints.id"]`, then keep only `active` and `future`.
 
 ## Rich descriptions
 
@@ -76,7 +78,7 @@ Create and edit descriptions as HTML (`contentFormat: "html"`); markdown can't p
 
 - Note panel: `<div data-type="panel-note"><p>…</p></div>`
 - Status lozenge: `<span data-type="status" data-color="blue" data-status-style="bold">ECDS</span>`. Colours are only neutral, purple, blue, red, yellow, green. There is no pink.
-- Inline issue link: `<a href="https://goa-dio.atlassian.net/browse/CCPM-3213" data-card-appearance="inline"></a>` (leave the anchor empty)
+- Inline issue link: `<a href="https://goa-dio.atlassian.net/browse/CCPM-3213" data-card-appearance="inline"></a>` (leave the anchor empty; Jira stores it as a smart link)
 - Headings `<h1>`…`<h4>`, tables, and expand sections work. Column layouts do not, and make Jira save an empty description.
 
 When editing an existing description, fetch it as HTML first and change only what you were asked to change, so panels and lozenges survive.
@@ -88,6 +90,7 @@ A key in the text is not a link. After a story exists, link each mentioned story
 ## Working rules
 
 - Reading is free. **Ask before** creating, editing, commenting on, linking or transitioning an issue; these are visible to the whole team.
+- The connector has no operation to delete an issue, and issue deletion is the user's to do in Jira. Don't create throwaway issues without telling the user they'll have to delete them.
 - Write a story with the `write-jira-story` skill, then create it with this one.
 - Link rather than copy: point to the PR, prototype URL or Figma frame instead of pasting content.
 - Don't put real citizen information in an issue or comment.
