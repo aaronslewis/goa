@@ -76,9 +76,10 @@ nested under a group is H3, then H4, only as needed. Sections, in order:
 2. **User story** (H1), with a note panel
 3. **Portal and user** line, directly under the panel
 4. **Background** (H1)
-5. **Acceptance criteria** (H1)
-6. **Out of scope** (H1), only if there is any
-7. **Dev notes** (H1), only if there is any
+5. **Design** (H1), its own section holding the design and prototype links
+6. **Acceptance criteria** (H1)
+7. **Out of scope** (H1), only if there is any
+8. **Dev notes** (H1), only if there is any
 
 ### Title
 
@@ -120,9 +121,23 @@ different person.
 
 Current behaviour, the trigger, and constraints needed to understand the change,
 plus the goal if it isn't obvious from the user story. Keep implementation
-design out of this section. Link the sources of truth: the prototype or preview
-URL, the Figma frame, relevant policy or decisions, and dependencies that affect
-when the behaviour can work. Do not duplicate the acceptance criteria.
+design out of this section. Link relevant policy or decisions and dependencies
+that affect when the behaviour can work. Do not duplicate the acceptance
+criteria. The design and prototype links go in the Design section, not here.
+
+### Design
+
+A short H1 section of its own, after Background and before the acceptance
+criteria, so the visuals are easy to find. List each link on its own line with a
+label that says what it points at:
+
+- **Figma:** the specific frame or node for this story, not the whole file.
+- **Prototype:** the preview or snapshot URL, pointing at the relevant screen or
+  state.
+
+If the user hasn't given a link to the design or the prototype, ask for one when
+you start drafting, and again before creating; never guess a URL. Use whichever
+of the two exists. If the user says there is neither, omit the section.
 
 ### Acceptance criteria
 
@@ -223,7 +238,11 @@ markdown cannot make panels or status lozenges. Shape:
 
 <h1>Background</h1>
 <p>[Current behaviour, trigger and constraints.]</p>
-<p><strong>Design:</strong> <a href="[Figma URL]">Figma - [frame name]</a></p>
+<h1>Design</h1>
+<ul>
+  <li><strong>Figma:</strong> <a href="[Figma URL]">[Frame name]</a></li>
+  <li><strong>Prototype:</strong> <a href="[Prototype URL]">[Screen or state]</a></li>
+</ul>
 
 <h1>Acceptance criteria</h1>
 <h2>1. [Group name]</h2>
@@ -296,7 +315,8 @@ Before returning or creating the Jira issue, verify:
 - Every acceptance criterion has an observable result and a bolded key term.
 - Relevant alternate or failure cases are covered or raised as questions.
 - Variations use a table with the shared Given stated once.
-- Figma and prototype references point to the relevant screen or state.
+- The Design section has Figma and prototype links that point to the relevant
+  screen or state, or the user confirmed there are none.
 - Mentioned stories are smart links in the text and linked issues in Jira.
 - Requirements, dev notes, and testing operations are separated.
 - Empty sections, and placeholder text, have been removed.
@@ -313,7 +333,8 @@ draft only and say so. Connection details and tools are in the
 
 **Ask before creating, in one message:**
 
-- **Design link:** the Figma link, if you don't already have one.
+- **Design and prototype links:** ask for a link to the design (Figma) and to
+  the prototype, unless you already have them. Either one is enough.
 - **Epic:** offer the open epics (`issuetype = Epic AND project = CCPM AND
   statusCategory != Done`), or none.
 - **Fix version:** offer the unreleased versions from `getJiraProjectVersions`,
@@ -327,9 +348,9 @@ the issue types are Story, Task, Bug, Spike and Design Task (plus Xray test
 types); use Task for the work listed under "Decide whether this is a story".
 
 Then create it with the paste-ready HTML, the epic as `parent`, `fixVersions`,
-and `assignToSprint`. Put the Figma link in the Background section, and after
-creating, tell the user to paste it into the issue's **Design** field, which the
-connector can't set (see `jira-integration`). **Create it
+and `assignToSprint`. Put the links in the story's Design section, and after
+creating, tell the user to paste the Figma link into the issue's **Design**
+field, which the connector can't set (see `jira-integration`). **Create it
 with the status Proposed**, so nobody picks it up before the team has reviewed
 it. If Proposed isn't available in that project, create it in the starting
 status and tell the user it still needs to be marked as proposed. Finally,

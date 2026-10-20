@@ -68,7 +68,7 @@ Reads return markdown by default; ask for `responseContentFormat: "html"` when y
 | Story points | `additional_fields: {"Story Points": 5}` (`customfield_10023`) |
 | Design (Figma link) | Not settable through the connector; the user attaches it in the Jira UI. See below |
 
-**Design field: can't be set through the connector.** On a story it shows as a design-link card (for example `Acknowledgement and onboarding - CCPM- 3215`) pointing at a Figma URL. Tested on CCPM-3264: `Design` isn't on the create screen, so `createJiraIssue` rejects it, and `editJiraIssue` with `customfield_10163` and a plain URL reports success but stores nothing. The field holds an Atlassian design-link object that only the Jira UI creates. So put the Figma link in the Background section and tell the user to paste it into the issue's Design field by hand.
+**Design field: can't be set through the connector.** On a story it shows as a design-link card (for example `Acknowledgement and onboarding - CCPM- 3215`) pointing at a Figma URL. Tested on CCPM-3264: `Design` isn't on the create screen, so `createJiraIssue` rejects it, and `editJiraIssue` with `customfield_10163` and a plain URL reports success but stores nothing. The field holds an Atlassian design-link object that only the Jira UI creates. So put the Figma link in the story's Design section and tell the user to paste it into the issue's Design field by hand.
 
 **Listing sprints.** `getJiraBoardSprintData` for board 174 returns over a hundred closed sprints and can overflow the connector. Call it with `includeIssues: false` and `responseFields: ["sprints.name", "sprints.state", "sprints.id"]`, then keep only `active` and `future`.
 
