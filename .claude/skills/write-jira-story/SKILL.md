@@ -151,8 +151,8 @@ dash, then one sentence:
 AC 1.1 **Choose organization** — The Declaration step includes an organization dropdown.
 AC 1.2 **Show signed organizations** — Organizations that have signed appear disabled with a checkmark.
 AC 1.3 **Show next action** — Given the Licensed Holder Organization has no
-Licensed programs, when the user starts the acknowledgement, then 'Start next
-acknowledgement' is not shown.
+Licensed programs, when the user starts the acknowledgement, then Start next
+acknowledgement is not shown.
 ```
 
 Rules:
@@ -163,11 +163,13 @@ Rules:
 - Write the sentence as what must be built or be true. When a condition or
   trigger matters, use Given / when / then (see below); otherwise state it
   plainly.
-- **Colour UI names, in quotes.** Wrap a button or link name in single quotes
-  and make the text **dark blue** (`#0747a6`). Wrap a page, step or screen name
-  in single quotes and make the text **dark green** (`#006644`). Quotes carry
-  the meaning, so colour is never the only cue. Colour only these two kinds of
-  name, and only in the Jira HTML; in a chat draft, show the name in quotes.
+- **Colour UI names; no quote marks.** Make a button or link name **dark blue**
+  (`#0747a6`) and a page, step or screen name **dark green** (`#006644`), written
+  exactly as it appears on screen. Colour only these two kinds of name, and only
+  in the Jira HTML. Because colour alone doesn't carry meaning, add the noun
+  where the name could be mistaken for something else ("the Start next
+  acknowledgement button", "the Confirmation page"). In a chat draft there is no
+  colour, so show the names as plain text.
 - One behaviour or business outcome per criterion.
 - Make the result observable to the actor or through a defined system result.
 - Use concrete inputs and expected outputs for calculations and rules.
@@ -205,8 +207,8 @@ best from the user's side. Keep it light:
 
   | When | Then |
   |---|---|
-  | Organizations are outstanding | 'Start next acknowledgement' is shown |
-  | All are complete | Only 'Continue to portal' is shown |
+  | Organizations are outstanding | Start next acknowledgement is shown |
+  | All are complete | Only Continue to portal is shown |
   ```
 
   Use `Given | When | Then` columns only if the Given also varies. Colour
@@ -265,7 +267,7 @@ markdown cannot make panels or status lozenges. Shape:
 
 <h1>Acceptance criteria</h1>
 <h2>1. [Group name]</h2>
-<p>AC 1.1 <strong>[Label]</strong> — [Sentence. Button: <span style="color: #0747a6">'Button name'</span>. Page: <span style="color: #006644">'Page name'</span>.]</p>
+<p>AC 1.1 <strong>[Label]</strong> — [Sentence. Button: <span style="color: #0747a6">Button name</span>. Page: <span style="color: #006644">Page name</span>.]</p>
 
 <h1>Out of scope</h1>
 <ul><li>❌ [Exclusion]</li></ul>
@@ -333,8 +335,8 @@ Before returning or creating the Jira issue, verify:
 - The story describes one coherent behaviour or outcome.
 - Every acceptance criterion has an observable result and a short bold label,
   with no other bold in the sentence.
-- Button and page names are in quotes and coloured (dark blue, dark green), and
-  every web address is a hyperlink.
+- Button and page names are coloured (dark blue, dark green) with no quote
+  marks, and every web address is a hyperlink.
 - Relevant alternate or failure cases are covered or raised as questions.
 - Variations use a table with the shared Given stated once.
 - The Design section has Figma and prototype links that point to the relevant
