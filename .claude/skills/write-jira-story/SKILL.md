@@ -325,9 +325,40 @@ When separate testing work is needed, use:
 Do not create a testing task merely to restate the story's acceptance criteria.
 Create one when someone must prepare, execute, record, or sign off on testing.
 
-## Readiness check
+## Review the draft
 
-Before returning or creating the Jira issue, verify:
+Run this review on every draft before you show it as final, and again before
+creating the issue. Fix what you find, and tell the user what you changed.
+
+### 1. Naming consistency pass
+
+The same thing must have **one name** everywhere in the story. Read the draft
+once just to collect names, then compare:
+
+1. List every named thing: pages, containers and sections, buttons and links,
+   menu items, table columns, fields, roles, organization types, documents and
+   notices.
+2. For each, find every place it appears: the title, the user story panel, the
+   user line, Background, Design, every criterion **and its bold label**, Out of
+   scope and Dev notes.
+3. Make each one match, including capitalization and wording. A short or
+   lowercase variant is a slip when it refers to the same thing.
+   Example: "privacy notice", "Privacy Notice" and "Information and Privacy
+   Notice" are three names for one container; use the exact name the user sees,
+   "Information and Privacy Notice", in every place. Likewise "License Holder
+   Organization" and "Licensed Holder Organization" cannot both appear.
+4. Take the exact wording from the prototype or Figma, not from memory. If the
+   source uses two names, or you can't tell which is right, ask the user rather
+   than picking one.
+5. Make bold labels reuse the full name of the thing they describe, so a label
+   like "Privacy notice link" becomes "Information and Privacy Notice link".
+6. Generic words are fine in running text only when the full name appears
+   nearby ("the privacy notice link in the Information and Privacy Notice
+   container" is ok; "the privacy notice container" is not).
+
+### 2. Readiness check
+
+Then verify:
 
 - The actor is specific and supported by the evidence.
 - The portal (lozenge) and the user are stated up front.
@@ -354,6 +385,8 @@ Only when the user explicitly asks, and only if a Jira project is set (see
 [This prototype's Jira settings](#this-prototypes-jira-settings)). Otherwise
 draft only and say so. Connection details and tools are in the
 `jira-integration` skill.
+
+Run "Review the draft" first, including the naming consistency pass.
 
 **Ask before creating, in one message:**
 
