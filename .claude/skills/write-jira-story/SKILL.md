@@ -341,7 +341,6 @@ draft only and say so. Connection details and tools are in the
   or none.
 - **Sprint:** offer the active and future sprints on board 174 (from
   `getJiraBoardSprintData`), or none.
-- **Story points:** only if the user has an estimate.
 
 Confirm the issue type and parent only if they are not already known. In `CCPM`
 the issue types are Story, Task, Bug, Spike and Design Task (plus Xray test

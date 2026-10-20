@@ -65,7 +65,7 @@ Reads return markdown by default; ask for `responseContentFormat: "html"` when y
 | Epic | `parent`: the epic's key (e.g. `CCPM-3212`) |
 | Fix version | `fixVersions`: `[{"name": "CCA 3.2 - Ack. flow update"}]`; list names with `getJiraProjectVersions` |
 | Sprint | `assignToSprint` on create (sprint name or numeric id); `customfield_10021` when reading |
-| Story points | `additional_fields: {"Story Points": 5}` (`customfield_10023`) |
+| Story points | Don't ask for or set an estimate; the team sizes stories itself. Only if the user volunteers one: `additional_fields: {"Story Points": 5}` (`customfield_10023`) |
 | Design (Figma link) | Not settable through the connector; the user attaches it in the Jira UI. See below |
 
 **Design field: can't be set through the connector.** On a story it shows as a design-link card (for example `Acknowledgement and onboarding - CCPM- 3215`) pointing at a Figma URL. Tested on CCPM-3264: `Design` isn't on the create screen, so `createJiraIssue` rejects it, and `editJiraIssue` with `customfield_10163` and a plain URL reports success but stores nothing. The field holds an Atlassian design-link object that only the Jira UI creates. So put the Figma link in the story's Design section and tell the user to paste it into the issue's Design field by hand.
