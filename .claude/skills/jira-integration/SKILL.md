@@ -85,7 +85,7 @@ When editing an existing description, fetch it as HTML first and change only wha
 
 ## Linking issues
 
-A key in the text is not a link. After a story exists, link each mentioned story with `createJiraIssueLink` (`linkType`, `inwardIssue`, `outwardIssue`): get the type names from `listJiraIssueLinkTypes`. With *Blocks*, `inwardIssue` blocks `outwardIssue`. An epic or parent is the `parent` field, not a link.
+A key in the text is not a link. After a story exists, link each mentioned story with `createJiraIssueLink` (`linkType`, `inwardIssue`, `outwardIssue`): get the type names from `listJiraIssueLinkTypes`. With *Blocks*, `inwardIssue` blocks `outwardIssue`, so for "story A is blocked by story B" set `inwardIssue` to B and `outwardIssue` to A. The link types on this site are Blocks, Cloners, Defect, Discovery - Connected, Duplicate, Merged, Prerequisites, Problem/Incident, Relates, Test and Work item split (plus Polaris types). The team uses **Blocks** for dependencies and **Relates** for everything else; see `write-jira-story` for when. To list the stories in an epic, search `parent = <epic key>`. An epic or parent is the `parent` field, not a link.
 
 ## Working rules
 

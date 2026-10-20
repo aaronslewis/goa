@@ -259,13 +259,42 @@ as `https://childcareoperators.alberta.ca/terms-of-use`, is written as
 `<a href="URL">…</a>`, never as plain text. Use the page name as the link text
 when it is known, otherwise the URL itself. This applies in every section.
 
-**Mentioned stories must be officially linked,** in two ways:
+### Related stories
+
+Link related stories whenever there are any. **Mentioned stories must be
+officially linked,** in two ways:
 
 1. In the text, write the key as an inline smart link, not plain text:
    `<a href="https://goa-dio.atlassian.net/browse/CCPM-3213" data-card-appearance="inline"></a>`.
-2. After the story exists, create a Jira issue link to each (`createJiraIssueLink`,
-   with a type from `listJiraIssueLinkTypes`; usually *Relates to*, or *Blocks* for
-   a real dependency). Confirm the type when the relationship isn't obvious.
+2. After the story exists, create a Jira issue link to each with
+   `createJiraIssueLink`, using the link type that describes the relationship:
+
+| Relationship | Link type | How to read the result |
+|---|---|---|
+| This story can't be built or released until another story is done (a dependency) | **Blocks** | This story **is blocked by** the other: `inwardIssue` = the other story, `outwardIssue` = this story |
+| This story blocks another story | **Blocks** | This story **blocks** the other: `inwardIssue` = this story, `outwardIssue` = the other story |
+| This story changes or builds on an earlier story | **Relates** | Both show **relates to** |
+| Another story in the same epic that is related but not a dependency | **Relates** | Both show **relates to** |
+
+**Use "is blocked by" for every dependency.** Don't downgrade a dependency to
+*relates to*. If the dependency is only an assumption, say so and ask. Never use
+*Cloners*, *Duplicate* or *Prerequisites* unless the user asks. After linking,
+read the issue back and check the wording on this story says "is blocked by",
+not "blocks", where this story is the dependent one.
+
+**Ask about related stories for every story.** Once the epic is known (see
+"Creating it in Jira"), search the stories in it:
+`parent = <epic key> ORDER BY created DESC`. Show the key and summary of each,
+and ask in one message:
+
+- Which of these are related?
+- Does this story depend on any of them, or on a story in another epic
+  (**is blocked by**)? Does it block any?
+- Does it change or build on an earlier story, in this epic or another?
+
+If the story has no epic yet, still ask the second and third question. Don't
+guess a relationship from titles alone. Offer "none" for each, and skip the
+links if the answer is none.
 
 ## Paste-ready output
 
@@ -401,7 +430,9 @@ Then verify:
 - Variations use a table with the shared Given stated once.
 - The Design section has Figma and prototype links that point to the relevant
   screen or state, or the user confirmed there are none.
-- Mentioned stories are smart links in the text and linked issues in Jira.
+- Related stories were asked about, mentioned stories are smart links in the
+  text, and each is a linked issue in Jira with the right type (dependencies are
+  "is blocked by").
 - Requirements, dev notes, and testing operations are separated.
 - Empty sections, and placeholder text, have been removed.
 - The story contains no invented business rules or real citizen information.
@@ -428,6 +459,11 @@ Run "Review the draft" first, including the naming consistency pass.
 - **Sprint:** offer the active and future sprints on board 174 (from
   `getJiraBoardSprintData`), or none.
 
+Then ask the **related stories** questions from "Links" (stories in the same
+epic, dependencies, earlier stories this one modifies). They need the epic, so
+ask them right after it is chosen, and before you draft the Background, since a
+dependency or a change to an earlier story belongs in the text.
+
 Confirm the issue type and parent only if they are not already known. In `CCPM`
 the issue types are Story, Task, Bug, Spike and Design Task (plus Xray test
 types); use Task for the work listed under "Decide whether this is a story".
@@ -439,4 +475,5 @@ field, which the connector can't set (see `jira-integration`). **Create it
 with the status Proposed**, so nobody picks it up before the team has reviewed
 it. If Proposed isn't available in that project, create it in the starting
 status and tell the user it still needs to be marked as proposed. Finally,
-create the issue links to any mentioned stories and share the new issue's link.
+create the issue links for every related story (dependencies as **Blocks**, so
+this story reads "is blocked by"), then share the new issue's link.
