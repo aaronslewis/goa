@@ -19,6 +19,7 @@ import { HubShellComponent } from './notifications-hub/hub-shell.component';
 import { HubRouteData } from './notifications-hub/hub-variant';
 import { HubHomeComponent } from './notifications-hub/home/hub-home.component';
 import { HubNotificationsPageComponent } from './notifications-hub/notifications-page/hub-notifications-page.component';
+import { HubHomeV3Component } from './notifications-hub/home-v3/hub-home-v3.component';
 import { ProgramDetailsComponent } from './search-service/program-details/program-details.component';
 import { SearchLandingComponent } from './search-service/search-landing/search-landing.component';
 import { SearchResultsComponent } from './search-service/search-results/search-results.component';
@@ -63,9 +64,10 @@ export const routes: Routes = [
   { path: 'ecds-dashboard-v2', component: EcdsDashboardV2Component, title: 'ECDS Dashboard v2 — Home' },
   { path: 'notifications-scale', component: NotificationsScaleComponent, title: 'Notifications — Scaling exploration' },
   { path: 'notifications', component: NotificationsPageComponent, title: 'All notifications' },
-  // The notifications hub, three times: the side menu's Notifications item links
+  // The notifications hub, four times: the side menu's Notifications item links
   // to the page in one and opens a panel in the others, one of which also greys
-  // a notification when it's clicked (see HubVariant).
+  // a notification when it's clicked (see HubVariant). v3 makes Home a
+  // full-page notification centre with new-item markers.
   {
     path: 'notifications-hub',
     component: HubShellComponent,
@@ -94,6 +96,16 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeComponent, title: 'Home — Notifications hub (mark read)' },
       { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub (mark read)' },
+    ],
+  },
+  {
+    path: 'notifications-hub-v3',
+    component: HubShellComponent,
+    data: { hubBase: '/notifications-hub-v3', notificationsPanel: false } satisfies HubRouteData,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HubHomeV3Component, title: 'Home — Notifications hub v3' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub v3' },
     ],
   },
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },

@@ -84,6 +84,13 @@ export class PlatformPrototypesComponent {
           status: 'In progress',
         },
         {
+          label: 'Notifications hub v3 — DS v2',
+          description:
+            'Home is a full-page notification centre: each notification has a type icon and an action button, and new ones are marked with a blue line until the user acts on them.',
+          path: '/notifications-hub-v3',
+          status: 'In progress',
+        },
+        {
           label: 'All notifications page',
           description: 'Full notification history with unread/urgent/all tabs, date grouping, and read state.',
           path: '/notifications',

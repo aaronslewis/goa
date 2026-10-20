@@ -1,0 +1,138 @@
+:host {
+  display: block;
+}
+
+.empty {
+  margin: 0;
+  padding: var(--goa-space-xl) var(--goa-space-l);
+  font: var(--goa-typography-body-m);
+  color: var(--goa-color-text-secondary);
+}
+
+.group__label {
+  margin: 0;
+  padding: var(--goa-space-l) var(--goa-space-l) var(--goa-space-s) var(--goa-space-m);
+  font: var(--goa-typography-heading-2xs);
+  color: var(--goa-color-greyscale-600);
+  border-bottom: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'icon body meta';
+  column-gap: var(--goa-space-m);
+  padding: var(--goa-space-m) var(--goa-space-l);
+  border-bottom: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
+  background: var(--goa-color-greyscale-white);
+  color: var(--goa-color-text-default);
+}
+
+// An inset shadow rather than a border, so unread and read rows keep their
+// content aligned.
+.row--unread {
+  box-shadow: inset var(--goa-border-width-xl) 0 0 var(--goa-color-interactive-default);
+}
+
+.row--urgent {
+  background: var(--goa-color-emergency-background);
+}
+
+.row--important {
+  background: var(--goa-color-warning-background);
+}
+
+.row--information {
+  background: var(--goa-color-info-background);
+}
+
+.row__icon {
+  grid-area: icon;
+  align-self: start;
+}
+
+.row__body {
+  grid-area: body;
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-xs);
+}
+
+// Bold body text rather than heading-2xs, whose semibold renders narrower than
+// the message beneath it; Figma sets both at the same size.
+.row__title {
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  font-weight: var(--goa-font-weight-bold);
+}
+
+.row__message {
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  overflow-wrap: break-word;
+}
+
+.row__meta {
+  grid-area: meta;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--goa-space-s);
+}
+
+// Outlined secondary, as in the Figma pattern (white, blue border and text).
+// DS 2.0's own secondary is a filled light-blue pill; these overrides are local
+// to the row actions on purpose.
+.row__action {
+  --goa-button-secondary-color-bg: var(--goa-color-greyscale-white);
+  --goa-button-secondary-color-text: var(--goa-color-interactive-default);
+  --goa-button-secondary-border: var(--goa-border-width-m) solid var(--goa-color-interactive-default);
+  --goa-button-secondary-hover-color-bg: var(--goa-color-interactive-secondary);
+  --goa-button-secondary-hover-color-text: var(--goa-color-interactive-hover);
+  --goa-button-secondary-hover-border: var(--goa-border-width-m) solid var(--goa-color-interactive-hover);
+  --goa-button-secondary-focus-color-bg: var(--goa-color-greyscale-white);
+  --goa-button-secondary-focus-color-text: var(--goa-color-interactive-hover);
+  --goa-button-secondary-focus-border: var(--goa-border-width-m) solid var(--goa-color-interactive-hover);
+}
+
+.row__time-line {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-2xs);
+}
+
+.row__time {
+  font: var(--goa-typography-body-xs);
+  color: var(--goa-color-greyscale-600);
+  white-space: nowrap;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+// Narrow screens: the time and action drop under the message, left-aligned with it.
+@media (max-width: 623px) {
+  .row {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'icon body'
+      '. meta';
+    row-gap: var(--goa-space-s);
+  }
+
+  .row__meta {
+    align-items: flex-start;
+  }
+}

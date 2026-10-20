@@ -63,8 +63,24 @@ export class NotificationsService {
     this._all.update((list) => list.map((n) => (set.has(n.id) ? { ...n, dismissed: true } : n)));
   }
 
+  // v3: acting on a notification clears its new-item marker.
+  markSeen(id: string): void {
+    this.update(id, { isNew: false });
+  }
+
+  markAllSeen(ids: string[]): void {
+    const set = new Set(ids);
+    this._all.update((list) => list.map((n) => (set.has(n.id) ? { ...n, isNew: false } : n)));
+  }
+
   add(n: Omit<HubNotification, 'id' | 'dismissed' | 'createdByUser'>): void {
-    const created: HubNotification = { ...n, id: `user-${this.nextId++}`, dismissed: false, createdByUser: true };
+    const created: HubNotification = {
+      ...n,
+      id: `user-${this.nextId++}`,
+      dismissed: false,
+      isNew: true,
+      createdByUser: true,
+    };
     this._all.update((list) => [created, ...list].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()));
   }
 

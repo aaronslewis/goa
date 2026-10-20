@@ -23,6 +23,8 @@ export interface HubNotification {
   dismissed: boolean;
   // Set by clicking a row, only in the hub version that marks items read on click.
   read?: boolean;
+  // v3 only: seeded "new" items carry a blue line until the user acts on them.
+  isNew?: boolean;
   createdByUser?: boolean;
   notifyTo?: string;
 }
@@ -208,10 +210,19 @@ const DAYS_PER_MONTH = 30;
 
 export function buildSeedNotifications(now = new Date()): HubNotification[] {
   const rand = mulberry32(20260929);
+  // A separate stream, so v3's new-item markers don't change the other versions' seeded items.
+  const newRand = mulberry32(20261020);
   const pick = <T>(arr: T[]) => arr[Math.floor(rand() * arr.length)];
   const result: HubNotification[] = [];
 
-  const push = (id: string, t: Template, createdAt: Date, dismissed: boolean, p = pick(t.agency ? AGENCIES : PROGRAMS)) =>
+  const push = (
+    id: string,
+    t: Template,
+    createdAt: Date,
+    dismissed: boolean,
+    isNew: boolean,
+    p = pick(t.agency ? AGENCIES : PROGRAMS),
+  ) =>
     result.push({
       id,
       title: t.title,
@@ -221,6 +232,7 @@ export function buildSeedNotifications(now = new Date()): HubNotification[] {
       programId: p.id,
       createdAt,
       dismissed,
+      isNew,
     });
 
   // A few hand-placed items so Home always opens with something from today:
@@ -231,7 +243,7 @@ export function buildSeedNotifications(now = new Date()): HubNotification[] {
     [3, 150], // incident report updated
   ];
   today.forEach(([templateIndex, minsAgo], i) =>
-    push(`n-r${i}`, TEMPLATES[templateIndex], new Date(now.getTime() - minsAgo * 60_000), false),
+    push(`n-r${i}`, TEMPLATES[templateIndex], new Date(now.getTime() - minsAgo * 60_000), false, true),
   );
 
   // Exactly each event's monthly rate in every 30-day window, so the current
@@ -244,7 +256,10 @@ export function buildSeedNotifications(now = new Date()): HubNotification[] {
         const createdAt = weekdayInWindow(m);
         // Older items are far more likely to have been dismissed already.
         const dismissChance = m > 0 ? 0.85 : 0.25;
-        push(`n-${ti}-${m}-${i}`, t, createdAt, rand() < dismissChance);
+        const dismissed = rand() < dismissChance;
+        // Some of this month's active items are still new; nothing older is.
+        const isNew = !dismissed && m === 0 && newRand() < 0.4;
+        push(`n-${ti}-${m}-${i}`, t, createdAt, dismissed, isNew);
       }
     }
   });
