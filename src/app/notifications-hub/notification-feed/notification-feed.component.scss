@@ -34,8 +34,10 @@
 .row {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  border-top: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
-  border-bottom: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
+  border: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
+  border-radius: var(--goa-border-radius-m);
+  // Clips the strip to the card's rounded corners.
+  overflow: hidden;
   background: var(--row-tint);
   color: var(--goa-color-text-default);
 }
