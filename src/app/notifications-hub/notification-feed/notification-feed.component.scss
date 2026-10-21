@@ -66,6 +66,13 @@
 
 // Bold body text rather than heading-2xs, whose semibold renders narrower than
 // the message beneath it; Figma sets both at the same size.
+.row__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--goa-space-xs);
+}
+
 .row__title {
   margin: 0;
   font: var(--goa-typography-body-s);

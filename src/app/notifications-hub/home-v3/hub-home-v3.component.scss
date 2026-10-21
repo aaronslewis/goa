@@ -1,9 +1,8 @@
-// Keeps each row's action button close to its text instead of at the far edge
-// of a wide screen, so pointer users don't travel across the page to reach it.
-// No DS token sets a content width; 56rem fits the tab tray and
-// "Mark all as read" on one line.
+// Keeps each row's action button from drifting to the far edge of very wide
+// screens, so pointer users don't travel across the page to reach it. No DS
+// token sets a content width; 81.25rem is 1300px.
 .section-header,
 .tabs-area,
 .footer-link {
-  max-width: 56rem;
+  max-width: 81.25rem;
 }

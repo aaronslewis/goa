@@ -1,7 +1,7 @@
 import { Component, DestroyRef, computed, inject, input, output, signal } from '@angular/core';
 import { GoabIconType } from '@abgov/ui-components-common';
-import { GoabButton, GoabIcon, GoabIconButton } from '@abgov/angular-components';
-import { HubNotification, Severity } from '../notifications.data';
+import { GoabBadge, GoabButton, GoabIcon, GoabIconButton } from '@abgov/angular-components';
+import { HubNotification, SEVERITIES, Severity } from '../notifications.data';
 import { groupByDay, relativeTime } from '../notifications.service';
 
 const SEVERITY_ICON: Record<Severity, GoabIconType> = {
@@ -17,7 +17,7 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
 @Component({
   selector: 'hub-notification-feed',
   standalone: true,
-  imports: [GoabButton, GoabIcon, GoabIconButton],
+  imports: [GoabBadge, GoabButton, GoabIcon, GoabIconButton],
   templateUrl: './notification-feed.component.html',
   styleUrl: './notification-feed.component.scss',
 })
@@ -29,6 +29,9 @@ export class NotificationFeedComponent {
   readonly dismiss = output<string>();
 
   readonly groups = computed(() => groupByDay(this.items()));
+
+  // Every row gets its badge, informational included, unlike NotificationListComponent.
+  readonly severityMeta = Object.fromEntries(SEVERITIES.map((s) => [s.value, s]));
 
   // A single clock for every relative label (see NotificationListComponent).
   private readonly now = signal(new Date());
