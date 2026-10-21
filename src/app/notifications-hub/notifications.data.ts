@@ -278,3 +278,30 @@ export function buildSeedNotifications(now = new Date()): HubNotification[] {
 
   return result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 }
+
+// Click-through demo (/notifications-hub-demo): Home opens with three of
+// today's notifications, then demoArrival() lands a few seconds later.
+const demoItem = (id: string, t: Template, p: Program, person: string, educator: string, createdAt: Date, isNew: boolean) => ({
+  id,
+  title: t.title,
+  message: t.message(p, person, educator, createdAt),
+  linkLabel: t.linkLabel,
+  severity: t.severity,
+  programId: p.id,
+  createdAt,
+  dismissed: false,
+  isNew,
+});
+
+export function buildDemoNotifications(now = new Date()): HubNotification[] {
+  const ago = (mins: number) => new Date(now.getTime() - mins * 60_000);
+  return [
+    demoItem('demo-1', TEMPLATES[2], PROGRAM_BY_ID.get('80002817')!, 'Priya Sharma', 'Hannah Clarke', ago(25), true),
+    demoItem('demo-2', TEMPLATES[1], PROGRAM_BY_ID.get('80006033')!, 'Omar Haddad', 'Noah Singh', ago(110), false),
+    demoItem('demo-3', TEMPLATES[7], PROGRAM_BY_ID.get('80004102')!, 'Sarah Tremblay', 'Grace Olsen', ago(180), false),
+  ];
+}
+
+export function demoArrival(now = new Date()): HubNotification {
+  return demoItem('demo-4', TEMPLATES[0], PROGRAM_BY_ID.get('80001234')!, 'Jordan Blake', 'Marcus Reid', now, true);
+}

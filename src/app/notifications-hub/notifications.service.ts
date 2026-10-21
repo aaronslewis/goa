@@ -18,10 +18,15 @@ const HOME_WINDOW_DAYS = 30;
 
 @Injectable({ providedIn: 'root' })
 export class NotificationsService {
-  private readonly _all = signal<HubNotification[]>(buildSeedNotifications());
+  private readonly _all = signal<HubNotification[]>(this.seed());
   private nextId = 1;
 
   readonly all = this._all.asReadonly();
+
+  // Overridden by the demo, which starts from its own short list.
+  protected seed(): HubNotification[] {
+    return buildSeedNotifications();
+  }
 
   readonly homeItems = computed(() => {
     const now = Date.now();
@@ -45,6 +50,11 @@ export class NotificationsService {
       })),
     ];
   });
+
+  // A system notification arriving while the user is on the page.
+  receive(n: HubNotification): void {
+    this._all.update((list) => [n, ...list].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()));
+  }
 
   dismiss(id: string): void {
     this.update(id, { dismissed: true });

@@ -91,6 +91,13 @@ export class PlatformPrototypesComponent {
           status: 'In progress',
         },
         {
+          label: 'Notification centre — click-through demo',
+          description:
+            'Home opens with three notifications; a new critical one arrives after a few seconds. Filter to Critical, complete one, then view all notifications.',
+          path: '/notifications-hub-demo',
+          status: 'In progress',
+        },
+        {
           label: 'All notifications page',
           description: 'Full notification history with unread/urgent/all tabs, date grouping, and read state.',
           path: '/notifications',

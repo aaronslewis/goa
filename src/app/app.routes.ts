@@ -20,6 +20,8 @@ import { HubRouteData } from './notifications-hub/hub-variant';
 import { HubHomeComponent } from './notifications-hub/home/hub-home.component';
 import { HubNotificationsPageComponent } from './notifications-hub/notifications-page/hub-notifications-page.component';
 import { HubHomeV3Component } from './notifications-hub/home-v3/hub-home-v3.component';
+import { NotificationsService } from './notifications-hub/notifications.service';
+import { DemoNotificationsService } from './notifications-hub/demo-notifications.service';
 import { ProgramDetailsComponent } from './search-service/program-details/program-details.component';
 import { SearchLandingComponent } from './search-service/search-landing/search-landing.component';
 import { SearchResultsComponent } from './search-service/search-results/search-results.component';
@@ -106,6 +108,18 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeV3Component, title: 'Home — Notifications hub v3' },
       { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub v3' },
+    ],
+  },
+  // Click-through demo of v3: its own data (see DemoNotificationsService).
+  {
+    path: 'notifications-hub-demo',
+    component: HubShellComponent,
+    providers: [{ provide: NotificationsService, useClass: DemoNotificationsService }],
+    data: { hubBase: '/notifications-hub-demo', notificationsPanel: false, demo: true } satisfies HubRouteData,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HubHomeV3Component, title: 'Home — Notification centre demo' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notification centre demo' },
     ],
   },
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },

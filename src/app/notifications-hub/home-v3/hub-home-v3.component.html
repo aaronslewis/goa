@@ -47,4 +47,12 @@
     Showing active notifications from the last 30 days.
     <goab-link trailingIcon="arrow-forward"><a [href]="notificationsUrl">View all notifications</a></goab-link>
   </p>
+
+  @if (hub.demo) {
+    <p class="restart-link">
+      <goab-link leadingIcon="refresh"><a href="#" (click)="restartDemo($event)">Restart demo</a></goab-link>
+    </p>
+  }
 </div>
+
+<goab-temporary-notification-ctrl></goab-temporary-notification-ctrl>
