@@ -11,16 +11,24 @@
 
 .group__label {
   margin: 0;
-  padding: var(--goa-space-l) var(--goa-space-l) var(--goa-space-s) var(--goa-space-m);
+  padding: var(--goa-space-l) var(--goa-space-m) var(--goa-space-s);
   font: var(--goa-typography-heading-2xs);
   color: var(--goa-color-greyscale-600);
-  border-bottom: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
 }
 
+// Each notification is its own card, spaced apart so rows are easy to tell
+// apart and target. The inset matches the day heading's left edge.
 .list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 var(--goa-space-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-s);
+}
+
+.group:last-child .list {
+  padding-bottom: var(--goa-space-m);
 }
 
 .row {
@@ -29,7 +37,8 @@
   grid-template-areas: 'icon body meta';
   column-gap: var(--goa-space-m);
   padding: var(--goa-space-m) var(--goa-space-l);
-  border-bottom: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
+  border: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+  border-radius: var(--goa-border-radius-m);
   background: var(--goa-color-greyscale-white);
   color: var(--goa-color-text-default);
 }
