@@ -82,15 +82,26 @@
   <p class="result-count" role="status">{{ rangeLabel() }}</p>
 
   <goab-container padding="compact">
-    <hub-notification-list
-      class="list"
-      [items]="pageItems()"
-      [allowRestore]="true"
-      [markReadOnClick]="hub.markReadOnClick"
-      (read)="service.markRead($event)"
-      emptyMessage="Try removing a filter or choosing a wider date range."
-      (dismiss)="service.dismiss($event)"
-      (restore)="service.restore($event)"></hub-notification-list>
+    @if (hub.cardRows) {
+      <hub-notification-feed
+        class="list"
+        [items]="pageItems()"
+        [allowRestore]="true"
+        emptyMessage="Try removing a filter or choosing a wider date range."
+        (open)="service.markSeen($event)"
+        (dismiss)="service.dismiss($event)"
+        (restore)="service.restore($event)"></hub-notification-feed>
+    } @else {
+      <hub-notification-list
+        class="list"
+        [items]="pageItems()"
+        [allowRestore]="true"
+        [markReadOnClick]="hub.markReadOnClick"
+        (read)="service.markRead($event)"
+        emptyMessage="Try removing a filter or choosing a wider date range."
+        (dismiss)="service.dismiss($event)"
+        (restore)="service.restore($event)"></hub-notification-list>
+    }
   </goab-container>
 
   @if (filtered().length > pageSize) {

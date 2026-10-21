@@ -103,7 +103,7 @@ export const routes: Routes = [
   {
     path: 'notifications-hub-v3',
     component: HubShellComponent,
-    data: { hubBase: '/notifications-hub-v3', notificationsPanel: false } satisfies HubRouteData,
+    data: { hubBase: '/notifications-hub-v3', notificationsPanel: false, cardRows: true } satisfies HubRouteData,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeV3Component, title: 'Home — Notifications hub v3' },
@@ -115,7 +115,7 @@ export const routes: Routes = [
     path: 'notifications-hub-demo',
     component: HubShellComponent,
     providers: [{ provide: NotificationsService, useClass: DemoNotificationsService }],
-    data: { hubBase: '/notifications-hub-demo', notificationsPanel: false, demo: true } satisfies HubRouteData,
+    data: { hubBase: '/notifications-hub-demo', notificationsPanel: false, demo: true, cardRows: true } satisfies HubRouteData,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeV3Component, title: 'Home — Notification centre demo' },

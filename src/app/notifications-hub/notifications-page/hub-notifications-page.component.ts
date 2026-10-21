@@ -17,6 +17,7 @@ import {
 } from '@abgov/ui-components-common';
 import { CompactDatePickerDirective } from '../compact-date-picker.directive';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
+import { NotificationFeedComponent } from '../notification-feed/notification-feed.component';
 import { AddNotificationDrawerComponent } from '../add-notification-drawer/add-notification-drawer.component';
 import { NotificationsService } from '../notifications.service';
 import { HubVariant } from '../hub-variant';
@@ -52,6 +53,7 @@ function parseIsoDate(s: string): Date | null {
     GoabPagination,
     CompactDatePickerDirective,
     NotificationListComponent,
+    NotificationFeedComponent,
     AddNotificationDrawerComponent,
   ],
   templateUrl: './hub-notifications-page.component.html',

@@ -25,9 +25,12 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
 export class NotificationFeedComponent {
   readonly items = input.required<HubNotification[]>();
   readonly emptyMessage = input('No notifications.');
+  // On the Notifications page completed items stay visible and can be restored.
+  readonly allowRestore = input(false);
 
   readonly open = output<string>();
   readonly dismiss = output<string>();
+  readonly restore = output<string>();
 
   readonly groups = computed(() => groupByDay(this.items()));
 

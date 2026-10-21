@@ -64,6 +64,17 @@
   --row-tint: var(--goa-color-greyscale-white);
 }
 
+// Completed items on the Notifications page: grey, so active ones stand out.
+.row--dismissed {
+  --row-strip: var(--goa-color-greyscale-150);
+  --row-tint: var(--goa-color-greyscale-50);
+
+  .row__title,
+  .row__message {
+    color: var(--goa-color-greyscale-700);
+  }
+}
+
 .row__strip {
   padding: var(--goa-space-m);
   background: var(--row-strip);
