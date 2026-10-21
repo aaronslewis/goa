@@ -330,7 +330,7 @@ markdown cannot make panels or status lozenges. Shape:
 <h1>Acceptance criteria</h1>
 <h2>1. [Group name]</h2>
 <p>AC 1.1 <strong>[Verb and noun]</strong> — [What the user experiences. Button: <span style="color: #0747a6">Button name</span>. Page or UX copy: <em>Page title</em>.]</p>
-<p><span style="color: #ff991f">Question: [Open question about AC 1.1, placed right under it.]</span></p>
+<p><span style="color: #db6e21">Question: [Open question about AC 1.1, placed right under it.]</span></p>
 
 <h1>Out of scope</h1>
 <ul><li>❌ [Exclusion]</li></ul>
@@ -346,14 +346,17 @@ Omit empty sections.
 ## Notes and open questions
 
 Put comments and unresolved questions **in the story, right where they apply**,
-in dark orange (`#ff991f`), as their own short paragraph directly under the
+in dark orange (`#db6e21`), as their own short paragraph directly under the
 criterion or section they concern. Start with "Question:" for something that
 needs an answer or "Note:" for context the team should know. Phrase a question
 so it can be answered with a decision. Use the same orange for nothing else.
 
-Jira's text palette has one orange; this is its darkest, and it is light on a
-white background. Keep the notes short and begin them with the word so they
-don't rely on colour. In a chat draft, show a note as `[Question: …]`.
+`#db6e21` is the orange Jira's own editor shows. It isn't in the text-colour
+list the connector documents (which has only `#ff991f`), so the first time you
+create a story with a note, read the issue back as HTML and check the colour
+survived. If Jira dropped or changed it, tell the user. Begin each note with the
+word "Question" or "Note" so it doesn't rely on colour. In a chat draft, show a
+note as `[Question: …]`.
 
 Notes are for matters that block or change building or testing. Delete a note
 once it's answered, and don't keep one that has become a criterion.
