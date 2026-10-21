@@ -12,7 +12,7 @@ import { HubVariant } from '../hub-variant';
   standalone: true,
   imports: [GoabBadge, GoabButton, GoabContainer, GoabLink, GoabTab, GoabTabs, NotificationFeedComponent],
   templateUrl: './hub-home-v3.component.html',
-  styleUrl: '../home/hub-home.component.scss',
+  styleUrls: ['../home/hub-home.component.scss', './hub-home-v3.component.scss'],
 })
 export class HubHomeV3Component {
   readonly service = inject(NotificationsService);
