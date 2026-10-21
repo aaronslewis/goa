@@ -6,7 +6,7 @@ import { NotificationsService } from '../notifications.service';
 import { HubVariant } from '../hub-variant';
 
 // v3 home: the notification centre is the whole page, with new rows marked
-// by a blue line (Figma "In-App Notifications", 1933:79701).
+// by their severity tint (Figma "In-App Notifications", 1933:79701).
 @Component({
   selector: 'hub-home-v3',
   standalone: true,

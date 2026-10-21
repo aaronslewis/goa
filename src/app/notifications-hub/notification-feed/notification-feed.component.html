@@ -9,7 +9,6 @@
       @for (n of group.items; track n.id) {
         <li
           class="row"
-          [class.row--unread]="n.isNew"
           [class.row--urgent]="n.isNew && !n.createdByUser && n.severity === 'urgent'"
           [class.row--important]="n.isNew && !n.createdByUser && n.severity === 'important'"
           [class.row--information]="n.isNew && !n.createdByUser && n.severity === 'information'">

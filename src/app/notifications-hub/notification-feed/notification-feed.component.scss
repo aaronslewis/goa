@@ -34,12 +34,6 @@
   color: var(--goa-color-text-default);
 }
 
-// An inset shadow rather than a border, so unread and read rows keep their
-// content aligned.
-.row--unread {
-  box-shadow: inset var(--goa-border-width-xl) 0 0 var(--goa-color-interactive-default);
-}
-
 .row--urgent {
   background: var(--goa-color-emergency-background);
 }

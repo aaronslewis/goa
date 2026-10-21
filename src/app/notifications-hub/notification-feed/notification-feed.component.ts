@@ -11,8 +11,8 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
 };
 
 // Row anatomy from the Figma "In-App Notifications" pattern (1933:79701): type
-// icon, title and message, then time and an action button. New rows carry a
-// blue line on the left edge. Used by the v3 hub only; the other versions keep
+// icon, title and message, then time and an action button. New rows keep their
+// severity tint until the user acts on them. Used by the v3 hub only; the other versions keep
 // NotificationListComponent.
 @Component({
   selector: 'hub-notification-feed',
