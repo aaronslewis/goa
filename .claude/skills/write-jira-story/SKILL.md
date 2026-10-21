@@ -42,8 +42,9 @@ Read the available source before drafting:
 
 Treat the prototype as evidence of intended behaviour, not as proof of every
 business rule. Do not infer policy, validation, permissions, error handling, or
-system behaviour that the source does not establish. Raise unresolved matters
-as questions in your hand-over (see "After the story").
+system behaviour that the source does not establish. Put unresolved matters in
+the story as dark orange notes right where they apply (see "Notes and open
+questions"), and list them in your hand-over (see "After the story").
 
 Never include real citizen information in a story, screenshot, example, or test
 record. Use fictional data or role-based descriptions.
@@ -189,13 +190,19 @@ Rules:
   sentence.
 - When a condition or trigger matters, write the sentence as Given / when / then
   (see below); otherwise state it plainly.
-- **Colour button names only; no quote marks.** Make a button or link name
-  **dark blue** (`#0747a6`), written exactly as it appears on screen. Page,
-  step, screen, heading and container names stay regular black text, with no
-  colour and no quote marks. Colour alone doesn't carry meaning, so add the noun
-  where a name could be mistaken for something else ("the Start next
-  acknowledgement button", "the Confirmation page"). In a chat draft there is no
-  colour, so show the names as plain text.
+- **Style on-screen text consistently; no quote marks.** Write every name
+  exactly as it appears on screen, and style it by kind:
+  - **Buttons and links:** dark blue (`#0747a6`), not italic.
+  - **Page titles, section titles (headings, container and card titles) and
+    other UX copy** (descriptions, messages, labels, column headers,
+    placeholders): *italic*, in the normal text colour.
+  - Nothing else is italic or coloured. The story's own headings and bold labels
+    are not on-screen text, and stay as they are.
+
+  Style alone doesn't carry meaning, so add the noun where a name could be
+  mistaken for something else ("the Start next acknowledgement button", "the
+  Confirmation page"). In a chat draft, use markdown italics for on-screen text
+  and plain text for buttons; the colours only appear in the Jira HTML.
 - One behaviour or business outcome per criterion.
 - Make the result observable to the actor or through a defined system result.
 - Use concrete inputs and expected outputs for calculations and rules.
@@ -322,7 +329,8 @@ markdown cannot make panels or status lozenges. Shape:
 
 <h1>Acceptance criteria</h1>
 <h2>1. [Group name]</h2>
-<p>AC 1.1 <strong>[Verb and noun]</strong> — [What the user experiences. Button: <span style="color: #0747a6">Button name</span>. Page names stay plain text.]</p>
+<p>AC 1.1 <strong>[Verb and noun]</strong> — [What the user experiences. Button: <span style="color: #0747a6">Button name</span>. Page or UX copy: <em>Page title</em>.]</p>
+<p><span style="color: #ff991f">Question: [Open question about AC 1.1, placed right under it.]</span></p>
 
 <h1>Out of scope</h1>
 <ul><li>❌ [Exclusion]</li></ul>
@@ -335,11 +343,26 @@ Use `data-color="blue"` and the text `ECDS` for the internal portal. A
 Given / When / Then table is a normal `<table>` with `<thead>`/`<tbody>`.
 Omit empty sections.
 
+## Notes and open questions
+
+Put comments and unresolved questions **in the story, right where they apply**,
+in dark orange (`#ff991f`), as their own short paragraph directly under the
+criterion or section they concern. Start with "Question:" for something that
+needs an answer or "Note:" for context the team should know. Phrase a question
+so it can be answered with a decision. Use the same orange for nothing else.
+
+Jira's text palette has one orange; this is its darkest, and it is light on a
+white background. Keep the notes short and begin them with the word so they
+don't rely on colour. In a chat draft, show a note as `[Question: …]`.
+
+Notes are for matters that block or change building or testing. Delete a note
+once it's answered, and don't keep one that has become a criterion.
+
 ## After the story
 
-Under the story, briefly list assumptions, open questions that block building
-or testing (each phrased as a specific question), and any recommended linked
-testing task. Do not repeat or explain sections that are already clear.
+Under the story, briefly list the assumptions you made, the orange notes (so
+the user can answer them without scrolling the story), and any recommended
+linked testing task. Do not repeat or explain sections that are already clear.
 
 ## Testing task format
 
@@ -424,9 +447,10 @@ Then verify:
 - The story describes one coherent behaviour or outcome.
 - Every acceptance criterion has an observable result and a short bold label
   that starts with a verb, with no other bold in the sentence.
-- Button names are dark blue, page names are plain black, neither has quote
-  marks, and every web address is a hyperlink.
-- Relevant alternate or failure cases are covered or raised as questions.
+- Button names are dark blue; page and section titles and other UX copy are
+  italic; none has quote marks; and every web address is a hyperlink.
+- Relevant alternate or failure cases are covered or raised as dark orange
+  notes in place.
 - Variations use a table with the shared Given stated once.
 - The Design section has Figma and prototype links that point to the relevant
   screen or state, or the user confirmed there are none.
