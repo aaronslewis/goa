@@ -49,9 +49,7 @@ export class HubHomeV3Component {
     return 'Good evening';
   }
 
-  readonly tabs = computed(() =>
-    this.service.homeTabs().map((tab) => ({ ...tab, unread: tab.items.filter((n) => n.isNew).length })),
-  );
+  readonly tabs = this.service.homeTabs;
 
   // Completing is the consequential bulk action, so it's offered one severity at
   // a time, never on All.

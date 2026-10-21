@@ -19,12 +19,12 @@
         <ng-template #tabHeading>
           <span class="tab-heading">
             {{ tab.label }}
-            @if (tab.unread > 0) {
+            @if (tab.items.length > 0) {
               <goab-badge
                 [type]="tab.badge ?? 'information'"
                 emphasis="subtle"
-                [content]="'' + tab.unread"
-                [ariaLabel]="tab.unread + ' unread'"
+                [content]="'' + tab.items.length"
+                [ariaLabel]="tab.items.length + ' notifications'"
                 size="medium"></goab-badge>
             }
           </span>
