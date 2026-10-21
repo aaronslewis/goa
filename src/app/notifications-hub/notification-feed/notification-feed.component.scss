@@ -24,7 +24,7 @@
   padding: 0 var(--goa-space-m);
   display: flex;
   flex-direction: column;
-  gap: var(--goa-space-s);
+  gap: var(--goa-space-l);
 }
 
 .group:last-child .list {
@@ -33,92 +33,99 @@
 
 .row {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-areas: 'icon body meta';
-  column-gap: var(--goa-space-m);
-  padding: var(--goa-space-m) var(--goa-space-l);
-  border: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
-  border-radius: var(--goa-border-radius-m);
-  background: var(--goa-color-greyscale-white);
+  grid-template-columns: auto minmax(0, 1fr);
+  border-top: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
+  border-bottom: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
+  background: var(--row-tint);
   color: var(--goa-color-text-default);
 }
 
+// Strip uses each status's border colour: the -light tints are too close to
+// the body tint to read as a separate band, especially for information.
 .row--urgent {
-  background: var(--goa-color-emergency-background);
+  --row-strip: var(--goa-color-emergency-border);
+  --row-tint: var(--goa-color-emergency-background);
 }
 
 .row--important {
-  background: var(--goa-color-warning-background);
+  --row-strip: var(--goa-color-warning-border);
+  --row-tint: var(--goa-color-warning-background);
 }
 
 .row--information {
-  background: var(--goa-color-info-background);
+  --row-strip: var(--goa-color-info-border);
+  --row-tint: var(--goa-color-info-background);
 }
 
-.row__icon {
-  grid-area: icon;
-  align-self: start;
+.row--reminder {
+  --row-strip: var(--goa-color-extended-lilac-border);
+  --row-tint: var(--goa-color-greyscale-white);
+}
+
+.row__strip {
+  padding: var(--goa-space-m);
+  background: var(--row-strip);
+}
+
+.row__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--goa-space-m);
+  padding: var(--goa-space-m) var(--goa-space-l);
 }
 
 .row__body {
-  grid-area: body;
   display: flex;
   flex-direction: column;
   gap: var(--goa-space-xs);
 }
 
-// Bold body text rather than heading-2xs, whose semibold renders narrower than
-// the message beneath it; Figma sets both at the same size.
-.row__heading {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--goa-space-xs);
-}
-
-.row__title {
+.row__status {
   margin: 0;
   font: var(--goa-typography-body-s);
+  font-weight: var(--goa-font-weight-bold);
+  text-transform: uppercase;
+  color: var(--goa-color-greyscale-600);
+}
+
+// Bold body text rather than heading-2xs, whose semibold renders narrower than
+// the message beneath it.
+.row__title {
+  margin: 0;
+  font: var(--goa-typography-body-m);
   font-weight: var(--goa-font-weight-bold);
 }
 
 .row__message {
   margin: 0;
-  font: var(--goa-typography-body-s);
+  font: var(--goa-typography-body-m);
   overflow-wrap: break-word;
 }
 
+// Time at the top, action at the bottom, as in the card design.
 .row__meta {
-  grid-area: meta;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: space-between;
   gap: var(--goa-space-s);
-}
-
-// Outlined secondary, as in the Figma pattern (white, blue border and text).
-// DS 2.0's own secondary is a filled light-blue pill; these overrides are local
-// to the row actions on purpose.
-.row__action {
-  --goa-button-secondary-color-bg: var(--goa-color-greyscale-white);
-  --goa-button-secondary-color-text: var(--goa-color-interactive-default);
-  --goa-button-secondary-border: var(--goa-border-width-m) solid var(--goa-color-interactive-default);
-  --goa-button-secondary-hover-color-bg: var(--goa-color-interactive-secondary);
-  --goa-button-secondary-hover-color-text: var(--goa-color-interactive-hover);
-  --goa-button-secondary-hover-border: var(--goa-border-width-m) solid var(--goa-color-interactive-hover);
-  --goa-button-secondary-focus-color-bg: var(--goa-color-greyscale-white);
-  --goa-button-secondary-focus-color-text: var(--goa-color-interactive-hover);
-  --goa-button-secondary-focus-border: var(--goa-border-width-m) solid var(--goa-color-interactive-hover);
 }
 
 .row__time-line {
   display: flex;
   align-items: center;
-  gap: var(--goa-space-2xs);
+  gap: var(--goa-space-xs);
+}
+
+.row__dot {
+  width: var(--goa-space-s);
+  height: var(--goa-space-s);
+  border-radius: 50%;
+  background: var(--goa-color-success-default);
 }
 
 .row__time {
-  font: var(--goa-typography-body-xs);
+  font: var(--goa-typography-body-s);
   color: var(--goa-color-greyscale-600);
   white-space: nowrap;
 }
@@ -132,13 +139,10 @@
   white-space: nowrap;
 }
 
-// Narrow screens: the time and action drop under the message, left-aligned with it.
+// Narrow screens: the time and action drop under the message.
 @media (max-width: 623px) {
-  .row {
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas:
-      'icon body'
-      '. meta';
+  .row__content {
+    grid-template-columns: minmax(0, 1fr);
     row-gap: var(--goa-space-s);
   }
 

@@ -7,45 +7,36 @@
     <h3 class="group__label" [id]="'feed-grp-' + group.key">{{ group.label }}</h3>
     <ul class="list">
       @for (n of group.items; track n.id) {
-        <li
-          class="row"
-          [class.row--urgent]="n.isNew && !n.createdByUser && n.severity === 'urgent'"
-          [class.row--important]="n.isNew && !n.createdByUser && n.severity === 'important'"
-          [class.row--information]="n.isNew && !n.createdByUser && n.severity === 'information'">
-          <goab-icon class="row__icon" [type]="icon(n)" size="medium"></goab-icon>
-          <div class="row__body">
-            <div class="row__heading">
+        <li class="row" [class]="'row--' + kind(n)">
+          <div class="row__strip">
+            <goab-icon [type]="icon(n)" size="medium"></goab-icon>
+          </div>
+          <div class="row__content">
+            <div class="row__body">
+              <p class="row__status">{{ statusLabel(n) }}</p>
               <h4 class="row__title">
                 @if (n.isNew) {<span class="visually-hidden">New: </span>}{{ n.title }}
               </h4>
-              @if (n.createdByUser) {
-                <goab-badge type="lilac" emphasis="subtle" [icon]="true" iconType="alarm" content="My reminder"></goab-badge>
-              } @else if (n.severity) {
-                <goab-badge
-                  [type]="severityMeta[n.severity].badge"
-                  emphasis="subtle"
-                  [content]="severityMeta[n.severity].label"
-                  [icon]="true"></goab-badge>
+              <p class="row__message">
+                @for (part of n.message; track $index) {<span>{{ part.text }}</span>}
+              </p>
+            </div>
+            <div class="row__meta">
+              <div class="row__time-line">
+                @if (n.isNew) {<span class="row__dot" aria-hidden="true"></span>}
+                <span class="row__time">{{ timeLabel(n) }}</span>
+                <goab-icon-button
+                  icon="close"
+                  size="small"
+                  variant="dark"
+                  [ariaLabel]="'Dismiss: ' + n.title"
+                  [title]="'Dismiss'"
+                  (onClick)="dismiss.emit(n.id)"></goab-icon-button>
+              </div>
+              @if (n.linkLabel) {
+                <goab-button type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.linkLabel }}</goab-button>
               }
             </div>
-            <p class="row__message">
-              @for (part of n.message; track $index) {<span>{{ part.text }}</span>}
-            </p>
-          </div>
-          <div class="row__meta">
-            <div class="row__time-line">
-              <span class="row__time">{{ timeLabel(n) }}</span>
-              <goab-icon-button
-                icon="close"
-                size="small"
-                variant="dark"
-                [ariaLabel]="'Dismiss: ' + n.title"
-                [title]="'Dismiss'"
-                (onClick)="dismiss.emit(n.id)"></goab-icon-button>
-            </div>
-            @if (n.linkLabel) {
-              <goab-button class="row__action" type="secondary" size="compact" (onClick)="open.emit(n.id)">{{ n.linkLabel }}</goab-button>
-            }
           </div>
         </li>
       }
