@@ -35,14 +35,19 @@ export class HubHomeV3Component {
     this.service.homeTabs().map((tab) => ({ ...tab, unread: tab.items.filter((n) => n.isNew).length })),
   );
 
-  readonly activeTabData = computed(() => this.tabs()[this.activeTab() - 1]);
+  // Completing is the consequential bulk action, so it's offered one severity at
+  // a time, never on All.
+  readonly activeSeverityTab = computed(() => {
+    const tab = this.tabs()[this.activeTab() - 1];
+    return tab && tab.key !== 'all' ? tab : null;
+  });
 
   onTabChange(detail: GoabTabsOnChangeDetail): void {
     this.activeTab.set(detail.tab);
   }
 
-  markAllRead(): void {
-    const tab = this.activeTabData();
-    if (tab) this.service.markAllSeen(tab.items.map((n) => n.id));
+  markAllComplete(): void {
+    const tab = this.activeSeverityTab();
+    if (tab) this.service.dismissMany(tab.items.map((n) => n.id));
   }
 }

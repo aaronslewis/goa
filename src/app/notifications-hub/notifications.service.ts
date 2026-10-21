@@ -68,11 +68,6 @@ export class NotificationsService {
     this.update(id, { isNew: false });
   }
 
-  markAllSeen(ids: string[]): void {
-    const set = new Set(ids);
-    this._all.update((list) => list.map((n) => (set.has(n.id) ? { ...n, isNew: false } : n)));
-  }
-
   add(n: Omit<HubNotification, 'id' | 'dismissed' | 'createdByUser'>): void {
     const created: HubNotification = {
       ...n,
