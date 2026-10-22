@@ -12,8 +12,7 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
 
 // Card anatomy from the Figma notification item: a tinted strip with the type
 // icon, then status, title and message, with the time and a text action on the
-// right. Every card carries its severity colours; a dot by the time marks new
-// ones until the user acts on them. Used by the v3 hub only; the other versions keep
+// right. Every card carries its severity colours. Used by the v3 hub only; the other versions keep
 // NotificationListComponent.
 @Component({
   selector: 'hub-notification-feed',

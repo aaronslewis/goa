@@ -23,7 +23,6 @@
             </div>
             <div class="row__meta">
               <div class="row__time-line">
-                @if (n.isNew && !n.dismissed) {<span class="row__dot" aria-hidden="true"></span>}
                 <span class="row__time">{{ timeLabel(n) }}</span>
                 @if (!n.dismissed) {
                   <goab-icon-button

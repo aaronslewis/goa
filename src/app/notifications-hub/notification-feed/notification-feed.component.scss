@@ -130,13 +130,6 @@
   gap: var(--goa-space-xs);
 }
 
-.row__dot {
-  width: var(--goa-space-s);
-  height: var(--goa-space-s);
-  border-radius: 50%;
-  background: var(--goa-color-success-default);
-}
-
 .row__time {
   font: var(--goa-typography-body-s);
   color: var(--goa-color-greyscale-600);
