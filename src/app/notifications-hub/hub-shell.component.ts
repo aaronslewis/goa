@@ -119,7 +119,7 @@ export class HubShellComponent implements AfterViewInit {
   readonly userName = 'Edna Mode';
   readonly userSecondaryText = 'edna.mode@gov.ab.ca';
 
-  readonly homeItem: MenuItem = { label: 'Home', icon: 'grid:outline', url: this.hub.homeUrl };
+  readonly homeItem: MenuItem = { label: 'Home', icon: 'home:outline', url: this.hub.homeUrl };
   readonly searchItem: MenuItem = { label: 'Search', icon: 'search:outline', url: '#' };
   readonly helpItem: MenuItem = { label: 'Help Centre', icon: 'help-circle:outline', url: '#' };
   readonly notificationsItem: MenuItem = {
@@ -179,7 +179,7 @@ export class HubShellComponent implements AfterViewInit {
     {
       kind: 'group',
       heading: 'Family Day Home Agency Contract',
-      icon: 'home:outline',
+      icon: 'business:outline',
       items: [{ label: 'Programs', url: '#' }, { label: 'Contract Management', url: '#' }],
     },
     { kind: 'item', label: 'Family Portal', icon: 'people:outline', url: '#' },
