@@ -11,6 +11,7 @@ import {
   GoabIcon,
 } from '@abgov/angular-components';
 import { hideWorkSideMenuScrollbarButtons } from '../shared/hide-work-side-menu-scrollbar-buttons';
+import { useCustomWorkSideMenuGroupIcon } from '../shared/custom-work-side-menu-group-icon';
 import { NotificationsPanelComponent } from './notifications-panel/notifications-panel.component';
 import { HubVariant } from './hub-variant';
 
@@ -78,6 +79,8 @@ export class HubShellComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     const host = this.el.nativeElement as HTMLElement;
     hideWorkSideMenuScrollbarButtons(host);
+    // Ionicons has no house-with-people icon; `business` stays as the fallback.
+    useCustomWorkSideMenuGroupIcon(host, 'Family Day Home Agency Contract', 'icons/family-day-home.svg');
     host.addEventListener(
       '_update',
       (e) => {
