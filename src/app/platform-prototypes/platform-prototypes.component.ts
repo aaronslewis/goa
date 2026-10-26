@@ -138,7 +138,7 @@ export class PlatformPrototypesComponent {
         {
           label: 'Provider portal notifications',
           description:
-            'The provider portal menu with a Notifications page for child care providers: grants to sign, claims processed, incident reports and access changes.',
+            'The provider portal menu with a Notifications page for child care providers: grants to sign, claims, incident reports, access changes and child registration events.',
           path: '/provider-portal-notifications',
           status: 'In progress',
         },
