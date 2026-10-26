@@ -140,6 +140,18 @@ export const routes: Routes = [
       { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notification centre demo' },
     ],
   },
+  // The click-through demo with its notifications in the side-menu panel.
+  {
+    path: 'notifications-hub-demo-panel',
+    component: HubShellComponent,
+    providers: [{ provide: NotificationsService, useClass: DemoNotificationsService }],
+    data: { hubBase: '/notifications-hub-demo-panel', notificationsPanel: true, demo: true, cardRows: true } satisfies HubRouteData,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HubHomePlainComponent, title: 'Home — Notification centre demo (panel)' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notification centre demo (panel)' },
+    ],
+  },
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },
   { path: 'menu', component: MainMenuComponent, title: 'Workspace menu' },
   { path: 'menu-2', component: MainMenu2Component, title: 'Workspace menu (variation)' },

@@ -1,3 +1,12 @@
 <div class="page">
   <h1 class="greeting">{{ greeting }}, {{ firstName }}</h1>
+
+  @if (hub.demo) {
+    <p class="restart-link">
+      <goab-link leadingIcon="refresh"><a href="#" (click)="restartDemo($event)">Restart demo</a></goab-link>
+    </p>
+  }
 </div>
+
+<!-- The demo announces its arriving notification here. -->
+<goab-temporary-notification-ctrl></goab-temporary-notification-ctrl>
