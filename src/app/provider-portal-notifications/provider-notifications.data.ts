@@ -12,12 +12,18 @@ const PROGRAM_BY_ID = new Map(PROVIDER_PROGRAMS.map((p) => [p.id, p]));
 
 interface Template {
   severity: Severity;
-  title: string;
-  message: (p: Program, who: string, detail: string) => MessagePart[];
+  // A function when the title carries a detail, such as days until expiry.
+  title: string | ((detail: string) => string);
+  // `who` is the person or child the event is about; `detail` is event-specific
+  // (a month, service, funding category, age or days); `at` is when it was created.
+  message: (p: Program, who: string, detail: string, at: Date) => MessagePart[];
   linkLabel: string;
 }
 
 const bold = (text: string): MessagePart => ({ text, bold: true });
+
+const longDate = (d: Date) => d.toLocaleDateString('en-CA', { month: 'long', day: 'numeric', year: 'numeric' });
+const inDays = (at: Date, days: string) => new Date(at.getTime() + Number(days) * 864e5);
 
 // Provider-facing events: what happened to their own program, claims, funding
 // and access. Staff-only events (licensing reviews, agency non-compliance) are
@@ -65,6 +71,89 @@ const TEMPLATES = {
     ],
     linkLabel: 'View user access',
   },
+  // Child registration: parents confirm to the ministry that the child is theirs
+  // and registered properly, so each event keeps the provider, the ministry and
+  // the parent in step.
+  fundingApproved: {
+    severity: 'information',
+    title: 'Parent funding application was approved',
+    message: (p, child, category) => [
+      { text: `The funding application for ${child} at ` },
+      bold(p.name),
+      { text: ` was approved and assigned to ${category}. The registration now shows what the family is eligible for.` },
+    ],
+    linkLabel: 'View registration',
+  },
+  parentRegistration: {
+    severity: 'important',
+    title: 'Parent-led registration needs your attention',
+    message: (p, child) => [
+      { text: `A parent registered ${child} at ` },
+      bold(p.name),
+      { text: '. Confirm the child attends your program.' },
+    ],
+    linkLabel: 'Review registration',
+  },
+  agingOut: {
+    severity: 'important',
+    title: 'Child is aging out of your program',
+    message: (p, child, age, at) => [
+      { text: `${child} turns ${age} on ${longDate(inDays(at, '30'))} and is aging out of ` },
+      bold(p.name),
+      { text: '. Check whether the registration needs to change.' },
+    ],
+    linkLabel: 'View registration',
+  },
+  specialNeedsExpiring: {
+    severity: 'important',
+    title: (days) => `Special needs status expires in ${days} days`,
+    message: (p, child, days, at) => [
+      { text: `The special needs status for ${child} at ` },
+      bold(p.name),
+      { text: ` expires on ${longDate(inDays(at, days))}. Update it before then to keep the status.` },
+    ],
+    linkLabel: 'View registration',
+  },
+  fundingExpiring: {
+    severity: 'important',
+    title: (days) => `Funding expires in ${days} days`,
+    message: (p, child, days, at) => [
+      { text: `Funding for ${child} at ` },
+      bold(p.name),
+      { text: ` expires on ${longDate(inDays(at, days))}. Submit a renewal to keep it.` },
+    ],
+    linkLabel: 'Submit renewal',
+  },
+  fundingExpiringSoon: {
+    severity: 'urgent',
+    title: (days) => `Funding expires in ${days} days`,
+    message: (p, child, days, at) => [
+      { text: `Funding for ${child} at ` },
+      bold(p.name),
+      { text: ` expires on ${longDate(inDays(at, days))}. Submit a renewal now to avoid a gap in funding.` },
+    ],
+    linkLabel: 'Submit renewal',
+  },
+  registeredElsewhere: {
+    severity: 'important',
+    title: 'Child is also registered at another program',
+    message: (p, child) => [
+      { text: `${child}, registered at ` },
+      bold(p.name),
+      { text: ', has also been registered at another program. End a registration or change the funding allocation.' },
+    ],
+    linkLabel: 'Review registration',
+  },
+  registrationDeleted: {
+    severity: 'information',
+    title: 'Registration was deleted by the ministry',
+    message: (p, child) => [
+      { text: `A ministry administrator deleted the registration for ${child} at ` },
+      bold(p.name),
+      { text: '. It no longer appears in your registration list.' },
+    ],
+    linkLabel: 'View registration list',
+  },
 } satisfies Record<string, Template>;
 
 type TemplateKey = keyof typeof TEMPLATES;
@@ -97,26 +186,47 @@ const ROWS: Row[] = [
   ['claimProcessed', '80002817', 51 * DAY + 380, '', 'June 2026', true, false],
   ['incidentCreated', '80003390', 58 * DAY + 150, 'Sarah Tremblay', '', true, false],
   ['claimProcessed', '80003390', 66 * DAY + 70, '', 'June 2026', true, false],
+
+  // Child registration events.
+  ['parentRegistration', '80002817', 75, 'Noor A.', '', false, true],
+  ['fundingApproved', '80001234', 160, 'Ayla M.', 'Category 2', false, true],
+  ['registeredElsewhere', '80003390', DAY + 120, 'Theo L.', '', false, false],
+  ['fundingExpiringSoon', '80002817', DAY + 600, 'Mateo R.', '7', false, false],
+  ['specialNeedsExpiring', '80001234', 2 * DAY + 200, 'Isla K.', '45', false, false],
+  ['agingOut', '80003390', 3 * DAY + 100, 'Owen P.', '6', false, false],
+  ['fundingExpiring', '80001234', 5 * DAY + 300, 'Zara H.', '52', false, false],
+  ['registrationDeleted', '80002817', 7 * DAY + 250, 'Liam C.', '', false, false],
+  ['parentRegistration', '80001234', 9 * DAY + 180, 'Amira S.', '', true, false],
+  ['fundingApproved', '80003390', 12 * DAY + 90, 'Noah B.', 'Category 1', true, false],
+  ['agingOut', '80002817', 20 * DAY + 300, 'Chloe D.', '5', true, false],
+  ['registeredElsewhere', '80001234', 27 * DAY + 60, 'Jonah F.', '', true, false],
+  ['specialNeedsExpiring', '80003390', 33 * DAY + 500, 'Eli T.', '58', true, false],
+  ['registrationDeleted', '80003390', 41 * DAY + 220, 'Sofia G.', '', true, false],
+  ['fundingExpiring', '80002817', 49 * DAY + 140, 'Kai W.', '40', true, false],
+  ['fundingApproved', '80002817', 55 * DAY + 100, 'Maya N.', 'Category 2', true, false],
 ];
 
 function build(id: string, [key, programId, minsAgo, who, detail, dismissed, isNew]: Row, now: Date): HubNotification {
   const t: Template = TEMPLATES[key];
   const p = PROGRAM_BY_ID.get(programId)!;
+  const createdAt = new Date(now.getTime() - minsAgo * 60_000);
   return {
     id,
-    title: t.title,
-    message: t.message(p, who, detail),
+    title: typeof t.title === 'string' ? t.title : t.title(detail),
+    message: t.message(p, who, detail, createdAt),
     linkLabel: t.linkLabel,
     severity: t.severity,
     programId,
-    createdAt: new Date(now.getTime() - minsAgo * 60_000),
+    createdAt,
     dismissed,
     isNew,
   };
 }
 
 export function buildProviderNotifications(now = new Date()): HubNotification[] {
-  return ROWS.map((row, i) => build(`pp-${i}`, row, now));
+  return ROWS.map((row, i) => build(`pp-${i}`, row, now)).sort(
+    (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+  );
 }
 
 // Lands a few seconds after the page opens, so the prototype shows a live arrival.
