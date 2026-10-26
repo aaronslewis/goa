@@ -86,8 +86,15 @@ export class PlatformPrototypesComponent {
         {
           label: 'Notifications hub v3 — DS v2',
           description:
-            'Home is a full-page notification centre: each notification has a type icon and an action button, and new ones are marked with a blue line until the user acts on them.',
+            'Home is a full-page notification centre: each notification is a card with a status-coloured strip, a type icon and an action button.',
           path: '/notifications-hub-v3',
+          status: 'In progress',
+        },
+        {
+          label: 'Notifications hub v3 with panel — DS v2',
+          description:
+            'The v3 notification cards in a panel that opens from Notifications in the side menu, instead of on Home.',
+          path: '/notifications-hub-v3-panel',
           status: 'In progress',
         },
         {

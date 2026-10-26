@@ -2,6 +2,7 @@ import { Component, ElementRef, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GoabBadge, GoabIconButton, GoabLink, GoabTab, GoabTabs } from '@abgov/angular-components';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
+import { NotificationFeedComponent } from '../notification-feed/notification-feed.component';
 import { NotificationsService } from '../notifications.service';
 import { HubVariant } from '../hub-variant';
 
@@ -11,7 +12,7 @@ import { HubVariant } from '../hub-variant';
 @Component({
   selector: 'hub-notifications-panel',
   standalone: true,
-  imports: [GoabBadge, GoabIconButton, GoabLink, GoabTab, GoabTabs, NotificationListComponent],
+  imports: [GoabBadge, GoabIconButton, GoabLink, GoabTab, GoabTabs, NotificationListComponent, NotificationFeedComponent],
   templateUrl: './notifications-panel.component.html',
   styleUrl: './notifications-panel.component.scss',
 })

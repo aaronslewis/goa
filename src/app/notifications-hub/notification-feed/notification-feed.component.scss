@@ -156,3 +156,14 @@
     align-items: flex-start;
   }
 }
+
+:host(.stacked) {
+  .row__content {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--goa-space-s);
+  }
+
+  .row__meta {
+    align-items: flex-start;
+  }
+}

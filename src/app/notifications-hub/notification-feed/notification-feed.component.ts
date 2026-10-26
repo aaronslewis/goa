@@ -16,6 +16,7 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
 // NotificationListComponent.
 @Component({
   selector: 'hub-notification-feed',
+  host: { '[class.stacked]': 'stacked()' },
   standalone: true,
   imports: [GoabButton, GoabIcon, GoabIconButton],
   templateUrl: './notification-feed.component.html',
@@ -26,6 +27,9 @@ export class NotificationFeedComponent {
   readonly emptyMessage = input('No notifications.');
   // On the Notifications page completed items stay visible and can be restored.
   readonly allowRestore = input(false);
+  // Narrow containers such as the side-menu panel: always use the stacked
+  // layout, whatever the viewport width.
+  readonly stacked = input(false);
 
   readonly open = output<string>();
   readonly dismiss = output<string>();

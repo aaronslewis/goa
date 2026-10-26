@@ -20,6 +20,7 @@ import { HubRouteData } from './notifications-hub/hub-variant';
 import { HubHomeComponent } from './notifications-hub/home/hub-home.component';
 import { HubNotificationsPageComponent } from './notifications-hub/notifications-page/hub-notifications-page.component';
 import { HubHomeV3Component } from './notifications-hub/home-v3/hub-home-v3.component';
+import { HubHomePlainComponent } from './notifications-hub/home-plain/hub-home-plain.component';
 import { NotificationsService } from './notifications-hub/notifications.service';
 import { DemoNotificationsService } from './notifications-hub/demo-notifications.service';
 import { ProviderPortalNotificationsShellComponent } from './provider-portal-notifications/provider-portal-notifications-shell.component';
@@ -114,6 +115,17 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeV3Component, title: 'Home — Notifications hub v3' },
       { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub v3' },
+    ],
+  },
+  // v3's cards in the side-menu panel instead of on Home.
+  {
+    path: 'notifications-hub-v3-panel',
+    component: HubShellComponent,
+    data: { hubBase: '/notifications-hub-v3-panel', notificationsPanel: true, cardRows: true } satisfies HubRouteData,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HubHomePlainComponent, title: 'Home — Notifications hub v3 (panel)' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub v3 (panel)' },
     ],
   },
   // Click-through demo of v3: its own data (see DemoNotificationsService).

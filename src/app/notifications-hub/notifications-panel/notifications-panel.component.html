@@ -16,12 +16,21 @@
       </ng-template>
       <goab-tab [heading]="tabHeading">
         <div class="panel__body">
-          <hub-notification-list
-            [items]="tab.items"
-            emptyMessage="You're all caught up."
-            [markReadOnClick]="hub.markReadOnClick"
-            (read)="service.markRead($event)"
-            (dismiss)="service.dismiss($event)"></hub-notification-list>
+          @if (hub.cardRows) {
+            <hub-notification-feed
+              [items]="tab.items"
+              [stacked]="true"
+              emptyMessage="You're all caught up."
+              (open)="service.markSeen($event)"
+              (dismiss)="service.dismiss($event)"></hub-notification-feed>
+          } @else {
+            <hub-notification-list
+              [items]="tab.items"
+              emptyMessage="You're all caught up."
+              [markReadOnClick]="hub.markReadOnClick"
+              (read)="service.markRead($event)"
+              (dismiss)="service.dismiss($event)"></hub-notification-list>
+          }
         </div>
       </goab-tab>
     }
