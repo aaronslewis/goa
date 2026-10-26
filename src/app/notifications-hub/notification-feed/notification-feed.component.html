@@ -15,10 +15,13 @@
             <div class="row__body">
               <div class="row__status-line">
                 <p class="row__status">{{ statusLabel(n) }}@if (n.dismissed) {<span> · Completed</span>}</p>
-                <!-- Stacked cards drop the time below the message; keep the
-                     dismiss button at the top right, on the status line. -->
+                <!-- Stacked cards (the side-menu panel) keep the time and dismiss
+                     button at the top right, on the status line. -->
                 @if (stacked()) {
-                  <ng-container *ngTemplateOutlet="rowAction; context: { $implicit: n }"></ng-container>
+                  <div class="row__time-line">
+                    <span class="row__time">{{ timeLabel(n) }}</span>
+                    <ng-container *ngTemplateOutlet="rowAction; context: { $implicit: n }"></ng-container>
+                  </div>
                 }
               </div>
               <h4 class="row__title">
@@ -29,12 +32,12 @@
               </p>
             </div>
             <div class="row__meta">
-              <div class="row__time-line">
-                <span class="row__time">{{ timeLabel(n) }}</span>
-                @if (!stacked()) {
+              @if (!stacked()) {
+                <div class="row__time-line">
+                  <span class="row__time">{{ timeLabel(n) }}</span>
                   <ng-container *ngTemplateOutlet="rowAction; context: { $implicit: n }"></ng-container>
-                }
-              </div>
+                </div>
+              }
               @if (n.linkLabel) {
                 <goab-button type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.linkLabel }}</goab-button>
               }
