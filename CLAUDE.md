@@ -19,6 +19,8 @@ GoA publishes these agent skills at [GovAlta/ui-components/skills](https://githu
 - `component-search`: the llms.txt and `.md` lookup described above. Optional, because these rules already cover it.
 - `using-goa-design-system`: maps an intent to a product type, templates and components. It depends on the `goa-design-system` MCP server, which isn't configured here, so don't rely on it.
 
+**Skills live in `.claude/skills/`, which is tracked.** Claude Code only loads project skills from there. `npx skills add` installs into `.agents/skills/`, which is gitignored and not loaded, so copy anything you install there into `.claude/skills/` (`skills-lock.json` records the installed versions). Edit the `.claude/skills/` copy, never the `.agents/` one.
+
 ## Stack
 - Angular 20 (latest stable), npm, hosted on Netlify.
 - `@abgov/angular-components@~5.4.0` + `@abgov/ui-components-common@~2.4.0` (wrap `@abgov/web-components@^2.4.0`). These three GoA packages release in step: Angular 5.**N** pairs with common 2.**N** and web-components 2.**N**. Keep their minors matched and bump them together. 5.4.0 is the first wrapper that projects content into `goab-dropdown-item`, which rich dropdown items (e.g. badges in the severity filter) need. 5.5.0 won't build against common 2.4 because it imports newer types.
