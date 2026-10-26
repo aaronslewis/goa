@@ -93,6 +93,13 @@
   gap: var(--goa-space-xs);
 }
 
+.row__status-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--goa-space-s);
+}
+
 .row__status {
   margin: 0;
   font: var(--goa-typography-body-s);

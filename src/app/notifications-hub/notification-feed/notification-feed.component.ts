@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, DestroyRef, computed, inject, input, output, signal } from '@angular/core';
 import { GoabIconType } from '@abgov/ui-components-common';
 import { GoabButton, GoabIcon, GoabIconButton } from '@abgov/angular-components';
@@ -18,7 +19,7 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
   selector: 'hub-notification-feed',
   host: { '[class.stacked]': 'stacked()' },
   standalone: true,
-  imports: [GoabButton, GoabIcon, GoabIconButton],
+  imports: [GoabButton, GoabIcon, GoabIconButton, NgTemplateOutlet],
   templateUrl: './notification-feed.component.html',
   styleUrl: './notification-feed.component.scss',
 })
