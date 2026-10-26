@@ -22,6 +22,9 @@ import { HubNotificationsPageComponent } from './notifications-hub/notifications
 import { HubHomeV3Component } from './notifications-hub/home-v3/hub-home-v3.component';
 import { NotificationsService } from './notifications-hub/notifications.service';
 import { DemoNotificationsService } from './notifications-hub/demo-notifications.service';
+import { ProviderPortalNotificationsShellComponent } from './provider-portal-notifications/provider-portal-notifications-shell.component';
+import { ProviderNotificationsPageComponent } from './provider-portal-notifications/provider-notifications-page.component';
+import { ProviderNotificationsService } from './provider-portal-notifications/provider-notifications.service';
 import { ProgramDetailsComponent } from './search-service/program-details/program-details.component';
 import { SearchLandingComponent } from './search-service/search-landing/search-landing.component';
 import { SearchResultsComponent } from './search-service/search-results/search-results.component';
@@ -127,6 +130,20 @@ export const routes: Routes = [
   { path: 'menu-2', component: MainMenu2Component, title: 'Workspace menu (variation)' },
   { path: 'menu-3', component: MainMenu3Component, title: 'Workspace menu (child icons)' },
   { path: 'provider-portal-menu', component: ProviderPortalMenuComponent, title: 'Provider portal menu' },
+  // Provider portal menu around the hub's notification feed, with provider-facing content.
+  {
+    path: 'provider-portal-notifications',
+    component: ProviderPortalNotificationsShellComponent,
+    providers: [{ provide: NotificationsService, useClass: ProviderNotificationsService }],
+    children: [
+      { path: '', redirectTo: 'notifications', pathMatch: 'full' },
+      {
+        path: 'notifications',
+        component: ProviderNotificationsPageComponent,
+        title: 'Notifications — Provider portal',
+      },
+    ],
+  },
   {
     path: 'user-access-management',
     component: UserAccessManagementComponent,

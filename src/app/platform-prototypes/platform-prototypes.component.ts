@@ -135,6 +135,13 @@ export class PlatformPrototypesComponent {
           description: 'Provider side navigation menu without drill-down behavior.',
           path: '/provider-portal-menu',
         },
+        {
+          label: 'Provider portal notifications',
+          description:
+            'The provider portal menu with a Notifications page for child care providers: grants to sign, claims processed, incident reports and access changes.',
+          path: '/provider-portal-notifications',
+          status: 'In progress',
+        },
       ],
     },
     {
