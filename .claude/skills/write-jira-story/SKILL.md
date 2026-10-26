@@ -1,15 +1,12 @@
 ---
 name: write-jira-story
-description: Use when drafting, reviewing, or creating a Jira story from this prototype, a Figma design, or an observed product behaviour. Produces concise stories in the team's CCPM format (user story panel, portal and user labels, numbered acceptance-criteria to-do list, compact Given/When/Then tables for variations), and separates product acceptance criteria from testing operations such as test data, environment setup, evidence, regression, and release sign-off.
+description: Use when drafting, reviewing, or creating a Jira story from this prototype, a Figma design, or an observed product behaviour. Produces concise stories in the CCPM team's format (user story panel, portal and user labels, numbered acceptance-criteria to-do list, compact Given/When/Then for variations). Separates product acceptance criteria from testing operations such as test data, environment setup, evidence, regression, and release sign-off.
 ---
 
 # Skill: Write a Jira story
 
 Turn prototype evidence into a Jira story that another product, design,
-development, or testing team member can understand and verify without guessing.
-The format follows the team's existing stories, for example
-[CCPM-3215](https://goa-dio.atlassian.net/browse/CCPM-3215). Remove any section
-that would be empty.
+development, or testing team member can understand and verify without guessing. Remove any section that would be empty.
 
 The Jira reader is a domain-fluent worker. Write for quick scanning, preserve
 precise service vocabulary, and remove background that does not help the team
@@ -22,11 +19,9 @@ decide, build, or test the change.
 - **Portals:** ECDS (internal, blue lozenge) and Child Care Licensing Portal
   (external, purple lozenge)
 
-If there's no Jira project set (the project is `none`, still shows a
-placeholder in double underscores, or this section says no project is set yet),
-**draft stories only and don't create them in Jira.** Say so when you hand over
-the draft, for example: "There's no Jira project set for this prototype yet, so
-I've drafted this story for you to paste in."
+If there's no Jira project set, set is as CCPM.
+**Draft stories first before updating the Jira ticket.** Say so when you hand over
+the draft.
 
 Connection details, field names and tools are in the `jira-integration` skill.
 
@@ -72,20 +67,18 @@ logistics inside the story's acceptance criteria.
 
 - **Canadian English spelling:** behaviour, colour, centre, organization (the
   `-ize` ending is standard in Canada), cancelled, grey, and so on.
-- **Licence is the noun; license is the verb.** Write "licence status", "licence
+- **Licence is the noun; license is the verb.** Write "licence status", "License Holder Organization", "licence
   holder", "a valid licence", but "licensed programs" and "to license a
   facility" (the rule from [CCPM-2875](https://goa-dio.atlassian.net/browse/CCPM-2875)).
   This applies to prose, criteria and labels you write.
-- **The organization term is Licence Holder Organization.** It follows the noun
-  rule above and is always written that way. Never write "License Holder
-  Organization" or "Licensed Holder Organization". Where the prototype or
-  product still shows an older spelling, flag it as a fix instead of copying it.
 - **Capitalization:** page names may be in title case (Legal, Terms of Use). Button
   and link text, and headings (on-screen headings and the story's own headings),
   are in **sentence case**: Start next acknowledgement, Continue to portal,
   Information and privacy notice. Copy a name's capitalization from the
   prototype; if the prototype breaks this rule, raise it with the user as a
   fix to the prototype instead of copying it.
+  - **Flag issues:** Where the prototype or product still shows an older spelling that doesn't adhere to these rules, flag it as a fix instead of copying it.
+
 
 ## Story structure
 
@@ -117,9 +110,8 @@ I want [capability],
 so that [user or service outcome].
 ```
 
-Use the actor shown by the evidence, such as applicant, parent, case worker,
-team lead, administrator, or consuming service. Do not use generic actors such as `User`.
-If no meaningful actor or outcome exists, use a task rather than inventing one.
+Use the actor shown by the evidence, such as Super Admin, CCLP user, or Licensing Officer. Do not use generic actors such as `User`.
+If the actor is unclear, ask for clarification. If no meaningful actor or outcome exists, create as a Task rather than as a Story.
 
 ### Portal and user
 
@@ -143,7 +135,7 @@ Current behaviour, the trigger, and constraints needed to understand the change,
 plus the goal if it isn't obvious from the user story. Keep implementation
 design out of this section. Link relevant policy or decisions and dependencies
 that affect when the behaviour can work. Do not duplicate the acceptance
-criteria. The design and prototype links go in the Design section, not here.
+criteria. The design and prototype links go in the Design section, not here. Minimize design process decision logging in the Background.  
 
 ### Design
 
@@ -158,6 +150,8 @@ label that says what it points at:
 If the user hasn't given a link to the design or the prototype, ask for one when
 you start drafting, and again before creating; never guess a URL. Use whichever
 of the two exists. If the user says there is neither, omit the section.
+
+Add the design links as official linked designs.
 
 ### Acceptance criteria
 
@@ -367,44 +361,6 @@ Under the story, briefly list the assumptions you made, the orange notes (so
 the user can answer them without scrolling the story), and any recommended
 linked testing task. Do not repeat or explain sections that are already clear.
 
-## Testing task format
-
-When separate testing work is needed, use:
-
-```markdown
-# Test [capability or release]
-
-## Purpose and scope
-
-[What is being verified and why. Link the stories in scope.]
-
-## Environment and build
-
-- Environment: [SIT, UAT, production, or other]
-- Build or release: [version]
-- Configuration: [relevant flags or setup]
-
-## Preconditions and test data
-
-- [Required account, role, record state, or fictional data]
-
-## Scenarios to execute
-
-- [Scenario or linked test case]
-
-## Evidence and results
-
-- Record the result for each scenario.
-- Attach evidence without citizen personal information.
-- Link defects to the failed scenario.
-
-## Exit criteria
-
-- [Required pass, regression, defect, and sign-off conditions]
-```
-
-Do not create a testing task merely to restate the story's acceptance criteria.
-Create one when someone must prepare, execute, record, or sign off on testing.
 
 ## Review the draft
 
