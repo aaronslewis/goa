@@ -142,6 +142,13 @@ export class PlatformPrototypesComponent {
           path: '/provider-portal-notifications',
           status: 'In progress',
         },
+        {
+          label: 'Family portal notifications',
+          description:
+            'The same menu with My profile and Children, and a Notifications page for parents: registrations to confirm, funding and subsidy updates, profile changes and program news.',
+          path: '/family-portal-notifications',
+          status: 'In progress',
+        },
       ],
     },
     {

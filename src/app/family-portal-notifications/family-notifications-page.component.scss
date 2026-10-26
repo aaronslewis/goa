@@ -1,0 +1,103 @@
+// Sits inside the Workspace Layout card; padding matches the DS workspace page
+// header (space-l top, space-xl sides).
+.page {
+  padding: var(--goa-space-l) var(--goa-space-xl) var(--goa-space-2xl);
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--goa-space-m);
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--goa-space-xl);
+}
+
+.page-title {
+  margin: 0 0 var(--goa-space-xs);
+  font: var(--goa-typography-heading-xl);
+  color: var(--goa-color-text-default);
+}
+
+.lede {
+  margin: 0;
+  font: var(--goa-typography-body-l);
+  color: var(--goa-color-text-secondary);
+}
+
+.filters {
+  margin-bottom: var(--goa-space-l);
+}
+
+.filters__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--goa-space-m);
+  align-items: start;
+}
+
+// goa-date-picker wraps its input in an inline goa-popover whose 24px line box
+// adds a gap *above* the input, so it sits ~9px lower than the dropdowns. The
+// input is always flush with the bottom of the picker, so a slot exactly one
+// input tall, bottom-aligned, lines it up with the dropdowns (the gap overflows
+// upward, invisibly). The filters use the compact size, so the slot uses the
+// compact input height.
+.date-slot {
+  display: flex;
+  align-items: flex-end;
+  height: var(--goa-text-input-height-compact);
+}
+
+.date-slot goab-date-picker {
+  flex: 1;
+  min-width: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  margin-top: var(--goa-space-m);
+}
+
+.result-count {
+  margin: 0 0 var(--goa-space-s);
+  font: var(--goa-typography-body-s);
+  color: var(--goa-color-text-secondary);
+}
+
+// Rows run edge to edge: pull out by exactly the compact goab-container padding.
+.list {
+  margin: calc(-1 * var(--goa-container-padding-compact));
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--goa-space-l);
+}
+
+@media (max-width: 1100px) {
+  .filters__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: var(--goa-space-l) var(--goa-space-m);
+  }
+
+  .filters__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Below 624px the Workspace Layout shows its menu button over the card's
+// top-left corner; start the content below it.
+@media (max-width: 623px) {
+  .page {
+    padding-top: var(--goa-space-3xl);
+  }
+}

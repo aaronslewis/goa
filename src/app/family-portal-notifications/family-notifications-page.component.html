@@ -1,0 +1,102 @@
+<div class="page">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Notifications</h1>
+      <p class="lede">Updates about your children’s registrations, funding and applications, and your profile.</p>
+    </div>
+  </header>
+
+  <section class="filters" aria-label="Filter notifications">
+    @for (k of [filterKey()]; track k) {
+      <div class="filters__grid">
+        <goab-form-item labelSize="compact" label="About">
+          <goab-dropdown
+            name="subject"
+            size="compact"
+            width="100%"
+            placeholder="Me and my children"
+            [value]="subject()"
+            (onChange)="onSubject($event)">
+            @for (s of subjects; track s.id) {
+              <goab-dropdown-item [value]="s.id" [label]="s.name"></goab-dropdown-item>
+            }
+          </goab-dropdown>
+        </goab-form-item>
+
+        <goab-form-item labelSize="compact" label="Severity">
+          <goab-dropdown
+            name="severity"
+            size="compact"
+            width="100%"
+            placeholder="All severities"
+            [value]="severity()"
+            (onChange)="onSeverity($event)">
+            @for (s of severities; track s.value) {
+              <goab-dropdown-item [value]="s.value" [label]="s.label">
+                <goab-badge [type]="s.badge" emphasis="subtle" [content]="s.label" [icon]="true"></goab-badge>
+              </goab-dropdown-item>
+            }
+          </goab-dropdown>
+        </goab-form-item>
+
+        <goab-form-item labelSize="compact" label="Status">
+          <goab-dropdown
+            name="status"
+            size="compact"
+            width="100%"
+            placeholder="All statuses"
+            [value]="status()"
+            (onChange)="onStatus($event)">
+            @for (s of statusOptions; track s.value) {
+              <goab-dropdown-item [value]="s.value" [label]="s.label"></goab-dropdown-item>
+            }
+          </goab-dropdown>
+        </goab-form-item>
+
+        <goab-form-item labelSize="compact" label="From" [error]="dateRangeError()">
+          <div class="date-slot">
+            <goab-date-picker hubCompact name="from" width="100%" [value]="from()" [error]="!!dateRangeError()" (onChange)="onFrom($event)"></goab-date-picker>
+          </div>
+        </goab-form-item>
+
+        <goab-form-item labelSize="compact" label="To">
+          <div class="date-slot">
+            <goab-date-picker hubCompact name="to" width="100%" [value]="to()" [error]="!!dateRangeError()" (onChange)="onTo($event)"></goab-date-picker>
+          </div>
+        </goab-form-item>
+      </div>
+    }
+
+    @if (chips().length > 0) {
+      <div class="chips" aria-label="Applied filters">
+        @for (chip of chips(); track chip.key) {
+          <goab-filter-chip [content]="chip.label" (onClick)="removeChip(chip.key)"></goab-filter-chip>
+        }
+        <goab-button type="tertiary" size="compact" (onClick)="clearAll()">Clear all</goab-button>
+      </div>
+    }
+  </section>
+
+  <p class="result-count" role="status">{{ rangeLabel() }}</p>
+
+  <goab-container padding="compact">
+    <hub-notification-feed
+      class="list"
+      [items]="pageItems()"
+      [allowRestore]="true"
+      emptyMessage="Try removing a filter or choosing a wider date range."
+      (open)="service.markSeen($event)"
+      (dismiss)="service.dismiss($event)"
+      (restore)="service.restore($event)"></hub-notification-feed>
+  </goab-container>
+
+  @if (filtered().length > pageSize) {
+    <div class="pagination">
+      <goab-pagination
+        [itemCount]="filtered().length"
+        [perPageCount]="pageSize"
+        [pageNumber]="page()"
+        (onChange)="onPage($event)"></goab-pagination>
+    </div>
+  }
+</div>

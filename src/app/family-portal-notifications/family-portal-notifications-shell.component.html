@@ -1,0 +1,47 @@
+<ng-template #primaryNav>
+  @for (item of primaryItems; track item.label) {
+    <goab-work-side-menu-item [icon]="item.icon" [label]="item.label" [url]="item.url"></goab-work-side-menu-item>
+  }
+</ng-template>
+
+<ng-template #secondaryNav>
+  <goab-work-side-menu-item
+    [icon]="notificationsItem.icon"
+    [label]="notificationsItem.label"
+    [url]="notificationsItem.url"></goab-work-side-menu-item>
+  <goab-work-side-menu-item [icon]="helpItem.icon" [label]="helpItem.label" [url]="helpItem.url"></goab-work-side-menu-item>
+</ng-template>
+
+<ng-template #accountNav>
+  <div class="account-menu" role="menu" aria-label="Account menu for {{ userName }}">
+    @for (item of accountMenuItems; track item.action) {
+      <button type="button" role="menuitem" class="account-menu-item" (click)="onAccountAction(item.action)">
+        <goab-icon [type]="item.icon" size="small"></goab-icon>
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  </div>
+</ng-template>
+
+<ng-template #sideMenu>
+  <goab-work-side-menu
+    [heading]="heading"
+    url="#"
+    [userName]="userName"
+    [userSecondaryText]="userSecondaryText"
+    [open]="isMenuOpen"
+    [primaryContent]="primaryNav"
+    [secondaryContent]="secondaryNav"
+    [accountContent]="accountNav"
+    (onToggle)="onMenuToggle()"
+    (onNavigate)="onNavigate($event)"
+    aria-label="Family portal navigation">
+  </goab-work-side-menu>
+</ng-template>
+
+<!-- DS Workspace Layout: side menu beside a white content card. -->
+<goab-workspace-layout [sideMenu]="sideMenu">
+  <router-outlet></router-outlet>
+</goab-workspace-layout>
+
+<goab-temporary-notification-ctrl></goab-temporary-notification-ctrl>

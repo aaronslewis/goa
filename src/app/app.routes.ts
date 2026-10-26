@@ -25,6 +25,9 @@ import { DemoNotificationsService } from './notifications-hub/demo-notifications
 import { ProviderPortalNotificationsShellComponent } from './provider-portal-notifications/provider-portal-notifications-shell.component';
 import { ProviderNotificationsPageComponent } from './provider-portal-notifications/provider-notifications-page.component';
 import { ProviderNotificationsService } from './provider-portal-notifications/provider-notifications.service';
+import { FamilyPortalNotificationsShellComponent } from './family-portal-notifications/family-portal-notifications-shell.component';
+import { FamilyNotificationsPageComponent } from './family-portal-notifications/family-notifications-page.component';
+import { FamilyNotificationsService } from './family-portal-notifications/family-notifications.service';
 import { ProgramDetailsComponent } from './search-service/program-details/program-details.component';
 import { SearchLandingComponent } from './search-service/search-landing/search-landing.component';
 import { SearchResultsComponent } from './search-service/search-results/search-results.component';
@@ -141,6 +144,20 @@ export const routes: Routes = [
         path: 'notifications',
         component: ProviderNotificationsPageComponent,
         title: 'Notifications — Provider portal',
+      },
+    ],
+  },
+  // Same layout for parents: My profile and Children menu items, parent-facing content.
+  {
+    path: 'family-portal-notifications',
+    component: FamilyPortalNotificationsShellComponent,
+    providers: [{ provide: NotificationsService, useClass: FamilyNotificationsService }],
+    children: [
+      { path: '', redirectTo: 'notifications', pathMatch: 'full' },
+      {
+        path: 'notifications',
+        component: FamilyNotificationsPageComponent,
+        title: 'Notifications — Family portal',
       },
     ],
   },
