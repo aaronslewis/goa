@@ -84,7 +84,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeComponent, title: 'Home — Notifications hub' },
-      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'All notifications — Notifications hub' },
     ],
   },
   {
@@ -94,7 +94,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeComponent, title: 'Home — Notifications hub (panel)' },
-      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub (panel)' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'All notifications — Notifications hub (panel)' },
     ],
   },
   {
@@ -104,7 +104,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeComponent, title: 'Home — Notifications hub (mark read)' },
-      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub (mark read)' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'All notifications — Notifications hub (mark read)' },
     ],
   },
   {
@@ -114,7 +114,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeV3Component, title: 'Home — Notifications hub v3' },
-      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub v3' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'All notifications — Notifications hub v3' },
     ],
   },
   // v3's cards in the side-menu panel instead of on Home.
@@ -125,7 +125,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomePlainComponent, title: 'Home — Notifications hub v3 (panel)' },
-      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notifications hub v3 (panel)' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'All notifications — Notifications hub v3 (panel)' },
     ],
   },
   // Click-through demo of v3: its own data (see DemoNotificationsService).
@@ -137,7 +137,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomeV3Component, title: 'Home — Notification centre demo' },
-      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notification centre demo' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'All notifications — Notification centre demo' },
     ],
   },
   // The click-through demo with its notifications in the side-menu panel.
@@ -149,7 +149,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HubHomePlainComponent, title: 'Home — Notification centre demo (panel)' },
-      { path: 'notifications', component: HubNotificationsPageComponent, title: 'Notifications — Notification centre demo (panel)' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'All notifications — Notification centre demo (panel)' },
     ],
   },
   { path: 'help-centre', component: HelpCentrePage, title: 'Help Centre' },
