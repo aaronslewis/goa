@@ -16,7 +16,10 @@
               <div class="row__status-line">
                 @if (inlineStatus()) {
                   <h4 class="row__title">
-                    <span class="row__status">{{ statusLabel(n) }}@if (n.dismissed) { · Completed}</span>
+                    <goab-badge
+                      mr="xs"
+                      [type]="badgeType(n)"
+                      [content]="statusLabel(n) + (n.dismissed ? ' · Completed' : '')"></goab-badge>
                     @if (n.isNew) {<span class="visually-hidden">New: </span>}{{ n.title }}
                   </h4>
                 } @else {

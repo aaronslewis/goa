@@ -1,7 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, DestroyRef, computed, inject, input, output, signal } from '@angular/core';
-import { GoabIconType } from '@abgov/ui-components-common';
-import { GoabButton, GoabIcon, GoabIconButton } from '@abgov/angular-components';
+import { GoabBadgeType, GoabIconType } from '@abgov/ui-components-common';
+import { GoabBadge, GoabButton, GoabIcon, GoabIconButton } from '@abgov/angular-components';
 import { HubNotification, SEVERITIES, Severity } from '../notifications.data';
 import { groupByDay, relativeTime } from '../notifications.service';
 
@@ -19,7 +19,7 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
   selector: 'hub-notification-feed',
   host: { '[class.stacked]': 'stacked()', '[class.inline-status]': 'inlineStatus()' },
   standalone: true,
-  imports: [GoabButton, GoabIcon, GoabIconButton, NgTemplateOutlet],
+  imports: [GoabBadge, GoabButton, GoabIcon, GoabIconButton, NgTemplateOutlet],
   templateUrl: './notification-feed.component.html',
   styleUrl: './notification-feed.component.scss',
 })
@@ -31,8 +31,8 @@ export class NotificationFeedComponent {
   // Narrow containers such as the side-menu panel: always use the stacked
   // layout, whatever the viewport width.
   readonly stacked = input(false);
-  // Slimmer cards: the status label leads the title on one line instead of
-  // sitting on its own line above it.
+  // Slimmer cards: a status badge leads the title on one line instead of a
+  // status label on its own line above it.
   readonly inlineStatus = input(false);
 
   readonly open = output<string>();
@@ -57,6 +57,12 @@ export class NotificationFeedComponent {
 
   statusLabel(n: HubNotification): string {
     return n.createdByUser || !n.severity ? 'My reminder' : this.severityMeta[n.severity].label;
+  }
+
+  // Completed items get a neutral badge so only active ones carry status colour.
+  badgeType(n: HubNotification): GoabBadgeType {
+    if (n.dismissed) return 'archived';
+    return n.createdByUser || !n.severity ? 'lilac' : this.severityMeta[n.severity].badge;
   }
 
   icon(n: HubNotification): GoabIconType {
