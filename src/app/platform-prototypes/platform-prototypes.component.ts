@@ -97,13 +97,6 @@ export class PlatformPrototypesComponent {
           path: '/notifications-hub-demo',
           status: 'In progress',
         },
-        {
-          label: 'Notifications — scaling (30 programs)',
-          description:
-            'Four approaches for handling 65+ notifications across 30 programs: by severity, tabs + filter, smart summary, and by program.',
-          path: '/notifications-scale',
-          status: 'In progress',
-        },
       ],
     },
     {
