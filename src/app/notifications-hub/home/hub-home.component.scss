@@ -26,6 +26,12 @@
   color: var(--goa-color-text-default);
 }
 
+.section-note {
+  margin: var(--goa-space-2xs) 0 0;
+  font: var(--goa-typography-body-s);
+  color: var(--goa-color-text-secondary);
+}
+
 .tab-heading {
   display: inline-flex;
   align-items: center;
@@ -79,7 +85,7 @@ goab-tabs {
   flex-wrap: wrap;
   gap: var(--goa-space-s);
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin: var(--goa-space-l) 0 0;
   font: var(--goa-typography-body-s);
   color: var(--goa-color-text-secondary);

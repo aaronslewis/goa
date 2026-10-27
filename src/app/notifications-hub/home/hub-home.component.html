@@ -2,7 +2,10 @@
   <h1 class="greeting">{{ greeting }}, {{ firstName }}</h1>
 
   <div class="section-header">
-    <h2 class="section-title">Recent notifications</h2>
+    <div>
+      <h2 class="section-title">Recent notifications</h2>
+      <p class="section-note">Showing active notifications from the last 30 days.</p>
+    </div>
   </div>
 
   <!-- Title and tabs sit on the page; the bordered card wraps only the list. -->
@@ -41,7 +44,6 @@
   </div>
 
   <p class="footer-link">
-    Showing active notifications from the last 30 days.
     <goab-link trailingIcon="arrow-forward"><a [href]="notificationsUrl">View all notifications</a></goab-link>
   </p>
 </div>
