@@ -51,7 +51,12 @@
                   <ng-container *ngTemplateOutlet="rowAction; context: { $implicit: n }"></ng-container>
                 </div>
               }
-              @if (n.linkLabel) {
+              @if (n.linkLabel && n.secondaryLinkLabel) {
+                <goab-button-group class="row__actions" gap="compact">
+                  <goab-button type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.linkLabel }}</goab-button>
+                  <goab-button type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.secondaryLinkLabel }}</goab-button>
+                </goab-button-group>
+              } @else if (n.linkLabel) {
                 <goab-button type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.linkLabel }}</goab-button>
               }
             </div>

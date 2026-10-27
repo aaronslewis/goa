@@ -1,7 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, DestroyRef, computed, inject, input, output, signal } from '@angular/core';
 import { GoabBadgeType, GoabIconType } from '@abgov/ui-components-common';
-import { GoabBadge, GoabButton, GoabIcon, GoabIconButton } from '@abgov/angular-components';
+import { GoabBadge, GoabButton, GoabButtonGroup, GoabIcon, GoabIconButton } from '@abgov/angular-components';
 import { HubNotification, SEVERITIES, Severity } from '../notifications.data';
 import { groupByDay, relativeTime } from '../notifications.service';
 
@@ -19,7 +19,7 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
   selector: 'hub-notification-feed',
   host: { '[class.stacked]': 'stacked()', '[class.inline-status]': 'inlineStatus()' },
   standalone: true,
-  imports: [GoabBadge, GoabButton, GoabIcon, GoabIconButton, NgTemplateOutlet],
+  imports: [GoabBadge, GoabButton, GoabButtonGroup, GoabIcon, GoabIconButton, NgTemplateOutlet],
   templateUrl: './notification-feed.component.html',
   styleUrl: './notification-feed.component.scss',
 })

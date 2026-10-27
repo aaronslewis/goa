@@ -15,6 +15,9 @@ export interface HubNotification {
   title: string;
   message: MessagePart[];
   linkLabel?: string;
+  // An optional second action, shown after the main one. Cards hold two at most;
+  // anything more belongs on the record the notification links to.
+  secondaryLinkLabel?: string;
   // System notifications always carry a severity and a program; ones the user
   // creates have neither severity and only an optional program.
   severity?: Severity;
@@ -90,6 +93,7 @@ interface Template {
   title: string;
   message: (p: Program, person: string, educator: string, date: Date) => MessagePart[];
   linkLabel?: string;
+  secondaryLinkLabel?: string;
   // Expected notifications per month for one LO with a 30-program caseload.
   perMonth: number;
   // Raised by a Family Day Home Agency rather than a program; `p` is the agency.
@@ -121,6 +125,7 @@ const TEMPLATES: Template[] = [
     message: (p, person, e) =>
       msg`A new critical incident report has been submitted by ${person} about educator ${e} at ${prog(p)}.`,
     linkLabel: 'View incident report',
+    secondaryLinkLabel: 'Contact program',
     perMonth: 3,
   },
   {
@@ -228,6 +233,7 @@ export function buildSeedNotifications(now = new Date()): HubNotification[] {
       title: t.title,
       message: t.message(p, pick(PEOPLE), pick(EDUCATORS), createdAt),
       linkLabel: t.linkLabel,
+      secondaryLinkLabel: t.secondaryLinkLabel,
       severity: t.severity,
       programId: p.id,
       createdAt,
@@ -286,6 +292,7 @@ const demoItem = (id: string, t: Template, p: Program, person: string, educator:
   title: t.title,
   message: t.message(p, person, educator, createdAt),
   linkLabel: t.linkLabel,
+  secondaryLinkLabel: t.secondaryLinkLabel,
   severity: t.severity,
   programId: p.id,
   createdAt,
