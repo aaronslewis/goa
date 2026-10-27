@@ -17,7 +17,7 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
 // NotificationListComponent.
 @Component({
   selector: 'hub-notification-feed',
-  host: { '[class.stacked]': 'stacked()' },
+  host: { '[class.stacked]': 'stacked()', '[class.inline-status]': 'inlineStatus()' },
   standalone: true,
   imports: [GoabButton, GoabIcon, GoabIconButton, NgTemplateOutlet],
   templateUrl: './notification-feed.component.html',
@@ -31,6 +31,9 @@ export class NotificationFeedComponent {
   // Narrow containers such as the side-menu panel: always use the stacked
   // layout, whatever the viewport width.
   readonly stacked = input(false);
+  // Slimmer cards: the status label leads the title on one line instead of
+  // sitting on its own line above it.
+  readonly inlineStatus = input(false);
 
   readonly open = output<string>();
   readonly dismiss = output<string>();

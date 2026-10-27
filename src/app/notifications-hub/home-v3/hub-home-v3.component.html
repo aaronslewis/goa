@@ -34,6 +34,7 @@
             <hub-notification-feed
               class="list"
               [items]="tab.items"
+              [inlineStatus]="true"
               emptyMessage="You're all caught up. There are no notifications from the last 30 days."
               (open)="service.markSeen($event)"
               (dismiss)="service.dismiss($event)"></hub-notification-feed>

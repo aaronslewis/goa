@@ -100,6 +100,15 @@
   gap: var(--goa-space-s);
 }
 
+// A title that wraps keeps the time and dismiss button pinned to its first line.
+:host(.inline-status) .row__status-line {
+  align-items: flex-start;
+}
+
+.row__title .row__status {
+  margin-inline-end: var(--goa-space-xs);
+}
+
 .row__status {
   margin: 0;
   font: var(--goa-typography-body-s);
