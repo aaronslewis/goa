@@ -10,7 +10,7 @@
 
   <div class="tabs-area">
     <!-- Level with the tab tray, so it reads as acting on the selected tab only. -->
-    @if (activeSeverityTab(); as tab) {
+    @if (currentTab(); as tab) {
       @if (tab.items.length > 0) {
         <div class="tab-action">
           <goab-button type="tertiary" size="compact" (onClick)="markAllComplete()">Mark all as complete</goab-button>

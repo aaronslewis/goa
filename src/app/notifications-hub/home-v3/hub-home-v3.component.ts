@@ -51,12 +51,9 @@ export class HubHomeV3Component {
 
   readonly tabs = this.service.homeTabs;
 
-  // Completing is the consequential bulk action, so it's offered one severity at
-  // a time, never on All.
-  readonly activeSeverityTab = computed(() => {
-    const tab = this.tabs()[this.activeTab() - 1];
-    return tab && tab.key !== 'all' ? tab : null;
-  });
+  // Completed items stay on the Notifications page and can be restored there,
+  // so completing every item in a tab, All included, is safe to offer.
+  readonly currentTab = computed(() => this.tabs()[this.activeTab() - 1] ?? null);
 
   onTabChange(detail: GoabTabsOnChangeDetail): void {
     this.activeTab.set(detail.tab);
@@ -69,7 +66,7 @@ export class HubHomeV3Component {
   }
 
   markAllComplete(): void {
-    const tab = this.activeSeverityTab();
+    const tab = this.currentTab();
     if (tab) this.service.dismissMany(tab.items.map((n) => n.id));
   }
 }
