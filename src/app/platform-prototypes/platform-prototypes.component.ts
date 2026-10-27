@@ -98,12 +98,6 @@ export class PlatformPrototypesComponent {
           status: 'In progress',
         },
         {
-          label: 'All notifications page',
-          description: 'Full notification history with unread/urgent/all tabs, date grouping, and read state.',
-          path: '/notifications',
-          status: 'In progress',
-        },
-        {
           label: 'Notifications — scaling (30 programs)',
           description:
             'Four approaches for handling 65+ notifications across 30 programs: by severity, tabs + filter, smart summary, and by program.',
