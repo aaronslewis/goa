@@ -2,30 +2,39 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import {
   GoabBadge,
   GoabButton,
+  GoabButtonGroup,
   GoabContainer,
   GoabDatePicker,
+  GoabDrawer,
   GoabDropdown,
   GoabDropdownItem,
   GoabFilterChip,
   GoabFormItem,
   GoabPagination,
 } from '@abgov/angular-components';
-import {
-  GoabDatePickerOnChangeDetail,
-  GoabDropdownOnChangeDetail,
-  GoabPaginationOnChangeDetail,
-} from '@abgov/ui-components-common';
-import { CompactDatePickerDirective } from '../compact-date-picker.directive';
+import { GoabDatePickerOnChangeDetail, GoabPaginationOnChangeDetail } from '@abgov/ui-components-common';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
 import { NotificationFeedComponent } from '../notification-feed/notification-feed.component';
 import { AddNotificationDrawerComponent } from '../add-notification-drawer/add-notification-drawer.component';
 import { NotificationsService } from '../notifications.service';
 import { HubVariant } from '../hub-variant';
-import { PROGRAMS, PROGRAM_BY_ID, SEVERITIES } from '../notifications.data';
+import { PROGRAMS, PROGRAM_BY_ID, SERVICES, SEVERITIES } from '../notifications.data';
 
 const PAGE_SIZE = 20;
+const FILTER_DRAWER_SETTLE_MS = 300;
 
 type Status = '' | 'active' | 'dismissed';
+
+type FilterKey = keyof Filters;
+
+interface Filters {
+  service: string;
+  program: string;
+  severity: string;
+  status: Status;
+  from: string;
+  to: string;
+}
 
 const STATUS_OPTIONS: { value: Status; label: string }[] = [
   { value: 'active', label: 'Active' },
@@ -44,14 +53,15 @@ function parseIsoDate(s: string): Date | null {
   imports: [
     GoabBadge,
     GoabButton,
+    GoabButtonGroup,
     GoabContainer,
     GoabDatePicker,
+    GoabDrawer,
     GoabDropdown,
     GoabDropdownItem,
     GoabFilterChip,
     GoabFormItem,
     GoabPagination,
-    CompactDatePickerDirective,
     NotificationListComponent,
     NotificationFeedComponent,
     AddNotificationDrawerComponent,
@@ -63,11 +73,13 @@ export class HubNotificationsPageComponent {
   readonly service = inject(NotificationsService);
   readonly hub = inject(HubVariant);
 
+  readonly services = SERVICES;
   readonly programs = PROGRAMS;
   readonly severities = SEVERITIES;
   readonly statusOptions = STATUS_OPTIONS;
   readonly pageSize = PAGE_SIZE;
 
+  readonly serviceFilter = signal('');
   readonly program = signal('');
   readonly severity = signal('');
   readonly status = signal<Status>('');
@@ -76,12 +88,19 @@ export class HubNotificationsPageComponent {
   readonly page = signal(1);
   readonly drawerOpen = signal(false);
 
-  // Bumped to force the DS inputs to re-render empty after "Clear all", since
-  // they don't reliably reset when their bound value returns to ''.
-  readonly filterKey = signal(0);
+  // The filter drawer edits a draft; nothing changes on the page until Apply.
+  readonly filtersOpen = signal(false);
+  // goa-dropdown ignores a value it receives before its items register, which
+  // happens as the drawer finishes sliding in (a single tick isn't always
+  // enough), so the fields take the draft values once it's open.
+  readonly filtersReady = signal(false);
+  draft: Filters = { service: '', program: '', severity: '', status: '', from: '', to: '' };
+  private readonly draftFrom = signal('');
+  private readonly draftTo = signal('');
 
   constructor() {
     effect(() => {
+      this.serviceFilter();
       this.program();
       this.severity();
       this.status();
@@ -91,13 +110,14 @@ export class HubNotificationsPageComponent {
     });
   }
 
-  readonly dateRangeError = computed(() => {
-    const f = parseIsoDate(this.from());
-    const t = parseIsoDate(this.to());
+  readonly draftDateError = computed(() => {
+    const f = parseIsoDate(this.draftFrom());
+    const t = parseIsoDate(this.draftTo());
     return f && t && f > t ? 'The "from" date must be on or before the "to" date' : '';
   });
 
   readonly filtered = computed(() => {
+    const service = this.serviceFilter();
     const program = this.program();
     const severity = this.severity();
     const status = this.status();
@@ -106,6 +126,7 @@ export class HubNotificationsPageComponent {
     const toEnd = toDate ? new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate() + 1) : null;
 
     return this.service.all().filter((n) => {
+      if (service && n.service !== service) return false;
       if (program && n.programId !== program) return false;
       if (severity && n.severity !== severity) return false;
       if (status === 'active' && n.dismissed) return false;
@@ -130,7 +151,9 @@ export class HubNotificationsPageComponent {
   });
 
   readonly chips = computed(() => {
-    const chips: { key: 'program' | 'severity' | 'status' | 'from' | 'to'; label: string }[] = [];
+    const chips: { key: FilterKey; label: string }[] = [];
+    const sv = SERVICES.find((x) => x.value === this.serviceFilter());
+    if (sv) chips.push({ key: 'service', label: sv.label });
     const p = PROGRAM_BY_ID.get(this.program());
     if (p) chips.push({ key: 'program', label: p.name });
     const s = SEVERITIES.find((x) => x.value === this.severity());
@@ -142,42 +165,62 @@ export class HubNotificationsPageComponent {
     return chips;
   });
 
-  onProgram(d: GoabDropdownOnChangeDetail): void {
-    this.program.set(d.value ?? '');
+  openFilters(): void {
+    this.draft = {
+      service: this.serviceFilter(),
+      program: this.program(),
+      severity: this.severity(),
+      status: this.status(),
+      from: this.from(),
+      to: this.to(),
+    };
+    this.draftFrom.set(this.draft.from);
+    this.draftTo.set(this.draft.to);
+    this.filtersReady.set(false);
+    this.filtersOpen.set(true);
+    setTimeout(() => this.filtersReady.set(true), FILTER_DRAWER_SETTLE_MS);
   }
 
-  onSeverity(d: GoabDropdownOnChangeDetail): void {
-    this.severity.set(d.value ?? '');
+  onDraftFrom(d: GoabDatePickerOnChangeDetail): void {
+    this.draft.from = d.valueStr ?? '';
+    this.draftFrom.set(this.draft.from);
   }
 
-  onStatus(d: GoabDropdownOnChangeDetail): void {
-    this.status.set((d.value ?? '') as Status);
+  onDraftTo(d: GoabDatePickerOnChangeDetail): void {
+    this.draft.to = d.valueStr ?? '';
+    this.draftTo.set(this.draft.to);
   }
 
-  onFrom(d: GoabDatePickerOnChangeDetail): void {
-    this.from.set(d.valueStr ?? '');
+  applyFilters(): void {
+    if (this.draftDateError()) return;
+    this.serviceFilter.set(this.draft.service);
+    this.program.set(this.draft.program);
+    this.severity.set(this.draft.severity);
+    this.status.set(this.draft.status);
+    this.from.set(this.draft.from);
+    this.to.set(this.draft.to);
+    this.filtersOpen.set(false);
   }
 
-  onTo(d: GoabDatePickerOnChangeDetail): void {
-    this.to.set(d.valueStr ?? '');
+  closeFilters(): void {
+    this.filtersOpen.set(false);
   }
 
   onPage(d: GoabPaginationOnChangeDetail): void {
     this.page.set(d.page);
   }
 
-  removeChip(key: 'program' | 'severity' | 'status' | 'from' | 'to'): void {
-    ({ program: this.program, severity: this.severity, status: this.status, from: this.from, to: this.to })[key].set('');
-    this.filterKey.update((k) => k + 1);
+  removeChip(key: FilterKey): void {
+    ({ service: this.serviceFilter, program: this.program, severity: this.severity, status: this.status, from: this.from, to: this.to })[key].set('');
   }
 
   clearAll(): void {
+    this.serviceFilter.set('');
     this.program.set('');
     this.severity.set('');
     this.status.set('');
     this.from.set('');
     this.to.set('');
-    this.filterKey.update((k) => k + 1);
   }
 
   private fmt(iso: string): string {

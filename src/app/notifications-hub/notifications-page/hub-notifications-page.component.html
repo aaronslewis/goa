@@ -8,66 +8,12 @@
   </header>
 
   <section class="filters" aria-label="Filter notifications">
-    @for (k of [filterKey()]; track k) {
-      <div class="filters__grid">
-        <goab-form-item labelSize="compact" label="Program" class="filters__program">
-          <goab-dropdown
-            name="program"
-            size="compact"
-            width="100%"
-            [filterable]="true"
-            placeholder="All programs"
-            [value]="program()"
-            (onChange)="onProgram($event)">
-            @for (p of programs; track p.id) {
-              <goab-dropdown-item [value]="p.id" [label]="p.name"></goab-dropdown-item>
-            }
-          </goab-dropdown>
-        </goab-form-item>
-
-        <goab-form-item labelSize="compact" label="Severity">
-          <goab-dropdown
-            name="severity"
-            size="compact"
-            width="100%"
-            placeholder="All severities"
-            [value]="severity()"
-            (onChange)="onSeverity($event)">
-            @for (s of severities; track s.value) {
-              <goab-dropdown-item [value]="s.value" [label]="s.label">
-                <goab-badge [type]="s.badge" emphasis="subtle" [content]="s.label" [icon]="true"></goab-badge>
-              </goab-dropdown-item>
-            }
-          </goab-dropdown>
-        </goab-form-item>
-
-        <goab-form-item labelSize="compact" label="Status">
-          <goab-dropdown
-            name="status"
-            size="compact"
-            width="100%"
-            placeholder="All statuses"
-            [value]="status()"
-            (onChange)="onStatus($event)">
-            @for (s of statusOptions; track s.value) {
-              <goab-dropdown-item [value]="s.value" [label]="s.label"></goab-dropdown-item>
-            }
-          </goab-dropdown>
-        </goab-form-item>
-
-        <goab-form-item labelSize="compact" label="From" [error]="dateRangeError()">
-          <div class="date-slot">
-            <goab-date-picker hubCompact name="from" width="100%" [value]="from()" [error]="!!dateRangeError()" (onChange)="onFrom($event)"></goab-date-picker>
-          </div>
-        </goab-form-item>
-
-        <goab-form-item labelSize="compact" label="To">
-          <div class="date-slot">
-            <goab-date-picker hubCompact name="to" width="100%" [value]="to()" [error]="!!dateRangeError()" (onChange)="onTo($event)"></goab-date-picker>
-          </div>
-        </goab-form-item>
-      </div>
-    }
+    <goab-button
+      type="secondary"
+      size="compact"
+      leadingIcon="filter"
+      [attr.aria-haspopup]="'dialog'"
+      (onClick)="openFilters()">{{ chips().length ? 'Filters (' + chips().length + ')' : 'Filters' }}</goab-button>
 
     @if (chips().length > 0) {
       <div class="chips" aria-label="Applied filters">
@@ -115,5 +61,87 @@
     </div>
   }
 </div>
+
+<!-- Rendered only while open, so its fields always start from the applied
+     filters and Cancel simply throws the draft away. -->
+@if (filtersOpen()) {
+  <ng-template #filterActions>
+    <goab-button-group alignment="start">
+      <goab-button type="primary" size="compact" (onClick)="applyFilters()">Apply filters</goab-button>
+      <goab-button type="tertiary" size="compact" (onClick)="closeFilters()">Cancel</goab-button>
+    </goab-button-group>
+  </ng-template>
+
+  <goab-drawer
+    [open]="true"
+    position="right"
+    heading="Filters"
+    maxSize="480px"
+    [actions]="filterActions"
+    (onClose)="closeFilters()">
+    <goab-form-item label="Service">
+      <goab-dropdown
+        name="service"
+        width="100%"
+        placeholder="All services"
+        [value]="filtersReady() ? draft.service : ''"
+        (onChange)="draft.service = $event.value ?? ''">
+        @for (sv of services; track sv.value) {
+          <goab-dropdown-item [value]="sv.value" [label]="sv.label"></goab-dropdown-item>
+        }
+      </goab-dropdown>
+    </goab-form-item>
+
+    <goab-form-item label="Program" mt="l">
+      <goab-dropdown
+        name="program"
+        width="100%"
+        [filterable]="true"
+        placeholder="All programs"
+        [value]="filtersReady() ? draft.program : ''"
+        (onChange)="draft.program = $event.value ?? ''">
+        @for (p of programs; track p.id) {
+          <goab-dropdown-item [value]="p.id" [label]="p.name"></goab-dropdown-item>
+        }
+      </goab-dropdown>
+    </goab-form-item>
+
+    <goab-form-item label="Severity" mt="l">
+      <goab-dropdown
+        name="severity"
+        width="100%"
+        placeholder="All severities"
+        [value]="filtersReady() ? draft.severity : ''"
+        (onChange)="draft.severity = $event.value ?? ''">
+        @for (s of severities; track s.value) {
+          <goab-dropdown-item [value]="s.value" [label]="s.label">
+            <goab-badge [type]="s.badge" emphasis="subtle" [content]="s.label" [icon]="true"></goab-badge>
+          </goab-dropdown-item>
+        }
+      </goab-dropdown>
+    </goab-form-item>
+
+    <goab-form-item label="Status" mt="l">
+      <goab-dropdown
+        name="status"
+        width="100%"
+        placeholder="All statuses"
+        [value]="filtersReady() ? draft.status : ''"
+        (onChange)="draft.status = $any($event.value ?? '')">
+        @for (s of statusOptions; track s.value) {
+          <goab-dropdown-item [value]="s.value" [label]="s.label"></goab-dropdown-item>
+        }
+      </goab-dropdown>
+    </goab-form-item>
+
+    <goab-form-item label="From" mt="l" [error]="draftDateError()">
+      <goab-date-picker name="from" [value]="filtersReady() ? draft.from : ''" [error]="!!draftDateError()" (onChange)="onDraftFrom($event)"></goab-date-picker>
+    </goab-form-item>
+
+    <goab-form-item label="To" mt="l">
+      <goab-date-picker name="to" [value]="filtersReady() ? draft.to : ''" [error]="!!draftDateError()" (onChange)="onDraftTo($event)"></goab-date-picker>
+    </goab-form-item>
+  </goab-drawer>
+}
 
 <hub-add-notification-drawer [open]="drawerOpen()" (closed)="drawerOpen.set(false)"></hub-add-notification-drawer>

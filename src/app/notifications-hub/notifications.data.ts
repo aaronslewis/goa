@@ -22,6 +22,9 @@ export interface HubNotification {
   // creates have neither severity and only an optional program.
   severity?: Severity;
   programId?: string;
+  // The ECDS service the event comes from, as named in the side menu. User
+  // reminders have none.
+  service?: ServiceId;
   createdAt: Date;
   dismissed: boolean;
   // Set by clicking a row, only in the hub version that marks items read on click.
@@ -82,6 +85,17 @@ export const PROGRAMS: Program[] = [
 ];
 
 export const PROGRAM_BY_ID = new Map(PROGRAMS.map((p) => [p.id, p]));
+
+export type ServiceId = 'licensing' | 'fdh-agency-contract';
+
+// Only the services that raise notifications today; add one here when its
+// events are added to TEMPLATES.
+export const SERVICES: { value: ServiceId; label: string }[] = [
+  { value: 'fdh-agency-contract', label: 'Family Day Home Agency Contract' },
+  { value: 'licensing', label: 'Licensing' },
+];
+
+const serviceOf = (t: Template): ServiceId => (t.agency ? 'fdh-agency-contract' : 'licensing');
 
 export const NOTIFY_TO = ['Me', 'My supervisor (Krista Kool)', 'Regional licensing admin', 'Child Care Connect'];
 
@@ -236,6 +250,7 @@ export function buildSeedNotifications(now = new Date()): HubNotification[] {
       secondaryLinkLabel: t.secondaryLinkLabel,
       severity: t.severity,
       programId: p.id,
+      service: serviceOf(t),
       createdAt,
       dismissed,
       isNew,
@@ -295,6 +310,7 @@ const demoItem = (id: string, t: Template, p: Program, person: string, educator:
   secondaryLinkLabel: t.secondaryLinkLabel,
   severity: t.severity,
   programId: p.id,
+  service: serviceOf(t),
   createdAt,
   dismissed: false,
   isNew,
