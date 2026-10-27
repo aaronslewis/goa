@@ -14,14 +14,10 @@
           <div class="row__content">
             <div class="row__body">
               <div class="row__status-line">
-                @if (inlineStatus()) {
+                @if (hiddenStatus()) {
                   <h4 class="row__title">
-                    @if (n.isNew) {<span class="visually-hidden">New: </span>}{{ n.title }}
-                    <goab-badge
-                      ml="xs"
-                      emphasis="subtle"
-                      [type]="badgeType(n)"
-                      [content]="statusLabel(n) + (n.dismissed ? ' · Completed' : '')"></goab-badge>
+                    <span class="visually-hidden">@if (n.isNew) {New }{{ statusLabel(n) }}: </span>{{ n.title }}
+                    @if (n.dismissed) {<span class="row__completed"> · Completed</span>}
                   </h4>
                 } @else {
                   <p class="row__status">{{ statusLabel(n) }}@if (n.dismissed) {<span> · Completed</span>}</p>
@@ -35,7 +31,7 @@
                   </div>
                 }
               </div>
-              @if (!inlineStatus()) {
+              @if (!hiddenStatus()) {
                 <h4 class="row__title">
                   @if (n.isNew) {<span class="visually-hidden">New: </span>}{{ n.title }}
                 </h4>

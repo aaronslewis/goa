@@ -54,13 +54,6 @@
   --row-tint: var(--goa-color-warning-background);
 }
 
-// The subtle important badge's own outline (warning-border) is almost the same
-// cream as this card's tint, so the badge disappears; outline it in the
-// stronger warning yellow instead.
-:host(.inline-status) .row--important {
-  --goa-badge-important-subtle-border: inset 0 0 0 var(--goa-border-width-s) var(--goa-color-warning-default);
-}
-
 .row--information {
   --row-strip: var(--goa-color-info-border);
   --row-tint: var(--goa-color-info-background);
@@ -108,8 +101,13 @@
 }
 
 // A title that wraps keeps the time and dismiss button pinned to its first line.
-:host(.inline-status) .row__status-line {
+:host(.hidden-status) .row__status-line {
   align-items: flex-start;
+}
+
+.row__completed {
+  font-weight: var(--goa-font-weight-regular);
+  color: var(--goa-color-text-secondary);
 }
 
 .row__status {

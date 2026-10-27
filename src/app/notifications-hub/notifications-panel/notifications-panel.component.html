@@ -20,7 +20,7 @@
             <hub-notification-feed
               [items]="tab.items"
               [stacked]="true"
-              [inlineStatus]="true"
+              [hiddenStatus]="true"
               emptyMessage="You're all caught up."
               (open)="service.markSeen($event)"
               (dismiss)="service.dismiss($event)"></hub-notification-feed>
