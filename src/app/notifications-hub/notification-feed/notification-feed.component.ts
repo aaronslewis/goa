@@ -31,7 +31,7 @@ export class NotificationFeedComponent {
   // Narrow containers such as the side-menu panel: always use the stacked
   // layout, whatever the viewport width.
   readonly stacked = input(false);
-  // Slimmer cards: a status badge leads the title on one line instead of a
+  // Slimmer cards: a status badge follows the title on one line instead of a
   // status label on its own line above it.
   readonly inlineStatus = input(false);
 
