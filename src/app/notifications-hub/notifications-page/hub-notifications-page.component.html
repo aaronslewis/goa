@@ -79,20 +79,7 @@
     maxSize="480px"
     [actions]="filterActions"
     (onClose)="closeFilters()">
-    <goab-form-item label="Service">
-      <goab-dropdown
-        name="service"
-        width="100%"
-        placeholder="All services"
-        [value]="filtersReady() ? draft.service : ''"
-        (onChange)="draft.service = $event.value ?? ''">
-        @for (sv of services; track sv.value) {
-          <goab-dropdown-item [value]="sv.value" [label]="sv.label"></goab-dropdown-item>
-        }
-      </goab-dropdown>
-    </goab-form-item>
-
-    <goab-form-item label="Program" mt="l">
+    <goab-form-item label="Program">
       <goab-dropdown
         name="program"
         width="100%"
@@ -102,6 +89,19 @@
         (onChange)="draft.program = $event.value ?? ''">
         @for (p of programs; track p.id) {
           <goab-dropdown-item [value]="p.id" [label]="p.name"></goab-dropdown-item>
+        }
+      </goab-dropdown>
+    </goab-form-item>
+
+    <goab-form-item label="Service" mt="l">
+      <goab-dropdown
+        name="service"
+        width="100%"
+        placeholder="All services"
+        [value]="filtersReady() ? draft.service : ''"
+        (onChange)="draft.service = $event.value ?? ''">
+        @for (sv of services; track sv.value) {
+          <goab-dropdown-item [value]="sv.value" [label]="sv.label"></goab-dropdown-item>
         }
       </goab-dropdown>
     </goab-form-item>

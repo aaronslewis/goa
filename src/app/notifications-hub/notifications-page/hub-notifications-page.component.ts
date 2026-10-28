@@ -152,10 +152,10 @@ export class HubNotificationsPageComponent {
 
   readonly chips = computed(() => {
     const chips: { key: FilterKey; label: string }[] = [];
-    const sv = SERVICES.find((x) => x.value === this.serviceFilter());
-    if (sv) chips.push({ key: 'service', label: sv.label });
     const p = PROGRAM_BY_ID.get(this.program());
     if (p) chips.push({ key: 'program', label: p.name });
+    const sv = SERVICES.find((x) => x.value === this.serviceFilter());
+    if (sv) chips.push({ key: 'service', label: sv.label });
     const s = SEVERITIES.find((x) => x.value === this.severity());
     if (s) chips.push({ key: 'severity', label: s.label });
     const st = STATUS_OPTIONS.find((x) => x.value === this.status());
