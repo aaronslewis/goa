@@ -84,6 +84,7 @@
       class="list"
       [items]="pageItems()"
       [allowRestore]="true"
+      [hiddenStatus]="true"
       emptyMessage="Try removing a filter or choosing a wider date range."
       (open)="service.markSeen($event)"
       (dismiss)="service.dismiss($event)"
