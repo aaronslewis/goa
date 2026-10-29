@@ -32,6 +32,7 @@ const MAX_PREVIEW = 2;
 @Component({
   selector: 'app-search-shell',
   standalone: true,
+  host: { class: 'goa-ds-v2' },
   imports: [
     GoabWorkSideMenu,
     GoabWorkSideMenuGroup,

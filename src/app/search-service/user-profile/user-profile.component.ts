@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { GoabBadge, GoabIcon, GoabContainer } from '@abgov/angular-components';
+import { GoabBadge, GoabContainer, GoabIcon, GoabTab, GoabTabs } from '@abgov/angular-components';
 import { SearchShellComponent } from '../shared/search-shell/search-shell.component';
-import { USERS } from '../shared/search-data';
+import { USERS, UserResult } from '../shared/search-data';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [GoabBadge, GoabIcon, GoabContainer, RouterLink, SearchShellComponent],
+  imports: [GoabBadge, GoabContainer, GoabIcon, GoabTab, GoabTabs, RouterLink, SearchShellComponent],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })
@@ -16,11 +16,7 @@ export class UserProfileComponent implements OnInit {
 
   searchValue = 'Sunny Jane';
 
-  readonly user = {
-    name: 'Sunny Jane',
-    email: 'sunnyjane@company.com',
-    portalStatus: 'No account' as string,
-  };
+  user: UserResult = USERS.find((u) => u.id === 'u2')!;
 
   readonly programAccess = [
     { programId: '12347546', programName: 'SunnySide Daycare', orgId: '14327546', orgName: 'SunnySide Daycare Ltd.', role: 'Supervisor', status: 'Active' },
@@ -31,9 +27,7 @@ export class UserProfileComponent implements OnInit {
     const id = this.route.snapshot.queryParamMap.get('id');
     const match = id ? USERS.find((u) => u.id === id) : undefined;
     if (match) {
-      this.user.name = match.name;
-      this.user.email = match.email;
-      this.user.portalStatus = match.portalStatus;
+      this.user = match;
       this.searchValue = match.name;
     }
   }

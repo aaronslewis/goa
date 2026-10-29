@@ -3,53 +3,75 @@
   <!-- ── User header ─────────────────────────────────────────────────────── -->
   <section class="user-header" aria-labelledby="user-heading">
     <p class="user-kicker">
-      <goab-icon type="person" size="small"></goab-icon>
+      <goab-icon type="person-circle" size="small"></goab-icon>
       User
     </p>
     <h2 class="user-title" id="user-heading">{{ user.name }}</h2>
     <p class="user-meta">
-      <span>{{ user.email }}</span>
-      <span class="dot">·</span>
+      <a class="inline-link" [href]="'mailto:' + user.email">{{ user.email }}</a>
+      <span class="dot" aria-hidden="true">|</span>
       <span>Portal account status</span>
-      @if (user.portalStatus === 'Active account') {
-        <goab-badge type="success" [content]="user.portalStatus"></goab-badge>
+      @if (user.portalStatus === 'Has account') {
+        <goab-badge type="success" emphasis="subtle" [content]="user.portalStatus"></goab-badge>
       } @else {
         <span class="operating-model-tag">{{ user.portalStatus }}</span>
       }
     </p>
   </section>
 
-  <!-- ── Program access ──────────────────────────────────────────────────── -->
-  <goab-container class="access-panel">
-    <h3 class="access-heading">Program access</h3>
-    <table class="simple-table">
-      <thead>
-        <tr>
-          <th>Program</th>
-          <th>Licence Holder Organization</th>
-          <th>Role</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (row of programAccess; track row.programId) {
-          <tr>
-            <td>
-              <a [routerLink]="['/search-service/program-details']" [queryParams]="{ id: row.programId }" class="inline-link">
-                {{ row.programId }}: {{ row.programName }}
-              </a>
-            </td>
-            <td>
-              <a [routerLink]="['/search-service/organization-details']" [queryParams]="{ id: row.orgId }" class="inline-link">
-                {{ row.orgName }}
-              </a>
-            </td>
-            <td>{{ row.role }}</td>
-            <td><goab-badge type="success" [content]="row.status"></goab-badge></td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </goab-container>
+  <!-- ── Tabs ────────────────────────────────────────────────────────────── -->
+  <goab-tabs class="user-tabs" navigation="none" [initialTab]="1">
+    <goab-tab heading="Details">
+      <goab-container>
+        <dl class="detail-list">
+          <div class="detail-row">
+            <dt>Phone</dt>
+            <dd>{{ user.phone ?? '-' }}</dd>
+          </div>
+          <div class="detail-row">
+            <dt>Account creation date</dt>
+            <dd>{{ user.accountCreated ?? '-' }}</dd>
+          </div>
+          <div class="detail-row">
+            <dt>Last login</dt>
+            <dd>{{ user.lastLogin ?? '-' }}</dd>
+          </div>
+        </dl>
+      </goab-container>
+    </goab-tab>
+
+    <goab-tab heading="Program access">
+      <goab-container>
+        <table class="simple-table">
+          <thead>
+            <tr>
+              <th>Program</th>
+              <th>Licence Holder Organization</th>
+              <th>Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of programAccess; track row.programId) {
+              <tr>
+                <td>
+                  <a [routerLink]="['/search-service/program-details']" [queryParams]="{ id: row.programId }" class="inline-link">
+                    {{ row.programId }}: {{ row.programName }}
+                  </a>
+                </td>
+                <td>
+                  <a [routerLink]="['/search-service/organization-details']" [queryParams]="{ id: row.orgId }" class="inline-link">
+                    {{ row.orgName }}
+                  </a>
+                </td>
+                <td>{{ row.role }}</td>
+                <td><goab-badge type="success" [content]="row.status"></goab-badge></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </goab-container>
+    </goab-tab>
+  </goab-tabs>
 
 </app-search-shell>

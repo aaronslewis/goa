@@ -1,7 +1,41 @@
 .user-header {
   margin: 0 calc(-1 * var(--goa-space-xl));
   padding: var(--goa-space-l) var(--goa-space-xl);
+  background: var(--goa-color-greyscale-100);
   border-bottom: 1px solid var(--goa-color-greyscale-200);
+}
+
+.user-tabs {
+  display: block;
+  margin-top: var(--goa-space-l);
+}
+
+.detail-list {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-s);
+}
+
+// Label beside its value, as in the Search service.
+.detail-row {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  gap: var(--goa-space-m);
+}
+
+.detail-row dt {
+  margin: 0;
+  font: var(--goa-typography-body-xs);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.detail-row dd {
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
 }
 
 .user-kicker {
@@ -43,18 +77,6 @@
   font: var(--goa-typography-body-s);
   font-family: var(--goa-font-family-sans);
   color: var(--goa-color-text-secondary);
-}
-
-.access-panel {
-  display: block;
-  margin-top: var(--goa-space-l);
-}
-
-.access-heading {
-  margin: 0 0 var(--goa-space-m);
-  font: var(--goa-typography-heading-s);
-  font-family: var(--goa-font-family-sans);
-  color: var(--goa-color-text-default);
 }
 
 .simple-table {

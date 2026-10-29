@@ -1,3 +1,11 @@
+<ng-template #licenceStatusBadge>
+  <goab-badge [type]="statusBadgeType" [icon]="true" [iconType]="statusBadgeIcon" [content]="program.licence.status"></goab-badge>
+</ng-template>
+
+<ng-template #noAgreement>
+  <goab-callout type="information" emphasis="low" size="medium">No agreement has been uploaded yet.</goab-callout>
+</ng-template>
+
 <app-search-shell [initialQuery]="searchValue">
 
   <!-- ── Program header band ────────────────────────────────────────────── -->
@@ -9,32 +17,25 @@
     <h2 class="program-title" id="program-heading">{{ program.name }}</h2>
     <p class="program-meta">
       <span>Program ID: {{ program.id }}</span>
-      <goab-badge
-        [type]="program.status.includes('probationary') ? 'important' : 'success'"
-        [icon]="true"
-        iconType="shield-checkmark"
-        [content]="program.status"></goab-badge>
+      <span class="divider" aria-hidden="true">|</span>
+      <goab-badge [type]="statusBadgeType" [icon]="true" [iconType]="statusBadgeIcon" [content]="program.status"></goab-badge>
     </p>
   </section>
 
   <!-- ── Tabs ────────────────────────────────────────────────────────────── -->
-  <goab-tabs class="program-tabs">
+  <goab-tabs class="program-tabs" navigation="none" [initialTab]="1">
     <goab-tab heading="Overview">
-      <section class="detail-panel">
-        <goab-grid minChildWidth="260px" gap="l">
+      <section class="detail-panel" aria-label="Program details">
+        <div class="detail-columns">
           <dl class="detail-list">
             <div class="detail-row">
-              <dt>Program type</dt>
+              <dt>Type</dt>
               <dd>{{ program.type }}</dd>
-            </div>
-            <div class="detail-row">
-              <dt>Care type(s)</dt>
-              <dd>{{ program.careTypes }}</dd>
             </div>
             <div class="detail-row">
               <dt>Physical address</dt>
               <dd>
-                @for (line of program.physicalAddress; track line) {
+                @for (line of program.physicalAddress; track $index) {
                   <span class="address-line">{{ line }}</span>
                 }
               </dd>
@@ -42,14 +43,11 @@
             <div class="detail-row">
               <dt>Mailing address</dt>
               <dd>
-                @for (line of program.mailingAddress; track line) {
+                @for (line of program.mailingAddress; track $index) {
                   <span class="address-line">{{ line }}</span>
                 }
               </dd>
             </div>
-          </dl>
-
-          <dl class="detail-list">
             <div class="detail-row">
               <dt>Program contact</dt>
               <dd>
@@ -58,6 +56,9 @@
                 <span class="address-line">{{ program.contact.phone }}</span>
               </dd>
             </div>
+          </dl>
+
+          <dl class="detail-list">
             <div class="detail-row">
               <dt>Program email</dt>
               <dd>{{ program.email }}</dd>
@@ -70,8 +71,21 @@
               <dt>Regional authority</dt>
               <dd>{{ program.regionalAuthority }}</dd>
             </div>
+            <div class="detail-row">
+              <dt>Affordability Grant region</dt>
+              <dd class="with-icon">
+                {{ program.affordabilityRegion }}
+                <goab-tooltip content="The region used to set this program's Affordability Grant rates.">
+                  <goab-icon type="information-circle" size="small" ariaLabel="About Affordability Grant region"></goab-icon>
+                </goab-tooltip>
+              </dd>
+            </div>
+            <div class="detail-row">
+              <dt>Subsidy Grant Agreement</dt>
+              <dd>{{ program.subsidyAgreement }}</dd>
+            </div>
           </dl>
-        </goab-grid>
+        </div>
 
         <div class="detail-links">
           <p>
@@ -89,21 +103,92 @@
       </section>
 
       <goab-container class="org-panel">
-        <h3 class="org-heading">Licence Holder Organization details</h3>
-        <goab-grid minChildWidth="260px" gap="l">
-          <div>
-            <p class="org-label">Name</p>
-            <a routerLink="/search-service/organization-details" class="inline-link">
-              <span class="address-line">{{ program.licenceHolder.name }}</span>
-              <span class="address-line">{{ program.licenceHolder.address }}</span>
-            </a>
+        <h3 class="section-heading">Licence Holder Organization details</h3>
+        <dl class="inline-fields">
+          <div class="detail-row">
+            <dt>Name</dt>
+            <dd>
+              <a [routerLink]="['/search-service/organization-details']" [queryParams]="{ id: program.licenceHolder.id }" class="inline-link">
+                {{ program.licenceHolder.name }}
+              </a>
+            </dd>
           </div>
-          <div>
-            <p class="org-label">Operating model</p>
-            <p class="org-value">{{ program.licenceHolder.operatingModel }}</p>
+          <div class="detail-row">
+            <dt>Operating Model</dt>
+            <dd>{{ program.licenceHolder.operatingModel }}</dd>
           </div>
-        </goab-grid>
+        </dl>
       </goab-container>
+
+      <!-- ── Licence information ─────────────────────────────────────────── -->
+      <h3 class="section-heading">Licence information</h3>
+      <goab-accordion heading="Current and recent licences" headingType="filled" [open]="true" [headingContent]="licenceStatusBadge" mb="l">
+        <dl class="licence-fields">
+          <div class="detail-row">
+            <dt>Status change date</dt>
+            <dd>{{ program.licence.statusChangeDate }}</dd>
+          </div>
+        </dl>
+        <goab-table class="licence-table" width="100%" mt="s" mb="s">
+          <table>
+            <thead>
+              <tr>
+                <th>CCIS Licence status</th>
+                <th>Issue date</th>
+                <th>Program start date</th>
+                <th>Program end date</th>
+                <th>Expiry date</th>
+                <th>Licence type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ program.licence.status }}</td>
+                <td>{{ program.licence.issueDate }}</td>
+                <td>{{ program.licence.startDate }}</td>
+                <td>{{ program.licence.endDate }}</td>
+                <td>{{ program.licence.expiryDate }}</td>
+                <td>{{ program.licence.type }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </goab-table>
+        <dl class="licence-fields">
+          <div class="detail-row">
+            <dt>Reason code</dt>
+            <dd>{{ program.licence.reasonCode }}</dd>
+          </div>
+          <div class="detail-row">
+            <dt>Variation request date</dt>
+            <dd>{{ program.licence.variationRequestDate }}</dd>
+          </div>
+          <div class="detail-row">
+            <dt>Reason for inactivity</dt>
+            <dd>{{ program.licence.reasonForInactivity }}</dd>
+          </div>
+        </dl>
+      </goab-accordion>
+
+      <!-- ── Funding overview ────────────────────────────────────────────── -->
+      <h3 class="section-heading">Funding Overview</h3>
+      @for (f of fundingSections; track f.heading) {
+        <goab-accordion [heading]="f.heading" headingType="filled" [open]="true" mb="m">
+          <div class="funding-body">
+            @if (f.agreement.signedOn) {
+              <goab-callout type="success" emphasis="low" size="medium">Agreement signed {{ f.agreement.signedOn }}.</goab-callout>
+            } @else {
+              <ng-container *ngTemplateOutlet="noAgreement"></ng-container>
+            }
+            @if (f.agreement.ineligible) {
+              <goab-callout type="emergency" emphasis="low" size="medium">Ineligible to apply for the Affordability Grant.</goab-callout>
+            }
+            <p class="funding-note">
+              To view agreements older than 12 months visit the service.<br />
+              <a href="#" class="inline-link">Go to {{ f.service }} service</a>
+            </p>
+          </div>
+        </goab-accordion>
+      }
     </goab-tab>
 
     <goab-tab heading="User access">
