@@ -1,0 +1,53 @@
+<div class="page">
+  <h1 class="greeting">{{ greeting }}, {{ firstName }}</h1>
+
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Recent notifications</h2>
+      <p class="section-note">Showing active notifications from the last 30 days.</p>
+    </div>
+  </div>
+
+  <div class="tabs-area">
+    <!-- Level with the tab tray, so it reads as acting on the selected tab only. -->
+    @if (currentTab(); as tab) {
+      @if (tab.items.length > 0) {
+        <div class="tab-action">
+          <goab-button type="tertiary" size="compact" (onClick)="markAllComplete()">Mark all as complete</goab-button>
+        </div>
+      }
+    }
+    <goab-tabs variant="segmented" navigation="none" orientation="horizontal" (onChange)="onTabChange($event)">
+      @for (tab of tabs(); track tab.key) {
+        <ng-template #tabHeading>
+          <span class="tab-heading">
+            {{ tab.label }}
+            @if (tab.items.length > 0) {
+              <goab-badge
+                [type]="tab.badge ?? 'sky'"
+                emphasis="subtle"
+                [content]="'' + tab.items.length"
+                [ariaLabel]="tab.items.length + ' notifications'"
+                size="medium"></goab-badge>
+            }
+          </span>
+        </ng-template>
+        <goab-tab [heading]="tabHeading">
+          <goab-container padding="compact" class="list-card">
+            <hub-notification-feed
+              class="list"
+              [items]="tab.items"
+              [hiddenStatus]="true"
+              emptyMessage="You're all caught up. There are no notifications from the last 30 days."
+              (open)="service.markSeen($event)"
+              (dismiss)="service.dismiss($event)"></hub-notification-feed>
+          </goab-container>
+        </goab-tab>
+      }
+    </goab-tabs>
+  </div>
+
+  <p class="footer-link">
+    <goab-link trailingIcon="arrow-forward"><a [href]="notificationsUrl">View all notifications</a></goab-link>
+  </p>
+</div>

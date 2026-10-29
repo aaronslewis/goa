@@ -24,6 +24,7 @@ import { HubHomePlainComponent } from './notifications-hub/home-plain/hub-home-p
 import { NotificationsService } from './notifications-hub/notifications.service';
 import { DemoNotificationsService } from './notifications-hub/demo-notifications.service';
 import { ProviderPortalNotificationsShellComponent } from './provider-portal-notifications/provider-portal-notifications-shell.component';
+import { ProviderHomePageComponent } from './provider-portal-notifications/provider-home-page.component';
 import { ProviderNotificationsPageComponent } from './provider-portal-notifications/provider-notifications-page.component';
 import { ProviderNotificationsService } from './provider-portal-notifications/provider-notifications.service';
 import { FamilyPortalNotificationsShellComponent } from './family-portal-notifications/family-portal-notifications-shell.component';
@@ -163,7 +164,8 @@ export const routes: Routes = [
     component: ProviderPortalNotificationsShellComponent,
     providers: [{ provide: NotificationsService, useClass: ProviderNotificationsService }],
     children: [
-      { path: '', redirectTo: 'notifications', pathMatch: 'full' },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: ProviderHomePageComponent, title: 'Home — Provider portal' },
       {
         path: 'notifications',
         component: ProviderNotificationsPageComponent,
