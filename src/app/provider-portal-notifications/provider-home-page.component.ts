@@ -4,6 +4,14 @@ import { GoabBadge, GoabButton, GoabContainer, GoabLink, GoabTab, GoabTabs } fro
 import { NotificationFeedComponent } from '../notifications-hub/notification-feed/notification-feed.component';
 import { NotificationsService } from '../notifications-hub/notifications.service';
 
+const ALBERTA_HOUR = new Intl.DateTimeFormat('en-CA', {
+  hour: 'numeric',
+  hourCycle: 'h23',
+  timeZone: 'America/Edmonton',
+});
+
+const albertaHour = (): number => Number(ALBERTA_HOUR.format(new Date()));
+
 // Home for the provider portal: the notification centre's Recent notifications
 // (severity tabs over the card feed), without the hub's filters. Reuses the
 // hub Home's styles so the two stay in step.
@@ -32,12 +40,13 @@ export class ProviderHomePageComponent {
   // so completing every item in a tab, All included, is safe to offer.
   readonly currentTab = computed(() => this.tabs()[this.activeTab() - 1] ?? null);
 
-  // Recomputed on each render, so it tracks the user's local clock.
-  get greeting(): string {
-    const h = new Date().getHours();
-    if (h < 12) return 'Good morning';
-    if (h < 17) return 'Good afternoon';
-    return 'Good evening';
+  // Recomputed on each render. Providers are in Alberta, so the day turns
+  // evening at 5pm Alberta time whatever the browser's own time zone is.
+  get greeting(): { text: string; emoji: string } {
+    const h = albertaHour();
+    if (h < 12) return { text: 'Morning', emoji: '🌞' };
+    if (h < 17) return { text: 'Afternoon', emoji: '🌤️' };
+    return { text: 'Evening', emoji: '🌙' };
   }
 
   onTabChange(detail: GoabTabsOnChangeDetail): void {
