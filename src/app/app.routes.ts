@@ -53,6 +53,7 @@ import { VerificationMultiOrgComponent } from './acknowledgement-multi-org/verif
 import { TermsMultiOrgComponent } from './acknowledgement-multi-org/terms/terms.component';
 import { ConfirmationMultiOrgComponent } from './acknowledgement-multi-org/confirmation/confirmation.component';
 import { UserProfileComponent } from './search-service/user-profile/user-profile.component';
+import { LegalRepManagementComponent } from './legal-rep-management/legal-rep-management.component';
 
 @Component({
   standalone: true,
@@ -191,6 +192,11 @@ export const routes: Routes = [
     path: 'user-access-management',
     component: UserAccessManagementComponent,
     title: 'User Access Management',
+  },
+  {
+    path: 'legal-rep-management',
+    component: LegalRepManagementComponent,
+    title: 'Legal Representative Management',
   },
   {
     path: 'goa-user-management',

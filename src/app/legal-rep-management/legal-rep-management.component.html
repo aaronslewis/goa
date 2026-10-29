@@ -1,0 +1,206 @@
+<goab-microsite-header type="beta" feedbackUrl="#"></goab-microsite-header>
+
+<ng-template #primaryNav>
+  @for (entry of menuEntries; track entry.label) {
+    @if (entry.items) {
+      <goab-work-side-menu-group [heading]="entry.label" [icon]="entry.icon">
+        @for (child of entry.items; track child.label) {
+          <goab-work-side-menu-item [label]="child.label" [url]="child.url ?? '#'" [current]="child.current ?? false"></goab-work-side-menu-item>
+        }
+      </goab-work-side-menu-group>
+    } @else {
+      <goab-work-side-menu-item [icon]="entry.icon" [label]="entry.label" [url]="entry.url ?? '#'"></goab-work-side-menu-item>
+    }
+  }
+</ng-template>
+
+<ng-template #secondaryNav>
+  <goab-work-side-menu-item icon="search:outline" label="Search" url="#/search-service"></goab-work-side-menu-item>
+  <goab-work-side-menu-item icon="help-circle:outline" label="Help Centre" url="#"></goab-work-side-menu-item>
+</ng-template>
+
+<div class="workspace">
+  <goab-work-side-menu
+    heading="Early Childhood Development System"
+    url="#"
+    userName="Edna Mode"
+    userSecondaryText="edna.mode@gov.ab.ca"
+    [open]="isMenuOpen"
+    [primaryContent]="primaryNav"
+    [secondaryContent]="secondaryNav"
+    (onToggle)="isMenuOpen = !isMenuOpen"
+    aria-label="Workspace navigation">
+  </goab-work-side-menu>
+
+  <main class="page" id="main-content">
+    <h1 class="page-title">Legal Representative Management</h1>
+    <p class="page-lede">Legal representatives whose information has been added or updated recently</p>
+
+    <div class="date-range">
+      <span class="date-range-label" id="date-range-label">Date range</span>
+      <goab-tabs variant="segmented" orientation="horizontal" navigation="none" aria-labelledby="date-range-label" (onChange)="onDateRangeChange($event)">
+        @for (r of dateRanges; track r.range) {
+          <goab-tab [heading]="r.label"></goab-tab>
+        }
+      </goab-tabs>
+    </div>
+
+    <div class="overview">
+      <section class="tiles" aria-label="Email summary">
+        @for (group of tileGroups; track group.heading) {
+          <div class="tile-group">
+            <h2 class="tile-group-heading">{{ group.heading }}</h2>
+            <div class="tile-row">
+              @for (tile of group.tiles; track tile.filter) {
+                <button
+                  type="button"
+                  class="tile tile--{{ tile.tone }}"
+                  [class.tile--selected]="tileFilter() === tile.filter"
+                  [attr.aria-pressed]="tileFilter() === tile.filter"
+                  (click)="selectTile(tile.filter)">
+                  <span class="tile-count">
+                    <goab-icon [type]="tile.icon" size="small"></goab-icon>
+                    <span class="tile-number">{{ counts()[tile.filter] }}</span>
+                  </span>
+                  <span class="tile-label">{{ tile.label }}</span>
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </section>
+
+      <form class="search" role="search" (submit)="$event.preventDefault()">
+        <goab-form-item helpText="Search by name, email, program, ID, org, etc.">
+          <goab-block gap="xs" direction="row">
+            <goab-input
+              type="search"
+              name="legalRepSearch"
+              leadingIcon="search"
+              width="100%"
+              ariaLabel="Search legal representatives"
+              [value]="searchDraft"
+              (onChange)="onSearchChange($event)"
+              (onKeyPress)="onSearchKeyPress($event)">
+            </goab-input>
+            <goab-button type="primary" (onClick)="applySearch()">Search</goab-button>
+          </goab-block>
+        </goab-form-item>
+      </form>
+    </div>
+
+    <goab-table width="100%" (onSort)="onSort($event)">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-toggle"><span class="visually-hidden">Details</span></th>
+            <th>License holder org</th>
+            <th><goab-table-sort-header name="program" [direction]="sortDirFor('program')">Program name</goab-table-sort-header></th>
+            <th><goab-table-sort-header name="rep" [direction]="sortDirFor('rep')">Legal rep name</goab-table-sort-header></th>
+            <th><goab-table-sort-header name="emailDate" [direction]="sortDirFor('emailDate')">Email date</goab-table-sort-header></th>
+            <th>Email status</th>
+            <th>Account created</th>
+            <th>Ack status</th>
+            <th class="col-action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of rows(); track e.id) {
+            <tr [class.row--expanded]="isExpanded(e.id)">
+              <td class="col-toggle">
+                <goab-icon-button
+                  [icon]="isExpanded(e.id) ? 'chevron-down' : 'chevron-forward'"
+                  size="small"
+                  [ariaLabel]="(isExpanded(e.id) ? 'Hide' : 'Show') + ' email details for ' + e.rep.name"
+                  (onClick)="toggleRow(e.id)"></goab-icon-button>
+              </td>
+              <td class="col-org">
+                <a class="inline-link" [routerLink]="['/search-service/organization-details']" [queryParams]="{ id: e.org.id }">{{ e.org.name }}</a>
+                <span class="secondary">{{ e.org.id }}</span>
+              </td>
+              <td>
+                <a class="inline-link" [routerLink]="['/search-service/program-details']" [queryParams]="{ id: e.program.id }">{{ e.program.name }}</a>
+                <span class="secondary">{{ e.program.id }}</span>
+              </td>
+              <td>
+                <a class="inline-link" [routerLink]="['/search-service/user-profile']" [queryParams]="{ id: e.rep.id }">{{ e.rep.name }}</a>
+                <span class="secondary">{{ e.rep.email }}</span>
+              </td>
+              <td class="nowrap">{{ formatEmailDate(e.emailDate) }}</td>
+              <td>
+                @switch (e.emailStatus) {
+                  @case ('sent') {
+                    <span class="status status--success"><goab-icon type="checkmark" size="small"></goab-icon>Sent</span>
+                  }
+                  @case ('failed') {
+                    <span class="status status--emergency"><goab-icon type="alert-circle" size="small"></goab-icon>Failed for technical issues</span>
+                  }
+                  @case ('in-review') {
+                    <span class="status status--emergency"><goab-icon type="alert-circle" size="small"></goab-icon>In review</span>
+                  }
+                }
+              </td>
+              <td>
+                @if (e.account === 'created') {
+                  <span class="status status--success"><goab-icon type="checkmark" size="small"></goab-icon>Created</span>
+                } @else if (e.account === 'not-created') {
+                  <span class="status status--warning"><goab-icon type="ellipsis-horizontal-circle" size="small"></goab-icon>Not created</span>
+                } @else {
+                  <ng-container *ngTemplateOutlet="none"></ng-container>
+                }
+              </td>
+              <td>
+                @if (e.ack === 'confirmed') {
+                  <span class="status status--success"><goab-icon type="checkmark" size="small"></goab-icon>Confirmed</span>
+                } @else if (e.ack === 'not-confirmed') {
+                  <span class="status status--warning"><goab-icon type="ellipsis-horizontal-circle" size="small"></goab-icon>Not confirmed</span>
+                } @else {
+                  <ng-container *ngTemplateOutlet="none"></ng-container>
+                }
+              </td>
+              <td class="col-action">
+                @if (e.emailStatus === 'in-review') {
+                  <ng-container *ngTemplateOutlet="none"></ng-container>
+                } @else {
+                  <goab-button type="text" size="compact" [ariaLabel]="'Re-send email to ' + e.rep.name" (onClick)="resend(e)">Re-send</goab-button>
+                }
+              </td>
+            </tr>
+            @if (isExpanded(e.id)) {
+              <tr class="details-row">
+                <td colspan="9">
+                  <dl class="details">
+                    <div>
+                      <dt>Email sent date</dt>
+                      <dd>{{ e.emailSentAt ?? '-' }}</dd>
+                    </div>
+                    <div class="details-scenario">
+                      <dt>Email scenario</dt>
+                      <dd>{{ e.scenario }}</dd>
+                    </div>
+                    <div>
+                      <dt>Account creation date</dt>
+                      <dd>{{ e.accountCreatedAt ?? '-' }}</dd>
+                    </div>
+                    <div>
+                      <dt>Acknowledgement date</dt>
+                      <dd>{{ e.ackAt ?? '-' }}</dd>
+                    </div>
+                  </dl>
+                </td>
+              </tr>
+            }
+          } @empty {
+            <tr><td colspan="9" class="empty">No legal representatives match this date range, filter or search.</td></tr>
+          }
+        </tbody>
+      </table>
+    </goab-table>
+  </main>
+</div>
+
+<ng-template #none>
+  <span class="none"><goab-icon type="remove" size="small"></goab-icon><span class="visually-hidden">None yet</span></span>
+</ng-template>
+
+<goab-temporary-notification-ctrl></goab-temporary-notification-ctrl>

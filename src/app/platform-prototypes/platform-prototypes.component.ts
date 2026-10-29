@@ -199,6 +199,12 @@ export class PlatformPrototypesComponent {
           path: '/user-access-management',
           status: 'In progress',
         },
+        {
+          label: 'Legal Representative Management',
+          description: 'Track portal emails, accounts and acknowledgements for new or updated legal reps, with links to their profiles in Search.',
+          path: '/legal-rep-management',
+          status: 'In progress',
+        },
       ],
     },
   ];

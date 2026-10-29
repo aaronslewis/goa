@@ -12,6 +12,8 @@ export interface ProgramResult {
   subtitle: string;
   programType: string;
   status: string;
+  /** Lets a program without an authored detail record show its real licence holder. */
+  licenceHolderId?: string;
 }
 
 export interface UserResult {
@@ -33,6 +35,11 @@ export const ORGANIZATIONS: OrgResult[] = [
   { id: '18007546', name: 'SunnySide Daycare NW Edmonton', subtitle: '18007 100 Avenue NW, Edmonton, AB T5T 6J6', type: 'Sole proprietorship', operatingModel: 'For profit' },
   { id: '19345678', name: 'Magic Learning Centre, 123', subtitle: 'Edmonton, AB T3S 1D4', type: 'Incorporated', operatingModel: 'For profit' },
   { id: '12345678', name: 'SunnySide Daycare Pvt. Ltd.', subtitle: '12345 104 Avenue NW, Edmonton, AB T5N 0Y9', type: 'Incorporated', operatingModel: 'For profit' },
+  // Licence holders from legal-rep-management.
+  { id: '123456789', name: 'Early to School Learning.', subtitle: '10150 82 Avenue NW, Edmonton, AB T6E 1Z4', type: 'Incorporated', operatingModel: 'For profit' },
+  { id: '52217454', name: 'Toddler School', subtitle: '4807 50 Street, Red Deer, AB T4N 1X5', type: 'Sole proprietorship', operatingModel: 'For profit' },
+  { id: '432881234', name: '7765123 Alberta Ltd.', subtitle: '220 4 Avenue SW, Calgary, AB T2P 0H5', type: 'Incorporated', operatingModel: 'For profit' },
+  { id: '342176345', name: 'Immanuel Evangelical Lutheran Church of Rocky Mountain House, Alberta', subtitle: '5020 52 Street, Rocky Mountain House, AB T4T 1T3', type: 'Society', operatingModel: 'Non-profit' },
 ];
 
 export const PROGRAMS: ProgramResult[] = [
@@ -43,6 +50,11 @@ export const PROGRAMS: ProgramResult[] = [
   { id: '81003423', name: 'SunnySide Daycare NE Calgary', subtitle: '338 Willow Street, Sherwood Park Strathcona County, Alberta T8A 1R3', programType: 'Facility based', status: 'Licenced' },
   { id: '81004424', name: 'SunnySide Daycare SE Calgary', subtitle: '310 Jasper Ave NW, Edmonton, AB T5J 1P1', programType: 'Facility based', status: 'Licenced' },
   { id: '180012345', name: 'Kidz Learning Centre', subtitle: '10025 102A Avenue NW, Edmonton, AB T5J 1G3', programType: 'Facility based', status: 'Licenced (probationary)' },
+  // Programs from legal-rep-management.
+  { id: '543821348', name: 'Edmonton Early Learning and Care', subtitle: '10150 82 Avenue NW, Edmonton, AB T6E 1Z4', programType: 'Facility based', status: 'Licenced', licenceHolderId: '123456789' },
+  { id: '34217453', name: 'Ace Children Centre', subtitle: '4807 50 Street, Red Deer, AB T4N 1X5', programType: 'Facility based', status: 'Licenced', licenceHolderId: '52217454' },
+  { id: '542312854', name: 'Moon Children Centre', subtitle: '220 4 Avenue SW, Calgary, AB T2P 0H5', programType: 'Facility based', status: 'Licenced', licenceHolderId: '432881234' },
+  { id: '542312855', name: 'Little Cubs Learning Centre', subtitle: '5020 52 Street, Rocky Mountain House, AB T4T 1T3', programType: 'Facility based', status: 'Licenced', licenceHolderId: '342176345' },
 ];
 
 export const USERS: UserResult[] = [
@@ -50,6 +62,13 @@ export const USERS: UserResult[] = [
   { id: 'u2', name: 'Sunny Jane', email: 'sunnyjane@company.com', portalStatus: 'No account' },
   { id: 'u3', name: 'Sunny Osei', email: 'sunny.osei@brightbeginnings.ca', portalStatus: 'Active account' },
   { id: 'u4', name: 'Fabiola Beach', email: 'fabiola.beach@kidzlearning.com', portalStatus: 'Active account' },
+  // Legal reps from legal-rep-management.
+  { id: 'u10', name: 'Charlie Day', email: 'charlie.day@earlylearning.ca', portalStatus: 'No account' },
+  { id: 'u11', name: 'James McDonald', email: 'james.mcdonald@company.com', portalStatus: 'No account' },
+  { id: 'u12', name: 'Amanda Rosset', email: 'amanda.rosset@company.ca', portalStatus: 'No account' },
+  { id: 'u13', name: 'Carolyn Parkes', email: 'carolyn.parkes@company.com', portalStatus: 'No account' },
+  { id: 'u14', name: 'Dennis Reynolds', email: 'dennis.reynolds@sunnyside.com', portalStatus: 'Active account' },
+  { id: 'u15', name: 'Mellissa Smith', email: 'mellissasmith@sunnyside.com', portalStatus: 'No account' },
 ];
 
 export interface ProgramDetail {
@@ -116,6 +135,7 @@ export function getProgramDetail(id: string | null): ProgramDetail {
   if (id && PROGRAM_DETAILS[id]) return PROGRAM_DETAILS[id];
   const summary = id ? PROGRAMS.find((p) => p.id === id) : undefined;
   if (!summary) return PROGRAM_DETAILS['180012345'];
+  const holder = summary.licenceHolderId ? ORGANIZATIONS.find((o) => o.id === summary.licenceHolderId) : undefined;
   // No authored detail record for this program — build a plausible one from its search summary.
   const [addressLine1, addressLine2] = summary.subtitle.split(', ').reduce<[string, string]>(
     (acc, part, i) => (i === 0 ? [part, acc[1]] : [acc[0], acc[1] ? `${acc[1]}, ${part}` : part]),
@@ -133,7 +153,9 @@ export function getProgramDetail(id: string | null): ProgramDetail {
     email: 'info@example.com',
     licensingOfficer: 'Lena Yen',
     regionalAuthority: '005 CALGARY',
-    licenceHolder: { name: 'SUNNYSIDE DAYCARE PVT. LTD.', address: '12345 104 Avenue NW, Edmonton, AB T5N 0Y9', operatingModel: 'For profit' },
+    licenceHolder: holder
+      ? { name: holder.name.toUpperCase(), address: holder.subtitle, operatingModel: holder.operatingModel }
+      : { name: 'SUNNYSIDE DAYCARE PVT. LTD.', address: '12345 104 Avenue NW, Edmonton, AB T5N 0Y9', operatingModel: 'For profit' },
   };
 }
 
