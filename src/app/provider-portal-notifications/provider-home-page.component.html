@@ -1,6 +1,23 @@
 <div class="page">
   <h1 class="greeting">{{ greeting }}, {{ firstName }}</h1>
 
+  <div class="notices">
+    <goab-accordion heading="Important information" headingType="filled">
+      <p class="notices__text">
+        Updates to the Accountability Program and Portal Access Acknowledgement apply to every program and every
+        Super Admin in your organization.
+      </p>
+    </goab-accordion>
+
+    <goab-callout type="important" heading="Action required: accept updated acknowledgement">
+      <p class="notices__text">
+        The Accountability Program and Portal Access Acknowledgement has been updated. Super Admins must review and
+        accept the updated acknowledgement to maintain access to the Child Care Licensing Portal.
+      </p>
+      <goab-link trailingIcon="arrow-forward"><a [href]="acknowledgementUrl">Start</a></goab-link>
+    </goab-callout>
+  </div>
+
   <div class="section-header">
     <div>
       <h2 class="section-title">Recent notifications</h2>

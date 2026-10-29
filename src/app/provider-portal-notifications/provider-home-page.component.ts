@@ -1,6 +1,15 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { GoabTabsOnChangeDetail } from '@abgov/ui-components-common';
-import { GoabBadge, GoabButton, GoabContainer, GoabLink, GoabTab, GoabTabs } from '@abgov/angular-components';
+import {
+  GoabAccordion,
+  GoabBadge,
+  GoabButton,
+  GoabCallout,
+  GoabContainer,
+  GoabLink,
+  GoabTab,
+  GoabTabs,
+} from '@abgov/angular-components';
 import { NotificationFeedComponent } from '../notifications-hub/notification-feed/notification-feed.component';
 import { NotificationsService } from '../notifications-hub/notifications.service';
 
@@ -35,11 +44,22 @@ function pickGreeting(): string {
 @Component({
   selector: 'provider-home-page',
   standalone: true,
-  imports: [GoabBadge, GoabButton, GoabContainer, GoabLink, GoabTab, GoabTabs, NotificationFeedComponent],
+  imports: [
+    GoabAccordion,
+    GoabBadge,
+    GoabButton,
+    GoabCallout,
+    GoabContainer,
+    GoabLink,
+    GoabTab,
+    GoabTabs,
+    NotificationFeedComponent,
+  ],
   templateUrl: './provider-home-page.component.html',
   styleUrls: [
     '../notifications-hub/home/hub-home.component.scss',
     '../notifications-hub/home-v3/hub-home-v3.component.scss',
+    './provider-home-page.component.scss',
   ],
 })
 export class ProviderHomePageComponent {
@@ -47,6 +67,7 @@ export class ProviderHomePageComponent {
 
   readonly firstName = 'Sally';
   readonly notificationsUrl = '#/provider-portal-notifications/notifications';
+  readonly acknowledgementUrl = '#/acknowledgement';
 
   // goab-tabs reports a 1-based index; 1 is "All".
   readonly activeTab = signal(1);
