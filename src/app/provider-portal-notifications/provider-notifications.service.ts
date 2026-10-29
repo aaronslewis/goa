@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TemporaryNotification } from '@abgov/ui-components-common';
-import { HubNotification } from '../notifications-hub/notifications.data';
+import { HubNotification, SEVERITIES } from '../notifications-hub/notifications.data';
 import { NotificationsService } from '../notifications-hub/notifications.service';
 import { buildProviderNotifications, providerArrival } from './provider-notifications.data';
 
@@ -15,7 +15,11 @@ export class ProviderNotificationsService extends NotificationsService {
     setTimeout(() => {
       const n = providerArrival();
       this.receive(n);
-      TemporaryNotification.show(`New notification: ${n.title}`, { duration: 'long' });
+      // The toast has no severity colour or icon, so the wording carries it.
+      const severity = SEVERITIES.find((s) => s.value === n.severity)?.label.toLowerCase();
+      TemporaryNotification.show(`New ${severity ? `${severity} ` : ''}notification: ${n.title}`, {
+        duration: 'long',
+      });
     }, ARRIVAL_DELAY_MS);
   }
 
