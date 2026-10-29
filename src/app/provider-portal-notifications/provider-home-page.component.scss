@@ -1,0 +1,23 @@
+// Same cap as the notification section below, so the two line up.
+.notices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-l);
+  max-width: 81.25rem;
+  margin-bottom: var(--goa-space-2xl);
+}
+
+.notices__subheading {
+  margin: var(--goa-space-m) 0 var(--goa-space-xs);
+  font: var(--goa-typography-body-m);
+  font-weight: var(--goa-font-weight-bold);
+
+  &:first-child {
+    margin-top: var(--goa-space-xs);
+  }
+}
+
+.notices__text {
+  margin: 0 0 var(--goa-space-s);
+  font: var(--goa-typography-body-m);
+}
