@@ -34,8 +34,8 @@ type MenuItemElement = HTMLElement & { current?: boolean };
 const BASE = '/provider-portal-notifications';
 
 // The provider portal's navigation (see ProviderPortalMenuComponent) around a
-// Notifications page. Only Notifications is a real page; the other items are
-// placeholders.
+// Home and Notifications pages. Those two are the only real pages; the other
+// items are placeholders.
 @Component({
   selector: 'provider-portal-notifications-shell',
   host: { class: 'goa-ds-v2' },
@@ -149,7 +149,7 @@ export class ProviderPortalNotificationsShellComponent implements AfterViewInit 
   readonly userName = 'Sally';
   readonly userSecondaryText = 'sally@abcdaycare.ca';
 
-  readonly homeItem = { label: 'Home', icon: 'grid:outline' as GoabIconType, url: '#' };
+  readonly homeItem = { label: 'Home', icon: 'grid:outline' as GoabIconType, url: `#${BASE}/home` };
   readonly helpItem = { label: 'Help Centre - NEW', icon: 'help-circle:outline' as GoabIconType, url: '#' };
   readonly notificationsItem = {
     label: 'Notifications',
