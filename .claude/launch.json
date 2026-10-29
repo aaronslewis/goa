@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["start"],
+      "port": 4200
+    },
+    {
       "name": "sage",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["ng", "serve", "--port", "4201"],
