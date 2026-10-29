@@ -4,13 +4,12 @@ import { GoabBadge, GoabButton, GoabContainer, GoabLink, GoabTab, GoabTabs } fro
 import { NotificationFeedComponent } from '../notifications-hub/notification-feed/notification-feed.component';
 import { NotificationsService } from '../notifications-hub/notifications.service';
 
-const ALBERTA_HOUR = new Intl.DateTimeFormat('en-CA', {
-  hour: 'numeric',
-  hourCycle: 'h23',
-  timeZone: 'America/Edmonton',
-});
+// Alberta time is a fixed UTC-6 with no daylight saving. A fixed offset, rather
+// than the 'America/Edmonton' zone, because browsers' bundled time zone data
+// can lag behind the change and would still shift the cutoff in summer.
+const ALBERTA_UTC_OFFSET_HOURS = -6;
 
-const albertaHour = (): number => Number(ALBERTA_HOUR.format(new Date()));
+const albertaHour = (): number => (new Date().getUTCHours() + ALBERTA_UTC_OFFSET_HOURS + 24) % 24;
 
 // Phrases that suit any time of day mix in with the time-aware ones, so the
 // greeting varies without ever being wrong.
@@ -23,7 +22,7 @@ const GREETINGS = {
 };
 
 // Providers are in Alberta, so the day turns evening at 5pm Alberta time
-// whatever the browser's own time zone is.
+// (23:00 UTC) whatever the browser's own time zone is.
 function pickGreeting(): string {
   const h = albertaHour();
   const options = h < 12 ? GREETINGS.morning : h < 17 ? GREETINGS.afternoon : GREETINGS.evening;
