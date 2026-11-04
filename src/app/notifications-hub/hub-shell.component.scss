@@ -6,6 +6,11 @@
   background: var(--goa-color-greyscale-50);
 }
 
+.shortcut {
+  color: var(--goa-color-text-secondary);
+  font: var(--goa-typography-body-xs);
+}
+
 .account-menu {
   display: flex;
   flex-direction: column;

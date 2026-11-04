@@ -32,7 +32,7 @@ export interface HubNotification {
   // v3 only: seeded "new" items carry a blue line until the user acts on them.
   isNew?: boolean;
   createdByUser?: boolean;
-  notifyTo?: string;
+  notifyTo?: string[];
 }
 
 // `rowBadge: false` drops the badge on that severity's active rows (the blue row

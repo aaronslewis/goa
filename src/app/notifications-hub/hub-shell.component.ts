@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, effect, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
@@ -12,8 +12,14 @@ import {
 } from '@abgov/angular-components';
 import { hideWorkSideMenuScrollbarButtons } from '../shared/hide-work-side-menu-scrollbar-buttons';
 import { useCustomWorkSideMenuGroupIcon } from '../shared/custom-work-side-menu-group-icon';
+import { AddNotificationDrawerComponent } from './add-notification-drawer/add-notification-drawer.component';
 import { NotificationsPanelComponent } from './notifications-panel/notifications-panel.component';
+import { NotificationComposer } from './notification-composer';
 import { HubVariant } from './hub-variant';
+
+// The menu emits an item's href on click; this one opens the composer instead
+// of navigating.
+const ADD_NOTIFICATION_URL = '#add-notification';
 
 interface MenuItem {
   label: string;
@@ -36,8 +42,9 @@ type MenuItemElement = HTMLElement & { current?: boolean };
   selector: 'hub-shell',
   host: { class: 'goa-ds-v2' },
   standalone: true,
-  providers: [HubVariant],
+  providers: [HubVariant, NotificationComposer],
   imports: [
+    AddNotificationDrawerComponent,
     RouterOutlet,
     GoabWorkSideMenu,
     GoabWorkSideMenuGroup,
@@ -53,6 +60,7 @@ export class HubShellComponent implements AfterViewInit {
   private readonly el = inject(ElementRef<HTMLElement>);
   private readonly router = inject(Router);
   readonly hub = inject(HubVariant);
+  private readonly composer = inject(NotificationComposer);
 
   readonly currentUrl = toSignal(
     this.router.events.pipe(
@@ -110,8 +118,17 @@ export class HubShellComponent implements AfterViewInit {
   // The menu cancels the anchor's default navigation and emits the href instead.
   // Placeholder items ("#") stay put; real routes go through the router.
   onNavigate(url: string): void {
-    if (url.startsWith('#/')) this.router.navigateByUrl(url.slice(1));
+    if (url === ADD_NOTIFICATION_URL) this.composer.open();
+    else if (url.startsWith('#/')) this.router.navigateByUrl(url.slice(1));
     else queueMicrotask(() => this.syncCurrentItem());
+  }
+
+  // Ctrl+Q works on every hub page; if a draft is minimized it brings it back.
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(e: KeyboardEvent): void {
+    if (!e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.key.toLowerCase() !== 'q') return;
+    e.preventDefault();
+    if (!e.repeat) this.composer.open();
   }
 
   isCurrent(url?: string): boolean {
@@ -124,6 +141,11 @@ export class HubShellComponent implements AfterViewInit {
 
   readonly homeItem: MenuItem = { label: 'Home', icon: 'home:outline', url: this.hub.homeUrl };
   readonly searchItem: MenuItem = { label: 'Search', icon: 'search:outline', url: '#' };
+  readonly addNotificationItem: MenuItem = {
+    label: 'Add notification',
+    icon: 'add-circle:outline',
+    url: ADD_NOTIFICATION_URL,
+  };
   readonly helpItem: MenuItem = { label: 'Help Centre', icon: 'help-circle:outline', url: '#' };
   readonly notificationsItem: MenuItem = {
     label: 'Notifications',

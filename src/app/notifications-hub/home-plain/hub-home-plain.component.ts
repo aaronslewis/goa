@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { GoabLink, GoabTemporaryNotificationCtrl } from '@abgov/angular-components';
+import { GoabButton, GoabLink, GoabTemporaryNotificationCtrl } from '@abgov/angular-components';
+import { NotificationComposer } from '../notification-composer';
 import { HubVariant } from '../hub-variant';
 
 // Home for the versions whose notifications live only in the side-menu panel,
@@ -7,12 +8,13 @@ import { HubVariant } from '../hub-variant';
 @Component({
   selector: 'hub-home-plain',
   standalone: true,
-  imports: [GoabLink, GoabTemporaryNotificationCtrl],
+  imports: [GoabButton, GoabLink, GoabTemporaryNotificationCtrl],
   templateUrl: './hub-home-plain.component.html',
   styleUrls: ['../home/hub-home.component.scss', './hub-home-plain.component.scss'],
 })
 export class HubHomePlainComponent {
   readonly hub = inject(HubVariant);
+  readonly composer = inject(NotificationComposer);
   readonly firstName = 'Edna';
 
   // Recomputed on each render, so it tracks the user's local clock.
