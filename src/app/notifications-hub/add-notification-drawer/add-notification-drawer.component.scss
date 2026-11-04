@@ -3,3 +3,39 @@
   flex-direction: column;
   gap: var(--goa-space-l);
 }
+
+.drawer-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--goa-space-m);
+}
+
+// Lines up with the drawer's own close button, which sits 3px higher.
+.minimize {
+  margin-top: -0.1875rem;
+}
+
+// The drawer wraps our heading in a div[slot=heading] inside its header flex
+// row, next to its close button. Growing that wrapper puts minimize beside
+// close instead of beside the title.
+:host ::ng-deep [slot='heading'] {
+  flex: 1 1 auto;
+}
+
+// Sits above the page like a docked chat window, so the user can still work
+// in the page behind it.
+.dock {
+  position: fixed;
+  right: var(--goa-space-xl);
+  bottom: var(--goa-space-xl);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+  padding: var(--goa-space-xs) var(--goa-space-xs) var(--goa-space-xs) var(--goa-space-s);
+  background: var(--goa-color-greyscale-white);
+  border: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+  border-radius: var(--goa-border-radius-l);
+  box-shadow: var(--goa-shadow-modal);
+}

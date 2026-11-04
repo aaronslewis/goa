@@ -1,29 +1,47 @@
-@if (open()) {
+<ng-template #drawerHeading>
+  <div class="drawer-heading">
+    <span>Add notification</span>
+    <goab-icon-button
+      class="minimize"
+      icon="remove"
+      size="medium"
+      ariaLabel="Minimize and return to the page"
+      (onClick)="composer.minimize()"></goab-icon-button>
+  </div>
+</ng-template>
+
 <ng-template #drawerActions>
   <goab-button-group alignment="start">
     <goab-button type="primary" (onClick)="save()">Save</goab-button>
-    <goab-button type="secondary" (onClick)="close()">Cancel</goab-button>
+    <goab-button type="secondary" (onClick)="discard()">Cancel</goab-button>
   </goab-button-group>
 </ng-template>
 
+<!-- Always rendered, so minimizing keeps every field (and the dropdowns' picks)
+     exactly as the user left them. -->
 <goab-drawer
-  [open]="open()"
+  [open]="composer.state() === 'open'"
   position="right"
-  heading="Add notification"
+  [heading]="drawerHeading"
   maxSize="480px"
   [actions]="drawerActions"
-  (onClose)="close()">
+  (onClose)="onClose()">
   <div class="fields">
-    <goab-form-item label="Who to notify">
-      <goab-dropdown
+    <goab-form-item
+      label="Who to notify"
+      helpText="Select everyone who should get this reminder."
+      [error]="submitted ? errors.notifyTo : ''">
+      <goab-dropdown-multiselect
         name="notifyTo"
         width="100%"
+        placeholder="Select who to notify"
         [value]="form.notifyTo"
-        (onChange)="onDropdown('notifyTo', $event)">
+        [error]="submitted && !!errors.notifyTo"
+        (onChange)="onNotifyTo($event)">
         @for (g of notifyTo; track g) {
           <goab-dropdown-item [value]="g" [label]="g"></goab-dropdown-item>
         }
-      </goab-dropdown>
+      </goab-dropdown-multiselect>
     </goab-form-item>
 
     <goab-form-item label="Title" [error]="submitted ? errors.title : ''">
@@ -45,14 +63,16 @@
         (onChange)="onMessage($event)"></goab-textarea>
     </goab-form-item>
 
-    <goab-form-item label="Program" requirement="optional">
+    <goab-form-item label="Program" requirement="optional" helpText="Type a program name or ID to find it.">
       <goab-dropdown
         name="programId"
         width="100%"
         [filterable]="true"
-        placeholder="Select a program"
+        leadingIcon="search"
+        placeholder="Search programs"
+        noResults="No programs match your search"
         [value]="form.programId"
-        (onChange)="onDropdown('programId', $event)">
+        (onChange)="onProgram($event)">
         @for (p of programs; track p.id) {
           <goab-dropdown-item [value]="p.id" [label]="p.name + ' (' + p.id + ')'"></goab-dropdown-item>
         }
@@ -71,4 +91,16 @@
     </goab-form-item>
   </div>
 </goab-drawer>
+
+@if (composer.state() === 'minimized') {
+  <div class="dock" role="region" aria-label="Notification draft">
+    <goab-button type="secondary" size="compact" leadingIcon="chevron-up" (onClick)="composer.open()">
+      Add notification (draft)
+    </goab-button>
+    <goab-icon-button
+      icon="close"
+      size="medium"
+      ariaLabel="Discard draft"
+      (onClick)="discard()"></goab-icon-button>
+  </div>
 }

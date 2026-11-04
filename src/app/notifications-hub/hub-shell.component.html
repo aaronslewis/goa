@@ -17,7 +17,16 @@
   }
 </ng-template>
 
+<ng-template #shortcutHint>
+  <span class="shortcut">Ctrl+Q</span>
+</ng-template>
+
 <ng-template #secondaryNav>
+  <goab-work-side-menu-item
+    [icon]="addNotificationItem.icon"
+    [label]="addNotificationItem.label"
+    [url]="addNotificationItem.url"
+    [trailingContent]="shortcutHint"></goab-work-side-menu-item>
   <goab-work-side-menu-item [icon]="searchItem.icon" [label]="searchItem.label" [url]="searchItem.url"></goab-work-side-menu-item>
   @if (hub.notificationsPanel) {
     <goab-work-side-menu-item
@@ -70,3 +79,6 @@
 <goab-workspace-layout [sideMenu]="sideMenu">
   <router-outlet></router-outlet>
 </goab-workspace-layout>
+
+<!-- One composer for every page, so Ctrl+Q and the menu item work anywhere. -->
+<hub-add-notification-drawer></hub-add-notification-drawer>

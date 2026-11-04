@@ -10,6 +10,7 @@ import {
   GoabTemporaryNotificationCtrl,
 } from '@abgov/angular-components';
 import { NotificationFeedComponent } from '../notification-feed/notification-feed.component';
+import { NotificationComposer } from '../notification-composer';
 import { NotificationsService } from '../notifications.service';
 import { HubVariant } from '../hub-variant';
 
@@ -33,6 +34,7 @@ import { HubVariant } from '../hub-variant';
 })
 export class HubHomeV3Component {
   readonly service = inject(NotificationsService);
+  readonly composer = inject(NotificationComposer);
 
   readonly firstName = 'Edna';
   readonly hub = inject(HubVariant);

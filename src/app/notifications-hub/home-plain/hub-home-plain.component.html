@@ -1,6 +1,8 @@
 <div class="page">
   <h1 class="greeting">{{ greeting }}, {{ firstName }}</h1>
 
+  <goab-button type="primary" size="compact" leadingIcon="add" (onClick)="composer.open()">Add notification</goab-button>
+
   @if (hub.demo) {
     <p class="restart-link">
       <goab-link leadingIcon="refresh"><a href="#" (click)="restartDemo($event)">Restart demo</a></goab-link>

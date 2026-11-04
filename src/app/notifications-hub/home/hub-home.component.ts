@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { GoabTabsOnChangeDetail } from '@abgov/ui-components-common';
 import { GoabBadge, GoabButton, GoabContainer, GoabLink, GoabTab, GoabTabs } from '@abgov/angular-components';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
+import { NotificationComposer } from '../notification-composer';
 import { NotificationsService } from '../notifications.service';
 import { HubVariant } from '../hub-variant';
 
@@ -22,6 +23,7 @@ import { HubVariant } from '../hub-variant';
 })
 export class HubHomeComponent {
   readonly service = inject(NotificationsService);
+  readonly composer = inject(NotificationComposer);
 
   readonly firstName = 'Edna';
   readonly hub = inject(HubVariant);

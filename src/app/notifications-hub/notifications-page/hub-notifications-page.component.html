@@ -4,7 +4,7 @@
       <h1 class="page-title">All notifications</h1>
       <p class="lede">Every notification for the programs in your caseload, including older and completed ones.</p>
     </div>
-    <goab-button type="primary" size="compact" leadingIcon="add" (onClick)="drawerOpen.set(true)">Add notification</goab-button>
+    <goab-button type="primary" size="compact" leadingIcon="add" (onClick)="composer.open()">Add notification</goab-button>
   </header>
 
   <section class="filters" aria-label="Filter notifications">
@@ -143,5 +143,3 @@
     </goab-form-item>
   </goab-drawer>
 }
-
-<hub-add-notification-drawer [open]="drawerOpen()" (closed)="drawerOpen.set(false)"></hub-add-notification-drawer>

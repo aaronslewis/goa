@@ -15,7 +15,7 @@ import {
 import { GoabDatePickerOnChangeDetail, GoabPaginationOnChangeDetail } from '@abgov/ui-components-common';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
 import { NotificationFeedComponent } from '../notification-feed/notification-feed.component';
-import { AddNotificationDrawerComponent } from '../add-notification-drawer/add-notification-drawer.component';
+import { NotificationComposer } from '../notification-composer';
 import { NotificationsService } from '../notifications.service';
 import { HubVariant } from '../hub-variant';
 import { PROGRAMS, PROGRAM_BY_ID, SERVICES, SEVERITIES } from '../notifications.data';
@@ -64,7 +64,6 @@ function parseIsoDate(s: string): Date | null {
     GoabPagination,
     NotificationListComponent,
     NotificationFeedComponent,
-    AddNotificationDrawerComponent,
   ],
   templateUrl: './hub-notifications-page.component.html',
   styleUrl: './hub-notifications-page.component.scss',
@@ -72,6 +71,7 @@ function parseIsoDate(s: string): Date | null {
 export class HubNotificationsPageComponent {
   readonly service = inject(NotificationsService);
   readonly hub = inject(HubVariant);
+  readonly composer = inject(NotificationComposer);
 
   readonly services = SERVICES;
   readonly programs = PROGRAMS;
@@ -86,7 +86,6 @@ export class HubNotificationsPageComponent {
   readonly from = signal('');
   readonly to = signal('');
   readonly page = signal(1);
-  readonly drawerOpen = signal(false);
 
   // The filter drawer edits a draft; nothing changes on the page until Apply.
   readonly filtersOpen = signal(false);
