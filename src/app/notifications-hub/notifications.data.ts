@@ -15,9 +15,9 @@ export interface HubNotification {
   title: string;
   message: MessagePart[];
   linkLabel?: string;
-  // An optional second action, shown after the main one. Cards hold two at most;
-  // anything more belongs on the record the notification links to.
-  secondaryLinkLabel?: string;
+  // A phrase in the message that the feed shows as the link to the record,
+  // in place of a separate action button. Must appear verbatim in the message.
+  linkText?: string;
   // System notifications always carry a severity and a program; ones the user
   // creates have neither severity and only an optional program.
   severity?: Severity;
@@ -97,7 +97,23 @@ export const SERVICES: { value: ServiceId; label: string }[] = [
 
 const serviceOf = (t: Template): ServiceId => (t.agency ? 'fdh-agency-contract' : 'licensing');
 
-export const NOTIFY_TO = ['Me', 'My supervisor (Krista Kool)', 'Regional licensing admin', 'Child Care Connect'];
+export const NOTIFY_TO = [
+  'Me',
+  'My supervisor (Krista Kool)',
+  'Regional licensing admin',
+  'Child Care Connect',
+  'All Claims Assessors',
+  'Amrit Singh',
+  'Brenda Whitford',
+  'Carlos Mendoza',
+  'Dana Lefebvre',
+  'Elena Petrova',
+  'Farid Haddad',
+  'Grace Okonkwo',
+  'Henry Larocque',
+  'Isabelle Tremblay',
+  'Jordan Eagle',
+];
 
 const PEOPLE = ['Priya Sharma', 'Jordan Blake', 'Mei Chen', 'Omar Haddad', 'Sarah Tremblay', 'Liam Wong', 'Ava Morin'];
 const EDUCATORS = ['Hannah Clarke', 'Marcus Reid', 'Sofia Alvarez', 'Noah Singh', 'Grace Olsen'];
@@ -107,7 +123,7 @@ interface Template {
   title: string;
   message: (p: Program, person: string, educator: string, date: Date) => MessagePart[];
   linkLabel?: string;
-  secondaryLinkLabel?: string;
+  linkText?: string;
   // Expected notifications per month for one LO with a 30-program caseload.
   perMonth: number;
   // Raised by a Family Day Home Agency rather than a program; `p` is the agency.
@@ -139,7 +155,7 @@ const TEMPLATES: Template[] = [
     message: (p, person, e) =>
       msg`A new critical incident report has been submitted by ${person} about educator ${e} at ${prog(p)}.`,
     linkLabel: 'View incident report',
-    secondaryLinkLabel: 'Contact program',
+    linkText: 'A new critical incident report',
     perMonth: 3,
   },
   {
@@ -148,6 +164,7 @@ const TEMPLATES: Template[] = [
     title: 'Critical incident report was updated',
     message: (p, _, e) => msg`An update has been added to an existing critical incident report for ${e} at ${prog(p)}.`,
     linkLabel: 'View incident report',
+    linkText: 'existing critical incident report',
     perMonth: 2,
   },
   {
@@ -157,6 +174,7 @@ const TEMPLATES: Template[] = [
     message: (p, person, e) =>
       msg`A new incident report has been submitted by ${person} about educator ${e} at ${prog(p)}.`,
     linkLabel: 'View incident report',
+    linkText: 'A new incident report',
     perMonth: 17,
   },
   {
@@ -166,6 +184,7 @@ const TEMPLATES: Template[] = [
     title: 'Incident report was updated',
     message: (p, _, e) => msg`An update has been added to an existing incident report for ${e} at ${prog(p)}.`,
     linkLabel: 'View incident report',
+    linkText: 'existing incident report',
     perMonth: 8,
   },
   {
@@ -178,6 +197,7 @@ const TEMPLATES: Template[] = [
         ? msg`A new safety plan document has been uploaded by ${person} for ${e} at ${prog(p)}.`
         : msg`A new safety plan document has been uploaded by ${person} for ${prog(p)}.`,
     linkLabel: 'View document',
+    linkText: 'A new safety plan document',
     perMonth: 2,
   },
   {
@@ -187,6 +207,7 @@ const TEMPLATES: Template[] = [
     message: (p, _, e) =>
       msg`A new non-compliance has been identified by ${prog(p)} for educator ${e} during an agency-led Educator Review.`,
     linkLabel: 'View non-compliance',
+    linkText: 'A new non-compliance',
     perMonth: 1,
     agency: true,
   },
@@ -197,6 +218,7 @@ const TEMPLATES: Template[] = [
     message: (p, _, __, d) =>
       msg`${prog(p)} has added a ${d.getMinutes() % 2 ? 'comment' : 'follow-up'} to an agency review.`,
     linkLabel: 'View agency review',
+    linkText: 'an agency review',
     perMonth: 1,
     agency: true,
   },
@@ -206,6 +228,7 @@ const TEMPLATES: Template[] = [
     title: 'Program contact was updated',
     message: (p, person) => msg`${prog(p)} has updated their primary program contact to ${person}.`,
     linkLabel: 'View program details',
+    linkText: 'primary program contact',
     perMonth: 2,
   },
 ];
@@ -247,7 +270,7 @@ export function buildSeedNotifications(now = new Date()): HubNotification[] {
       title: t.title,
       message: t.message(p, pick(PEOPLE), pick(EDUCATORS), createdAt),
       linkLabel: t.linkLabel,
-      secondaryLinkLabel: t.secondaryLinkLabel,
+      linkText: t.linkText,
       severity: t.severity,
       programId: p.id,
       service: serviceOf(t),
@@ -307,7 +330,7 @@ const demoItem = (id: string, t: Template, p: Program, person: string, educator:
   title: t.title,
   message: t.message(p, person, educator, createdAt),
   linkLabel: t.linkLabel,
-  secondaryLinkLabel: t.secondaryLinkLabel,
+  linkText: t.linkText,
   severity: t.severity,
   programId: p.id,
   service: serviceOf(t),

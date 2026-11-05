@@ -24,7 +24,7 @@
   padding: 0 var(--goa-space-m);
   display: flex;
   flex-direction: column;
-  gap: var(--goa-space-l);
+  gap: var(--goa-space-s);
 }
 
 .group:last-child .list {
@@ -34,40 +34,35 @@
 .row {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  border: var(--goa-border-width-s) solid var(--goa-color-greyscale-100);
+  border: var(--goa-border-width-s) solid var(--row-strip);
   border-radius: var(--goa-border-radius-m);
   // Clips the strip to the card's rounded corners.
   overflow: hidden;
-  background: var(--row-tint);
+  background: var(--goa-color-greyscale-white);
   color: var(--goa-color-text-default);
 }
 
-// Strip uses each status's border colour: the -light tints are too close to
-// the body tint to read as a separate band, especially for information.
+// The status shows in the strip and the card border, both in the status's
+// border colour; the card body stays white.
 .row--urgent {
   --row-strip: var(--goa-color-emergency-border);
-  --row-tint: var(--goa-color-emergency-background);
 }
 
 .row--important {
   --row-strip: var(--goa-color-warning-border);
-  --row-tint: var(--goa-color-warning-background);
 }
 
 .row--information {
   --row-strip: var(--goa-color-info-border);
-  --row-tint: var(--goa-color-info-background);
 }
 
 .row--reminder {
   --row-strip: var(--goa-color-extended-lilac-border);
-  --row-tint: var(--goa-color-greyscale-white);
 }
 
 // Completed items on the Notifications page: grey, so active ones stand out.
 .row--dismissed {
   --row-strip: var(--goa-color-greyscale-150);
-  --row-tint: var(--goa-color-greyscale-50);
 
   .row__title,
   .row__message {
@@ -76,21 +71,21 @@
 }
 
 .row__strip {
-  padding: var(--goa-space-m);
+  padding: var(--goa-space-s) var(--goa-space-xs);
   background: var(--row-strip);
 }
 
 .row__content {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: var(--goa-space-m);
-  padding: var(--goa-space-m) var(--goa-space-l);
+  column-gap: var(--goa-space-s);
+  padding: var(--goa-space-xs) var(--goa-space-m);
 }
 
 .row__body {
   display: flex;
   flex-direction: column;
-  gap: var(--goa-space-xs);
+  gap: var(--goa-space-2xs);
 }
 
 .row__status-line {
@@ -122,23 +117,29 @@
 // the message beneath it.
 .row__title {
   margin: 0;
-  font: var(--goa-typography-body-m);
+  font: var(--goa-typography-body-s);
   font-weight: var(--goa-font-weight-bold);
 }
 
 .row__message {
   margin: 0;
-  font: var(--goa-typography-body-m);
+  font: var(--goa-typography-body-xs);
   overflow-wrap: break-word;
 }
 
-// Time at the top, action at the bottom, as in the card design.
+// The action sits under the message, left-aligned, at the message's size
+// (the compact text button defaults to 18px).
+.row__action {
+  --goa-button-text-compact-font: var(--goa-font-weight-medium) var(--goa-font-size-2) / var(--goa-line-height-1) var(--goa-font-family-sans);
+  align-self: flex-start;
+  margin-left: calc(-1 * var(--goa-space-2xs));
+}
+
+// Time (and dismiss) at the top right; on narrow screens they drop to the
+// bottom of the card, below the text and its action.
 .row__meta {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--goa-space-s);
+  justify-content: flex-end;
 }
 
 .row__time-line {
@@ -148,7 +149,7 @@
 }
 
 .row__time {
-  font: var(--goa-typography-body-s);
+  font: var(--goa-typography-body-xs);
   color: var(--goa-color-greyscale-600);
   white-space: nowrap;
 }
@@ -162,25 +163,41 @@
   white-space: nowrap;
 }
 
-// Narrow screens: the time and action drop under the message.
+// Narrow screens: the time drops under the message and its action, and the
+// dismiss/restore button moves to the card's top right.
 @media (max-width: 623px) {
+  .row {
+    position: relative;
+  }
+
   .row__content {
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--goa-space-s);
   }
 
   .row__meta {
-    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  :host(:not(.stacked)) {
+    .row__time-line {
+      display: contents;
+    }
+
+    .row__dismiss {
+      position: absolute;
+      top: var(--goa-space-2xs);
+      right: var(--goa-space-2xs);
+    }
+
+    // Keeps a long title clear of the button.
+    .row__body {
+      padding-right: var(--goa-space-xl);
+    }
   }
 }
 
-:host(.stacked) {
-  .row__content {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: var(--goa-space-s);
-  }
-
-  .row__meta {
-    align-items: flex-start;
-  }
+:host(.stacked) .row__content {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--goa-space-s);
 }
