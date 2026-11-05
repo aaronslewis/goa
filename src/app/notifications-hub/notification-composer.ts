@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 
 export type ComposerState = 'closed' | 'open' | 'minimized';
 
-// State of the Add notification drawer, shared by the side menu, the Ctrl+Q
+// State of the Add notification drawer, shared by the Ctrl+Q
 // shortcut and the page buttons. Minimizing hides the drawer without touching
 // the draft, so the user can check something on the page and pick up again.
 @Injectable()

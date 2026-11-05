@@ -17,10 +17,6 @@ import { NotificationsPanelComponent } from './notifications-panel/notifications
 import { NotificationComposer } from './notification-composer';
 import { HubVariant } from './hub-variant';
 
-// The menu emits an item's href on click; this one opens the composer instead
-// of navigating.
-const ADD_NOTIFICATION_URL = '#add-notification';
-
 interface MenuItem {
   label: string;
   icon: GoabIconType;
@@ -118,12 +114,12 @@ export class HubShellComponent implements AfterViewInit {
   // The menu cancels the anchor's default navigation and emits the href instead.
   // Placeholder items ("#") stay put; real routes go through the router.
   onNavigate(url: string): void {
-    if (url === ADD_NOTIFICATION_URL) this.composer.open();
-    else if (url.startsWith('#/')) this.router.navigateByUrl(url.slice(1));
+    if (url.startsWith('#/')) this.router.navigateByUrl(url.slice(1));
     else queueMicrotask(() => this.syncCurrentItem());
   }
 
   // Ctrl+Q works on every hub page; if a draft is minimized it brings it back.
+  // The menu shows the hint beside Notifications, but only as information.
   @HostListener('document:keydown', ['$event'])
   onKeydown(e: KeyboardEvent): void {
     if (!e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.key.toLowerCase() !== 'q') return;
@@ -141,11 +137,6 @@ export class HubShellComponent implements AfterViewInit {
 
   readonly homeItem: MenuItem = { label: 'Home', icon: 'home:outline', url: this.hub.homeUrl };
   readonly searchItem: MenuItem = { label: 'Search', icon: 'search:outline', url: '#' };
-  readonly addNotificationItem: MenuItem = {
-    label: 'Add notification',
-    icon: 'add-circle:outline',
-    url: ADD_NOTIFICATION_URL,
-  };
   readonly helpItem: MenuItem = { label: 'Help Centre', icon: 'help-circle:outline', url: '#' };
   readonly notificationsItem: MenuItem = {
     label: 'Notifications',

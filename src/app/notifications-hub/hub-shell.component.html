@@ -22,22 +22,19 @@
 </ng-template>
 
 <ng-template #secondaryNav>
-  <goab-work-side-menu-item
-    [icon]="addNotificationItem.icon"
-    [label]="addNotificationItem.label"
-    [url]="addNotificationItem.url"
-    [trailingContent]="shortcutHint"></goab-work-side-menu-item>
   <goab-work-side-menu-item [icon]="searchItem.icon" [label]="searchItem.label" [url]="searchItem.url"></goab-work-side-menu-item>
   @if (hub.notificationsPanel) {
     <goab-work-side-menu-item
       [icon]="notificationsItem.icon"
       [label]="notificationsItem.label"
-      [popoverContent]="notificationsPanel"></goab-work-side-menu-item>
+      [popoverContent]="notificationsPanel"
+      [trailingContent]="shortcutHint"></goab-work-side-menu-item>
   } @else {
     <goab-work-side-menu-item
       [icon]="notificationsItem.icon"
       [label]="notificationsItem.label"
-      [url]="notificationsItem.url"></goab-work-side-menu-item>
+      [url]="notificationsItem.url"
+      [trailingContent]="shortcutHint"></goab-work-side-menu-item>
   }
   <goab-work-side-menu-item [icon]="helpItem.icon" [label]="helpItem.label" [url]="helpItem.url"></goab-work-side-menu-item>
 </ng-template>
@@ -80,5 +77,5 @@
   <router-outlet></router-outlet>
 </goab-workspace-layout>
 
-<!-- One composer for every page, so Ctrl+Q and the menu item work anywhere. -->
+<!-- One composer for every page, so Ctrl+Q works anywhere. -->
 <hub-add-notification-drawer></hub-add-notification-drawer>
