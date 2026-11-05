@@ -84,10 +84,10 @@ export class PlatformPrototypesComponent {
           status: 'In progress',
         },
         {
-          label: 'Notifications hub v3 — DS v2',
+          label: 'Notifications hub v4 — DS v2',
           description:
-            'Home is a full-page notification centre: each notification is a card with a status-coloured strip, a type icon and an action button.',
-          path: '/notifications-hub-v3',
+            'Home is a full-page notification centre: each notification is a card with a status-tinted tab and icon. The time follows the title, and the action sits on the right beside the dismiss button.',
+          path: '/notifications-hub-v4',
           status: 'In progress',
         },
         {
