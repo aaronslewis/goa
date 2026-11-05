@@ -53,19 +53,33 @@
   border-radius: 0 0 var(--goa-border-radius-m) var(--goa-border-radius-m);
 }
 
-.detail-list {
+.detail-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--goa-space-m) var(--goa-space-xl);
+}
+
+.detail-list,
+.inline-fields,
+.licence-fields {
   margin: 0;
   display: flex;
   flex-direction: column;
   gap: var(--goa-space-m);
 }
 
+// Label beside its value, as in the Search service.
+.detail-row {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: var(--goa-space-m);
+}
+
 .detail-row dt {
-  margin: 0 0 var(--goa-space-3xs);
-  font: var(--goa-typography-body-s);
+  margin: 0;
+  font: var(--goa-typography-body-xs);
   font-family: var(--goa-font-family-sans);
-  font-weight: 700;
-  color: var(--goa-color-text-default);
+  color: var(--goa-color-text-secondary);
 }
 
 .detail-row dd {
@@ -75,6 +89,12 @@
   font: var(--goa-typography-body-s);
   font-family: var(--goa-font-family-sans);
   color: var(--goa-color-text-default);
+}
+
+.detail-row dd.with-icon {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--goa-space-2xs);
 }
 
 .address-line {
@@ -113,30 +133,55 @@
   border-radius: var(--goa-border-radius-s);
 }
 
+.divider {
+  color: var(--goa-color-greyscale-400);
+}
+
 /* ── Licence holder organization panel ───────────────────────────────────── */
 
 .org-panel {
   display: block;
+  margin-bottom: var(--goa-space-xl);
 }
 
-.org-heading {
+.inline-fields {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--goa-space-m) var(--goa-space-3xl);
+}
+
+.section-heading {
   margin: 0 0 var(--goa-space-m);
-  font: var(--goa-typography-heading-s);
+  font: var(--goa-typography-heading-xs);
   font-family: var(--goa-font-family-sans);
   color: var(--goa-color-text-default);
 }
 
-.org-label {
-  margin: 0 0 var(--goa-space-3xs);
-  font: var(--goa-typography-body-s);
-  font-family: var(--goa-font-family-sans);
-  font-weight: 700;
-  color: var(--goa-color-text-default);
+/* ── Licence information and funding ─────────────────────────────────────── */
+
+.licence-fields {
+  gap: var(--goa-space-xs);
 }
 
-.org-value {
+.licence-fields .detail-row {
+  grid-template-columns: max-content 1fr;
+}
+
+.funding-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--goa-space-m);
+}
+
+.funding-note {
   margin: 0;
   font: var(--goa-typography-body-s);
   font-family: var(--goa-font-family-sans);
   color: var(--goa-color-text-default);
+}
+
+// goa-table wraps the projected table in its own, and only the outer one
+// takes the width, so the inner columns stop short without this.
+.licence-table table {
+  width: 100%;
 }

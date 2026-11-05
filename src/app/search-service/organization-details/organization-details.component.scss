@@ -60,23 +60,26 @@
   margin-bottom: var(--goa-space-l);
 }
 
-.field-label,
-.contact-heading {
-  margin: 0 0 var(--goa-space-3xs);
-  font: var(--goa-typography-body-s);
-  font-family: var(--goa-font-family-sans);
-  font-weight: 700;
-  color: var(--goa-color-text-default);
+.tab-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--goa-space-xs);
+}
+
+.contact-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--goa-space-l) var(--goa-space-2xl);
+
+  > section + section {
+    padding-left: var(--goa-space-2xl);
+    border-left: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+  }
 }
 
 .contact-heading {
-  margin-bottom: var(--goa-space-m);
-  font: var(--goa-typography-heading-s);
-}
-
-.field-value {
-  margin: 0;
-  font: var(--goa-typography-body-s);
+  margin: 0 0 var(--goa-space-l);
+  font: var(--goa-typography-heading-xs);
   font-family: var(--goa-font-family-sans);
   color: var(--goa-color-text-default);
 }
@@ -85,15 +88,21 @@
   margin: 0;
   display: flex;
   flex-direction: column;
+  gap: var(--goa-space-s);
+}
+
+// Label beside its value, as in the Search service.
+.detail-row {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
   gap: var(--goa-space-m);
 }
 
 .detail-row dt {
-  margin: 0 0 var(--goa-space-3xs);
-  font: var(--goa-typography-body-s);
+  margin: 0;
+  font: var(--goa-typography-body-xs);
   font-family: var(--goa-font-family-sans);
-  font-weight: 700;
-  color: var(--goa-color-text-default);
+  color: var(--goa-color-text-secondary);
 }
 
 .detail-row dd {
@@ -101,6 +110,17 @@
   font: var(--goa-typography-body-s);
   font-family: var(--goa-font-family-sans);
   color: var(--goa-color-text-default);
+}
+
+.address-line {
+  display: block;
+}
+
+.empty {
+  margin: 0;
+  font: var(--goa-typography-body-s);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
 }
 
 /* ── Legal representatives table ─────────────────────────────────────────── */
@@ -154,22 +174,6 @@
   border-radius: var(--goa-border-radius-s);
 }
 
-/* ── Report incorrect information ────────────────────────────────────────── */
-
-.report-info {
-  margin-top: var(--goa-space-2xl);
-}
-
-.report-info h3 {
-  margin: 0 0 var(--goa-space-2xs);
-  font: var(--goa-typography-heading-s);
-  font-family: var(--goa-font-family-sans);
-  color: var(--goa-color-text-default);
-}
-
-.report-info p {
-  margin: 0;
-  font: var(--goa-typography-body-s);
-  font-family: var(--goa-font-family-sans);
-  color: var(--goa-color-text-default);
+.basic-info-panel .detail-row {
+  grid-template-columns: 7.5rem 1fr;
 }

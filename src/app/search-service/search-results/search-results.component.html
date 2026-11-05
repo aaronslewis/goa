@@ -83,7 +83,7 @@
                 <td><a [routerLink]="['/search-service/user-profile']" [queryParams]="{ id: user.id }" class="inline-link">{{ user.name }}</a></td>
                 <td>{{ user.email }}</td>
                 <td>
-                  @if (user.portalStatus === 'Active account') {
+                  @if (user.portalStatus === 'Has account') {
                     <goab-badge type="success" [content]="user.portalStatus"></goab-badge>
                   } @else {
                     <span class="operating-model-tag">{{ user.portalStatus }}</span>

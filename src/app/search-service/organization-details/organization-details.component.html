@@ -1,9 +1,40 @@
 <ng-template #legalRepsTabHeading>
-  Legal representatives ({{ legalRepresentatives.length }})
+  <span class="tab-heading">
+    Legal representatives
+    <goab-badge type="default" emphasis="subtle" [content]="'' + org.legalRepresentatives.length"></goab-badge>
+  </span>
 </ng-template>
 
 <ng-template #programsTabHeading>
-  Programs ({{ programs.length }})
+  <span class="tab-heading">
+    Programs
+    <goab-badge type="default" emphasis="subtle" [content]="'' + org.programs.length"></goab-badge>
+  </span>
+</ng-template>
+
+<ng-template #contactDetails let-contact>
+  <dl class="detail-list">
+    <div class="detail-row">
+      <dt>Name</dt>
+      <dd>{{ contact.name }}</dd>
+    </div>
+    <div class="detail-row">
+      <dt>Phone</dt>
+      <dd>{{ contact.phone }}</dd>
+    </div>
+    <div class="detail-row">
+      <dt>Email</dt>
+      <dd>{{ contact.email }}</dd>
+    </div>
+    <div class="detail-row">
+      <dt>Address</dt>
+      <dd>
+        @for (line of contact.address; track $index) {
+          <span class="address-line">{{ line }}</span>
+        }
+      </dd>
+    </div>
+  </dl>
 </ng-template>
 
 <app-search-shell [initialQuery]="searchValue">
@@ -26,114 +57,79 @@
   </section>
 
   <!-- ── Tabs ────────────────────────────────────────────────────────────── -->
-  <goab-tabs class="org-tabs">
+  <goab-tabs class="org-tabs" navigation="none" [initialTab]="1">
     <goab-tab heading="Basic information">
       <goab-container class="basic-info-panel">
-        <goab-grid minChildWidth="220px" gap="l">
-          <div class="field">
-            <p class="field-label">Corporation type</p>
-            <p class="field-value">{{ org.type }}</p>
+        <dl class="detail-list">
+          <div class="detail-row">
+            <dt>Corporation Type</dt>
+            <dd>{{ org.type }}</dd>
           </div>
-          <div class="field">
-            <p class="field-label">Operating model</p>
-            <p class="field-value">{{ org.operatingModel }}</p>
+          <div class="detail-row">
+            <dt>Operating Model</dt>
+            <dd>{{ org.operatingModel }}</dd>
           </div>
-        </goab-grid>
+        </dl>
       </goab-container>
 
       <goab-container class="contact-panel">
-        <goab-grid minChildWidth="260px" gap="l">
-          <div>
-            <h3 class="contact-heading">Primary contact</h3>
-            <dl class="detail-list">
-              <div class="detail-row">
-                <dt>Name</dt>
-                <dd>{{ org.primaryContact.name }}</dd>
-              </div>
-              <div class="detail-row">
-                <dt>Phone</dt>
-                <dd>{{ org.primaryContact.phone }}</dd>
-              </div>
-              <div class="detail-row">
-                <dt>Email</dt>
-                <dd>{{ org.primaryContact.email }}</dd>
-              </div>
-              <div class="detail-row">
-                <dt>Address</dt>
-                <dd>{{ org.primaryContact.address }}</dd>
-              </div>
-            </dl>
-          </div>
-          <div>
-            <h3 class="contact-heading">Secondary contact</h3>
-            <dl class="detail-list">
-              <div class="detail-row">
-                <dt>Name</dt>
-                <dd>{{ org.secondaryContact.name }}</dd>
-              </div>
-              <div class="detail-row">
-                <dt>Phone</dt>
-                <dd>{{ org.secondaryContact.phone }}</dd>
-              </div>
-              <div class="detail-row">
-                <dt>Email</dt>
-                <dd>{{ org.secondaryContact.email }}</dd>
-              </div>
-              <div class="detail-row">
-                <dt>Address</dt>
-                <dd>{{ org.secondaryContact.address }}</dd>
-              </div>
-            </dl>
-          </div>
-        </goab-grid>
+        <div class="contact-columns">
+          <section aria-labelledby="primary-contact-heading">
+            <h3 class="contact-heading" id="primary-contact-heading">Primary Contact</h3>
+            <ng-container *ngTemplateOutlet="contactDetails; context: { $implicit: org.primaryContact }"></ng-container>
+          </section>
+          <section aria-labelledby="secondary-contact-heading">
+            <h3 class="contact-heading" id="secondary-contact-heading">Secondary Contact</h3>
+            <ng-container *ngTemplateOutlet="contactDetails; context: { $implicit: org.secondaryContact }"></ng-container>
+          </section>
+        </div>
       </goab-container>
     </goab-tab>
 
     <goab-tab [heading]="legalRepsTabHeading">
       <goab-container>
-        <table class="simple-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Role</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (rep of legalRepresentatives; track rep.name) {
+        @if (org.legalRepresentatives.length) {
+          <table class="simple-table">
+            <thead>
               <tr>
-                <td>{{ rep.name }}</td>
-                <td>{{ rep.role }}</td>
-                <td><goab-badge [type]="rep.status === 'Active' ? 'success' : 'important'" [content]="rep.status"></goab-badge></td>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Status</th>
               </tr>
-            }
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              @for (rep of org.legalRepresentatives; track rep.name) {
+                <tr>
+                  <td>{{ rep.name }}</td>
+                  <td>{{ rep.role }}</td>
+                  <td><goab-badge [type]="rep.status === 'Active' ? 'success' : 'important'" [content]="rep.status"></goab-badge></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <p class="empty">No legal representatives are on file for this organization.</p>
+        }
       </goab-container>
     </goab-tab>
 
     <goab-tab [heading]="programsTabHeading">
       <goab-container>
-        <ul class="linked-list">
-          @for (program of programs; track program.id) {
-            <li>
-              <a [routerLink]="['/search-service/program-details']" [queryParams]="{ id: program.id }" class="inline-link">
-                {{ program.id }}: {{ program.name }}
-              </a>
-            </li>
-          }
-        </ul>
+        @if (org.programs.length) {
+          <ul class="linked-list">
+            @for (program of org.programs; track program.id) {
+              <li>
+                <a [routerLink]="['/search-service/program-details']" [queryParams]="{ id: program.id }" class="inline-link">
+                  {{ program.id }}: {{ program.name }}
+                </a>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="empty">No programs are licensed to this organization.</p>
+        }
       </goab-container>
     </goab-tab>
   </goab-tabs>
-
-  <!-- ── Report incorrect information ──────────────────────────────────── -->
-  <section class="report-info" aria-labelledby="report-info-heading">
-    <h3 id="report-info-heading">Noticed incorrect or outdated information?</h3>
-    <p>
-      Email us at
-      <a href="mailto:cclicensingsystemsupport@gov.ab.ca" class="inline-link">cclicensingsystemsupport@gov.ab.ca</a>
-    </p>
-  </section>
 
 </app-search-shell>

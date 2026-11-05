@@ -1,0 +1,279 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--goa-color-greyscale-white);
+  font-family: var(--goa-font-family-sans);
+}
+
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+goab-work-side-menu {
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.page {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: var(--goa-space-2xl) var(--goa-space-xl) var(--goa-space-3xl);
+}
+
+.page-title {
+  margin: 0 0 var(--goa-space-m);
+  font: var(--goa-typography-heading-l);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.page-lede {
+  margin: 0 0 var(--goa-space-l);
+  font: var(--goa-typography-body-m);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+// ── Date range ─────────────────────────────────────────────────────────────
+
+.date-range {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--goa-space-xs);
+  margin-bottom: var(--goa-space-l);
+
+  // The tabs drive the table below rather than revealing their own panels,
+  // so drop the gap the component leaves for a panel.
+  goab-tabs {
+    --goa-tabs-margin-bottom: 0;
+  }
+}
+
+.date-range-label {
+  font: var(--goa-typography-body-xs);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+// ── Summary tiles and search ───────────────────────────────────────────────
+
+.overview {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--goa-space-l);
+  flex-wrap: wrap;
+  margin-bottom: var(--goa-space-xl);
+}
+
+.tiles {
+  display: flex;
+  flex-wrap: wrap;
+  border: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+  border-radius: var(--goa-border-radius-m);
+  padding: var(--goa-space-m) 0;
+}
+
+.tile-group {
+  padding: 0 var(--goa-space-m);
+
+  & + & {
+    border-left: var(--goa-border-width-s) solid var(--goa-color-greyscale-200);
+  }
+}
+
+.tile-group-heading {
+  margin: 0 0 var(--goa-space-xs);
+  font: var(--goa-typography-heading-xs);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+}
+
+.tile-row {
+  display: flex;
+  gap: var(--goa-space-s);
+}
+
+// Each tile filters the table, so it's a button; the selected one gets a
+// solid top edge in its status colour (Figma: Total emails, selected).
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--goa-space-xs);
+  min-width: 6.5rem;
+  padding: var(--goa-space-s);
+  border: none;
+  border-top: var(--goa-border-width-l) solid transparent;
+  border-radius: var(--goa-border-radius-m);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-default);
+  text-align: left;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+    outline-offset: 2px;
+  }
+}
+
+.tile-count {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-2xs);
+}
+
+.tile-number {
+  font: var(--goa-typography-heading-s);
+  font-family: var(--goa-font-family-sans);
+  text-decoration: underline;
+}
+
+.tile-label {
+  font: var(--goa-typography-body-xs);
+  font-family: var(--goa-font-family-sans);
+}
+
+@each $tone in info, emergency, success, warning {
+  .tile--#{$tone} {
+    background: var(--goa-color-#{$tone}-background);
+
+    goab-icon {
+      color: var(--goa-color-#{$tone}-default);
+    }
+
+    &.tile--selected {
+      border-top-color: var(--goa-color-#{$tone}-default);
+    }
+
+    &:hover {
+      border-top-color: var(--goa-color-#{$tone}-border);
+    }
+
+    &.tile--selected:hover {
+      border-top-color: var(--goa-color-#{$tone}-default);
+    }
+  }
+}
+
+.search {
+  flex: 1 1 20rem;
+  max-width: 28rem;
+
+  goab-input {
+    flex: 1;
+  }
+}
+
+// ── Table ──────────────────────────────────────────────────────────────────
+
+.col-toggle {
+  width: 1px;
+  padding-right: 0;
+}
+
+.col-org {
+  min-width: 10rem;
+  max-width: 14rem;
+}
+
+.col-action {
+  text-align: right;
+}
+
+.inline-link {
+  display: block;
+  color: var(--goa-color-interactive-default);
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--goa-color-interactive-hover);
+  }
+
+  &:focus-visible {
+    outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+    outline-offset: 2px;
+    border-radius: var(--goa-border-radius-s);
+  }
+}
+
+.secondary {
+  display: block;
+  margin-top: var(--goa-space-2xs);
+  font: var(--goa-typography-body-xs);
+  font-family: var(--goa-font-family-sans);
+  color: var(--goa-color-text-secondary);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.status {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--goa-space-xs);
+  max-width: 10rem;
+}
+
+@each $tone in success, emergency, warning {
+  .status--#{$tone} goab-icon {
+    color: var(--goa-color-#{$tone}-default);
+  }
+}
+
+.none {
+  color: var(--goa-color-text-default);
+}
+
+.row--expanded td {
+  border-bottom: none;
+}
+
+.details-row td {
+  background: var(--goa-color-greyscale-100);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) minmax(12rem, 2fr) minmax(8rem, 1fr) minmax(8rem, 1fr);
+  gap: var(--goa-space-l);
+  margin: 0;
+  padding: var(--goa-space-s) var(--goa-space-m);
+
+  dt {
+    margin-bottom: var(--goa-space-xs);
+    font: var(--goa-typography-heading-2xs);
+    font-family: var(--goa-font-family-sans);
+    color: var(--goa-color-text-default);
+  }
+
+  dd {
+    margin: 0;
+    font: var(--goa-typography-body-s);
+    font-family: var(--goa-font-family-sans);
+    color: var(--goa-color-text-default);
+  }
+}
+
+.empty {
+  color: var(--goa-color-text-secondary);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
