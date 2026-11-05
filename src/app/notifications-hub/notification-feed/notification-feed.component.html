@@ -9,7 +9,7 @@
       @for (n of group.items; track n.id) {
         <li class="row" [class]="'row--' + kind(n)" [class.row--dismissed]="n.dismissed">
           <div class="row__strip">
-            <goab-icon [type]="icon(n)" size="medium"></goab-icon>
+            <goab-icon [type]="icon(n)" size="small"></goab-icon>
           </div>
           <div class="row__content">
             <div class="row__body">
@@ -37,25 +37,24 @@
                 </h4>
               }
               <p class="row__message">
-                @for (part of n.message; track $index) {<span>{{ part.text }}</span>}
+                @for (part of segments(n); track $index) {
+                  @if (part.link) {<goab-link size="xsmall"><a href="#" (click)="$event.preventDefault(); open.emit(n.id)">{{ part.text }}</a></goab-link>} @else {<span>{{ part.text }}</span>}
+                }
               </p>
+              @if (n.linkLabel && !hasInlineLink(n)) {
+                <goab-button class="row__action" type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.linkLabel }}</goab-button>
+              }
             </div>
-            <div class="row__meta">
-              @if (!stacked()) {
+            @if (!stacked()) {
+              <div class="row__meta">
                 <div class="row__time-line">
                   <span class="row__time">{{ timeLabel(n) }}</span>
-                  <ng-container *ngTemplateOutlet="rowAction; context: { $implicit: n }"></ng-container>
+                  <span class="row__dismiss">
+                    <ng-container *ngTemplateOutlet="rowAction; context: { $implicit: n }"></ng-container>
+                  </span>
                 </div>
-              }
-              @if (n.linkLabel && n.secondaryLinkLabel) {
-                <goab-button-group class="row__actions" gap="compact">
-                  <goab-button type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.linkLabel }}</goab-button>
-                  <goab-button type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.secondaryLinkLabel }}</goab-button>
-                </goab-button-group>
-              } @else if (n.linkLabel) {
-                <goab-button type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.linkLabel }}</goab-button>
-              }
-            </div>
+              </div>
+            }
           </div>
         </li>
       }

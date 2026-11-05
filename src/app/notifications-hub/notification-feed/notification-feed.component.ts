@@ -1,9 +1,11 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, DestroyRef, computed, inject, input, output, signal } from '@angular/core';
 import { GoabIconType } from '@abgov/ui-components-common';
-import { GoabButton, GoabButtonGroup, GoabIcon, GoabIconButton } from '@abgov/angular-components';
-import { HubNotification, SEVERITIES, Severity } from '../notifications.data';
+import { GoabButton, GoabIcon, GoabIconButton, GoabLink } from '@abgov/angular-components';
+import { HubNotification, MessagePart, SEVERITIES, Severity } from '../notifications.data';
 import { groupByDay, relativeTime } from '../notifications.service';
+
+type Segment = MessagePart & { link?: boolean };
 
 const SEVERITY_ICON: Record<Severity, GoabIconType> = {
   urgent: 'warning',
@@ -19,7 +21,7 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
   selector: 'hub-notification-feed',
   host: { '[class.stacked]': 'stacked()', '[class.hidden-status]': 'hiddenStatus()' },
   standalone: true,
-  imports: [GoabButton, GoabButtonGroup, GoabIcon, GoabIconButton, NgTemplateOutlet],
+  imports: [GoabButton, GoabIcon, GoabIconButton, GoabLink, NgTemplateOutlet],
   templateUrl: './notification-feed.component.html',
   styleUrl: './notification-feed.component.scss',
 })
@@ -62,6 +64,31 @@ export class NotificationFeedComponent {
   icon(n: HubNotification): GoabIconType {
     if (n.createdByUser || !n.severity) return 'alarm';
     return SEVERITY_ICON[n.severity];
+  }
+
+  // Splits the message so the notification's linkText becomes the link to the
+  // record. The link is a phrase in the sentence, never a separate button.
+  segments(n: HubNotification): Segment[] {
+    if (!n.linkText) return n.message;
+    const out: Segment[] = [];
+    let linked = false;
+    for (const part of n.message) {
+      const at = linked ? -1 : part.text.indexOf(n.linkText);
+      if (at < 0) {
+        out.push(part);
+        continue;
+      }
+      linked = true;
+      const end = at + n.linkText.length;
+      if (at > 0) out.push({ ...part, text: part.text.slice(0, at) });
+      out.push({ ...part, text: n.linkText, link: true });
+      if (end < part.text.length) out.push({ ...part, text: part.text.slice(end) });
+    }
+    return out;
+  }
+
+  hasInlineLink(n: HubNotification): boolean {
+    return !!n.linkText && this.segments(n).some((p) => p.link);
   }
 
   timeLabel(n: HubNotification): string {
