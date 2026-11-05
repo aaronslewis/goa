@@ -43,26 +43,26 @@
 }
 
 // The status shows in the strip and the card border, both in the status's
-// border colour; the card body stays white.
+// light tint; the card body stays white.
 .row--urgent {
-  --row-strip: var(--goa-color-emergency-border);
+  --row-strip: var(--goa-color-emergency-light);
 }
 
 .row--important {
-  --row-strip: var(--goa-color-warning-border);
+  --row-strip: var(--goa-color-warning-light);
 }
 
 .row--information {
-  --row-strip: var(--goa-color-info-border);
+  --row-strip: var(--goa-color-info-light);
 }
 
 .row--reminder {
-  --row-strip: var(--goa-color-extended-lilac-border);
+  --row-strip: var(--goa-color-extended-lilac-light);
 }
 
 // Completed items on the Notifications page: grey, so active ones stand out.
 .row--dismissed {
-  --row-strip: var(--goa-color-greyscale-150);
+  --row-strip: var(--goa-color-greyscale-100);
 
   .row__title,
   .row__message {
@@ -129,8 +129,12 @@
 
 // The action sits under the message, left-aligned, at the message's size
 // (the compact text button defaults to 18px).
-.row__action {
+.row__action,
+.row__cta {
   --goa-button-text-compact-font: var(--goa-font-weight-medium) var(--goa-font-size-2) / var(--goa-line-height-1) var(--goa-font-family-sans);
+}
+
+.row__action {
   align-self: flex-start;
   margin-left: calc(-1 * var(--goa-space-2xs));
 }
@@ -163,6 +167,24 @@
   white-space: nowrap;
 }
 
+// v4 ('cta-right'): the time follows the title in subtle grey, and
+// the action sits on the right beside the dismiss button, so the right side
+// holds only those two.
+:host(.cta-right) {
+  .row__status-line {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--goa-space-s);
+  }
+
+  .row__meta {
+    align-items: center;
+    align-self: flex-start;
+    gap: var(--goa-space-l);
+  }
+}
+
 // Narrow screens: the time drops under the message and its action, and the
 // dismiss/restore button moves to the card's top right.
 @media (max-width: 623px) {
@@ -188,6 +210,11 @@
       position: absolute;
       top: var(--goa-space-2xs);
       right: var(--goa-space-2xs);
+    }
+
+    // The action drops under the message, flush with its text.
+    .row__cta {
+      margin-left: calc(-1 * var(--goa-space-2xs));
     }
 
     // Keeps a long title clear of the button.

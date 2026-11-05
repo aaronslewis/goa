@@ -4,6 +4,7 @@ import { GoabIconType } from '@abgov/ui-components-common';
 import { GoabButton, GoabIcon, GoabIconButton, GoabLink } from '@abgov/angular-components';
 import { HubNotification, MessagePart, SEVERITIES, Severity } from '../notifications.data';
 import { groupByDay, relativeTime } from '../notifications.service';
+import { HubVariant } from '../hub-variant';
 
 type Segment = MessagePart & { link?: boolean };
 
@@ -19,7 +20,11 @@ const SEVERITY_ICON: Record<Severity, GoabIconType> = {
 // NotificationListComponent.
 @Component({
   selector: 'hub-notification-feed',
-  host: { '[class.stacked]': 'stacked()', '[class.hidden-status]': 'hiddenStatus()' },
+  host: {
+    '[class.stacked]': 'stacked()',
+    '[class.hidden-status]': 'hiddenStatus()',
+    '[class.cta-right]': 'ctaRight',
+  },
   standalone: true,
   imports: [GoabButton, GoabIcon, GoabIconButton, GoabLink, NgTemplateOutlet],
   templateUrl: './notification-feed.component.html',
@@ -36,6 +41,11 @@ export class NotificationFeedComponent {
   // Slimmer cards: no visible status label, since the card's colour and strip
   // icon already show it; screen readers still hear it before the title.
   readonly hiddenStatus = input(false);
+
+  // Set by the hub route (see HubRouteData.feedStyle). The portals have no
+  // HubVariant and keep the default card.
+  private readonly variant = inject(HubVariant, { optional: true });
+  readonly ctaRight = this.variant?.feedStyle === 'cta-right';
 
   readonly open = output<string>();
   readonly dismiss = output<string>();
@@ -69,7 +79,7 @@ export class NotificationFeedComponent {
   // Splits the message so the notification's linkText becomes the link to the
   // record. The link is a phrase in the sentence, never a separate button.
   segments(n: HubNotification): Segment[] {
-    if (!n.linkText) return n.message;
+    if (!n.linkText || this.ctaRight) return n.message;
     const out: Segment[] = [];
     let linked = false;
     for (const part of n.message) {

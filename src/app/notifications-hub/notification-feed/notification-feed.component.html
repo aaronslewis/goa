@@ -19,6 +19,9 @@
                     <span class="visually-hidden">@if (n.isNew) {New }{{ statusLabel(n) }}: </span>{{ n.title }}
                     @if (n.dismissed) {<span class="row__completed"> · Completed</span>}
                   </h4>
+                  @if (ctaRight) {
+                    <span class="row__time row__time--inline">{{ timeLabel(n) }}</span>
+                  }
                 } @else {
                   <p class="row__status">{{ statusLabel(n) }}@if (n.dismissed) {<span> · Completed</span>}</p>
                 }
@@ -41,18 +44,27 @@
                   @if (part.link) {<goab-link size="xsmall"><a href="#" (click)="$event.preventDefault(); open.emit(n.id)">{{ part.text }}</a></goab-link>} @else {<span>{{ part.text }}</span>}
                 }
               </p>
-              @if (n.linkLabel && !hasInlineLink(n)) {
+              @if (n.linkLabel && !hasInlineLink(n) && !ctaRight) {
                 <goab-button class="row__action" type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.linkLabel }}</goab-button>
               }
             </div>
             @if (!stacked()) {
               <div class="row__meta">
-                <div class="row__time-line">
-                  <span class="row__time">{{ timeLabel(n) }}</span>
+                @if (ctaRight) {
+                  @if (n.linkLabel) {
+                    <goab-button class="row__cta" type="text" size="compact" (onClick)="open.emit(n.id)">{{ n.linkLabel }}</goab-button>
+                  }
                   <span class="row__dismiss">
                     <ng-container *ngTemplateOutlet="rowAction; context: { $implicit: n }"></ng-container>
                   </span>
-                </div>
+                } @else {
+                  <div class="row__time-line">
+                    <span class="row__time">{{ timeLabel(n) }}</span>
+                    <span class="row__dismiss">
+                      <ng-container *ngTemplateOutlet="rowAction; context: { $implicit: n }"></ng-container>
+                    </span>
+                  </div>
+                }
               </div>
             }
           </div>

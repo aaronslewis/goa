@@ -109,16 +109,21 @@ export const routes: Routes = [
       { path: 'notifications', component: HubNotificationsPageComponent, title: 'All notifications — Notifications hub (mark read)' },
     ],
   },
+  // v4: the v3 notification centre with the time after the title and the action on
+  // the right (see HubRouteData.feedStyle). Replaces v3; its old links redirect here.
   {
-    path: 'notifications-hub-v3',
+    path: 'notifications-hub-v4',
     component: HubShellComponent,
-    data: { hubBase: '/notifications-hub-v3', notificationsPanel: false, cardRows: true } satisfies HubRouteData,
+    data: { hubBase: '/notifications-hub-v4', notificationsPanel: false, cardRows: true, feedStyle: 'cta-right' } satisfies HubRouteData,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HubHomeV3Component, title: 'Home — Notifications hub v3' },
-      { path: 'notifications', component: HubNotificationsPageComponent, title: 'All notifications — Notifications hub v3' },
+      { path: 'home', component: HubHomeV3Component, title: 'Home — Notifications hub v4' },
+      { path: 'notifications', component: HubNotificationsPageComponent, title: 'All notifications — Notifications hub v4' },
     ],
   },
+  { path: 'notifications-hub-v3', pathMatch: 'prefix', redirectTo: 'notifications-hub-v4' },
+  { path: 'notifications-hub-v3-icon', pathMatch: 'prefix', redirectTo: 'notifications-hub-v4' },
+  { path: 'notifications-hub-v3-cta-right', pathMatch: 'prefix', redirectTo: 'notifications-hub-v4' },
   // v3's cards in the side-menu panel instead of on Home.
   {
     path: 'notifications-hub-v3-panel',

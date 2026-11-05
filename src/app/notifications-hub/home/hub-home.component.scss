@@ -19,6 +19,12 @@
   margin-bottom: var(--goa-space-m);
 }
 
+// When the heading and the button wrap onto separate lines (mobile), keep the
+// button at the right edge, in line with "Mark all as complete" below it.
+.section-header > goab-button {
+  margin-left: auto;
+}
+
 .section-title {
   margin: 0;
   font: var(--goa-typography-heading-m);
