@@ -86,12 +86,14 @@ export const PROGRAMS: Program[] = [
 
 export const PROGRAM_BY_ID = new Map(PROGRAMS.map((p) => [p.id, p]));
 
-export type ServiceId = 'licensing' | 'fdh-agency-contract';
+export type ServiceId = 'licensing' | 'fdh-agency-contract' | 'iam';
 
 // Only the services that raise notifications today; add one here when its
-// events are added to TEMPLATES.
+// events are added to TEMPLATES. The Notifications page lists just the ones
+// that have a notification in the current version.
 export const SERVICES: { value: ServiceId; label: string }[] = [
   { value: 'fdh-agency-contract', label: 'Family Day Home Agency Contract' },
+  { value: 'iam', label: 'Identity and Access Management' },
   { value: 'licensing', label: 'Licensing' },
 ];
 
@@ -345,6 +347,43 @@ export function buildDemoNotifications(now = new Date()): HubNotification[] {
     demoItem('demo-1', TEMPLATES[2], PROGRAM_BY_ID.get('80002817')!, 'Priya Sharma', 'Hannah Clarke', ago(25), true),
     demoItem('demo-2', TEMPLATES[1], PROGRAM_BY_ID.get('80006033')!, 'Omar Haddad', 'Noah Singh', ago(110), false),
     demoItem('demo-3', TEMPLATES[7], PROGRAM_BY_ID.get('80004102')!, 'Sarah Tremblay', 'Grace Olsen', ago(180), false),
+  ];
+}
+
+// CCPM-3290 triggers 2 (licence status changed) and 4 (role received), as a
+// Licensing Officer sees them. Added to v4 only (see HubV4NotificationsService),
+// so the shared seeded history, and every other version, stays as it was.
+export function buildTriggerExamples(now = new Date()): HubNotification[] {
+  const ago = (mins: number) => new Date(now.getTime() - mins * 60_000);
+  const licenceChanged = (id: string, programId: string, from: string, to: string, createdAt: Date, isNew: boolean): HubNotification => ({
+    id,
+    title: 'Licence status was changed',
+    message: msg`${prog(PROGRAM_BY_ID.get(programId)!)} licence status was changed from ${from} to ${to}.`,
+    linkLabel: 'View licence',
+    linkText: 'licence status',
+    severity: 'information',
+    programId,
+    service: 'licensing',
+    createdAt,
+    dismissed: false,
+    isNew,
+  });
+
+  return [
+    licenceChanged('trigger-licence-1', '80002817', 'Licensed (probationary)', 'Licensed', ago(20), true),
+    {
+      id: 'trigger-role-1',
+      title: 'You were given a new role',
+      message: msg`You were given the Legal Rep Invite Manager role.`,
+      linkLabel: 'View my profile',
+      linkText: 'Legal Rep Invite Manager role',
+      severity: 'information',
+      service: 'iam',
+      createdAt: ago(95),
+      dismissed: false,
+      isNew: true,
+    },
+    licenceChanged('trigger-licence-2', '80006033', 'Licensed', 'Licensed (probationary)', ago(200), false),
   ];
 }
 

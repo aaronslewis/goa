@@ -73,7 +73,10 @@ export class HubNotificationsPageComponent {
   readonly hub = inject(HubVariant);
   readonly composer = inject(NotificationComposer);
 
-  readonly services = SERVICES;
+  readonly services = computed(() => {
+    const present = new Set(this.service.all().map((n) => n.service));
+    return SERVICES.filter((s) => present.has(s.value));
+  });
   readonly programs = PROGRAMS;
   readonly severities = SEVERITIES;
   readonly statusOptions = STATUS_OPTIONS;
