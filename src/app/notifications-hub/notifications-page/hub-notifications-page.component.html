@@ -100,7 +100,7 @@
         placeholder="All services"
         [value]="filtersReady() ? draft.service : ''"
         (onChange)="draft.service = $event.value ?? ''">
-        @for (sv of services; track sv.value) {
+        @for (sv of services(); track sv.value) {
           <goab-dropdown-item [value]="sv.value" [label]="sv.label"></goab-dropdown-item>
         }
       </goab-dropdown>

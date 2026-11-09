@@ -23,6 +23,7 @@ import { HubHomeV3Component } from './notifications-hub/home-v3/hub-home-v3.comp
 import { HubHomePlainComponent } from './notifications-hub/home-plain/hub-home-plain.component';
 import { NotificationsService } from './notifications-hub/notifications.service';
 import { DemoNotificationsService } from './notifications-hub/demo-notifications.service';
+import { HubV4NotificationsService } from './notifications-hub/v4-notifications.service';
 import { ProviderPortalNotificationsShellComponent } from './provider-portal-notifications/provider-portal-notifications-shell.component';
 import { ProviderHomePageComponent } from './provider-portal-notifications/provider-home-page.component';
 import { ProviderNotificationsPageComponent } from './provider-portal-notifications/provider-notifications-page.component';
@@ -114,6 +115,7 @@ export const routes: Routes = [
   {
     path: 'notifications-hub-v4',
     component: HubShellComponent,
+    providers: [{ provide: NotificationsService, useClass: HubV4NotificationsService }],
     data: { hubBase: '/notifications-hub-v4', notificationsPanel: false, cardRows: true, feedStyle: 'cta-right' } satisfies HubRouteData,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
