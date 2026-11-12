@@ -38,7 +38,7 @@ interface Filters {
 
 const STATUS_OPTIONS: { value: Status; label: string }[] = [
   { value: 'active', label: 'Active' },
-  { value: 'dismissed', label: 'Dismissed' },
+  { value: 'dismissed', label: 'Completed' },
 ];
 
 function parseIsoDate(s: string): Date | null {

@@ -80,8 +80,8 @@
       icon="close"
       size="small"
       variant="dark"
-      [ariaLabel]="'Dismiss: ' + n.title"
-      [title]="'Dismiss'"
+      [ariaLabel]="'Mark complete: ' + n.title"
+      [title]="'Mark complete'"
       (onClick)="dismiss.emit(n.id)"></goab-icon-button>
   } @else if (allowRestore()) {
     <goab-icon-button
