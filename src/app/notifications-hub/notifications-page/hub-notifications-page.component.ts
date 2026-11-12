@@ -15,6 +15,8 @@ import {
 import { GoabDatePickerOnChangeDetail, GoabPaginationOnChangeDetail } from '@abgov/ui-components-common';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
 import { NotificationFeedComponent } from '../notification-feed/notification-feed.component';
+import { NotificationEmptyStateComponent } from '../notification-empty-state/notification-empty-state.component';
+import { EmptyPreviewToggleComponent } from '../empty-preview-toggle/empty-preview-toggle.component';
 import { NotificationComposer } from '../notification-composer';
 import { NotificationsService } from '../notifications.service';
 import { HubVariant } from '../hub-variant';
@@ -64,6 +66,8 @@ function parseIsoDate(s: string): Date | null {
     GoabPagination,
     NotificationListComponent,
     NotificationFeedComponent,
+    NotificationEmptyStateComponent,
+    EmptyPreviewToggleComponent,
   ],
   templateUrl: './hub-notifications-page.component.html',
   styleUrl: './hub-notifications-page.component.scss',
@@ -151,6 +155,10 @@ export class HubNotificationsPageComponent {
     const end = Math.min(start + PAGE_SIZE - 1, total);
     return `Showing ${start}–${end} of ${total} notifications`;
   });
+
+  // Nothing to show and nothing filtered out: the user has no notifications at
+  // all, which is different from a filter that matches none.
+  readonly caughtUp = computed(() => this.filtered().length === 0 && this.chips().length === 0);
 
   readonly chips = computed(() => {
     const chips: { key: FilterKey; label: string }[] = [];

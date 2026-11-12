@@ -9,7 +9,10 @@ import {
   GoabTabs,
   GoabTemporaryNotificationCtrl,
 } from '@abgov/angular-components';
+import { Router } from '@angular/router';
 import { NotificationFeedComponent } from '../notification-feed/notification-feed.component';
+import { NotificationEmptyStateComponent } from '../notification-empty-state/notification-empty-state.component';
+import { EmptyPreviewToggleComponent } from '../empty-preview-toggle/empty-preview-toggle.component';
 import { NotificationComposer } from '../notification-composer';
 import { NotificationsService } from '../notifications.service';
 import { HubVariant } from '../hub-variant';
@@ -28,6 +31,8 @@ import { HubVariant } from '../hub-variant';
     GoabTabs,
     GoabTemporaryNotificationCtrl,
     NotificationFeedComponent,
+    NotificationEmptyStateComponent,
+    EmptyPreviewToggleComponent,
   ],
   templateUrl: './hub-home-v3.component.html',
   styleUrls: ['../home/hub-home.component.scss', './hub-home-v3.component.scss'],
@@ -35,6 +40,7 @@ import { HubVariant } from '../hub-variant';
 export class HubHomeV3Component {
   readonly service = inject(NotificationsService);
   readonly composer = inject(NotificationComposer);
+  private readonly router = inject(Router);
 
   readonly firstName = 'Edna';
   readonly hub = inject(HubVariant);
@@ -65,6 +71,11 @@ export class HubHomeV3Component {
   restartDemo(event: Event): void {
     event.preventDefault();
     location.reload();
+  }
+
+  // notificationsUrl is a "#/…" href for links; the router takes the path.
+  showAll(): void {
+    this.router.navigateByUrl(this.notificationsUrl.replace(/^#/, ''));
   }
 
   markAllComplete(): void {
