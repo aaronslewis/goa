@@ -21,7 +21,11 @@ export class NotificationsService {
   private readonly _all = signal<HubNotification[]>(this.seed());
   private nextId = 1;
 
-  readonly all = this._all.asReadonly();
+  // Prototype-only: shows the empty states without deleting the sample data,
+  // so switching it off brings every notification back as it was.
+  readonly previewEmpty = signal(false);
+
+  readonly all = computed(() => (this.previewEmpty() ? [] : this._all()));
 
   // Overridden by the demo, which starts from its own short list.
   protected seed(): HubNotification[] {
@@ -31,7 +35,7 @@ export class NotificationsService {
   readonly homeItems = computed(() => {
     const now = Date.now();
     const cutoff = now - HOME_WINDOW_DAYS * 864e5;
-    return this._all().filter((n) => {
+    return this.all().filter((n) => {
       const t = n.createdAt.getTime();
       return !n.dismissed && t <= now && t >= cutoff;
     });

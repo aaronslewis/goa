@@ -36,7 +36,7 @@ export interface HubNotification {
 }
 
 // `rowBadge: false` drops the badge on that severity's active rows (the blue row
-// tint already marks informational items). Dismissed rows on the Notifications
+// tint already marks informational items). Completed rows on the Notifications
 // page still get it, since their grey row loses the tint.
 export const SEVERITIES: {
   value: Severity;
