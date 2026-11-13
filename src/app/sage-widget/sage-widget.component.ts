@@ -1,8 +1,11 @@
 import {
+  afterNextRender,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   HostListener,
+  inject,
+  Injector,
   OnDestroy,
   OnInit,
   signal,
@@ -21,6 +24,11 @@ import {
   SageSource,
   MessageKind,
   TypingVariant,
+  AnswerFeedback,
+  FeedbackRating,
+  FEEDBACK_PROMPT,
+  FEEDBACK_THANKS,
+  FEEDBACK_COMMENT_MAX,
 } from './sage-messages';
 
 type ExpandState = 'compact' | 'wide';
@@ -101,6 +109,15 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   readonly draft = signal('');
   readonly lightboxSrc = signal<string | null>(null);
   readonly lightboxAlt = signal<string>('');
+
+  readonly feedbackCommentMax = FEEDBACK_COMMENT_MAX;
+  /** Feedback per answer, keyed by message id. Kept apart from the messages so
+   *  rating an answer doesn't rebuild its bubble and replay the entry animation. */
+  readonly feedback = signal<Record<number, AnswerFeedback>>({});
+  /** Answer the feedback modal is open for; null while it's closed. */
+  readonly feedbackModalFor = signal<number | null>(null);
+  readonly feedbackDraft = signal('');
+  private readonly injector = inject(Injector);
 
   readonly widthPx = computed(() => (this.expandState() === 'wide' ? '492px' : '360px'));
 
@@ -287,6 +304,8 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   async startReturningUser(): Promise<void> {
     this.cancelTimers();
     this.messages.set([]);
+    this.feedback.set({});
+    this.feedbackModalFor.set(null);
     this.hasPlayedIntro.set(false);
     this.userTypedSinceReturn = false;
     this.isOpen.set(true);
@@ -315,6 +334,8 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
   resetAndReplay(): void {
     this.cancelTimers();
     this.messages.set([]);
+    this.feedback.set({});
+    this.feedbackModalFor.set(null);
     this.hasPlayedIntro.set(false);
     if (this.isOpen()) {
       this.runIntro();
@@ -398,12 +419,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
       ...list.filter(m => m.kind !== 'typing'),
       { id: this.nextId++, role: 'user', kind: 'text', content: text },
     ]);
-    this.draft.set('');
-    // Reset textarea height after clearing.
-    setTimeout(() => {
-      const ta = this.sageInput()?.nativeElement;
-      if (ta) this.autoResize(ta);
-    }, 0);
+    this.clearDraft();
 
     await this.sleep(450);
     if (this.cancelled) return;
@@ -414,7 +430,92 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
 
     const response = this.cannedResponses[this.cannedIndex % this.cannedResponses.length];
     this.cannedIndex++;
-    this.replaceTyping('text', response.text, response.sources, response.image);
+    this.replaceTyping('text', response.text, response.sources, response.image, true);
+  }
+
+  feedbackFor(id: number): AnswerFeedback | undefined {
+    return this.feedback()[id];
+  }
+
+  /** A rating can be changed. Thumbs up gets a thank-you; thumbs down adds
+   *  Sage's offer to collect more detail, and switching to thumbs up withdraws
+   *  that offer unless detail was already sent. */
+  rate(id: number, rating: FeedbackRating): void {
+    const current = this.feedbackFor(id);
+    if (current?.rating === rating) return;
+    this.setFeedback(id, { rating, comment: current?.comment ?? '' });
+
+    const hasPrompt = this.messages().some(m => m.feedbackPromptFor === id);
+    if (rating === 'down' && !hasPrompt) {
+      this.messages.update(list => [
+        ...list,
+        { id: this.nextId++, role: 'bot', kind: 'text', content: FEEDBACK_PROMPT, feedbackPromptFor: id },
+      ]);
+      this.scrollToBottom();
+    } else if (rating === 'up') {
+      if (hasPrompt && !current?.comment) {
+        this.messages.update(list => list.filter(m => m.feedbackPromptFor !== id));
+      }
+      if (!this.messages().some(m => m.feedbackThanksFor === id)) {
+        this.postThanks(id);
+      }
+    }
+  }
+
+  private postThanks(id: number): void {
+    this.messages.update(list => [
+      ...list,
+      { id: this.nextId++, role: 'bot', kind: 'text', content: FEEDBACK_THANKS, feedbackThanksFor: id },
+    ]);
+    this.scrollToBottom();
+  }
+
+  openFeedbackModal(id: number): void {
+    this.feedbackDraft.set('');
+    this.feedbackModalFor.set(id);
+  }
+
+  closeFeedbackModal(): void {
+    this.feedbackModalFor.set(null);
+  }
+
+  onFeedbackDraftChange(event: Event): void {
+    const detail = (event as CustomEvent<{ value: string }>).detail;
+    this.feedbackDraft.set(detail?.value ?? '');
+  }
+
+  submitFeedback(): void {
+    const id = this.feedbackModalFor();
+    const text = this.feedbackDraft().trim();
+    if (id === null || !text || text.length > FEEDBACK_COMMENT_MAX) return;
+    const fb = this.feedbackFor(id);
+    this.setFeedback(id, { rating: fb?.rating ?? 'down', comment: text });
+    this.feedbackModalFor.set(null);
+    this.postThanks(id);
+  }
+
+  private scrollToBottom(): void {
+    afterNextRender(() => {
+      const list = document.querySelector<HTMLElement>('.messages');
+      if (list) list.scrollTop = list.scrollHeight;
+    }, { injector: this.injector });
+  }
+
+  private setFeedback(id: number, fb: AnswerFeedback): void {
+    this.feedback.update(all => ({ ...all, [id]: fb }));
+  }
+
+  private clearDraft(): void {
+    this.draft.set('');
+    // If Enter lands before change detection has synced the last keystroke,
+    // the [value] binding sees '' → '' and never clears the field.
+    const input = this.sageInput()?.nativeElement;
+    if (input) input.value = '';
+    // Reset textarea height after clearing.
+    setTimeout(() => {
+      const ta = this.sageInput()?.nativeElement;
+      if (ta) this.autoResize(ta);
+    }, 0);
   }
 
   trackById(_: number, m: SageMessage) {
@@ -448,6 +549,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
     content: string | string[],
     sources?: SageSource[],
     image?: { src: string; alt: string },
+    isAnswer = false,
   ): void {
     this.messages.update(list => {
       const idx = list.findIndex(m => m.kind === 'typing');
@@ -458,6 +560,7 @@ export class SageWidgetComponent implements OnInit, OnDestroy {
         content,
         ...(sources?.length ? { sources } : {}),
         ...(image ? { image } : {}),
+        ...(isAnswer ? { isAnswer } : {}),
       };
       if (idx < 0) return [...list, replaced];
       const out = list.slice();

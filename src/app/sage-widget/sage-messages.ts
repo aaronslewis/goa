@@ -23,7 +23,30 @@ export interface SageMessage {
   /** Kept for standalone image-only messages (kind: 'image'). */
   imageAlt?: string;
   sources?: SageSource[];
+  /** Set on replies to a user's question. Only these get the feedback row;
+   *  intro and greeting messages aren't answers, so rating them means nothing. */
+  isAnswer?: boolean;
+  /** Set on Sage's "We'd like to do better" follow-up to a thumbs down, holding
+   *  the answer's id so the Give feedback link knows which answer it's about. */
+  feedbackPromptFor?: number;
+  /** Set on Sage's thank-you for a rating or comment, holding the answer's id
+   *  so flipping a rating back and forth doesn't stack up thank-yous. */
+  feedbackThanksFor?: number;
 }
+
+export type FeedbackRating = 'up' | 'down';
+
+export interface AnswerFeedback {
+  rating: FeedbackRating;
+  comment: string;
+}
+
+export const FEEDBACK_PROMPT =
+  "We'd like to do better. Tell us what we missed or what could be improved so we can help you more effectively.";
+
+export const FEEDBACK_THANKS = 'Thank you for your feedback.';
+
+export const FEEDBACK_COMMENT_MAX = 500;
 
 export type IntroStep =
   | { type: 'wait'; ms: number }

@@ -110,6 +110,9 @@
               <div class="bubble-stack">
                 <div class="bubble">
                   {{ asString(m) }}
+                  @if (m.feedbackPromptFor !== undefined && !feedbackFor(m.feedbackPromptFor)?.comment) {
+                    <button type="button" class="feedback-link" aria-haspopup="dialog" (click)="openFeedbackModal(m.feedbackPromptFor!)">Give feedback</button>
+                  }
                   @if (m.image) {
                     <button
                       type="button"
@@ -146,6 +149,29 @@
                     </goa-callout>
                   </div>
                 }
+                @if (m.isAnswer) {
+                  <div class="feedback" role="group" [attr.aria-labelledby]="'sage-fb-q-' + m.id">
+                    <p class="feedback-question" [id]="'sage-fb-q-' + m.id">Was this helpful?</p>
+                    <div class="feedback-thumbs">
+                      <goa-icon-button
+                        icon="thumbs-up"
+                        size="medium"
+                        [attr.theme]="feedbackFor(m.id)?.rating === 'up' ? 'filled' : 'outline'"
+                        [attr.title]="feedbackFor(m.id)?.rating === 'up' ? 'Helpful (selected)' : 'Helpful'"
+                        [attr.arialabel]="feedbackFor(m.id)?.rating === 'up' ? 'Helpful, selected' : 'Helpful'"
+                        (_click)="rate(m.id, 'up')">
+                      </goa-icon-button>
+                      <goa-icon-button
+                        icon="thumbs-down"
+                        size="medium"
+                        [attr.theme]="feedbackFor(m.id)?.rating === 'down' ? 'filled' : 'outline'"
+                        [attr.title]="feedbackFor(m.id)?.rating === 'down' ? 'Not helpful (selected)' : 'Not helpful'"
+                        [attr.arialabel]="feedbackFor(m.id)?.rating === 'down' ? 'Not helpful, selected' : 'Not helpful'"
+                        (_click)="rate(m.id, 'down')">
+                      </goa-icon-button>
+                    </div>
+                  </div>
+                }
               </div>
             }
           }
@@ -178,6 +204,41 @@
     </footer>
   </div>
 }
+
+<goa-modal
+  [attr.open]="feedbackModalFor() !== null || null"
+  heading="Sage-AI help assistant feedback"
+  closable="true"
+  width="480px"
+  (_close)="closeFeedbackModal()">
+  @if (feedbackModalFor() !== null) {
+    <goa-form-item
+      label="Provide your additional feedback"
+      helptext="Don't include personal information, such as names or file numbers."
+      [attr.error]="feedbackDraft().length > feedbackCommentMax ? 'Feedback must be ' + feedbackCommentMax + ' characters or less' : null">
+      <goa-textarea
+        name="sage-feedback"
+        rows="5"
+        width="100%"
+        countby="character"
+        [attr.maxcount]="feedbackCommentMax"
+        [attr.value]="feedbackDraft()"
+        (_change)="onFeedbackDraftChange($event)">
+      </goa-textarea>
+    </goa-form-item>
+  }
+  <div slot="actions">
+    <goa-button-group alignment="end">
+      <goa-button type="tertiary" (_click)="closeFeedbackModal()">Cancel</goa-button>
+      <goa-button
+        type="primary"
+        [attr.disabled]="!feedbackDraft().trim() || feedbackDraft().length > feedbackCommentMax ? true : null"
+        (_click)="submitFeedback()">
+        Submit
+      </goa-button>
+    </goa-button-group>
+  </div>
+</goa-modal>
 
 @if (lightboxSrc()) {
   <div
