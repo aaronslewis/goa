@@ -1,4 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
+import { TemporaryNotification } from '@abgov/ui-components-common';
 import { HubNotification, SEVERITIES, SEVERITY_RANK, Severity, buildSeedNotifications } from './notifications.data';
 
 export interface HomeTab {
@@ -71,6 +72,18 @@ export class NotificationsService {
   dismissMany(ids: string[]): void {
     const set = new Set(ids);
     this._all.update((list) => list.map((n) => (set.has(n.id) ? { ...n, dismissed: true } : n)));
+  }
+
+  // Home's "Mark all as complete": the items leave Home, so the toast says
+  // where they went. Needs a goab-temporary-notification-ctrl on the page.
+  markAllComplete(ids: string[]): void {
+    if (ids.length === 0) return;
+    this.dismissMany(ids);
+    const [noun, pronoun] = ids.length === 1 ? ['notification', 'it'] : ['notifications', 'them'];
+    TemporaryNotification.show(
+      `${ids.length} ${noun} marked as complete. You can still find ${pronoun} on the Notifications page.`,
+      { type: 'success', duration: 'long' },
+    );
   }
 
   // v3: acting on a notification clears its new-item marker.
