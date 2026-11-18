@@ -76,14 +76,15 @@ export class NotificationsService {
 
   // Home's "Mark all as complete": the items leave Home, so the toast says
   // where they went. Needs a goab-temporary-notification-ctrl on the page.
+  // One line on purpose: the DS toast has no compact size, so short copy keeps it small.
   markAllComplete(ids: string[]): void {
     if (ids.length === 0) return;
     this.dismissMany(ids);
-    const [noun, pronoun] = ids.length === 1 ? ['notification', 'it'] : ['notifications', 'them'];
-    TemporaryNotification.show(
-      `${ids.length} ${noun} marked as complete. You can still find ${pronoun} on the Notifications page.`,
-      { type: 'success', duration: 'long' },
-    );
+    const noun = ids.length === 1 ? 'notification' : 'notifications';
+    TemporaryNotification.show(`${ids.length} ${noun} moved to the Notifications page.`, {
+      type: 'success',
+      duration: 'long',
+    });
   }
 
   // v3: acting on a notification clears its new-item marker.
