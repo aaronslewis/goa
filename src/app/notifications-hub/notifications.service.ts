@@ -74,14 +74,16 @@ export class NotificationsService {
     this._all.update((list) => list.map((n) => (set.has(n.id) ? { ...n, dismissed: true } : n)));
   }
 
-  // Home's "Mark all as complete": the items leave Home, so the toast says
-  // where they went. Needs a goab-temporary-notification-ctrl on the page.
-  // One line on purpose: the DS toast has no compact size, so short copy keeps it small.
-  markAllComplete(ids: string[]): void {
-    if (ids.length === 0) return;
-    this.dismissMany(ids);
-    const noun = ids.length === 1 ? 'notification' : 'notifications';
-    TemporaryNotification.show(`${ids.length} ${noun} moved to the Notifications page.`, {
+  // Home's "Mark all as complete" completes only the current tab, so the toast
+  // names that tab's severity. Needs a goab-temporary-notification-ctrl on the
+  // page. One line on purpose: the DS toast has no compact size.
+  markAllComplete(tab: HomeTab): void {
+    const count = tab.items.length;
+    if (count === 0) return;
+    this.dismissMany(tab.items.map((n) => n.id));
+    const severity = tab.key === 'all' ? '' : `${tab.label.toLowerCase()} `;
+    const noun = count === 1 ? 'notification' : 'notifications';
+    TemporaryNotification.show(`${count} ${severity}${noun} marked as complete.`, {
       type: 'success',
       duration: 'long',
     });

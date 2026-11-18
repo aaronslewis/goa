@@ -69,6 +69,6 @@ export class HubHomeV3Component {
 
   markAllComplete(): void {
     const tab = this.currentTab();
-    if (tab) this.service.markAllComplete(tab.items.map((n) => n.id));
+    if (tab) this.service.markAllComplete(tab);
   }
 }
