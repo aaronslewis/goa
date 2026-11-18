@@ -4,7 +4,7 @@
     <goab-icon-button icon="close" variant="dark" ariaLabel="Close notifications" (onClick)="close()"></goab-icon-button>
   </div>
 
-  <goab-tabs variant="segmented" navigation="none" orientation="horizontal">
+  <goab-tabs variant="segmented" navigation="none" orientation="horizontal" [initialTab]="1">
     @for (tab of service.homeTabs(); track tab.key) {
       <ng-template #tabHeading>
         <span class="tab-heading">

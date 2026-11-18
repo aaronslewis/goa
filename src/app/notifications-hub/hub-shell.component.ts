@@ -16,6 +16,7 @@ import { AddNotificationDrawerComponent } from './add-notification-drawer/add-no
 import { NotificationsPanelComponent } from './notifications-panel/notifications-panel.component';
 import { NotificationComposer } from './notification-composer';
 import { HubVariant } from './hub-variant';
+import { focusPageHeading } from '../shared/focus-page-heading';
 
 interface MenuItem {
   label: string;
@@ -114,8 +115,9 @@ export class HubShellComponent implements AfterViewInit {
   // The menu cancels the anchor's default navigation and emits the href instead.
   // Placeholder items ("#") stay put; real routes go through the router.
   onNavigate(url: string): void {
-    if (url.startsWith('#/')) this.router.navigateByUrl(url.slice(1));
-    else queueMicrotask(() => this.syncCurrentItem());
+    if (url.startsWith('#/')) {
+      this.router.navigateByUrl(url.slice(1)).then(() => focusPageHeading(this.el.nativeElement));
+    } else queueMicrotask(() => this.syncCurrentItem());
   }
 
   // Ctrl+Q works on every hub page; if a draft is minimized it brings it back.

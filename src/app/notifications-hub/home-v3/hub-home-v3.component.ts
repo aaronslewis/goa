@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, ElementRef, Injector, afterNextRender, computed, inject, signal } from '@angular/core';
 import { GoabTabsOnChangeDetail } from '@abgov/ui-components-common';
 import {
   GoabBadge,
@@ -9,6 +9,7 @@ import {
   GoabTabs,
   GoabTemporaryNotificationCtrl,
 } from '@abgov/angular-components';
+import { fixInitialTabType, focusSelectedTab } from '../../shared/goa-tabs-keyboard';
 import { NotificationFeedComponent } from '../notification-feed/notification-feed.component';
 import { NotificationComposer } from '../notification-composer';
 import { NotificationsService } from '../notifications.service';
@@ -34,6 +35,12 @@ import { HubVariant } from '../hub-variant';
 })
 export class HubHomeV3Component {
   readonly service = inject(NotificationsService);
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly injector = inject(Injector);
+
+  constructor() {
+    fixInitialTabType(this.host.nativeElement);
+  }
   readonly composer = inject(NotificationComposer);
 
   readonly firstName = 'Edna';
@@ -69,6 +76,9 @@ export class HubHomeV3Component {
 
   markAllComplete(): void {
     const tab = this.currentTab();
-    if (tab) this.service.markAllComplete(tab);
+    if (!tab) return;
+    this.service.markAllComplete(tab);
+    // The emptied tab hides this button, which would drop focus to the page.
+    afterNextRender(() => focusSelectedTab(this.host.nativeElement), { injector: this.injector });
   }
 }

@@ -49,7 +49,7 @@
         </div>
       }
     }
-    <goab-tabs variant="segmented" navigation="none" orientation="horizontal" (onChange)="onTabChange($event)">
+    <goab-tabs variant="segmented" navigation="none" orientation="horizontal" [initialTab]="1" (onChange)="onTabChange($event)">
       @for (tab of tabs(); track tab.key) {
         <ng-template #tabHeading>
           <span class="tab-heading">
