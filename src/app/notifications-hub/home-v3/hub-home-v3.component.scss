@@ -7,6 +7,40 @@
   max-width: 81.25rem;
 }
 
+// The panel's actions come after the selected tab in the markup, for focus
+// order. On wide screens the wrapper drops out of layout: Mark all is overlaid
+// on the tab row (hub-home.component.scss) and Add notification is lifted into
+// the section header's right edge, level with its bottom line. .tabs-area is
+// their positioning context, and the header sits space-m above it.
+.panel-actions {
+  display: contents;
+}
+
+.add-action {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--goa-space-m));
+}
+
+// Too narrow to overlay them: both sit in the flow above the list, in focus order.
+@container (max-width: 40rem) {
+  .panel-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--goa-space-s);
+    justify-content: flex-end;
+    margin-bottom: var(--goa-space-s);
+  }
+
+  .panel-actions .tab-action {
+    margin-bottom: 0;
+  }
+
+  .add-action {
+    position: static;
+  }
+}
+
 .restart-link {
   margin: var(--goa-space-xl) 0 0;
   font: var(--goa-typography-body-s);

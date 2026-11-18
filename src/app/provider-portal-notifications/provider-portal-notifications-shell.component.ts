@@ -12,6 +12,7 @@ import {
   GoabWorkspaceLayout,
 } from '@abgov/angular-components';
 import { hideWorkSideMenuScrollbarButtons } from '../shared/hide-work-side-menu-scrollbar-buttons';
+import { focusPageHeading } from '../shared/focus-page-heading';
 
 interface MenuItem {
   kind: 'item';
@@ -133,8 +134,9 @@ export class ProviderPortalNotificationsShellComponent implements AfterViewInit 
   // The menu cancels the anchor's default navigation and emits the href instead.
   // Placeholder items ("#") stay put; real routes go through the router.
   onNavigate(url: string): void {
-    if (url.startsWith('#/')) this.router.navigateByUrl(url.slice(1));
-    else queueMicrotask(() => this.syncCurrentItem());
+    if (url.startsWith('#/')) {
+      this.router.navigateByUrl(url.slice(1)).then(() => focusPageHeading(this.el.nativeElement));
+    } else queueMicrotask(() => this.syncCurrentItem());
   }
 
   isCurrent(url?: string): boolean {

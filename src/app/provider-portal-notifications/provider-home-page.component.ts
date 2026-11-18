@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, ElementRef, Injector, afterNextRender, computed, inject, signal } from '@angular/core';
 import { GoabTabsOnChangeDetail } from '@abgov/ui-components-common';
 import {
   GoabAccordion,
@@ -10,6 +10,7 @@ import {
   GoabTab,
   GoabTabs,
 } from '@abgov/angular-components';
+import { fixInitialTabType, focusSelectedTab } from '../shared/goa-tabs-keyboard';
 import { NotificationFeedComponent } from '../notifications-hub/notification-feed/notification-feed.component';
 import { NotificationsService } from '../notifications-hub/notifications.service';
 
@@ -64,6 +65,12 @@ function pickGreeting(): string {
 })
 export class ProviderHomePageComponent {
   readonly service = inject(NotificationsService);
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly injector = inject(Injector);
+
+  constructor() {
+    fixInitialTabType(this.host.nativeElement);
+  }
 
   readonly firstName = 'Sally';
   readonly notificationsUrl = '#/provider-portal-notifications/notifications';
@@ -87,6 +94,9 @@ export class ProviderHomePageComponent {
 
   markAllComplete(): void {
     const tab = this.currentTab();
-    if (tab) this.service.dismissMany(tab.items.map((n) => n.id));
+    if (!tab) return;
+    this.service.markAllComplete(tab);
+    // The emptied tab hides this button, which would drop focus to the page.
+    afterNextRender(() => focusSelectedTab(this.host.nativeElement), { injector: this.injector });
   }
 }

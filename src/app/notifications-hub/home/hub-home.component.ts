@@ -1,6 +1,7 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, ElementRef, Injector, afterNextRender, computed, inject, signal } from '@angular/core';
 import { GoabTabsOnChangeDetail } from '@abgov/ui-components-common';
 import { GoabBadge, GoabButton, GoabContainer, GoabLink, GoabTab, GoabTabs } from '@abgov/angular-components';
+import { fixInitialTabType, focusSelectedTab } from '../../shared/goa-tabs-keyboard';
 import { NotificationListComponent } from '../notification-list/notification-list.component';
 import { NotificationComposer } from '../notification-composer';
 import { NotificationsService } from '../notifications.service';
@@ -24,6 +25,12 @@ import { HubVariant } from '../hub-variant';
 export class HubHomeComponent {
   readonly service = inject(NotificationsService);
   readonly composer = inject(NotificationComposer);
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly injector = inject(Injector);
+
+  constructor() {
+    fixInitialTabType(this.host.nativeElement);
+  }
 
   readonly firstName = 'Edna';
   readonly hub = inject(HubVariant);
@@ -54,6 +61,9 @@ export class HubHomeComponent {
 
   markAllDone(): void {
     const tab = this.activeSeverityTab();
-    if (tab) this.service.dismissMany(tab.items.map((n) => n.id));
+    if (!tab) return;
+    this.service.dismissMany(tab.items.map((n) => n.id));
+    // The emptied tab hides this button, which would drop focus to the page.
+    afterNextRender(() => focusSelectedTab(this.host.nativeElement), { injector: this.injector });
   }
 }

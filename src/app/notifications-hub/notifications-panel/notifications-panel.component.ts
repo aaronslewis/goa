@@ -5,6 +5,7 @@ import { NotificationListComponent } from '../notification-list/notification-lis
 import { NotificationFeedComponent } from '../notification-feed/notification-feed.component';
 import { NotificationsService } from '../notifications.service';
 import { HubVariant } from '../hub-variant';
+import { fixInitialTabType } from '../../shared/goa-tabs-keyboard';
 
 // Opened from the side menu's Notifications item, like the DS workspace demo.
 // Built from our own rows rather than the DS Notification Panel, which always
@@ -21,6 +22,10 @@ export class NotificationsPanelComponent {
   private readonly router = inject(Router);
   private readonly el = inject(ElementRef<HTMLElement>);
   readonly hub = inject(HubVariant);
+
+  constructor() {
+    fixInitialTabType(this.el.nativeElement);
+  }
 
   viewAll(event: Event): void {
     event.preventDefault();

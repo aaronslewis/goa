@@ -533,6 +533,50 @@
   max-width: 80%;
 }
 
+.feedback {
+  display: flex;
+  align-items: center;
+  gap: var(--goa-space-s);
+  margin-top: var(--goa-space-s);
+  color: var(--goa-color-text-secondary);
+}
+
+.feedback-question {
+  margin: 0;
+  font-size: var(--sage-font-size, 14px);
+  line-height: 1.45;
+}
+
+.feedback-thumbs {
+  display: flex;
+  gap: var(--goa-space-xs);
+}
+
+/* Inline link like the suggestion list's; a native button because it opens a
+   modal rather than going anywhere. */
+.feedback-link {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0 0 0 var(--goa-space-3xs);
+  font: inherit;
+  color: var(--goa-color-interactive-default);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.feedback-link:hover {
+  color: var(--goa-color-interactive-hover);
+}
+
+.feedback-link:focus-visible {
+  outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+  outline-offset: 2px;
+  border-radius: var(--goa-border-radius-s);
+}
+
 /* The bubble inside a stack fills the stack width */
 .bubble-stack .bubble {
   max-width: 100%;

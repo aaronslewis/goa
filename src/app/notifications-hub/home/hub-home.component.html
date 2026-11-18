@@ -11,15 +11,7 @@
 
   <!-- Title and tabs sit on the page; the bordered card wraps only the list. -->
   <div class="tabs-area">
-  <!-- Level with the tab tray, so it reads as acting on the selected tab only. -->
-  @if (activeSeverityTab(); as tab) {
-    @if (tab.items.length > 0) {
-      <div class="tab-action">
-        <goab-button type="tertiary" size="compact" (onClick)="markAllDone()">Mark all as done</goab-button>
-      </div>
-    }
-  }
-  <goab-tabs variant="segmented" navigation="none" orientation="horizontal" (onChange)="onTabChange($event)">
+  <goab-tabs variant="segmented" navigation="none" orientation="horizontal" [initialTab]="1" (onChange)="onTabChange($event)">
     @for (tab of tabs(); track tab.key) {
       <ng-template #tabHeading>
         <span class="tab-heading">
@@ -30,6 +22,13 @@
         </span>
       </ng-template>
       <goab-tab [heading]="tabHeading">
+        <!-- Inside the panel so it follows the selected tab in focus order; CSS lifts it
+             level with the tab tray, so it reads as acting on that tab only. -->
+        @if (tab === activeSeverityTab() && tab.items.length > 0) {
+          <div class="tab-action">
+            <goab-button type="tertiary" size="compact" (onClick)="markAllDone()">Mark all as done</goab-button>
+          </div>
+        }
         <goab-container padding="compact" class="list-card">
           <hub-notification-list
             class="list"

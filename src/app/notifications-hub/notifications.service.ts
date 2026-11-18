@@ -1,4 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
+import { TemporaryNotification } from '@abgov/ui-components-common';
 import { HubNotification, SEVERITIES, SEVERITY_RANK, Severity, buildSeedNotifications } from './notifications.data';
 
 export interface HomeTab {
@@ -75,6 +76,21 @@ export class NotificationsService {
   dismissMany(ids: string[]): void {
     const set = new Set(ids);
     this._all.update((list) => list.map((n) => (set.has(n.id) ? { ...n, dismissed: true } : n)));
+  }
+
+  // Home's "Mark all as complete" completes only the current tab, so the toast
+  // names that tab's severity. Needs a goab-temporary-notification-ctrl on the
+  // page. One line on purpose: the DS toast has no compact size.
+  markAllComplete(tab: HomeTab): void {
+    const count = tab.items.length;
+    if (count === 0) return;
+    this.dismissMany(tab.items.map((n) => n.id));
+    const severity = tab.key === 'all' ? '' : `${tab.label.toLowerCase()} `;
+    const noun = count === 1 ? 'notification' : 'notifications';
+    TemporaryNotification.show(`${count} ${severity}${noun} marked as complete.`, {
+      type: 'success',
+      duration: 'long',
+    });
   }
 
   // v3: acting on a notification clears its new-item marker.

@@ -17,6 +17,8 @@ import { NotificationsPanelComponent } from './notifications-panel/notifications
 import { NotificationComposer } from './notification-composer';
 import { HubVariant } from './hub-variant';
 import { NotificationsService } from './notifications.service';
+import { focusPageHeading } from '../shared/focus-page-heading';
+import { focusSelectedTab } from '../shared/goa-tabs-keyboard';
 
 interface MenuItem {
   label: string;
@@ -124,8 +126,20 @@ export class HubShellComponent implements AfterViewInit {
   // The menu cancels the anchor's default navigation and emits the href instead.
   // Placeholder items ("#") stay put; real routes go through the router.
   onNavigate(url: string): void {
-    if (url.startsWith('#/')) this.router.navigateByUrl(url.slice(1));
-    else queueMicrotask(() => this.syncCurrentItem());
+    if (url.startsWith('#/')) {
+      this.router.navigateByUrl(url.slice(1)).then(() => focusPageHeading(this.el.nativeElement));
+    } else queueMicrotask(() => this.syncCurrentItem());
+  }
+
+  // Lands on the selected severity tab where the page has one (Home), so the
+  // next arrow key changes tab; otherwise on the page heading.
+  skipToMain(event: Event): void {
+    event.preventDefault();
+    const host = this.el.nativeElement as HTMLElement;
+    const main = host.querySelector('router-outlet ~ *') as HTMLElement | null;
+    if (!main) return;
+    if (main.querySelector('goa-tabs')) focusSelectedTab(main);
+    else focusPageHeading(host);
   }
 
   // Ctrl+Q works on every hub page; if a draft is minimized it brings it back.
