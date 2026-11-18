@@ -74,6 +74,26 @@ export class HubHomeV3Component {
     location.reload();
   }
 
+  // The dismissed card leaves the list and takes the focused ✕ with it, so
+  // focus moves on (WCAG 2.4.3): to the card that takes its place, else the one
+  // before it, else, with the tab now empty, to the section heading.
+  onDismiss(id: string): void {
+    const row = closestAcrossShadow(deepActiveElement(), 'li.row');
+    const feed = row?.closest('hub-notification-feed');
+    const index = feed ? [...feed.querySelectorAll('li.row')].indexOf(row!) : -1;
+    this.service.dismiss(id);
+    if (!feed || index < 0) return;
+    afterNextRender(
+      () => {
+        const rows = feed.querySelectorAll<HTMLElement>('li.row');
+        const target = rows[index] ?? rows[index - 1];
+        if (target) focusCardAction(target);
+        else this.host.nativeElement.querySelector<HTMLElement>('.section-title')?.focus();
+      },
+      { injector: this.injector },
+    );
+  }
+
   markAllComplete(): void {
     const tab = this.currentTab();
     if (!tab) return;
@@ -81,4 +101,31 @@ export class HubHomeV3Component {
     // The emptied tab hides this button, which would drop focus to the page.
     afterNextRender(() => focusSelectedTab(this.host.nativeElement), { injector: this.injector });
   }
+}
+
+function deepActiveElement(): Element | null {
+  let el = document.activeElement;
+  while (el?.shadowRoot?.activeElement) el = el.shadowRoot.activeElement;
+  return el;
+}
+
+// Element.closest that climbs out of shadow roots: the focused ✕ is a <button>
+// inside goa-icon-button's shadow DOM.
+function closestAcrossShadow(el: Element | null, selector: string): HTMLElement | null {
+  while (el) {
+    const hit = el.closest<HTMLElement>(selector);
+    if (hit) return hit;
+    el = (el.getRootNode() as ShadowRoot).host ?? null;
+  }
+  return null;
+}
+
+// A card's first stop: its action (a DS button in v4, an inline link in the
+// other versions), or its ✕ when it has no action. The DS buttons keep their
+// focusable <button> in their shadow DOM.
+function focusCardAction(row: HTMLElement): void {
+  const link = row.querySelector<HTMLElement>('.row__message a');
+  if (link) return link.focus();
+  const ds = row.querySelector('.row__cta goa-button, .row__action goa-button, .row__dismiss goa-icon-button');
+  ds?.shadowRoot?.querySelector<HTMLElement>('button')?.focus();
 }

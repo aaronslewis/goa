@@ -72,6 +72,10 @@
   </goab-work-side-menu>
 </ng-template>
 
+<!-- First stop on every page, shown only on focus: jumps past the side menu's
+     many items (WCAG 2.4.1). The DS has no skip link component. -->
+<a class="skip-link" href="#" (click)="skipToMain($event)">Skip to main content</a>
+
 <!-- DS Workspace Layout: side menu beside a white content card. -->
 <goab-workspace-layout [sideMenu]="sideMenu">
   <router-outlet></router-outlet>

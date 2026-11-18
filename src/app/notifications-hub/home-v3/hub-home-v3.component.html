@@ -3,21 +3,12 @@
 
   <div class="section-header">
     <div>
-      <h2 class="section-title">Recent notifications</h2>
+      <h2 class="section-title" tabindex="-1">Recent notifications</h2>
       <p class="section-note">Showing active notifications from the last 30 days.</p>
     </div>
-    <goab-button type="primary" size="compact" leadingIcon="add" (onClick)="composer.open()">Add notification</goab-button>
   </div>
 
   <div class="tabs-area">
-    <!-- Level with the tab tray, so it reads as acting on the selected tab only. -->
-    @if (currentTab(); as tab) {
-      @if (tab.items.length > 0) {
-        <div class="tab-action">
-          <goab-button type="tertiary" size="compact" (onClick)="markAllComplete()">Mark all as complete</goab-button>
-        </div>
-      }
-    }
     <goab-tabs variant="segmented" navigation="none" orientation="horizontal" [initialTab]="1" (onChange)="onTabChange($event)">
       @for (tab of tabs(); track tab.key) {
         <ng-template #tabHeading>
@@ -34,6 +25,22 @@
           </span>
         </ng-template>
         <goab-tab [heading]="tabHeading">
+          <!-- Inside the panel so the focus order is tab, Mark all as complete, Add
+               notification, then the cards. CSS lifts Mark all level with the tab tray
+               (it acts on that tab only) and Add notification up to the section header;
+               on narrow screens both sit in the flow above the list. -->
+          @if (tab === currentTab()) {
+            <div class="panel-actions">
+              @if (tab.items.length > 0) {
+                <div class="tab-action">
+                  <goab-button type="tertiary" size="compact" (onClick)="markAllComplete()">Mark all as complete</goab-button>
+                </div>
+              }
+              <div class="add-action">
+                <goab-button type="primary" size="compact" leadingIcon="add" (onClick)="composer.open()">Add notification</goab-button>
+              </div>
+            </div>
+          }
           <goab-container padding="compact" class="list-card">
             <hub-notification-feed
               class="list"
@@ -41,7 +48,7 @@
               [hiddenStatus]="true"
               emptyMessage="You're all caught up. There are no notifications from the last 30 days."
               (open)="service.markSeen($event)"
-              (dismiss)="service.dismiss($event)"></hub-notification-feed>
+              (dismiss)="onDismiss($event)"></hub-notification-feed>
           </goab-container>
         </goab-tab>
       }

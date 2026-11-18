@@ -18,8 +18,11 @@
 </ng-template>
 
 <!-- Always rendered, so minimizing keeps every field (and the dropdowns' picks)
-     exactly as the user left them. -->
+     exactly as the user left them. Inert while closed: the hidden drawer's
+     fields and focus trap would otherwise stay in the tab order and trap
+     keyboard users at the end of the page (WCAG 2.1.2). -->
 <goab-drawer
+  [attr.inert]="composer.state() === 'open' ? null : ''"
   [open]="composer.state() === 'open'"
   position="right"
   [heading]="drawerHeading"

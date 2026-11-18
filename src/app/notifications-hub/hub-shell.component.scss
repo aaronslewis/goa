@@ -6,6 +6,27 @@
   background: var(--goa-color-greyscale-50);
 }
 
+// Off screen until focused, then pinned top left above the layout.
+.skip-link {
+  position: absolute;
+  top: var(--goa-space-s);
+  left: var(--goa-space-s);
+  z-index: 1000;
+  padding: var(--goa-space-xs) var(--goa-space-m);
+  background: var(--goa-color-greyscale-white);
+  border-radius: var(--goa-border-radius-m);
+  box-shadow: var(--goa-shadow-modal);
+  color: var(--goa-color-interactive-default);
+  font: var(--goa-typography-body-m);
+  transform: translateY(calc(-100% - var(--goa-space-l)));
+
+  &:focus {
+    transform: none;
+    outline: var(--goa-border-width-l) solid var(--goa-color-interactive-focus);
+    outline-offset: var(--goa-space-3xs);
+  }
+}
+
 .shortcut {
   color: var(--goa-color-text-secondary);
   font: var(--goa-typography-body-xs);

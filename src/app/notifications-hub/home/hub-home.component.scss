@@ -56,7 +56,9 @@ goab-tabs {
 }
 
 // The tab tray lives inside goab-tabs' shadow DOM, so the action is overlaid on
-// the right end of the tray's row rather than placed beside it in the flow.
+// the right end of the tray's row rather than placed beside it in the flow. Its
+// markup sits inside the tab panel (keeping it after the selected tab in focus
+// order); nothing in goa-tabs is positioned, so it still anchors to .tabs-area.
 .tabs-area {
   position: relative;
   container-type: inline-size;
