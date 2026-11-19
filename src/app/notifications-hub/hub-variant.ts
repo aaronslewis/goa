@@ -17,6 +17,8 @@ export interface HubRouteData {
   // 'cta-right' (v4): the time follows the title and the action sits on the
   // right beside the dismiss button.
   feedStyle?: 'cta-right';
+  // Home's h1. Unset: a time-of-day greeting ("Good morning, Edna").
+  homeTitle?: string;
 }
 
 @Injectable()
@@ -29,6 +31,7 @@ export class HubVariant {
   readonly demo = this.data.demo ?? false;
   readonly cardRows = this.data.cardRows ?? false;
   readonly feedStyle = this.data.feedStyle;
+  readonly homeTitle = this.data.homeTitle;
   readonly homeUrl = `#${this.base}/home`;
   readonly notificationsUrl = `#${this.base}/notifications`;
 }
