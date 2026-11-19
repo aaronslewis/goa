@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sage Chat Panel — Tab Order Annotation (Revised)</title>
+  <style>
+    @page { size: 1100px 1050px; margin: 24px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 13px; background: #f4f4f4; }
+    @media print { body { background: #fff; } }
+
+    /* ── TAB BADGE ── */
+    .tab {
+      position: absolute;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+      box-shadow: 0 1px 4px rgba(0,0,0,.35);
+      pointer-events: none;
+    }
+    .header-tab  { background: #B91C1C; }
+    .suggest-tab { background: #047857; }
+    .input-tab   { background: #B45309; }
+    .arrow-tab   { background: #6B21A8; }
+
+    /* ── WRAPPER ── */
+    .wrapper {
+      display: flex;
+      gap: 40px;
+      padding: 24px;
+      background: #fff;
+      align-items: flex-start;
+    }
+
+    /* ── PANEL ── */
+    .panel {
+      width: 420px;
+      border: 1px solid #D1D5DB;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,.12);
+      overflow: visible;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* Panel header */
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid #E5E7EB;
+      position: relative;
+      border-radius: 8px 8px 0 0;
+      background: #fff;
+    }
+    .panel-title { font-size: 14px; font-weight: 600; }
+    .header-actions { display: flex; gap: 10px; align-items: center; }
+    .icon-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 14px; color: #374151; padding: 2px 4px;
+      position: relative;
+    }
+
+    /* Chat body */
+    .chat-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #F9FAFB;
+      position: relative;
+    }
+
+    /* Arrow-key region highlight */
+    .arrow-region {
+      border: 2px dashed #7C3AED;
+      border-radius: 8px;
+      padding: 8px;
+      position: relative;
+    }
+    .arrow-region-label {
+      position: absolute;
+      top: -11px; left: 10px;
+      background: #7C3AED;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 1px 8px;
+      border-radius: 10px;
+    }
+
+    /* Bubbles */
+    .bubble {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+      max-width: 95%;
+      position: relative;
+    }
+    .bubble.sage { background: #DBEAFE; color: #1E3A5F; align-self: flex-start; }
+    .bubble.user { background: #E5E7EB; color: #111; align-self: flex-end; }
+    .bubble ul { padding-left: 16px; margin-top: 4px; }
+    .bubble ul li { margin-bottom: 3px; }
+    .bubble a { color: #1D4ED8; }
+
+    /* Inline button row in bubble */
+    .inline-btns { display: flex; gap: 8px; margin-top: 8px; }
+    .inline-btn {
+      border: 1px solid #6B7280; border-radius: 4px;
+      background: #fff; padding: 3px 10px;
+      font-size: 11px; cursor: pointer; position: relative;
+      opacity: 0.7;
+    }
+    .inline-btn.primary { background: #1E3A5F; color: #fff; border-color: #1E3A5F; }
+
+    /* Sources block */
+    .sources {
+      background: #F3F4F6;
+      border-left: 4px solid #1E3A5F;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 11px;
+      position: relative;
+    }
+    .sources strong { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .sources a { color: #1D4ED8; }
+
+    /* Sage avatar row */
+    .sage-row { display: flex; align-items: flex-start; gap: 8px; }
+    .owl-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #1E3A5F;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+
+    /* Arrow-nav items dimmed */
+    .arrow-nav { opacity: 0.65; font-style: italic; }
+
+    /* Input area */
+    .chat-input {
+      border-top: 1px solid #E5E7EB;
+      padding: 10px 14px;
+      display: flex; align-items: center; gap: 10px;
+      background: #fff;
+      position: relative;
+      border-radius: 0 0 8px 8px;
+      outline: 3px solid #B45309;
+      outline-offset: -3px;
+    }
+    .input-highlight-label {
+      position: absolute;
+      top: -11px; left: 10px;
+      background: #B45309;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 1px 8px;
+      border-radius: 10px;
+    }
+    .chat-input input {
+      flex: 1; border: 1px solid #D1D5DB; border-radius: 6px;
+      padding: 7px 10px; font-size: 12px; color: #9CA3AF;
+      position: relative;
+    }
+    .send-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #1D4ED8; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 14px; flex-shrink: 0;
+      position: relative;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding-top: 4px;
+    }
+
+    .sidebar h2 { font-size: 16px; font-weight: 700; color: #111; }
+    .sidebar .subtitle { font-size: 12px; color: #555; line-height: 1.5; margin-top: 4px; }
+
+    .legend { display: flex; flex-direction: column; gap: 7px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+    .dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+
+    .tab-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .tab-table th {
+      background: #F3F4F6; text-align: left;
+      padding: 6px 8px; border: 1px solid #E5E7EB; font-weight: 600;
+    }
+    .tab-table td { padding: 5px 8px; border: 1px solid #E5E7EB; vertical-align: middle; }
+    .tab-table tr:nth-child(even) td { background: #F9FAFB; }
+    .tab-table tr.moved td { background: #FEF9C3; }
+
+    .badge {
+      display: inline-flex; width: 20px; height: 20px;
+      border-radius: 50%; color: #fff; font-size: 10px;
+      font-weight: bold; align-items: center; justify-content: center;
+    }
+
+    .rule-box {
+      background: #EFF6FF; border: 1px solid #BFDBFE;
+      border-radius: 6px; padding: 12px 14px;
+    }
+    .rule-box h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #1E3A5F; }
+    .rule-box ul { padding-left: 16px; font-size: 12px; color: #333; line-height: 1.7; }
+
+    .arrow-box {
+      background: #F5F3FF; border: 1px solid #C4B5FD;
+      border-radius: 6px; padding: 12px 14px;
+    }
+    .arrow-box h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #5B21B6; }
+    .arrow-box ul { padding-left: 16px; font-size: 12px; color: #333; line-height: 1.7; }
+
+    .changed-note {
+      display: inline-block;
+      background: #FEF08A; border: 1px solid #EAB308;
+      border-radius: 3px; font-size: 10px; padding: 1px 5px;
+      color: #713F12; font-weight: 600; margin-left: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ── CHAT PANEL ── -->
+  <div class="panel">
+
+    <!-- Header -->
+    <div class="panel-header">
+      <span class="panel-title">Sage - Your AI help assistant</span>
+      <div class="header-actions">
+        <button class="icon-btn" style="position:relative;">Aa<div class="tab header-tab" style="top:-10px;right:-10px;">2</div></button>
+        <button class="icon-btn" style="position:relative;">↗<div class="tab header-tab" style="top:-10px;right:-10px;">3</div></button>
+        <button class="icon-btn" style="position:relative;">✕<div class="tab header-tab" style="top:-10px;right:-10px;">4</div></button>
+      </div>
+      <div class="tab header-tab" style="top:10px;left:-11px;">1</div>
+    </div>
+
+    <!-- Chat body -->
+    <div class="chat-body">
+
+      <!-- Static messages - no tab stop -->
+      <div class="bubble sage">Hi there! I'm Sage.</div>
+      <div class="bubble sage">I can help you with questions about how to use the portal.</div>
+
+      <!-- Suggested links — Tab 5, 6, 7 -->
+      <div class="bubble sage">
+        Here are a few questions I can help you answer:
+        <ul>
+          <li style="position:relative;"><a href="#">How do I update educator certifications?</a><div class="tab suggest-tab" style="top:-4px;right:-28px;">5</div></li>
+          <li style="position:relative;"><a href="#">How do I change the Super Admin for my organization?</a><div class="tab suggest-tab" style="top:-4px;right:-28px;">6</div></li>
+          <li style="position:relative;"><a href="#">Are there video tutorials on how to register children?</a><div class="tab suggest-tab" style="top:-4px;right:-28px;">7</div></li>
+        </ul>
+      </div>
+
+      <!-- Arrow-key region: rest of chat history -->
+      <div class="arrow-region">
+        <div class="arrow-region-label">↑↓ Arrow key navigation only</div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="bubble sage arrow-nav">What can I help you with?</div>
+          <div class="bubble user arrow-nav">Can I save my claim?</div>
+
+          <div class="bubble sage arrow-nav">
+            Your claim can be saved as a draft at any time.<br><br>
+            At the bottom of each section of the claim you will have the option to exit or save your claim as a draft.
+            <div class="inline-btns">
+              <button class="inline-btn" style="position:relative;">Exit</button>
+              <button class="inline-btn primary" style="position:relative;">Save as Draft</button>
+            </div>
+            <br>
+            When you save your claim as a draft, you will receive a confirmation that your draft has been saved.
+          </div>
+
+          <div class="sources arrow-nav">
+            <strong>ⓘ Sources</strong>
+            <a href="#">Child Care Licensing Portal Claim Adjustments Operator User Guide.pdf</a>
+          </div>
+
+          <div class="sage-row arrow-nav">
+            <div class="owl-avatar">🦉</div>
+            <div class="bubble sage">Do you want me to provide more details on <a href="#">how to exit your claim</a>?</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Input — Tab 8 & 9 (moved up) -->
+    <div class="chat-input">
+      <div class="input-highlight-label">Tab stops 8 & 9 — primary action</div>
+      <input type="text" placeholder="Ask a question..." style="position:relative;" />
+      <div class="tab input-tab" style="top:-10px;left:18px;">8</div>
+      <button class="send-btn" style="position:relative;">↑<div class="tab input-tab" style="top:-10px;right:-10px;">9</div></button>
+    </div>
+  </div>
+
+  <!-- ── SIDEBAR ── -->
+  <div class="sidebar">
+
+    <div>
+      <h2>Sage Chat Panel — Revised Tab Order</h2>
+      <p class="subtitle">
+        Input field moved to tab stop 8, immediately after the suggested question links.<br>
+        Chat history is navigated with <strong>arrow keys</strong>, not Tab.
+      </p>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:#B91C1C;"></div> <strong>Red 1–4</strong> &nbsp;— Panel header controls (Tab key)</div>
+      <div class="legend-item"><div class="dot" style="background:#047857;"></div> <strong>Green 5–7</strong> — Suggested question links (Tab key)</div>
+      <div class="legend-item"><div class="dot" style="background:#B45309;"></div> <strong>Amber 8–9</strong> — Input + Send (Tab key) <span class="changed-note">MOVED UP</span></div>
+      <div class="legend-item"><div class="dot" style="background:#6B21A8;"></div> <strong>Purple</strong> &nbsp;&nbsp;&nbsp;— Chat history links/buttons (Arrow keys)</div>
+    </div>
+
+    <!-- Tab stop table -->
+    <table class="tab-table">
+      <thead>
+        <tr><th>#</th><th>Element</th><th>Accessible label</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="badge" style="background:#B91C1C;">1</span></td><td>Dialog (focus on open)</td><td>role="dialog", aria-labelledby="sage-title"</td></tr>
+        <tr><td><span class="badge" style="background:#B91C1C;">2</span></td><td>Aa — Text size button</td><td>aria-label="Change text size"</td></tr>
+        <tr><td><span class="badge" style="background:#B91C1C;">3</span></td><td>↗ Expand button</td><td>aria-label="Expand chat"</td></tr>
+        <tr><td><span class="badge" style="background:#B91C1C;">4</span></td><td>✕ Close button</td><td>aria-label="Close chat"</td></tr>
+        <tr><td><span class="badge" style="background:#047857;">5</span></td><td>Suggested question link 1</td><td>Link text (self-describing)</td></tr>
+        <tr><td><span class="badge" style="background:#047857;">6</span></td><td>Suggested question link 2</td><td>Link text (self-describing)</td></tr>
+        <tr><td><span class="badge" style="background:#047857;">7</span></td><td>Suggested question link 3</td><td>Link text (self-describing)</td></tr>
+        <tr class="moved"><td><span class="badge" style="background:#B45309;">8</span></td><td>Ask a question… input ★</td><td>aria-label="Ask a question"</td></tr>
+        <tr class="moved"><td><span class="badge" style="background:#B45309;">9</span></td><td>Send button ★</td><td>aria-label="Send message"</td></tr>
+        <tr><td><span class="badge" style="background:#6B21A8;">↕</span></td><td>Exit button (chat history)</td><td>Arrow key + Enter to activate</td></tr>
+        <tr><td><span class="badge" style="background:#6B21A8;">↕</span></td><td>Save as Draft (chat history)</td><td>Arrow key + Enter to activate</td></tr>
+        <tr><td><span class="badge" style="background:#6B21A8;">↕</span></td><td>Source PDF link</td><td>Arrow key + Enter to activate</td></tr>
+        <tr><td><span class="badge" style="background:#6B21A8;">↕</span></td><td>"how to exit your claim" link</td><td>Arrow key + Enter to activate</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Arrow nav rules -->
+    <div class="arrow-box">
+      <h3>↑↓ Chat history — arrow key navigation</h3>
+      <ul>
+        <li>The message log has <code>role="log"</code> and <code>tabindex="0"</code></li>
+        <li>New messages announced via <code>aria-live="polite"</code> — no focus move</li>
+        <li><strong>↑ / ↓</strong> moves between messages and interactive elements inside them</li>
+        <li><strong>Enter</strong> activates a focused link or button inside the log</li>
+        <li>Interactive items inside the log use <code>tabindex="-1"</code> so Tab skips them</li>
+      </ul>
+    </div>
+
+    <!-- Behaviour rules -->
+    <div class="rule-box">
+      <h3>General behaviour rules</h3>
+      <ul>
+        <li><strong>On open:</strong> focus moves to dialog; screen reader announces "Sage - Your AI help assistant, dialog"</li>
+        <li><strong>Focus trap:</strong> Tab / Shift+Tab cycles only within steps 1–9</li>
+        <li><strong>On close:</strong> focus returns to the owl trigger button on the page</li>
+        <li><strong>Escape key:</strong> closes panel and returns focus to trigger</li>
+        <li><strong>★ Highlighted rows</strong> — moved up from original positions 12 &amp; 13</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

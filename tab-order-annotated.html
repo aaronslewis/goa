@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Help Centre — Tab Order Annotation</title>
+  <style>
+    @page { size: 1400px 1050px; margin: 20px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 13px; background: #f4f4f4; }
+    @media print {
+      body { background: #fff; }
+      .page { width: 1340px; overflow: visible; }
+    }
+
+    /* ── TAB BADGE ── */
+    .tab {
+      position: absolute;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #0070C4;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+      box-shadow: 0 1px 4px rgba(0,0,0,.35);
+      pointer-events: none;
+    }
+    .tab.skip   { background: #6B21A8; }   /* purple  – skip link */
+    .tab.header { background: #B91C1C; }   /* red     – top bar  */
+    .tab.nav    { background: #0070C4; }   /* blue    – sidebar  */
+    .tab.main   { background: #047857; }   /* green   – content  */
+    .tab.ai     { background: #B45309; }   /* amber   – AI widget*/
+
+    /* ── PAGE SHELL ── */
+    .page { position: relative; width: 1232px; background: #fff; }
+
+    /* ── BETA BANNER ── */
+    .banner {
+      background: #E8F0FE; padding: 6px 16px;
+      font-size: 12px; color: #333;
+      display: flex; gap: 4px; align-items: center;
+    }
+    .banner a { color: #0070C4; }
+
+    /* ── HEADER ── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 15px; }
+    .logo-mark { width: 60px; height: 28px; background: #003366; border-radius: 2px;
+      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 9px; }
+    .user-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: none; border: 1px solid #ccc; border-radius: 4px;
+      padding: 4px 10px; font-size: 13px; cursor: pointer;
+    }
+    .avatar { width: 20px; height: 20px; border-radius: 50%; background: #6B7280; }
+
+    /* ── BODY LAYOUT ── */
+    .body { display: flex; min-height: 680px; }
+
+    /* ── SIDEBAR ── */
+    nav {
+      width: 192px; flex-shrink: 0;
+      border-right: 1px solid #ddd;
+      padding: 8px 0;
+      position: relative;
+    }
+    .nav-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 16px; font-size: 13px; color: #222; cursor: pointer;
+      position: relative;
+    }
+    .nav-item.active { background: #E8F0FE; font-weight: 600; }
+    .nav-item .chevron { font-size: 10px; color: #666; }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1; padding: 32px 40px;
+      position: relative;
+    }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .hero-desc { color: #444; font-size: 14px; max-width: 380px; margin-bottom: 28px; line-height: 1.5; }
+
+    .section-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; color: #222; }
+
+    .card-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 28px; }
+    .card-grid.single { grid-template-columns: 320px; }
+
+    .card {
+      border: 1px solid #D1D5DB; border-radius: 6px;
+      padding: 20px; background: #F9FAFB;
+      position: relative; display: flex; flex-direction: column; gap: 8px;
+    }
+    .card-icon { font-size: 18px; color: #555; }
+    .card-title { font-size: 14px; font-weight: 600; }
+    .card-desc { font-size: 12px; color: #555; line-height: 1.4; flex: 1; }
+    .card-link { font-size: 12px; color: #0070C4; }
+
+    /* ── AI WIDGET ── */
+    .ai-widget {
+      position: absolute; bottom: 24px; right: 24px;
+      background: #fff; border: 1px solid #D1D5DB; border-radius: 8px;
+      padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.12); font-size: 12px;
+    }
+    .ai-text strong { display: block; font-size: 12px; }
+    .ai-text span   { font-size: 11px; color: #555; }
+    .owl { width: 36px; height: 36px; background: #1E3A5F; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; }
+
+    /* ── HERO IMAGE placeholder ── */
+    .hero-img {
+      position: absolute; top: 20px; right: 40px;
+      width: 220px; height: 160px;
+      background: linear-gradient(135deg,#C7D2FE,#A5B4FC);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; font-size: 11px; color: #4338CA;
+    }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex; gap: 16px; padding: 12px 24px;
+      background: #F9FAFB; border-top: 1px solid #ddd;
+      flex-wrap: wrap; font-size: 12px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .dot { width: 14px; height: 14px; border-radius: 50%; }
+
+    /* ── SKIP LINK (shown for annotation) ── */
+    .skip-link-demo {
+      background: #6B21A8; color: #fff; padding: 4px 12px;
+      font-size: 11px; display: inline-block; border-radius: 3px;
+      position: absolute; top: 4px; left: 90px; z-index: 20;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- SKIP LINK annotation -->
+  <span class="skip-link-demo">Skip to main content</span>
+  <div class="tab skip" style="top:2px;left:68px;">1</div>
+
+  <!-- BETA BANNER -->
+  <div class="banner" style="position:relative;">
+    Beta &nbsp; This is a new <a href="#">Alberta Government</a> service — help us improve it by giving <a href="#">feedback</a>
+    <div class="tab header" style="top:-2px;left:162px;">2</div>
+    <div class="tab header" style="top:-2px;left:350px;">3</div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-mark">Alberta</div>
+      Early Childhood Development System
+    </div>
+    <button class="user-btn">
+      <div class="avatar"></div>
+      Nancy Trustworthy ▾
+    </button>
+    <div class="tab header" style="top:8px;left:8px;">4</div>
+    <div class="tab header" style="top:8px;right:8px;">5</div>
+  </header>
+
+  <div class="body">
+
+    <!-- SIDEBAR -->
+    <nav>
+      <div class="nav-item" style="position:relative;"><span>Affordability Grant</span><span class="chevron">›</span><div class="tab nav" style="top:6px;left:-2px;">6</div></div>
+      <div class="nav-item" style="position:relative;"><span>Agreement Configuration</span><div class="tab nav" style="top:6px;left:-2px;">7</div></div>
+      <div class="nav-item" style="position:relative;"><span>Certification</span><span class="chevron">›</span><div class="tab nav" style="top:6px;left:-2px;">8</div></div>
+      <div class="nav-item" style="position:relative;"><span>Child Registration</span><span class="chevron">›</span><div class="tab nav" style="top:6px;left:-2px;">9</div></div>
+      <div class="nav-item" style="position:relative;"><span>Claims Adjustments</span><span class="chevron">›</span><div class="tab nav" style="top:6px;left:-2px;">10</div></div>
+      <div class="nav-item" style="position:relative;"><span>Claims Submission</span><div class="tab nav" style="top:6px;left:-2px;">11</div></div>
+      <div class="nav-item" style="position:relative;"><span>Family Day Home Agency Contract</span><span class="chevron">›</span><div class="tab nav" style="top:6px;left:-2px;">12</div></div>
+      <div class="nav-item" style="position:relative;"><span>GOA User Management</span><div class="tab nav" style="top:6px;left:-2px;">13</div></div>
+      <div class="nav-item" style="position:relative;"><span>Identity and Access Management</span><div class="tab nav" style="top:6px;left:-2px;">14</div></div>
+      <div class="nav-item" style="position:relative;"><span>Licensing</span><span class="chevron">›</span><div class="tab nav" style="top:6px;left:-2px;">15</div></div>
+      <div class="nav-item" style="position:relative;"><span>Payment Statements</span><div class="tab nav" style="top:6px;left:-2px;">16</div></div>
+      <div class="nav-item" style="position:relative;"><span>Program User Management</span><span class="chevron">›</span><div class="tab nav" style="top:6px;left:-2px;">17</div></div>
+      <div class="nav-item" style="position:relative;"><span>Provider Search</span><div class="tab nav" style="top:6px;left:-2px;">18</div></div>
+      <div class="nav-item" style="position:relative;"><span>Space Creation</span><div class="tab nav" style="top:6px;left:-2px;">19</div></div>
+      <div class="nav-item" style="position:relative;"><span>Subsidized Children Report</span><div class="tab nav" style="top:6px;left:-2px;">20</div></div>
+      <div class="nav-item" style="position:relative;"><span>Subsidy</span><span class="chevron">›</span><div class="tab nav" style="top:6px;left:-2px;">21</div></div>
+      <div class="nav-item" style="position:relative;"><span>Wage Top-Up & PD</span><span class="chevron">›</span><div class="tab nav" style="top:6px;left:-2px;">22</div></div>
+      <div class="nav-item active" style="position:relative;"><span>Help Centre</span><div class="tab nav" style="top:6px;left:-2px;">23</div></div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <!-- Hero image -->
+      <div class="hero-img">[ illustration ]</div>
+
+      <h1>Help Centre</h1>
+      <p class="hero-desc">Access resources, get answers, and find the support you need to help child care providers and deliver quality services.</p>
+
+      <!-- GoA staff guides -->
+      <div class="section-title">GoA staff guides</div>
+      <div class="card-grid single">
+        <div class="card" style="position:relative;">
+          <div class="card-title">Internal finance payments staff guide</div>
+          <div class="card-desc">Learn how to do this internal workflow. This is an example.</div>
+          <a class="card-link" href="#">Open guide ↗</a>
+          <div class="tab main" style="bottom:12px;right:8px;">24</div>
+        </div>
+      </div>
+
+      <!-- Provider guides -->
+      <div class="section-title">Provider guides</div>
+      <div class="card-grid">
+
+        <div class="card" style="position:relative;">
+          <div class="card-icon">🖼</div>
+          <div class="card-title">Account and Service Guide</div>
+          <div class="card-desc">Learn how to create account and get access to services.</div>
+          <a class="card-link" href="#">Open guide ↗</a>
+          <div class="tab main" style="bottom:12px;right:8px;">25</div>
+        </div>
+
+        <div class="card" style="position:relative;">
+          <div class="card-icon">⊗</div>
+          <div class="card-title">Affordability Grant Agreements</div>
+          <div class="card-desc">Learn how to sign the Affordability Grant, which provides funding to licensed child care programs to reduce parent fees.</div>
+          <a class="card-link" href="#">Open guide ↗</a>
+          <div class="tab main" style="bottom:12px;right:8px;">26</div>
+        </div>
+
+        <div class="card" style="position:relative;">
+          <div class="card-icon">📋</div>
+          <div class="card-title">Child Registration</div>
+          <div class="card-desc">Learn how to register new children and manage your program's registration list.</div>
+          <a class="card-link" href="#">Open guide ↗</a>
+          <div class="tab main" style="bottom:12px;right:8px;">27</div>
+        </div>
+
+        <div class="card" style="position:relative;">
+          <div class="card-icon">🖼</div>
+          <div class="card-title">Claim Adjustments</div>
+          <div class="card-desc">Learn how to submit claims adjustments for Grant funding, Wage Top-up, Subsidy, and Inclusive Child Care payments.</div>
+          <a class="card-link" href="#">Open guide ↗</a>
+          <div class="tab main" style="bottom:12px;right:8px;">28</div>
+        </div>
+
+        <div class="card" style="position:relative;">
+          <div class="card-icon">📄</div>
+          <div class="card-title">Claims Submission</div>
+          <div class="card-desc">Learn how to submit claims for Grant funding, Wage Top-ups, Subsidy and Inclusive Child Care payments.</div>
+          <a class="card-link" href="#">Open guide ↗</a>
+          <div class="tab main" style="bottom:12px;right:8px;">29</div>
+        </div>
+
+        <div class="card" style="position:relative;">
+          <div class="card-icon">📋</div>
+          <div class="card-title">Family Day Home Agency Contracts</div>
+          <div class="card-desc">Learn how to sign Family Day Home Agency contracts which provide funding to facilitate the operation and administration of Family Day Home programs.</div>
+          <a class="card-link" href="#">Open guide ↗</a>
+          <div class="tab main" style="bottom:32px;right:8px;">30</div>
+          <a class="card-link" href="#" style="margin-top:2px;">Additional guide for family day home agencies ↗</a>
+          <div class="tab main" style="bottom:8px;right:8px;">31</div>
+        </div>
+
+      </div>
+
+      <!-- AI Widget -->
+      <div class="ai-widget" style="position:absolute;bottom:24px;right:24px;">
+        <div class="ai-text">
+          <strong>Need Help?</strong>
+          <span>Ask the Childcare AI assistant</span>
+        </div>
+        <div class="owl">🦉</div>
+        <div class="tab ai" style="top:-10px;right:-10px;">32</div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <strong style="align-self:center;">Tab stop colour key:</strong>
+    <div class="legend-item"><div class="dot" style="background:#6B21A8;"></div> 1 – Skip link</div>
+    <div class="legend-item"><div class="dot" style="background:#B91C1C;"></div> 2–5 – Header / banner</div>
+    <div class="legend-item"><div class="dot" style="background:#0070C4;"></div> 6–23 – Sidebar navigation</div>
+    <div class="legend-item"><div class="dot" style="background:#047857;"></div> 24–31 – Main content links</div>
+    <div class="legend-item"><div class="dot" style="background:#B45309;"></div> 32 – AI assistant widget</div>
+  </div>
+
+</div>
+</body>
+</html>
