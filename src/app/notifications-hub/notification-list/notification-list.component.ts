@@ -23,7 +23,7 @@ export class NotificationListComponent {
   readonly restore = output<string>();
   readonly read = output<string>();
 
-  // Dismiss and restore buttons handle their own clicks.
+  // Mark complete and restore buttons handle their own clicks.
   onRowClick(event: Event, n: HubNotification): void {
     if (!this.markReadOnClick() || n.read) return;
     if ((event.target as Element).closest('goab-icon-button')) return;

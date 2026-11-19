@@ -16,6 +16,7 @@ import { AddNotificationDrawerComponent } from './add-notification-drawer/add-no
 import { NotificationsPanelComponent } from './notifications-panel/notifications-panel.component';
 import { NotificationComposer } from './notification-composer';
 import { HubVariant } from './hub-variant';
+import { NotificationsService } from './notifications.service';
 import { focusPageHeading } from '../shared/focus-page-heading';
 import { focusSelectedTab } from '../shared/goa-tabs-keyboard';
 
@@ -59,6 +60,7 @@ export class HubShellComponent implements AfterViewInit {
   private readonly router = inject(Router);
   readonly hub = inject(HubVariant);
   private readonly composer = inject(NotificationComposer);
+  private readonly notifications = inject(NotificationsService);
 
   readonly currentUrl = toSignal(
     this.router.events.pipe(
@@ -74,6 +76,14 @@ export class HubShellComponent implements AfterViewInit {
     effect(() => {
       this.currentUrl();
       this.syncCurrentItem();
+    });
+    // `?empty=1` opens a version in its empty state, so a link can show it.
+    // Only switching it on is read from the URL: the menu's links drop the
+    // query string, and the preview should survive moving between pages.
+    effect(() => {
+      if (this.router.parseUrl(this.currentUrl()).queryParamMap.get('empty') === '1') {
+        this.notifications.previewEmpty.set(true);
+      }
     });
   }
 

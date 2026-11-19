@@ -25,10 +25,17 @@
     }
   </section>
 
-  <p class="result-count" role="status">{{ rangeLabel() }}</p>
+  @if (!caughtUp()) {
+    <p class="result-count" role="status">{{ rangeLabel() }}</p>
+  }
 
   <goab-container padding="compact">
-    @if (hub.cardRows) {
+    @if (caughtUp()) {
+      <hub-notification-empty-state
+        [level]="2"
+        heading="You're all caught up"
+        message="No unread notifications"></hub-notification-empty-state>
+    } @else if (hub.cardRows) {
       <hub-notification-feed
         class="list"
         [items]="pageItems()"
@@ -60,6 +67,8 @@
         (onChange)="onPage($event)"></goab-pagination>
     </div>
   }
+
+  <hub-empty-preview-toggle></hub-empty-preview-toggle>
 </div>
 
 <!-- Rendered only while open, so its fields always start from the applied
