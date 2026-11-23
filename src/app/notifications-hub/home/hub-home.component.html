@@ -33,7 +33,7 @@
           <hub-notification-list
             class="list"
             [items]="tab.items"
-            emptyMessage="You're all caught up. There are no notifications from the last 30 days."
+            emptyMessage="You're all caught up. Completed and older notifications are on the All notifications page."
             [markReadOnClick]="hub.markReadOnClick"
             (read)="service.markRead($event)"
             (dismiss)="service.dismiss($event)"></hub-notification-list>
