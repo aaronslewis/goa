@@ -186,8 +186,6 @@ export class HubShellComponent implements AfterViewInit {
       icon: 'pie-chart:outline',
       items: [{ label: 'Programs', url: '#' }, { label: 'Agreement Management', url: '#' }],
     },
-    { kind: 'item', label: 'Affordability Grant Financial Reporting', icon: 'bar-chart:outline', url: '#' },
-    { kind: 'item', label: 'Agreement Configuration', icon: 'documents:outline', url: '#' },
     {
       kind: 'group',
       heading: 'Certification',
@@ -222,8 +220,6 @@ export class HubShellComponent implements AfterViewInit {
       icon: 'business:outline',
       items: [{ label: 'Programs', url: '#' }, { label: 'Contract Management', url: '#' }],
     },
-    { kind: 'item', label: 'Family Portal', icon: 'people:outline', url: '#' },
-    { kind: 'item', label: 'GOA User Management', icon: 'key:outline', url: '#' },
     { kind: 'item', label: 'Identity and Access Management', icon: 'lock-closed:outline', url: '#' },
     {
       kind: 'group',
@@ -262,8 +258,6 @@ export class HubShellComponent implements AfterViewInit {
         { label: 'Removal Request', url: '#' },
       ],
     },
-    { kind: 'item', label: 'Registered Children Report', icon: 'document-text:outline', url: '#' },
-    { kind: 'item', label: 'Space Creation', icon: 'expand:outline', url: '#' },
     {
       kind: 'group',
       heading: 'Subsidy',
