@@ -16,6 +16,7 @@ import { AddNotificationDrawerComponent } from './add-notification-drawer/add-no
 import { NotificationsPanelComponent } from './notifications-panel/notifications-panel.component';
 import { NotificationComposer } from './notification-composer';
 import { HubVariant } from './hub-variant';
+import { NotificationsService } from './notifications.service';
 import { focusPageHeading } from '../shared/focus-page-heading';
 import { focusSelectedTab } from '../shared/goa-tabs-keyboard';
 
@@ -59,6 +60,7 @@ export class HubShellComponent implements AfterViewInit {
   private readonly router = inject(Router);
   readonly hub = inject(HubVariant);
   private readonly composer = inject(NotificationComposer);
+  private readonly notifications = inject(NotificationsService);
 
   readonly currentUrl = toSignal(
     this.router.events.pipe(
@@ -74,6 +76,14 @@ export class HubShellComponent implements AfterViewInit {
     effect(() => {
       this.currentUrl();
       this.syncCurrentItem();
+    });
+    // `?empty=1` opens a version in its empty state, so a link can show it.
+    // Only switching it on is read from the URL: the menu's links drop the
+    // query string, and the preview should survive moving between pages.
+    effect(() => {
+      if (this.router.parseUrl(this.currentUrl()).queryParamMap.get('empty') === '1') {
+        this.notifications.previewEmpty.set(true);
+      }
     });
   }
 
@@ -176,8 +186,6 @@ export class HubShellComponent implements AfterViewInit {
       icon: 'pie-chart:outline',
       items: [{ label: 'Programs', url: '#' }, { label: 'Agreement Management', url: '#' }],
     },
-    { kind: 'item', label: 'Affordability Grant Financial Reporting', icon: 'bar-chart:outline', url: '#' },
-    { kind: 'item', label: 'Agreement Configuration', icon: 'documents:outline', url: '#' },
     {
       kind: 'group',
       heading: 'Certification',
@@ -212,8 +220,6 @@ export class HubShellComponent implements AfterViewInit {
       icon: 'business:outline',
       items: [{ label: 'Programs', url: '#' }, { label: 'Contract Management', url: '#' }],
     },
-    { kind: 'item', label: 'Family Portal', icon: 'people:outline', url: '#' },
-    { kind: 'item', label: 'GOA User Management', icon: 'key:outline', url: '#' },
     { kind: 'item', label: 'Identity and Access Management', icon: 'lock-closed:outline', url: '#' },
     {
       kind: 'group',
@@ -252,8 +258,6 @@ export class HubShellComponent implements AfterViewInit {
         { label: 'Removal Request', url: '#' },
       ],
     },
-    { kind: 'item', label: 'Registered Children Report', icon: 'document-text:outline', url: '#' },
-    { kind: 'item', label: 'Space Creation', icon: 'expand:outline', url: '#' },
     {
       kind: 'group',
       heading: 'Subsidy',

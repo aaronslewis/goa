@@ -22,7 +22,11 @@ export class NotificationsService {
   private readonly _all = signal<HubNotification[]>(this.seed());
   private nextId = 1;
 
-  readonly all = this._all.asReadonly();
+  // Prototype-only: shows the empty states without deleting the sample data,
+  // so switching it off brings every notification back as it was.
+  readonly previewEmpty = signal(false);
+
+  readonly all = computed(() => (this.previewEmpty() ? [] : this._all()));
 
   // Overridden by the demo, which starts from its own short list.
   protected seed(): HubNotification[] {
@@ -32,7 +36,7 @@ export class NotificationsService {
   readonly homeItems = computed(() => {
     const now = Date.now();
     const cutoff = now - HOME_WINDOW_DAYS * 864e5;
-    return this._all().filter((n) => {
+    return this.all().filter((n) => {
       const t = n.createdAt.getTime();
       return !n.dismissed && t <= now && t >= cutoff;
     });
@@ -118,7 +122,8 @@ function startOfDay(d: Date): number {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 }
 
-const fullDate = (d: Date) => d.toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
+// Long month per the Notifications creation guide (slide 09): "Today, November 12, 2026".
+const fullDate = (d: Date) => d.toLocaleDateString('en-CA', { month: 'long', day: 'numeric', year: 'numeric' });
 const time = (d: Date) =>
   d.toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit' }).replace('a.m.', 'am').replace('p.m.', 'pm');
 
