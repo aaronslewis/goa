@@ -182,12 +182,6 @@ export class HubShellComponent implements AfterViewInit {
     },
     {
       kind: 'group',
-      heading: 'Affordability Grant',
-      icon: 'pie-chart:outline',
-      items: [{ label: 'Programs', url: '#' }, { label: 'Agreement Management', url: '#' }],
-    },
-    {
-      kind: 'group',
       heading: 'Certification',
       icon: 'ribbon:outline',
       items: [
@@ -196,23 +190,6 @@ export class HubShellComponent implements AfterViewInit {
         { label: 'Search', url: '#' },
         { label: 'Admin Data', url: '#' },
       ],
-    },
-    { kind: 'item', label: 'Child Registration', icon: 'id-card:outline', url: '#' },
-    {
-      kind: 'group',
-      heading: 'Claims',
-      icon: 'list:outline',
-      items: [
-        { label: 'Assess Claims', url: '#' },
-        { label: 'Assess Adjustments', url: '#' },
-        { label: 'Submit Adjustments', url: '#' },
-      ],
-    },
-    {
-      kind: 'group',
-      heading: 'ECE Workforce Supports',
-      icon: 'server:outline',
-      items: [{ label: 'Programs', url: '#' }, { label: 'Agreement Management', url: '#' }],
     },
     {
       kind: 'group',
@@ -231,41 +208,6 @@ export class HubShellComponent implements AfterViewInit {
         { label: 'Program Educator Search', url: '#' },
         { label: 'People Search', url: '#' },
         { label: 'Admin Data', url: '#' },
-      ],
-    },
-    { kind: 'item', label: 'Payment Statements', icon: 'receipt:outline', url: '#' },
-    {
-      kind: 'group',
-      heading: 'Post Verification',
-      icon: 'checkmark-done:outline',
-      items: [
-        { label: '30 Day Letter', url: '#' },
-        { label: 'Warning Letter', url: '#' },
-        { label: 'Suspension Letter', url: '#' },
-        { label: 'RoR - File Closure', url: '#' },
-        { label: 'RoR - Debt Recovery Team', url: '#' },
-        { label: 'Completed', url: '#' },
-      ],
-    },
-    {
-      kind: 'group',
-      heading: 'Program User Management',
-      icon: 'finger-print:outline',
-      items: [
-        { label: 'User Access Management', url: '#' },
-        { label: 'Legal Representative Management', url: '#' },
-        { label: 'Access Request', url: '#' },
-        { label: 'Removal Request', url: '#' },
-      ],
-    },
-    {
-      kind: 'group',
-      heading: 'Subsidy',
-      icon: 'body:outline',
-      items: [
-        { label: 'Work Queue', url: '#' },
-        { label: 'My Assignments', url: '#' },
-        { label: 'Subsidy Application Form', url: '#' },
       ],
     },
   ];
