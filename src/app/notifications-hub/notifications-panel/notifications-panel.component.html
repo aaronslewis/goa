@@ -21,13 +21,13 @@
               [items]="tab.items"
               [stacked]="true"
               [hiddenStatus]="true"
-              emptyMessage="You're all caught up."
+              emptyMessage="You're all caught up. Completed notifications are on the All notifications page."
               (open)="service.markSeen($event)"
               (dismiss)="service.dismiss($event)"></hub-notification-feed>
           } @else {
             <hub-notification-list
               [items]="tab.items"
-              emptyMessage="You're all caught up."
+              emptyMessage="You're all caught up. Completed notifications are on the All notifications page."
               [markReadOnClick]="hub.markReadOnClick"
               (read)="service.markRead($event)"
               (dismiss)="service.dismiss($event)"></hub-notification-list>

@@ -69,7 +69,7 @@
               class="list"
               [items]="tab.items"
               [hiddenStatus]="true"
-              emptyMessage="You're all caught up. There are no notifications from the last 30 days."
+              emptyMessage="You're all caught up. Completed and older notifications are on the Notifications page."
               (open)="service.markSeen($event)"
               (dismiss)="service.dismiss($event)"></hub-notification-feed>
           </goab-container>
